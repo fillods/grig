@@ -1,3 +1,14 @@
+2004-11-19;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/rig-data.c:
+	Fixed bug which caused the new secondary frequency to be sent to
+	the daemon but not registered in the readback buffer until next
+	read cycle.
+
+	* src/rig-gui-info.c:
+	Added skeleton for front end info frame (attenuator and preamp).
+
+
 2004-11-15;	Alexandru Csete <csete@users.sourceforge.net>
 
 	* configure.in, Makefile.am:
