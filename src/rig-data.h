@@ -197,6 +197,10 @@ int   rig_data_has_get_agc      (void);
 int   rig_data_has_get_att      (void);
 int   rig_data_has_get_preamp   (void);
 int   rig_data_has_get_strength (void);
+int   rig_data_has_get_power    (void);
+int   rig_data_has_get_swr      (void);
+int   rig_data_has_get_alc      (void);
+
 
 /* has_set functions */
 int   rig_data_has_set_pstat    (void);

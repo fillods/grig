@@ -751,14 +751,11 @@ rig_data_has_get_preamp ()
 
 
 
-/** \brief Some text.
- *  \return description
+/** \brief Get availability of reading primary frequency.
+ *  \return 1 if available, otherwise 0.
  *
- * Detailed description.
+ * This function returns the value of the has_get.freq1 variable.
  *
- * \bug writeme
- *
- * \bug should have 1 or 2 as param like get_freq
  */
 int
 rig_data_has_get_freq1     ()
@@ -768,12 +765,11 @@ rig_data_has_get_freq1     ()
 
 
 
-/** \brief Some text.
- *  \return description
+/** \brief Get availability of reading secondary frequency.
+ *  \return 1 if available, otherwise 0.
  *
- * Detailed description.
+ * This function returns the value of the has_get.freq2 variable.
  *
- * \bug writeme
  */
 int
 rig_data_has_get_freq2     ()
@@ -781,6 +777,46 @@ rig_data_has_get_freq2     ()
 	return has_get.freq2;
 }
 
+
+
+/** \brief Get availability of reading TX power.
+ *  \return 1 if available, otherwise 0.
+ *
+ * This function returns the value of the has_get.power variable.
+ *
+ */
+int
+rig_data_has_get_power    ()
+{
+	return has_get.power;
+}
+
+
+
+/** \brief Get availability of reading SWR.
+ *  \return 1 if available, otherwise 0.
+ *
+ * This function returns the value of the has_get.swr variable.
+ *
+ */
+int
+rig_data_has_get_swr      ()
+{
+	return has_get.swr;
+}
+
+
+/** \brief Get availability of reading ALC.
+ *  \return 1 if available, otherwise 0.
+ *
+ * This function returns the value of the has_get.alc variable.
+ *
+ */
+int
+rig_data_has_get_alc      ()
+{
+	return has_get.alc
+		}
 
 
 
