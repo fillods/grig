@@ -215,8 +215,9 @@ rig_gui_smeter_create_canvas ()
 static gint 
 rig_gui_smeter_timeout_exec  (gpointer data)
 {
-	gfloat             rdang;  /* angle obtained from rig-data */
-	gint               db;
+	gfloat             rdang;          /* angle obtained from rig-data */
+	gint               db   = -54;     /* signal strength from hamlib */
+	gfloat             valf = 0.0;     /* RF power, SWR or ALC from hamlib */
 	gfloat             maxdelta;
 	gfloat             delta;
 
@@ -225,12 +226,12 @@ rig_gui_smeter_timeout_exec  (gpointer data)
 	/* are we in RX or TX mode? */
 	if (rig_data_get_ptt () == RIG_PTT_OFF) {
 
-		/* get current value from rig-data */
-		db = rig_data_get_strength ();
-
 #ifdef SMETER_TEST
 		/* test s-meter with random numbers */
 		db = (gint) g_random_int_range (-100, 100);
+#else
+		/* get current value from rig-data */
+		db = rig_data_get_strength ();
 #endif
 
 		rdang = convert_db_to_angle (db, DB_TO_ANGLE_MODE_POLY);
@@ -238,9 +239,42 @@ rig_gui_smeter_timeout_exec  (gpointer data)
 		delta = fabs (rdang - smeter.value);
 	}
 	else {
-		/* TX mode; use -54dB */
-		db = -54;
-		rdang = convert_db_to_angle (db, DB_TO_ANGLE_MODE_POLY);
+
+#ifdef SMETER_TEST
+		/* test s-meter with random numbers */
+		valf = (gfloat) g_random_double_range (-0.2, 1.2);
+#else
+		/* get TX reading according to selected
+		   meter mode (power/swr/alc)
+		*/
+		switch (smeter.txmode) {
+
+			/* TX power */
+		case SMETER_TX_MODE_POWER:
+			valf = rig_data_get_power ();
+			break;
+
+			/* SWR */
+		case SMETER_TX_MODE_SWR:
+			valf = rig_data_get_swr ();
+			break;
+
+			/* ALC */
+		case SMETER_TX_MODE_ALC:
+			valf = rig_data_get_alc ();
+			break;
+
+		default:
+			valf = 0.0;
+			break;
+		}
+
+		/* scale value, if necessary;
+		   1.0 corresponds to 100 on the meter
+		*/
+#endif
+
+		rdang = convert_valf_to_angle (valf, DB_TO_ANGLE_MODE_POLY);
 
 		delta = fabs (rdang - smeter.value);
 	}
