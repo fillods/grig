@@ -1,3 +1,22 @@
+2004-12-05;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* configure.in:
+	Bumped version number.
+	
+
+2004-12-04;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* configure.in:
+	Removed possibility to fall back to the old style hamlib check.
+	hamlib.pc is required to detect hamlib settings (cf. bug #1078800).
+
+	* AUTHORS:
+	Updated with proper credits.
+
+	* NEWS:
+	Updated.
+	
+
 2004-12-03;	Alexandru Csete <csete@users.sourceforge.net>
 
 	* grig.desktop:
