@@ -240,10 +240,6 @@ rig_gui_smeter_timeout_exec  (gpointer data)
 	}
 	else {
 
-#ifdef SMETER_TEST
-		/* test s-meter with random numbers */
-		valf = (gfloat) g_random_double_range (-0.2, 1.2);
-#else
 		/* get TX reading according to selected
 		   meter mode (power/swr/alc)
 		*/
@@ -251,17 +247,32 @@ rig_gui_smeter_timeout_exec  (gpointer data)
 
 			/* TX power */
 		case SMETER_TX_MODE_POWER:
+#ifdef SMETER_TEST
+			/* test s-meter with random numbers */
+			valf = (gfloat) g_random_double_range (0.8, 1.5);
+#else
 			valf = rig_data_get_power ();
+#endif
 			break;
 
 			/* SWR */
 		case SMETER_TX_MODE_SWR:
+#ifdef SMETER_TEST
+			/* test s-meter with random numbers */
+			valf = (gfloat) g_random_double_range (0.1, 0.15);
+#else
 			valf = rig_data_get_swr ();
+#endif
 			break;
 
 			/* ALC */
 		case SMETER_TX_MODE_ALC:
+#ifdef SMETER_TEST
+			/* test s-meter with random numbers */
+			valf = (gfloat) g_random_double_range (-0.5, 0.3);
+#else
 			valf = rig_data_get_alc ();
+#endif
 			break;
 
 		default:
@@ -272,9 +283,8 @@ rig_gui_smeter_timeout_exec  (gpointer data)
 		/* scale value, if necessary;
 		   1.0 corresponds to 100 on the meter
 		*/
-#endif
 
-		rdang = convert_valf_to_angle (valf, DB_TO_ANGLE_MODE_POLY);
+		rdang = convert_valf_to_angle (valf);
 
 		delta = fabs (rdang - smeter.value);
 	}
@@ -426,6 +436,9 @@ rig_gui_scale_selector_create ()
 	g_signal_connect (G_OBJECT (combo), "changed",
 			  G_CALLBACK (rig_gui_smeter_scale_cb),
 			  NULL);
+
+	/* disable scale selector for now */
+	gtk_widget_set_sensitive (combo, FALSE);
 
 	return combo;
 }
