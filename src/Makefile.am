@@ -23,6 +23,7 @@ grig_SOURCES = \
 	rig-data.c rig-data.h \
 	rig-gui.c rig-gui.h \
 	rig-gui-buttons.c rig-gui-buttons.h \
+	rig-gui-info.c rig-gui-info.h \
 	rig-gui-lcd.c rig-gui-lcd.h \
 	rig-gui-smeter.c rig-gui-smeter.h \
 	rig-gui-smeter-conv.c rig-gui-smeter-conv.h \
