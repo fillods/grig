@@ -168,6 +168,7 @@ main (int argc, char *argv[])
 	   gconf
 	*/
 
+	rig_daemon_stop ();
 
 	return 0;
 }
