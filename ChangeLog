@@ -1,3 +1,21 @@
+2004-11-12;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/rig-gui-info.c:
+	Changed level checkboxes to labels. Fixed bug which caused the not all
+	levels were correctly displayed. Fixed bug which caused the scrolled
+	window to be non-functional (the new scrolled window api does not use
+	gtk_container_add but gtk_scrolled_window_add_with_viewport).
+	
+
+2004-11-10;	Alexandru Csete - IC177 <csete@users.sourceforge.net>
+
+	* src/rig-gui-info.c:
+	Rewrote create_levels to use a vertical table in a scrolled window.
+
+	* src/rig-gui-info-data.h:
+	Added string representations for port caps family.
+
+
 2004-11-09;	Alexandru Csete <csete@users.sourceforge.met>
 
 	* src/rig-gui-info.c:
