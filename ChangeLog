@@ -1,3 +1,32 @@
+2004-11-05;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/rig-gui-ctrl2.c:
+	Removed note regarding the discrepacy between hamlib and grig symbillic
+	references for AGC settings (they are the same now).
+
+	* grig.1.in, grig.spec.in:
+	Updated.
+	
+	* src/rig-utils.c:
+	Fixed bug which caused the last three modes (ECLSB, ECUSB and FAX) to be
+	discarded as valid modes.
+
+	* src/rig-daemon.c:
+	Fixed bug which caused the pass band to be set to 1Hz each time the mode
+	was changed. Replaced XIT comamnds with VFO comamnds.
+
+	* src/rig-daemon-check.c:
+	Set smeter value to -54dB if comamnd is not available. Added code to
+	storeavailableVFOs in rig-data.
+
+	* src/rig-data-c, src/rig-data.h:
+	Added rig_data_set_vfos and rig_data_get_vfos to store the bitfield of
+	available VFOs.
+
+	* src/rig-gui-lcd.c:
+	Ahow true VFO on LCD.
+	
+	
 2004-11-04;	Alexandru Csete <csete@users.sourceforge.net>
 
 	* src/rig-gui-buttons.c:

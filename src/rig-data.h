@@ -128,13 +128,15 @@ void rig_data_init        (void);
 void rig_data_free        (void);
 int  rig_data_initialized (void);
 
-/* init and get preamp and att data */
+/* init and get preamp, att and vfo data */
 void rig_data_set_att_data     (int index, int data);
 int  rig_data_get_att_data     (int index);
 int  rig_data_get_att_index    (int data);
 void rig_data_set_preamp_data  (int index, int data);
 int  rig_data_get_preamp_data  (int index);
 int  rig_data_get_preamp_index (int data);
+int  rig_data_get_vfos         (void);
+void rig_data_set_vfos         (int);
 
 /* set functions */
 void rig_data_set_pstat   (powerstat_t);

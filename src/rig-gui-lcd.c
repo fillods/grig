@@ -129,10 +129,11 @@ static void           rig_gui_lcd_set_freq_digits  (freq_t freq);
 static void           rig_gui_lcd_set_rit_digits   (shortfreq_t freq);
 static void           rig_gui_lcd_draw_text        (void);
 
-static gint rig_gui_lcd_timeout_exec  (gpointer);
-static gint rig_gui_lcd_timeout_stop  (gpointer);
+static gint           rig_gui_lcd_timeout_exec     (gpointer);
+static gint           rig_gui_lcd_timeout_stop     (gpointer);
 
-static void ritval_to_bytearr (gchar *, shortfreq_t);
+static void           ritval_to_bytearr            (gchar *, shortfreq_t);
+
 
 
 
@@ -1312,7 +1313,32 @@ rig_gui_lcd_draw_text        ()
 			 layout);
 
 	/* set text: VFO */
-	pango_layout_set_text (layout, _("VFO A"), -1);
+	switch (rig_data_get_vfo ()) {
+
+	case RIG_VFO_A:
+		pango_layout_set_text (layout, _("VFO A"), -1);
+		break;
+
+	case RIG_VFO_B:
+		pango_layout_set_text (layout, _("VFO B"), -1);
+		break;
+
+	case RIG_VFO_C:
+		pango_layout_set_text (layout, _("VFO C"), -1);
+		break;
+
+	case RIG_VFO_MAIN:
+		pango_layout_set_text (layout, _("MAIN VFO"), -1);
+		break;
+
+	case RIG_VFO_SUB:
+		pango_layout_set_text (layout, _("SUB VFO"), -1);
+		break;
+
+	default:
+		pango_layout_set_text (layout, _("VFO ?"), -1);
+		break;
+	}
 
 	/* calculate coordinates;
 	   PanoLayoutSize is in 1000th of pixel?
@@ -1326,8 +1352,6 @@ rig_gui_lcd_draw_text        ()
 			 lcd.digits[4].x,
 			 lcd.digits[0].y - h,
 			 layout);
-
-
 
 
 	/* set text: RIT */
@@ -1388,4 +1412,3 @@ ritval_to_bytearr (gchar *array, shortfreq_t freq)
 		}
 	}
 }
-

@@ -102,7 +102,7 @@ rig_utils_index_to_mode (gint index)
 	guint mode;
 
 	/* check numerical sanity of input */
-	if ((index >= 0) && (index <= 12)) {
+	if ((index >= 0) && (index <= 15)) {
 		mode = 1 << index;
 	}
 	else {

@@ -124,9 +124,6 @@ rig_gui_ctrl2_create ()
  * This function creates the widget used to select the AGC setting.
  * The used widget is a GtkComboBox
  *
- * \note Hamlib implement 'superfast', 'fast' and 'slow' but we choose to call them
- * 'fast', 'medium' and 'slow' in the same numerical order.
- *
  * \bug Grig does not implement the RIG_AGC_USER option!
  */
 static GtkWidget *

@@ -68,8 +68,43 @@ grig_cmd_avail_t has_set;  /*!< Flags to indicate writing capabilities. */
 grig_cmd_avail_t has_get;  /*!< Flags to indicate reading capabilities. */
 
 
+/** \brief List of attenuator values (absolute values). */
 static int att[MAXDBLSTSIZ];
+
+/** \brief List of preamp values. */
 static int preamp[MAXDBLSTSIZ];
+
+/** \brief Bit field of available VFO's */
+static int vfo_list;
+
+
+
+/** \brief Getavailable VFOs.
+ *  \return Bit field of available VFOs.
+ *
+ * This function returns the available VFOs in a bit field
+ * Although the details of the bitfield can be deduced from the hmlib api
+ * documentation, grig is only interested in the symbolic references like
+ * RIG_VFO_A, RIG_VFO_B and such.
+ */
+int
+rig_data_get_vfos         ()
+{
+	return vfo_list;
+}
+
+
+/** \brief Set available VFOs.
+ *  \param vfos Bit field of available VFOs.
+ * 
+ * This function sets the bit field of available VFOs.
+ * It should be used by the daemon after the VFOs are checked.
+ */ 
+void
+rig_data_set_vfos         (int vfos)
+{
+	vfo_list = vfos;
+}
 
 
 

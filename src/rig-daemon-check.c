@@ -172,6 +172,9 @@ rig_daemon_check_vfo     (RIG               *myrig,
 	else {
 		has_set->vfo = FALSE;
 	}
+
+	/* store available VFOs */
+	rig_data_set_vfos (myrig->state.vfo_list);
 }
 
 
@@ -560,6 +563,8 @@ rig_daemon_check_level     (RIG               *myrig,
 			
 			/* disable command */
 			has_get->strength = FALSE;
+
+			get->strength = -54;
 		}
 	}
 

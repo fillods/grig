@@ -63,11 +63,12 @@
 
 RIG *myrig;  /*!< The rig structure. We keep this public so GUI can access the info fields. */
 
+//#define GRIG_DEBUG 1
 
 #ifdef GRIG_DEBUG
 /** \brief MAtrix defining the default RX cycle in debug mode */
 static const rig_cmd_t DEF_RX_CYCLE[C_MAX_CYCLES][C_MAX_CMD_PER_CYCLE] = {
-	{ RIG_CMD_SET_ATT, RIG_CMD_GET_ATT, RIG_CMD_NONE, RIG_CMD_NONE, RIG_CMD_NONE },
+	{ RIG_CMD_SET_AGC, RIG_CMD_GET_AGC, RIG_CMD_NONE, RIG_CMD_NONE, RIG_CMD_NONE },
 	{ RIG_CMD_NONE,    RIG_CMD_NONE,    RIG_CMD_NONE, RIG_CMD_NONE, RIG_CMD_NONE },
 	{ RIG_CMD_NONE,    RIG_CMD_NONE,    RIG_CMD_NONE, RIG_CMD_NONE, RIG_CMD_NONE },
 	{ RIG_CMD_NONE,    RIG_CMD_NONE,    RIG_CMD_NONE, RIG_CMD_NONE, RIG_CMD_NONE },
@@ -86,7 +87,7 @@ static const rig_cmd_t DEF_RX_CYCLE[C_MAX_CYCLES][C_MAX_CMD_PER_CYCLE] = {
 	{ RIG_CMD_GET_STRENGTH, RIG_CMD_SET_FREQ_1, RIG_CMD_GET_FREQ_1, RIG_CMD_SET_PSTAT, RIG_CMD_GET_PSTAT },
 	{ RIG_CMD_GET_STRENGTH, RIG_CMD_SET_ATT,    RIG_CMD_GET_ATT,    RIG_CMD_SET_RIT,   RIG_CMD_GET_RIT   },
 	{ RIG_CMD_GET_STRENGTH, RIG_CMD_SET_FREQ_1, RIG_CMD_GET_FREQ_1, RIG_CMD_SET_AGC,   RIG_CMD_GET_AGC   },
-	{ RIG_CMD_GET_STRENGTH, RIG_CMD_SET_PREAMP, RIG_CMD_GET_PREAMP, RIG_CMD_SET_XIT,   RIG_CMD_GET_XIT   },
+	{ RIG_CMD_GET_STRENGTH, RIG_CMD_SET_PREAMP, RIG_CMD_GET_PREAMP, RIG_CMD_SET_VFO,   RIG_CMD_GET_VFO   },
 	{ RIG_CMD_GET_STRENGTH, RIG_CMD_SET_FREQ_1, RIG_CMD_GET_FREQ_1, RIG_CMD_SET_MODE,  RIG_CMD_GET_MODE  },
 	{ RIG_CMD_GET_STRENGTH, RIG_CMD_SET_VFO,    RIG_CMD_GET_VFO,    RIG_CMD_SET_PTT,   RIG_CMD_GET_PTT   }
 };
@@ -1054,12 +1055,26 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 					break;
 				default:
 					/* we have no idea what to set! */
-					pbw = get->pbw;
+					pbw = rig_passband_normal (myrig, mode);
 					break;
 				}
 			}
 			else {
-				pbw = get->pbw;
+				switch (get->pbw) {
+				case RIG_DATA_PB_WIDE:
+					pbw = rig_passband_wide (myrig, mode);
+					break;
+				case RIG_DATA_PB_NORMAL:
+					pbw = rig_passband_normal (myrig, mode);
+					break;
+				case RIG_DATA_PB_NARROW:
+					pbw = rig_passband_narrow (myrig, mode);
+					break;
+				default:
+					/* we have no idea what to set! */
+					pbw = rig_passband_normal (myrig, mode);
+					break;
+				}
 			}
 
 			/* try to execute command */
