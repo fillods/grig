@@ -52,7 +52,7 @@
  * holds the actual settings obtained from the rig.
  */ 
 typedef struct {
-	powerstat_t power;   /*!< Power status (ON/OFF). */
+	powerstat_t pstat;   /*!< Power status (ON/OFF). */
 	ptt_t       ptt;     /*!< PTT status (ON/OFF). */
 	vfo_t       vfo;     /*!< VFO. */
 	rmode_t     mode;    /*!< Mode. */
@@ -61,11 +61,17 @@ typedef struct {
 	freq_t      freq2;   /*!< Secondary frequency. */
 	shortfreq_t rit;     /*!< RIT. */
 	shortfreq_t xit;     /*!< XIT. */
+	float       power;    /*!< TX power. */
+
+	/* read only fields */
+	int         strength; /*!< Signal strength. */
+	float       swr;      /*!< SWR. */
+	float       alc;      /*!< ALC. */
 } grig_settings_t;
 
 
 typedef struct {
-	int         power;
+	int         pstat;
 	int         ptt;
 	int         vfo;
 	int         mode;
@@ -74,8 +80,17 @@ typedef struct {
 	int         freq2;
 	int         rit;
 	int         xit;
+	int         power;
+
+	/* read only fields */
+	int         strength;
+	int         swr;
+	int         alc;
 } grig_cmd_avail_t;
 
+
+#define GRIG_LEVEL_RD (RIG_LEVEL_RFPOWER | RIG_LEVEL_SWR | RIG_LEVEL_ALC | RIG_LEVEL_STRENGTH)
+#define GRIG_LEVEL_WR (RIG_LEVEL_RFPOWER)
 
 /* init functions */
 void rig_data_init        (void);
@@ -83,7 +98,7 @@ void rig_data_free        (void);
 int  rig_data_initialized (void);
 
 /* set functions */
-void rig_data_set_power   (powerstat_t);
+void rig_data_set_pstat   (powerstat_t);
 void rig_data_set_ptt     (ptt_t);
 void rig_data_set_vfo     (vfo_t);
 void rig_data_set_mode    (rmode_t);
@@ -93,7 +108,7 @@ void rig_data_set_rit     (shortfreq_t);
 void rig_data_set_xit     (shortfreq_t);
 
 /* get functions */
-powerstat_t rig_data_get_power   (void);
+powerstat_t rig_data_get_pstat   (void);
 ptt_t       rig_data_get_ptt     (void);
 vfo_t       rig_data_get_vfo     (void);
 rmode_t     rig_data_get_mode    (void);

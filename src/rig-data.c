@@ -70,10 +70,10 @@ grig_cmd_avail_t has_get;  /*!< Flags to indicate reading capabilities. */
  * This function sets the targeted power status to pwr.
  */
 void 
-rig_data_set_power   (powerstat_t pwr)
+rig_data_set_pstat   (powerstat_t pwr)
 {
-	set.power = pwr;
-	new.power = 1;
+	set.pstat = pwr;
+	new.pstat = 1;
 }
 
 
@@ -200,9 +200,9 @@ rig_data_set_xit     (shortfreq_t xit)
  * This function returns the current power status.
  */
 powerstat_t
-rig_data_get_power   ()
+rig_data_get_pstat   ()
 {
-	return get.power;
+	return get.pstat;
 }
 
 

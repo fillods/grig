@@ -12,6 +12,7 @@ grig_SOURCES = \
 	grig-druid.c grig-druid.h \
 	rig-anomaly.c rig-anomaly.h \
 	rig-daemon.c rig-daemon.h \
+	rig-daemon-check.c rig-daemon-check.h \
 	rig-data.c rig-data-h
 
 

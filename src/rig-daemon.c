@@ -33,6 +33,7 @@
 /** \file rig-daemon.c
  *  \ingroup rigd
  *  \brief Radio control interface to hamlib.
+ *  \bug This object MUST be decomposed!
  *
  * This object is responsible for interfacing the Hamradio Control Libraries (hamlib).
  *
@@ -53,6 +54,7 @@
 #include <gconf/gconf-client.h>
 #include <hamlib/rig.h>
 #include "rig-data.h"
+#include "rig-daemon-check.h"
 #include "rig-daemon.h"
 
 
@@ -105,6 +107,7 @@ static gpointer rig_daemon_cycle     (gpointer);
 static void     rig_daemon_exec_cmd  (rig_cmd_t,
 				      grig_settings_t  *,
 				      grig_settings_t  *,
+				      grig_cmd_avail_t *,
 				      grig_cmd_avail_t *,
 				      grig_cmd_avail_t *);
 
@@ -249,6 +252,7 @@ rig_daemon_stop  ()
  * hardware. These include testing the radio capabilities and obtaining
  * the current settings. The test results are communicated to the user
  * via the rig_debug() Hamlib function.
+ *
  */
 static void
 rig_daemon_post_init ()
@@ -256,15 +260,6 @@ rig_daemon_post_init ()
 	grig_settings_t  *get;                     /* pointer to shared data 'get' */
 	grig_cmd_avail_t *has_get;                 /* pointer to shared data 'has_get' */
 	grig_cmd_avail_t *has_set;                 /* pointer to shared data 'has_set' */
-	int               retcode;                 /* Hamlib status code */
-	powerstat_t       pwr = RIG_POWER_OFF;     /* power status */
-	ptt_t             ptt = RIG_PTT_OFF;       /* PTT status */
-	vfo_t             vfo = RIG_VFO_NONE;      /* current VFO */
-	freq_t            freq;                    /* current frequency */
-	shortfreq_t       sfreq;                   /* current RIT/XIT setting */
-	rmode_t           mode;                    /* current mode */
-	pbwidth_t         pbw;                     /* current passband width */
-
 
 
 	/* get pointers to shared data */
@@ -273,221 +268,21 @@ rig_daemon_post_init ()
 	has_set = rig_data_get_has_set_addr ();
 
 
-	/* get power status; we are very paranoid and accept only
-	   RIG_OK as good status.
-	*/
-	retcode = rig_get_powerstat (myrig, &pwr);
-	if (retcode == RIG_OK) {
-		has_get->power = TRUE;
-		get->power = pwr;
-	}
-	else {
-		has_get->power = FALSE;
-		get->power = RIG_POWER_OFF;
-	}
-
-	/* try to set power status */
-	retcode = rig_set_powerstat (myrig, get->power);
-	has_set->power = (retcode == RIG_OK) ? TRUE : FALSE;
-
-	/* PTT status */
-	retcode = rig_get_ptt (myrig, RIG_VFO_CURR, &ptt);
-	if (retcode == RIG_OK) {
-		has_get->ptt = TRUE;
-		get->ptt = ptt;
-	}
-	else {
-		has_get->ptt = FALSE;
-		get->ptt = RIG_PTT_OFF;
-	}
-
-	/* try to set PTT status */
-	retcode = rig_set_ptt (myrig, RIG_VFO_CURR, get->ptt);
-	has_set->ptt = (retcode == RIG_OK) ? TRUE : FALSE;
-
-	/* try to get current VFO */
-	retcode = rig_get_vfo (myrig, &vfo);
-	if (retcode == RIG_OK) {
-		has_get->vfo = TRUE;
-		get->vfo = vfo;
-	}
-	else {
-		has_get->vfo = FALSE;
-		get->vfo = RIG_VFO_NONE;
-	}
-
-	/* check set_vfo functionality */
-	retcode = rig_set_vfo (myrig, get->vfo);
-	has_set->vfo = (retcode == RIG_OK) ? TRUE : FALSE;
-
-	/* check get_freq functionality for the primary/working
-	   frequency.
-	*/
-	retcode = rig_get_freq (myrig, RIG_VFO_CURR, &freq);
-	if (retcode == RIG_OK) {
-		has_get->freq1 = TRUE;
-		get->freq1 = freq;
-	}
-	else {
-		has_get->freq1 = FALSE;
-		get->freq1 = 0.0;
-	}
-
-	/* try to reset the current frequency but only if we
-	   have get_freq; if not don't bother with set_freq ???
-	*/
-	if (has_get->freq1) {
-		retcode = rig_set_freq (myrig, RIG_VFO_CURR, get->freq1);
-		has_set->freq1 = (retcode == RIG_OK) ? TRUE : FALSE;
-	}
-	else {
-		has_set->freq1 = FALSE;
-	}
-
-
-	/* now we try the secondary frequency, ie. not the one on RIG_VFO_CURR */
-	if (has_get->freq1) {
-		switch (get->vfo) {
-			
-			/* VFO A */
-		case RIG_VFO_A:
-			retcode = rig_get_freq (myrig, RIG_VFO_B, &freq);
-			break;
-
-			/* VFO B or C; grig is too stupid to know about 3 VFOs ...
-			   or at least I am to lazy to bother about 3 VFOs ;)
-			*/
-		case RIG_VFO_B:
-		case RIG_VFO_C:
-			vfo = RIG_VFO_A;
-			break;
-
-			/* Main VFO */
-		case RIG_VFO_MAIN:
-			vfo = RIG_VFO_SUB;
-			break;
-
-			/* Sub VFO */
-		case RIG_VFO_SUB:
-			vfo = RIG_VFO_MAIN;
-			break;
-
-			/* trouble... */
-		case RIG_VFO_CURR:
-		case RIG_VFO_NONE:
-		default:
-
-			/* send an error report */
-			rig_debug (RIG_DEBUG_ERR,
-				   "*** GRIG: %s: I can't figure out available VFOs (got %d)",
-				   __FUNCTION__, get->vfo);
-
-			vfo = RIG_VFO_NONE;
-			break;
-		}
-
-		if (vfo != RIG_VFO_NONE) {
-			retcode = rig_get_freq (myrig, vfo, &freq);
-			if (retcode == RIG_OK) {
-				has_get->freq2 = TRUE;
-				get->freq2 = freq;
-			}
-			else {
-				has_get->freq2 = FALSE;
-				get->freq2 = 0.0;
-			}
-		}
-		else {
-			has_get->freq2 = FALSE;
-			get->freq2 = 0.0;
-		}
-
-		/* try to set secondary frequency; normally we should not do it
-		   here (inside the if), but it makes no difference due to the
-		   "No Get => No Set" policy
-		*/
-		if (has_get->freq2) {
-
-			/* NB: has_get->freq2 TRUE => vfo is different from RIG_VFO_NONE */
-			retcode = rig_set_freq (myrig, vfo, get->freq2);
-			has_set->freq2 = (retcode == RIG_OK) ? TRUE : FALSE;
-		}
-		else {
-			has_set->freq2 = FALSE;
-		}
-
-	}
-	else {
-		has_get->freq2 = FALSE;
-		get->freq2 = 0.0;
-	}
-
-
-	/* try to get RIT setting */
-	retcode = rig_get_rit (myrig, RIG_VFO_CURR, &sfreq);
-	if (retcode == RIG_OK) {
-		has_get->rit = TRUE;
-		get->rit = sfreq;
-	}
-	else {
-		has_get->rit = FALSE;
-		get->rit = 0;
-	}
-
-	/* try to reset RIT */
-	retcode = rig_set_rit (myrig, RIG_VFO_CURR, get->rit);
-	has_set->rit = (retcode == RIG_OK) ? TRUE : FALSE;
-
-
-	/* try to get XIT */
-	retcode = rig_get_xit (myrig, RIG_VFO_CURR, &sfreq);
-	if (retcode == RIG_OK) {
-		has_get->xit = TRUE;
-		get->xit = sfreq;
-	}
-	else {
-		has_get->xit = FALSE;
-		get->xit = 0;
-	}
-
-	/* try to reset XIT */
-	retcode = rig_set_xit (myrig, RIG_VFO_CURR, get->xit);
-	has_set->xit = (retcode == RIG_OK) ? TRUE : FALSE;
-
-
-	/* try to get mode and passband width */
-	retcode = rig_get_mode (myrig, RIG_VFO_CURR, &mode, &pbw);
-	if (retcode == RIG_OK) {
-		has_get->mode = TRUE;
-		has_get->pbw  = TRUE;
-		get->mode     = mode;
-		get->pbw      = pbw;
-	}
-	else {
-		has_get->mode = FALSE;
-		has_get->pbw  = FALSE;
-		get->mode     = RIG_MODE_NONE;
-		get->pbw      = RIG_PASSBAND_NORMAL;
-	}
-
-	/* try to reset mode and passband width;
-	   ok to set RIG_MODE_NONE?
-	*/
-	retcode = rig_set_mode (myrig, RIG_VFO_CURR, get->mode, get->pbw);
-	if (retcode == RIG_OK) {
-		has_set->mode = TRUE;
-		has_set->pbw  = TRUE;
-	}
-	else {
-		has_set->mode = FALSE;
-		has_set->pbw  = FALSE;
-	}
+	/* check command availabilities */
+	rig_daemon_check_pwrstat (myrig, get, has_get, has_set);
+	rig_daemon_check_ptt     (myrig, get, has_get, has_set);
+	rig_daemon_check_vfo     (myrig, get, has_get, has_set);
+	rig_daemon_check_freq    (myrig, get, has_get, has_set);
+	rig_daemon_check_rit     (myrig, get, has_get, has_set);
+	rig_daemon_check_xit     (myrig, get, has_get, has_set);
+	rig_daemon_check_mode    (myrig, get, has_get, has_set);
+	rig_daemon_check_level   (myrig, get, has_get, has_set);
 
 	/* debug info about detected has-get caps */
 	rig_debug (RIG_DEBUG_TRACE,
-		   "*** GRIG: %s: GET bits: %d%d%d%d%d%d%d%d%d",
+		   "*** GRIG: %s: GET bits: %d%d%d%d%d%d%d%d%d%d%d%d%d",
 		   __FUNCTION__,
-		   has_get->power,
+		   has_get->pstat,
 		   has_get->ptt,
 		   has_get->vfo,
 		   has_get->mode,
@@ -495,13 +290,17 @@ rig_daemon_post_init ()
 		   has_get->freq1,
 		   has_get->freq2,
 		   has_get->rit,
-		   has_get->xit);
+		   has_get->xit,
+		   has_get->power,
+		   has_get->strength,
+		   has_get->swr,
+		   has_get->alc);
 
 	/* debug info about detected has-set caps */
 	rig_debug (RIG_DEBUG_TRACE,
-		   "*** GRIG: %s: SET bits: %d%d%d%d%d%d%d%d%d",
+		   "*** GRIG: %s: SET bits: %d%d%d%d%d%d%d%d%d%dXXX",
 		   __FUNCTION__,
-		   has_set->power,
+		   has_set->pstat,
 		   has_set->ptt,
 		   has_set->vfo,
 		   has_set->mode,
@@ -509,7 +308,13 @@ rig_daemon_post_init ()
 		   has_set->freq1,
 		   has_set->freq2,
 		   has_set->rit,
-		   has_set->xit);
+		   has_set->xit,
+		   has_set->power
+/* not settable
+		   has_get->strength,
+		   has_get->swr,
+		   has_get->alc*/
+		);
 
 }
 
@@ -561,7 +366,7 @@ rig_daemon_cycle     (gpointer data)
 			for (minor = 0; minor < C_MAX_CMD_PER_CYCLE; minor++) {
 
 				rig_daemon_exec_cmd (DEF_RX_CYCLE[major][minor],
-						     get, set,
+						     get, set, new,
 						     has_get, has_set);
 						     
 			}
@@ -576,7 +381,7 @@ rig_daemon_cycle     (gpointer data)
 			for (minor = 0; minor < C_MAX_CMD_PER_CYCLE; minor++) {
 
 				rig_daemon_exec_cmd (DEF_TX_CYCLE[major][minor],
-						     get, set,
+						     get, set, new,
 						     has_get, has_set);
 
 			}
@@ -605,6 +410,7 @@ rig_daemon_cycle     (gpointer data)
  *  \param cmd The command to be executed.
  *  \param get Pointer to the 'get' command buffer.
  *  \param set Pointer to the 'set' command buffer.
+ *  \param new Pointer to the 'new' command buffer.
  *  \param has_get Pointer to get capabilities record.
  *  \param has_set Pointer to set capabilities record.
  *
@@ -613,11 +419,16 @@ rig_daemon_cycle     (gpointer data)
  * it executes the corresponding hamlib API call. If the command execution is not
  * successfull, an anomaly report is sent to the rig error manager which will take
  * care of any further actions like disabling repeatedly failing commands.
+ *
+ * \note The 'get' commands use local buffers for the acquired value and do not
+ *       write directly to the shared memory. This way the contents of the shared memory
+ *       do not get corrupted if the command execution was erroneous.
  */
 static void
 rig_daemon_exec_cmd         (rig_cmd_t cmd,
 			     grig_settings_t  *get,
 			     grig_settings_t  *set,
+			     grig_cmd_avail_t *new,
 			     grig_cmd_avail_t *has_get,
 			     grig_cmd_avail_t *has_set)
 
@@ -647,7 +458,7 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 					   "*** GRIG: %s: Failed to execute RIG_CMD_GET_FREQ_1",
 					   __FUNCTION__);
 
-//				rig_error_raise_anomaly (RIG_CMD_GET_FREQ_1);
+				rig_anomaly_raise (RIG_CMD_GET_FREQ_1);
 			}
 			else {
 				get->freq1 = freq;
@@ -660,10 +471,24 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 	case RIG_CMD_SET_FREQ_1:
 
 		/* check whether command is available */
+		if (has_set->freq1 && new->freq1) {
 
-		/* try to execute command */
+			/* try to execute command */
+			retcode = rig_set_freq (myrig, RIG_VFO_CURR, set->freq1);
 
-		/* raise anomaly if execution did not succeed */
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				rig_debug (RIG_DEBUG_ERR,
+					   "*** GRIG: %s: Failed to execute RIG_CMD_SET_FREQ_1",
+					   __FUNCTION__);
+
+				rig_anomaly_raise (RIG_CMD_SET_FREQ_1);
+			}
+			else {
+				/* reset flag */
+				new->freq1 = FALSE;
+			}
+		}
 
 		break;
 
@@ -671,10 +496,65 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 	case RIG_CMD_GET_FREQ_2:
 
 		/* check whether command is available */
+		if (has_get->freq2) {
+			freq_t freq;
+			vfo_t  vfo;
 
-		/* try to execute command */
+			/* find out which is the secondary VFO */
+			switch (get->vfo) {
+			
+				/* VFO A */
+			case RIG_VFO_A:
+				vfo = RIG_VFO_B;
+				break;
 
-		/* raise anomaly if execution did not succeed */
+				/* VFO B or C; grig is too stupid to know about 3 VFOs ...
+				   or at least I am to lazy to bother about 3 VFOs ;)
+				*/
+			case RIG_VFO_B:
+			case RIG_VFO_C:
+				vfo = RIG_VFO_A;
+				break;
+
+				/* Main VFO */
+			case RIG_VFO_MAIN:
+				vfo = RIG_VFO_SUB;
+				break;
+
+				/* Sub VFO */
+			case RIG_VFO_SUB:
+				vfo = RIG_VFO_MAIN;
+				break;
+
+				/* trouble... */
+			case RIG_VFO_CURR:
+			case RIG_VFO_NONE:
+			default:
+
+				/* send an error report */
+				rig_debug (RIG_DEBUG_ERR,
+					   "*** GRIG: %s: I can't figure out available VFOs (got %d)",
+					   __FUNCTION__, get->vfo);
+
+				vfo = RIG_VFO_NONE;
+				break;
+			}
+
+			/* try to execute command */
+			retcode = rig_get_freq (myrig, vfo, &freq);
+
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				rig_debug (RIG_DEBUG_ERR,
+					   "*** GRIG: %s: Failed to execute RIG_CMD_GET_FREQ_2",
+					   __FUNCTION__);
+
+				rig_anomaly_raise (RIG_CMD_GET_FREQ_2);
+			}
+			else {
+				get->freq2 = freq;
+			}
+		}
 
 		break;
 
@@ -682,10 +562,66 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 	case RIG_CMD_SET_FREQ_2:
 
 		/* check whether command is available */
+		if (has_set->freq2 && new->freq2) {
+			vfo_t  vfo;
 
-		/* try to execute command */
+			/* find out which is the secondary VFO */
+			switch (get->vfo) {
+			
+				/* VFO A */
+			case RIG_VFO_A:
+				vfo = RIG_VFO_B;
+				break;
 
-		/* raise anomaly if execution did not succeed */
+				/* VFO B or C; grig is too stupid to know about 3 VFOs ...
+				   or at least I am to lazy to bother about 3 VFOs ;)
+				*/
+			case RIG_VFO_B:
+			case RIG_VFO_C:
+				vfo = RIG_VFO_A;
+				break;
+
+				/* Main VFO */
+			case RIG_VFO_MAIN:
+				vfo = RIG_VFO_SUB;
+				break;
+
+				/* Sub VFO */
+			case RIG_VFO_SUB:
+				vfo = RIG_VFO_MAIN;
+				break;
+
+				/* trouble... */
+			case RIG_VFO_CURR:
+			case RIG_VFO_NONE:
+			default:
+
+				/* send an error report */
+				rig_debug (RIG_DEBUG_ERR,
+					   "*** GRIG: %s: I can't figure out available VFOs (got %d)",
+					   __FUNCTION__, get->vfo);
+
+				vfo = RIG_VFO_NONE;
+				break;
+			}
+
+			/* try to execute command */
+			retcode = rig_set_freq (myrig, vfo, set->freq2);
+
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				rig_debug (RIG_DEBUG_ERR,
+					   "*** GRIG: %s: Failed to execute RIG_CMD_SET_FREQ_2",
+					   __FUNCTION__);
+
+				rig_anomaly_raise (RIG_CMD_SET_FREQ_2);
+			}
+			else {
+				/* reset flag */
+				new->freq2 = FALSE;
+			}
+
+		}
 
 		break;
 	
@@ -693,10 +629,25 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 	case RIG_CMD_GET_RIT:
 
 		/* check whether command is available */
+		if (has_get->rit) {
+			shortfreq_t rit;
 
-		/* try to execute command */
+			/* try to execute command */
+			retcode = rig_get_rit (myrig, RIG_VFO_CURR, &rit);
 
-		/* raise anomaly if execution did not succeed */
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				rig_debug (RIG_DEBUG_ERR,
+					   "*** GRIG: %s: Failed to execute RIG_CMD_GET_RIT",
+					   __FUNCTION__);
+
+				rig_anomaly_raise (RIG_CMD_GET_RIT);
+			}
+			else {
+				get->rit = rit;
+			}
+
+		}
 
 		break;
 
@@ -704,10 +655,26 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 	case RIG_CMD_SET_RIT:
 
 		/* check whether command is available */
+		if (has_set->rit && new->rit) {
 
-		/* try to execute command */
+			/* try to execute command */
+			retcode = rig_set_rit (myrig, RIG_VFO_CURR, set->rit);
 
-		/* raise anomaly if execution did not succeed */
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				rig_debug (RIG_DEBUG_ERR,
+					   "*** GRIG: %s: Failed to execute RIG_CMD_SET_RIT",
+					   __FUNCTION__);
+
+				rig_anomaly_raise (RIG_CMD_SET_RIT);
+			}
+			else {
+
+				/* reset flag */
+				new->rit = FALSE;
+			}	
+
+		}
 
 		break;
 
@@ -715,10 +682,25 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 	case RIG_CMD_GET_XIT:
 
 		/* check whether command is available */
+		if (has_get->xit) {
+			shortfreq_t xit;
 
-		/* try to execute command */
+			/* try to execute command */
+			retcode = rig_get_xit (myrig, RIG_VFO_CURR, &xit);
 
-		/* raise anomaly if execution did not succeed */
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				rig_debug (RIG_DEBUG_ERR,
+					   "*** GRIG: %s: Failed to execute RIG_CMD_GET_XIT",
+					   __FUNCTION__);
+
+				rig_anomaly_raise (RIG_CMD_GET_XIT);
+			}
+			else {
+				get->xit = xit;
+			}
+
+		}
 
 		break;
 
@@ -726,10 +708,26 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 	case RIG_CMD_SET_XIT:
 
 		/* check whether command is available */
+		if (has_set->xit && new->xit) {
 
-		/* try to execute command */
+			/* try to execute command */
+			retcode = rig_set_xit (myrig, RIG_VFO_CURR, set->xit);
 
-		/* raise anomaly if execution did not succeed */
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				rig_debug (RIG_DEBUG_ERR,
+					   "*** GRIG: %s: Failed to execute RIG_CMD_SET_XIT",
+					   __FUNCTION__);
+
+				rig_anomaly_raise (RIG_CMD_SET_XIT);
+			}
+			else {
+
+				/* reset flag */
+				new->xit = FALSE;
+			}	
+
+		}
 
 		break;
 
@@ -737,10 +735,24 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 	case RIG_CMD_GET_VFO:
 
 		/* check whether command is available */
+		if (has_get->vfo) {
+			vfo_t vfo;
 
-		/* try to execute command */
+			/* try to execute command */
+			retcode = rig_get_vfo (myrig, &vfo);
 
-		/* raise anomaly if execution did not succeed */
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				rig_debug (RIG_DEBUG_ERR,
+					   "*** GRIG: %s: Failed to execute RIG_CMD_GET_VFO",
+					   __FUNCTION__);
+
+				rig_anomaly_raise (RIG_CMD_GET_VFO);
+			}
+			else {
+				get->vfo = vfo;
+			}
+		}
 
 		break;
 
@@ -748,10 +760,25 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 	case RIG_CMD_SET_VFO:
 
 		/* check whether command is available */
+		if (has_set->vfo && new->vfo) {
 
-		/* try to execute command */
+			/* try to execute command */
+			retcode = rig_set_vfo (myrig, set->vfo);
 
-		/* raise anomaly if execution did not succeed */
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				rig_debug (RIG_DEBUG_ERR,
+					   "*** GRIG: %s: Failed to execute RIG_CMD_SET_VFO",
+					   __FUNCTION__);
+
+				rig_anomaly_raise (RIG_CMD_SET_VFO);
+			}
+			else {
+
+				/* reset flag */
+				new->vfo = FALSE;
+			}	
+		}
 
 		break;
 
@@ -759,10 +786,24 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 	case RIG_CMD_GET_PSTAT:
 
 		/* check whether command is available */
+		if (has_get->pstat) {
+			powerstat_t pstat;
 
-		/* try to execute command */
+			/* try to execute command */
+			retcode = rig_get_powerstat (myrig, &pstat);
 
-		/* raise anomaly if execution did not succeed */
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				rig_debug (RIG_DEBUG_ERR,
+					   "*** GRIG: %s: Failed to execute RIG_CMD_GET_PSTAT",
+					   __FUNCTION__);
+
+				rig_anomaly_raise (RIG_CMD_GET_PSTAT);
+			}
+			else {
+				get->pstat = pstat;
+			}
+		}
 
 		break;
 
@@ -770,10 +811,25 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 	case RIG_CMD_SET_PSTAT:
 
 		/* check whether command is available */
+		if (has_set->pstat && new->pstat) {
 
-		/* try to execute command */
+			/* try to execute command */
+			retcode = rig_set_powerstat (myrig, set->pstat);
 
-		/* raise anomaly if execution did not succeed */
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				rig_debug (RIG_DEBUG_ERR,
+					   "*** GRIG: %s: Failed to execute RIG_CMD_SET_PSTAT",
+					   __FUNCTION__);
+
+				rig_anomaly_raise (RIG_CMD_SET_PSTAT);
+			}
+			else {
+
+				/* reset flag */
+				new->pstat = FALSE;
+			}	
+		}
 
 		break;
 
@@ -781,10 +837,24 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 	case RIG_CMD_GET_PTT:
 
 		/* check whether command is available */
+		if (has_get->ptt) {
+			ptt_t ptt;
 
-		/* try to execute command */
+			/* try to execute command */
+			retcode = rig_get_ptt (myrig, RIG_VFO_CURR, &ptt);
 
-		/* raise anomaly if execution did not succeed */
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				rig_debug (RIG_DEBUG_ERR,
+					   "*** GRIG: %s: Failed to execute RIG_CMD_GET_PTT",
+					   __FUNCTION__);
+
+				rig_anomaly_raise (RIG_CMD_GET_PTT);
+			}
+			else {
+				get->ptt = ptt;
+			}
+		}
 
 		break;
 
@@ -792,10 +862,25 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 	case RIG_CMD_SET_PTT:
 
 		/* check whether command is available */
+		if (has_set->ptt && new->ptt) {
 
-		/* try to execute command */
+			/* try to execute command */
+			retcode = rig_set_ptt (myrig, RIG_VFO_CURR, set->ptt);
 
-		/* raise anomaly if execution did not succeed */
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				rig_debug (RIG_DEBUG_ERR,
+					   "*** GRIG: %s: Failed to execute RIG_CMD_SET_PTT",
+					   __FUNCTION__);
+
+				rig_anomaly_raise (RIG_CMD_SET_PTT);
+			}
+			else {
+
+				/* reset flag */
+				new->ptt = FALSE;
+			}	
+		}
 
 		break;
 
@@ -803,10 +888,26 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 	case RIG_CMD_GET_MODE:
 
 		/* check whether command is available */
+		if (has_get->mode || has_get->pbw) {
+			rmode_t   mode;
+			pbwidth_t pbw;
 
-		/* try to execute command */
+			/* try to execute command */
+			retcode = rig_get_mode (myrig, RIG_VFO_CURR, &mode, &pbw);
 
-		/* raise anomaly if execution did not succeed */
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				rig_debug (RIG_DEBUG_ERR,
+					   "*** GRIG: %s: Failed to execute RIG_CMD_GET_MODE",
+					   __FUNCTION__);
+
+				rig_anomaly_raise (RIG_CMD_GET_MODE);
+			}
+			else {
+				get->mode = mode;
+				get->pbw  = pbw;
+			}
+		}
 
 		break;
 
@@ -814,10 +915,24 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 	case RIG_CMD_SET_MODE:
 
 		/* check whether command is available */
+		if ((has_set->mode && new->mode) || (has_set->pbw  && new->pbw)) {
 
-		/* try to execute command */
+			/* try to execute command */
+			retcode = rig_set_mode (myrig, RIG_VFO_CURR, set->mode, set->pbw);
 
-		/* raise anomaly if execution did not succeed */
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				rig_debug (RIG_DEBUG_ERR,
+					   "*** GRIG: %s: Failed to execute RIG_CMD_SET_MODE",
+					   __FUNCTION__);
+
+				rig_anomaly_raise (RIG_CMD_SET_MODE);
+			}
+			else {
+				new->mode = FALSE;
+				new->pbw  = FALSE;
+			}
+		}
 
 		break;
 
@@ -825,10 +940,24 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 	case RIG_CMD_GET_STRENGTH:
 
 		/* check whether command is available */
+		if (has_get->strength) {
+			value_t val;
 
-		/* try to execute command */
+			/* try to execute command */
+			retcode = rig_get_level (myrig, RIG_VFO_CURR, RIG_LEVEL_STRENGTH, &val);
 
-		/* raise anomaly if execution did not succeed */
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				rig_debug (RIG_DEBUG_ERR,
+					   "*** GRIG: %s: Failed to execute RIG_CMD_GET_STRENGTH",
+					   __FUNCTION__);
+
+				rig_anomaly_raise (RIG_CMD_GET_STRENGTH);
+			}
+			else {
+				get->strength = val.i;
+			}
+		}
 
 		break;
 
@@ -836,10 +965,24 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 	case RIG_CMD_GET_PWR:
 
 		/* check whether command is available */
+		if (has_get->power) {
+			value_t val;
 
-		/* try to execute command */
+			/* try to execute command */
+			retcode = rig_get_level (myrig, RIG_VFO_CURR, RIG_LEVEL_RFPOWER, &val);
 
-		/* raise anomaly if execution did not succeed */
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				rig_debug (RIG_DEBUG_ERR,
+					   "*** GRIG: %s: Failed to execute RIG_CMD_GET_PWR",
+					   __FUNCTION__);
+
+				rig_anomaly_raise (RIG_CMD_GET_PWR);
+			}
+			else {
+				get->power = val.f;
+			}
+		}
 
 		break;
 

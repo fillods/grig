@@ -36,9 +36,9 @@
  *
  * This object manages the anomalies and errors that occur during communication
  * with the radio. The rig-daemon process raises a specific anomaly every time
- * the execution of a command isn't successful. This object will then record the
- * anomaly and - in case the same anomaly has occured repeatedly - disable the
- * problematic command. Therefor, this object needs access to the rig-data object.
+ * the execution of a command does not succeed. The anomaly manager will then record the
+ * anomaly and, if the same anomaly has occured repeatedly within a certain time period,
+ * disable the erroneous command. Therefore, this object needs access to the rig-data API.
  * Furthermore, in order to know about the various rig commands, this object needs
  * access to the rig-daemon data types as well.
  *
@@ -57,12 +57,13 @@
 
 /** \brief Table defining the command disable threshold.
  *
- * If an anomaly has been raised a specific number of times, the
- * corresponding command has to be disabled. This table lists
- * the allowed number of erroneous executions within 10 seconds
- * for each command
+ * If an anomaly has been raised a specific number of times
+ * within a certain period, the
+ * corresponding command is disabled. This table lists
+ * the allowed number of erroneous executions within the time
+ * specified in the ANOMALY_COUNT_PERIOD array.
  */ 
-static const anomaly_table_t CMD_DISABLE_THLD = {
+static const anomaly_count_t ANOMALY_COUNT_MAX = {
 	0,      /*  RIG_CMD_NONE          */
 	0,      /*  RIG_CMD_GET_FREQ_1    */
 	0,      /*  RIG_CMD_SET_FREQ_1    */
@@ -85,9 +86,89 @@ static const anomaly_table_t CMD_DISABLE_THLD = {
 };
 
 
-/** \brief The anomaly occurence table.
+/** \brief Anomaly count periods.
+ *
+ * This table defines the periods in seconds during which
+ * anomalies are accumulated.
  */
-static anomaly_table_t ANOMALY_TABLE;
+static const anomaly_period_t ANOMALY_COUNT_PERIOD = {
+	0.00,      /*  RIG_CMD_NONE          */
+	2.00,      /*  RIG_CMD_GET_FREQ_1    */
+	2.00,      /*  RIG_CMD_SET_FREQ_1    */
+	2.00,      /*  RIG_CMD_GET_FREQ_2    */
+	2.00,      /*  RIG_CMD_SET_FREQ_2    */
+ 	5.00,      /*  RIG_CMD_GET_RIT       */
+	5.00,      /*  RIG_CMD_SET_RIT       */
+	5.00,      /*  RIG_CMD_GET_XIT       */
+	5.00,      /*  RIG_CMD_SET_XIT       */
+	10.0,      /*  RIG_CMD_GET_VFO       */
+	10.0,      /*  RIG_CMD_SET_VFO       */
+	10.0,      /*  RIG_CMD_GET_PSTAT     */
+	10.0,      /*  RIG_CMD_SET_PSTAT     */
+	10.0,      /*  RIG_CMD_GET_PTT       */
+	10.0,      /*  RIG_CMD_SET_PTT       */
+	10.0,      /*  RIG_CMD_GET_MODE      */
+	10.0,      /*  RIG_CMD_SET_MODE      */
+	10.0,      /*  RIG_CMD_GET_STRENGTH  */
+	10.0       /*  RIG_CMD_GET_PWR       */
+};
+
+
+/** \brief The anomaly occurence table.
+ *
+ * This table holds the accumulated number of anomalies
+ * that have occured within a certain time period.
+ */
+static anomaly_count_t ANOMALY_COUNT = {
+	0,      /*  RIG_CMD_NONE          */
+	0,      /*  RIG_CMD_GET_FREQ_1    */
+	0,      /*  RIG_CMD_SET_FREQ_1    */
+	0,      /*  RIG_CMD_GET_FREQ_2    */
+	0,      /*  RIG_CMD_SET_FREQ_2    */
+ 	0,      /*  RIG_CMD_GET_RIT       */
+	0,      /*  RIG_CMD_SET_RIT       */
+	0,      /*  RIG_CMD_GET_XIT       */
+	0,      /*  RIG_CMD_SET_XIT       */
+	0,      /*  RIG_CMD_GET_VFO       */
+	0,      /*  RIG_CMD_SET_VFO       */
+	0,      /*  RIG_CMD_GET_PSTAT     */
+	0,      /*  RIG_CMD_SET_PSTAT     */
+	0,      /*  RIG_CMD_GET_PTT       */
+	0,      /*  RIG_CMD_SET_PTT       */
+	0,      /*  RIG_CMD_GET_MODE      */
+	0,      /*  RIG_CMD_SET_MODE      */
+	0,      /*  RIG_CMD_GET_STRENGTH  */
+	0       /*  RIG_CMD_GET_PWR       */
+};
+
+
+
+/** \brief First occurrence of an anomaly.
+ *
+ * This table holds the time of the first occurence of a given anomaly.
+ */
+static anomaly_time_t FIRST_ANOMALY = {
+	0,      /*  RIG_CMD_NONE          */
+	0,      /*  RIG_CMD_GET_FREQ_1    */
+	0,      /*  RIG_CMD_SET_FREQ_1    */
+	0,      /*  RIG_CMD_GET_FREQ_2    */
+	0,      /*  RIG_CMD_SET_FREQ_2    */
+ 	0,      /*  RIG_CMD_GET_RIT       */
+	0,      /*  RIG_CMD_SET_RIT       */
+	0,      /*  RIG_CMD_GET_XIT       */
+	0,      /*  RIG_CMD_SET_XIT       */
+	0,      /*  RIG_CMD_GET_VFO       */
+	0,      /*  RIG_CMD_SET_VFO       */
+	0,      /*  RIG_CMD_GET_PSTAT     */
+	0,      /*  RIG_CMD_SET_PSTAT     */
+	0,      /*  RIG_CMD_GET_PTT       */
+	0,      /*  RIG_CMD_SET_PTT       */
+	0,      /*  RIG_CMD_GET_MODE      */
+	0,      /*  RIG_CMD_SET_MODE      */
+	0,      /*  RIG_CMD_GET_STRENGTH  */
+	0       /*  RIG_CMD_GET_PWR       */
+};
+
 
 
 
@@ -95,16 +176,48 @@ static anomaly_table_t ANOMALY_TABLE;
  *  \param cmd The command which is the source of the anomaly.
  *
  * This function increments the anomaly counter of the specified
- * command. Firthermore, if the command disabling threshold is exceeded,
- * it disables the command.
+ * command. Furthermore, if the command disabling threshold is exceeded
+ * within a specific time period, it disables the command.
+ *
+ * The anomaly counter is reset if a command is disabled or if the
+ * time elapsed since the first anomaly has exceeded the given
+ * count period.
  *
  */
 void
 rig_anomaly_raise (rig_cmd_t cmd)
 {
 
-	/* test whether number of anomalies exceed the threshold */
-	if (++ANOMALY_TABLE[cmd] >= CMD_DISABLE_THLD[cmd]) {
+	/* check whether it is the first occurence */
+	if ((ANOMALY_COUNT[cmd] == 0) || (FIRST_ANOMALY[cmd] == 0)) {
+
+		/* first occurrence */
+
+		/* store the time */
+
+	}
+	else {
+
+		/* check whether the time elapsed since the
+		   first anomaly of this kind is longer than
+		   the accumulating period.
+		*/
+		if (TRUE) {
+
+			/* elapsed time is longer; reset the counter
+			   to 1 and store the new time.
+			*/
+
+		}
+
+	}
+
+	/* test whether number of anomalies exceeds the threshold */
+	if (++ANOMALY_COUNT[cmd] >= ANOMALY_COUNT_MAX[cmd]) {
+
+		/* disable the command */
+
+		/* reset the time and the counter */
 
 	}
 

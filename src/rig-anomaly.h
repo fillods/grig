@@ -33,11 +33,19 @@
 #ifndef RIG_ANOMALY_H
 #define RIG_ANOMALY_H 1
 
+
+#include <time.h>
 #include "rig-daemon.h"
 
 
+/** \brief Type used to hold system times vs. rig command. */
+typedef time_t anomaly_time_t[RIG_CMD_NUMBER];
+
+/** \brief Type used to hold periods in seconds vs. rig command. */
+typedef gfloat anomaly_period_t[RIG_CMD_NUMBER];
+
 /** \brief Type used to hold anomaly occurrences vs. rig command. */
-typedef guint8 anomaly_table_t[RIG_CMD_NUMBER];
+typedef guint8 anomaly_count_t[RIG_CMD_NUMBER];
 
 void rig_anomaly_raise (rig_cmd_t);
 
