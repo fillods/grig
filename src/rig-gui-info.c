@@ -245,7 +245,7 @@ rig_gui_info_create_offset_frame ()
 			  5, 0);
 
 	/* use UTF-8 code for plus/minus */
-	text = g_strdup_printf (_("\302\261%.2f kHz"),
+	text = g_strdup_printf ("\302\261%.2f kHz",
 				((gfloat) myrig->caps->max_rit) / 1000.0);
 	label = gtk_label_new (text);
 	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
@@ -264,7 +264,7 @@ rig_gui_info_create_offset_frame ()
 			  GTK_EXPAND | GTK_FILL,
 			  5, 0);
 
-	text = g_strdup_printf (_("\302\261%.2f kHz"),
+	text = g_strdup_printf ("\302\261%.2f kHz",
 				((gfloat) myrig->caps->max_xit) / 1000.0);
 	label = gtk_label_new (text);
 	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
@@ -283,7 +283,7 @@ rig_gui_info_create_offset_frame ()
 			  GTK_EXPAND | GTK_FILL,
 			  5, 0);
 
-	text = g_strdup_printf (_("\302\261%.2f kHz"),
+	text = g_strdup_printf ("\302\261%.2f kHz",
 				((gfloat) myrig->caps->max_ifshift) / 1000.0);
 	label = gtk_label_new (text);
 	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
