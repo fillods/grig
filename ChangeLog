@@ -72,7 +72,7 @@
 
 	* src/rig-gui-info.c:
 	Finished preamp and att info frame and reorganized main container.
-	
+
 
 2004-11-19;	Alexandru Csete <csete@users.sourceforge.net>
 

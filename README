@@ -1,2 +1,52 @@
-You are strongly encouraged to remove any pre 0.4 release of
-grig before installing grig 0.4
+1. About Grig
+
+Grig is a graphical user interface for the Ham Radio Control Libraries. It is
+intended to be simple and generic, presenting the user to the same interface
+regardless of which radio he or she uses.
+
+
+2. Installing Grig from Source
+
+Note:
+Due to the extensive number of changes in version 0.4, you are strongly
+encouraged to remove any pre 0.4 release of grig before installing this one.
+
+Assuming that you have obtained and unpacked a source distribution, you can
+install grig by typing the following (in the top level source directory):
+
+./configure
+make
+make install (as root)
+
+If you get any error messages during 'configure', you are likely to be missing
+some of the required libraries. These are:
+
+gtk+-2.0      at least version 2.4.0
+gthread-2.0   at least version 2.4.0
+hamlib        at least version 1.2.0
+
+Please note, that you also need the so-called development packages which
+contain the necessary header files.
+
+If you are already familiar with this kind of installation process, you may
+want to fine tune the build and install. You can do this by specifying various
+command line argument to the 'configure' script. See 'configure --help' for
+details.
+
+If you obtained the grig sources from the CVS repository, you have to run the
+'autogen.sh' script instead of the 'configure' sript. Any command line argument
+you would like to pass to 'configure' can be passed to 'autogen.sh' as well.
+
+Once you have installed grig you can get a brief overview of its usage by
+reading the manual page. A brief overview of the comamnd line options is also
+printed when typing 'grig --help'
+
+
+3. Getting Support
+
+If you encounter any problems using grig you are welcome to ask for support on
+the mailing list or user forums. You can find them on the Groundstation project
+page at SourceForge:
+
+http://sourceforge.net/projects/groundstation
+
