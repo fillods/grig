@@ -29,9 +29,17 @@
 	  Boston, MA  02111-1307
 	  USA
 */
+/** \file rig-gui-smeter.h
+ *  \ingroup smeter
+ *  \brief Signal strength meter widget (interface).
+ *
+ */
 #ifndef RIG_GUI_SMETER_H
 #define RIG_GUI_SMETER_H 1
 
+
+
+/* These constants are kept public to allow their usage in e.g. adjustment ranges */
 
 /** \brief Minimum delay in msec between s-meter updates (50 fps) */
 #define RIG_GUI_SMETER_MIN_TVAL 20
@@ -42,11 +50,73 @@
 /** \brief Maximum delay in msec between s-meter updates (5 fps). */
 #define RIG_GUI_SMETER_MAX_TVAL 500
 
-/* FIXME: Add RIG_GUI_SMETER_FALLOFF_XXX values */
+
+/** \brief Minimum falloff speed in deg/sec */
+#define RIG_GUI_SMETER_MIN_FALLOFF 100.0
+
+/** \brief Default falloff speed in deg/sec */
+#define RIG_GUI_SMETER_DEF_FALLOFF 400.0
+
+/** \brief Maximum falloff speed in deg/sec */
+#define RIG_GUI_SMETER_MAX_FALLOFF 700.0
+
+
+/** \brief Scale setting for s-meter.
+ *
+ * The s-meter has 3 scales: The upper scale which is used to show the
+ * received signal strength and two lower scales which can be used to
+ * show transmitter parameters (power, alc, etc.). One of the lower
+ * scales has range 0..5 while the other has range 0..10. This enumeration
+ * is used to select one of these two ranges.
+ */
+typedef enum {
+	SMETER_SCALE_5 = 0,     /*!< Use scale 0..5 */
+	SMETER_SCALE_10,        /*!< Use scale 0..10 */
+	SMETER_SCALE_50,        /*!< Use scale 0..10 */
+	SMETER_SCALE_100,       /*!< Use scale 0..10 */
+	SMETER_SCALE_500,       /*!< Use scale 0..10 */
+	SMETER_SCALE_LAST       /*!< Dummy...               */
+} smeter_scale_t;
+
+
+
+/** \brief TX mode setting.
+ *
+ * These valuesare used to select the meter isplay mode when the rig is
+ * in TX mode.
+ */
+typedef enum {
+	SMETER_TX_MODE_NONE = 0,       /*!< No display in TX mode. */
+	SMETER_TX_MODE_POWER,          /*!< Show TX power.         */
+	SMETER_TX_MODE_SWR,            /*!< Show SWR.              */
+	SMETER_TX_MODE_ALC,            /*!< Show ALC level.        */
+	SMETER_TX_MODE_COMP,           /*!< Show compressor level. */
+	SMETER_TX_MODE_IC,             /*!< Show IC.               */
+	SMETER_TX_MODE_LAST            /*!< Dummy...               */
+} smeter_tx_mode_t;
+
+
+/** \brief Data type for signal strength meter.
+ *
+ * This structure is used to store the data for the signal strength
+ * meter. The signal strength meter is a GnomeCanvas having a background
+ * pixmap and a needle. The data structure also hols some numerical values
+ * needed to calculate the dynamic behaviour of the needle.
+ */
+typedef struct {
+	GtkWidget              *canvas;      /*!< The GnomeCanvas widget. */
+	GnomeCanvasItem        *pixmap;      /*!< The background pixmap.  */
+	GnomeCanvasItem        *needle;      /*!< The needle widget.      */
+	gfloat                  value;       /*!< Current value (angle).  */
+	gfloat                  lastvalue;   /*!< Previous value (angle). */
+	guint                   tval;        /*!< Current update delay.   */
+	gfloat                  falloff;     /*!< Current falloff delay.  */
+	smeter_scale_t          scale;       /*!< Current scale.          */
+	smeter_tx_mode_t        txmode;      /*!< Display mode in TX.     */
+} smeter_t;
 
 
 GtkWidget *rig_gui_smeter_create (void);
-
 
 #endif
 

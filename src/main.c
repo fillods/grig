@@ -573,6 +573,8 @@ grig_app_destroy    (GtkWidget *widget,
 	rig_daemon_stop ();
 //	rot_daemon_stop ();
 
+	/* GUI timers are stopped automatically */
+
 	/* stop timeouts */
 
 	/* exit Gtk+ */
