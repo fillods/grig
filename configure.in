@@ -63,14 +63,13 @@ packagesrcdir=`cd $srcdir && pwd`
 AC_DEFINE_UNQUOTED(PACKAGE_SOURCE_DIR, "${packagesrcdir}")
 
 dnl First check through pkg-config, then fall back to standard way for old versions
-PKG_CHECK_MODULES(HAMLIB, hamlib, [
+hamlib_modules="hamlib >= 1.2.0"
+PKG_CHECK_MODULES(HAMLIB, [$hamlib_modules], [
   CFLAGS="$CFLAGS $HAMLIB_CFLAGS";
   LIBS="$LIBS $HAMLIB_LIBS";
   AC_DEFINE(WANT_HAMLIB, 1)
 ], [
-  AC_CHECK_LIB(hamlib,main,,AC_MSG_ERROR([Hamradio control libraries not found...]))
-  AC_CHECK_HEADERS(hamlib/rig.h,,AC_MSG_ERROR([Hamlib headers not found...]))
-  AC_DEFINE(WANT_HAMLIB, 1)
+  AC_MSG_ERROR([Hamradio control libraries not found...])
 ])
 
 
@@ -103,7 +102,7 @@ GTK_V=`pkg-config --modversion gtk+-2.0`
 
 
 
-AC_OUTPUT([
+AC_OUTPUT([ po/Makefile.in m4/Makefile 
 Makefile
 doc/Makefile
 doc/man/grig.1
