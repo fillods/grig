@@ -83,7 +83,7 @@ static int vfo_list;
  *  \return Bit field of available VFOs.
  *
  * This function returns the available VFOs in a bit field
- * Although the details of the bitfield can be deduced from the hmlib api
+ * Although the details of the bitfield can be deduced from the hamlib api
  * documentation, grig is only interested in the symbolic references like
  * RIG_VFO_A, RIG_VFO_B and such.
  */
