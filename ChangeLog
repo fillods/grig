@@ -1,3 +1,9 @@
+2004-11-13;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/rig-gui-info.c:
+	Added interface info frame.
+
+
 2004-11-12;	Alexandru Csete <csete@users.sourceforge.net>
 
 	* src/rig-gui-info.c:
