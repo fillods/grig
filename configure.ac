@@ -2,7 +2,7 @@ AC_INIT(src/main.c)
 
 AM_CONFIG_HEADER(config.h)
 
-AM_INIT_AUTOMAKE(grig, 0.4.1)
+AM_INIT_AUTOMAKE(grig, 0.4.2cvs)
 
 AM_MAINTAINER_MODE
 AC_PROG_INTLTOOL([0.21])
@@ -35,11 +35,15 @@ AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,
                    "definition of GETTEXT_PACKAGE")
 
 dnl Set PACKAGE_LOCALE_DIR
-dnl if test "x${prefix}" = "xNONE"; then
-dnl  AC_DEFINE_UNQUOTED(PACKAGE_LOCALE_DIR, "${ac_default_prefix}/share/locale")
-dnl else
-dnl   AC_DEFINE_UNQUOTED(PACKAGE_LOCALE_DIR, "${prefix}/share/locale")
-dnl fi
+if test "x${prefix}" = "xNONE"; then
+  AC_DEFINE_UNQUOTED(PACKAGE_LOCALE_DIR,
+                     "${ac_default_prefix}/share/locale",
+                     "Locale directory")
+else
+  AC_DEFINE_UNQUOTED(PACKAGE_LOCALE_DIR,
+                     "${prefix}/share/locale",
+                     "Locale directory")
+fi
 
 
 dnl Set PACKAGE_DATA_DIR and PACKAGE_PIXMAPS_DIR
