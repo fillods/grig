@@ -32,13 +32,17 @@
 
 /** \file rig-daemon.c
  *  \ingroup rigd
- *  \brief Radio control daemon.
+ *  \brief Radio control interface to hamlib.
  *
- * This object manages the connection to the hamradio control libraries.
- * After initialization of the radio it start a cyclic thread which will
+ * This object is responsible for interfacing the Hamradio Control Libraries (hamlib).
+ *
+ * After initialization of the radio it starts a cyclic thread which will
  * execute some pre-defined commands. Because some manufacturers discourage
  * agressive polling while in TX mode, the daemon will only acquire very
  * few things while in this mode.
+ *
+ * More about cycles and periods...
+ *
  */
 
 #ifdef HAVE_CONFIG_H
@@ -53,7 +57,7 @@
 
 
 
-RIG *myrig = NULL;  /*!< The rig structure. */
+RIG *myrig = NULL;  /*!< The rig structure. We keep this public so GUI can access the info fields. */
 
 extern GConfClient *confclient;  /*!< Shared GConfClient. */
 
@@ -92,10 +96,17 @@ static const rig_cmd_t DEF_TX_CYCLE[C_MAX_CYCLES][C_MAX_CMD_PER_CYCLE] = {
 };
 
 
+static gboolean stopdaemon = FALSE;   /*!< Used to signal the daemon thread that it should stop */
+
 
 /* private function prototypes */
-static void rig_daemon_post_init (void);
-
+static void     rig_daemon_post_init (void);
+static gpointer rig_daemon_cycle     (gpointer);
+static void     rig_daemon_exec_cmd  (rig_cmd_t,
+				      grig_settings_t  *,
+				      grig_settings_t  *,
+				      grig_cmd_avail_t *,
+				      grig_cmd_avail_t *);
 
 
 
@@ -159,7 +170,7 @@ rig_daemon_start (int rignum)
 	rig_daemon_post_init ();
 
 	/* start daemon */
-
+	g_thread_create (rig_daemon_cycle, NULL, FALSE, NULL);
 
 	return 0;
 }
@@ -175,10 +186,10 @@ void
 rig_daemon_stop  ()
 {
 	/* send stop signal to daemon process */
+	stopdaemon = TRUE;
 
-
-	/* wait 100 msec */
-
+	/* wait */
+	usleep (C_RIG_DAEMON_STOP_TIMEOUT);
 
 	/* close radio device */
 	rig_close (myrig);
@@ -423,4 +434,189 @@ rig_daemon_post_init ()
 		has_set->mode = FALSE;
 		has_set->pbw  = FALSE;
 	}
+}
+
+
+
+/** \brief Radio control daemon main cycle.
+ *  \param data Unused.
+ *  \return Always NULL.
+ *
+ * This function implements the main cycle of the radio control daemon. The executed
+ * commands are defined in the DEF_RX_CYCLE and DEF_TX_CYCLE constant arrays.
+ */
+static gpointer
+rig_daemon_cycle     (gpointer data)
+{
+	grig_settings_t  *get;             /* pointer to shared data 'get' */
+	grig_settings_t  *set;             /* pointer to shared data 'set' */
+	grig_cmd_avail_t *new;             /* pointer to shared data 'new' */
+	grig_cmd_avail_t *has_get;         /* pointer to shared data 'has_get' */
+	grig_cmd_avail_t *has_set;         /* pointer to shared data 'has_set' */
+
+	guint major, minor;                /* major and minor cycle */
+
+
+	/* get pointers to shared data */
+	get     = rig_data_get_get_addr ();
+	set     = rig_data_get_set_addr ();
+	new     = rig_data_get_new_addr ();
+	has_get = rig_data_get_has_get_addr ();
+	has_set = rig_data_get_has_set_addr ();
+
+	/* initialize major cycle */
+	major = 0;
+
+	/* loop forever until reception of STOP signal */
+	while (stopdaemon == FALSE) {
+
+		/* check whether we are in RX or TX mode;
+		   note that the major cycle is not influenced
+		   by any change in RX/TX state
+		*/
+		if (get->ptt == RIG_PTT_OFF) {
+			/* Execute receiver cycle */
+
+			/* loop through the current cycle in the command table */
+			for (minor = 0; minor < C_MAX_CMD_PER_CYCLE; minor++) {
+
+				rig_daemon_exec_cmd (DEF_RX_CYCLE[major][minor],
+						     get, set,
+						     has_get, has_set);
+						     
+			}
+
+			usleep (1000 * C_RX_CYCLE_DELAY);
+
+		}
+		else {
+			/* Execute transmitter cycle */
+
+			/* loop through the current cycle in the commad table. */
+			for (minor = 0; minor < C_MAX_CMD_PER_CYCLE; minor++) {
+
+				rig_daemon_exec_cmd (DEF_TX_CYCLE[major][minor],
+						     get, set,
+						     has_get, has_set);
+
+			}
+
+			usleep (1000 * C_TX_CYCLE_DELAY);
+
+		}
+
+		/* increment major cycle counter;
+		   reset to zero if it reaches the maximum count
+		*/
+		if (++major == C_MAX_CYCLES)
+			major = 0;
+
+	}
+
+	return NULL;
+}
+
+
+
+/** \brief Execute a specific command.
+ *  \param cmd The command to be executed.
+ *  \param get Pointer to the 'get' command buffer.
+ *  \param set Pointer to the 'set' command buffer.
+ *  \param has_get Pointer to get capabilities record.
+ *  \param has_set Pointer to set capabilities record.
+ *
+ * This function is responsible for the execution of the specified rig command.
+ * First, it checks whether the command is supported by the current radio, if yes,
+ * it executes the corresponding hamlib API call. If the command execution is not
+ * successfull, an anomaly report is sent to the rig error manager.
+ */
+static void
+rig_daemon_exec_cmd         (rig_cmd_t cmd,
+			     grig_settings_t  *get,
+			     grig_settings_t  *set,
+			     grig_cmd_avail_t *has_get,
+			     grig_cmd_avail_t *has_set)
+
+{
+
+	switch (cmd) {
+
+		/* get primary frequency */
+	case RIG_CMD_GET_FREQ_1:
+		break;
+
+		/* set primary frequency */
+	case RIG_CMD_SET_FREQ_1:
+		break;
+
+		/* get secondary frequency */
+	case RIG_CMD_GET_FREQ_2:
+		break;
+
+		/* set secondary frequency */
+	case RIG_CMD_SET_FREQ_2:
+		break;
+	
+		/* get RIT offset */
+	case RIG_CMD_GET_RIT:
+		break;
+
+		/* set RIT offset */
+	case RIG_CMD_SET_RIT:
+		break;
+
+		/* get XIT offset */
+	case RIG_CMD_GET_XIT:
+		break;
+
+		/* set XIT offset */
+	case RIG_CMD_SET_XIT:
+		break;
+
+		/* get current VFO */
+	case RIG_CMD_GET_VFO:
+		break;
+
+		/* set current VFO */
+	case RIG_CMD_SET_VFO:
+		break;
+
+		/* get power status */
+	case RIG_CMD_GET_PSTAT:
+		break;
+
+		/* set power status */
+	case RIG_CMD_SET_PSTAT:
+		break;
+
+		/* get PTT status */
+	case RIG_CMD_GET_PTT:
+		break;
+
+		/* set PTT status */
+	case RIG_CMD_SET_PTT:
+		break;
+
+		/* get current mode and passband width */
+	case RIG_CMD_GET_MODE:
+		break;
+
+		/* set current mode and passband width */
+	case RIG_CMD_SET_MODE:
+		break;
+
+		/* get signal strength, S-meter */
+	case RIG_CMD_GET_STRENGTH:
+		break;
+
+		/* get transmitter power */
+	case RIG_CMD_GET_PWR:
+		break;
+
+	default:
+		break;
+
+	}
+
+
 }

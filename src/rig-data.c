@@ -63,6 +63,7 @@ grig_cmd_avail_t has_get;  /*!< Flags to indicate reading capabilities. */
 
 
 
+
 /** \brief Set power status.
  *  \param pwr The new power status.
  *

@@ -36,12 +36,14 @@
 #define GRIG_CONFIG_RIG_DIR "test"
 
 
-#define C_MAX_CMD_PER_CYCLE 5    /*!< Max number of commands executed in one cycle */
-#define C_MAX_CYCLES        6    /*!< Number of cycles */
+#define C_MAX_CMD_PER_CYCLE   5    /*!< Max number of commands executed in one cycle */
+#define C_MAX_CYCLES          6    /*!< Number of cycles */
 
-#define C_RX_CYCLE_DELAY    30   /*!< Delay between two RX cycles in milliseconds */
-#define C_TX_CYCLE_DELAY    300  /*!< Delay between two TX cycles in milliseconds */
+#define C_RX_CYCLE_DELAY   30   /*!< Delay between two RX cycles in milliseconds */
+#define C_TX_CYCLE_DELAY   300  /*!< Delay between two TX cycles in milliseconds */
 
+
+#define C_RIG_DAEMON_STOP_TIMEOUT 500000  /*!< Timeout to let the daemon process stop */
 
 
 /** \brief List of available commands.
@@ -66,8 +68,8 @@ typedef enum {
 	RIG_CMD_SET_PSTAT,     /*!< Command to set new power status (ON/OFF/STDBY). */
 	RIG_CMD_GET_PTT,       /*!< Command to get the current PTT status. */
 	RIG_CMD_SET_PTT,       /*!< Command to set the current PTT status. */
-	RIG_CMD_GET_MODE,      /*!< Command to get the current mode and pass band width. */
-	RIG_CMD_SET_MODE,      /*!< Command to set the new mode and/or pass band width. */
+	RIG_CMD_GET_MODE,      /*!< Command to get the current mode and passband width. */
+	RIG_CMD_SET_MODE,      /*!< Command to set the new mode and/or passband width. */
 
 	RIG_CMD_GET_STRENGTH,  /*!< Command to get signal strength. */
 	RIG_CMD_GET_PWR,       /*!< ... */
