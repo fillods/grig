@@ -45,6 +45,9 @@
 #include <gtk/gtk.h>
 #include <glib/gi18n.h>
 #include <hamlib/rig.h>
+#ifdef HAVE_CONFIG_H
+#  include <config.h>
+#endif
 #ifdef HAVE_GETOPT_H
 #  include <getopt.h>
 #endif
@@ -66,15 +69,16 @@ GtkWidget    *grigapp;
 static gint     rignum    = 0;       /*!< Flag indicating which radio to use.*/
 static gchar   *rigfile   = NULL;    /*!< The port where the rig is atached. */
 static gchar   *civaddr   = NULL;    /*!< CI-V address for ICOM rig. */
+static gchar   *rigconf   = NULL;    /*!< Configuration parameter. */
 static gint     rigspeed  = 0;       /*!< Optional serial speed. */
 static gboolean listrigs  = FALSE;   /*!< List supported radios and exit. */ 
-       gint     debug     = RIG_DEBUG_NONE; /*!< Hamlib debug level. */
+gint     debug     = RIG_DEBUG_NONE; /*!< Hamlib debug level. */
 static gboolean version   = FALSE;   /*!< Show version and exit. */
 static gboolean help      = FALSE;   /*!< Show help and exit. */
 
 
 /** \brief Short options. */
-#define SHORT_OPTIONS "m:r:s:c:d:lhv"  /* group those which take no arg */
+#define SHORT_OPTIONS "m:r:s:c:C:d:lhv"  /* group those which take no arg */
 
 /** \brief Table of command line options. */
 static struct option long_options[] =
@@ -83,6 +87,7 @@ static struct option long_options[] =
 	{"rig-file",     1, 0, 'r'},
 	{"speed",        1, 0, 's'},
 	{"civaddr",      1, 0, 'c'},
+	{"set-conf",     1, 0, 'C'},
 	{"debug",        1, 0, 'd'},
 	{"list",         0, 0, 'l'},
 	{"help",         0, 0, 'h'},
@@ -126,7 +131,7 @@ static void        grig_sig_handler    (int sig);
 int
 main (int argc, char *argv[])
 {
-
+	gchar *fname;
 
 	/* Initialize NLS support */
 #ifdef ENABLE_NLS
@@ -139,6 +144,25 @@ main (int argc, char *argv[])
 	gtk_init (&argc, &argv);
 /* 	setlocale (LCNUMERIC, "C"); */
 
+	
+	/* check whether installation is complete
+	   by looking for some pixmps. This way we
+	   can avoid surprises later on, when exit
+	   is not an option anymore.
+	*/
+	fname = g_strconcat (PACKAGE_PIXMAPS_DIR, G_DIR_SEPARATOR_S, "smeter.png", NULL);
+	if (!g_file_test (fname, G_FILE_TEST_EXISTS)) {
+
+		g_print ("\n\n");
+		g_print (_("Grig can not find some necessary data files.\n"));
+		g_print (_("This usually means that your installation is incomplete.\n"));
+		g_print (_("Sorry... but I can not continue..."));
+		g_print ("\n\n");
+
+		return 1;
+	}
+
+	g_free (fname);
 
 	/* initialize threads */
 	if (!g_thread_supported ())
@@ -203,6 +227,16 @@ main (int argc, char *argv[])
 			}
 			break;
 
+			/* set configuration parameter */
+		case 'C':
+			if (!optarg) {
+				help = TRUE;
+			}
+			else {
+				rigconf = optarg;
+			}
+			break;
+
 			/* list supported radios */
 		case 'l':
 			listrigs = TRUE;
@@ -261,7 +295,7 @@ main (int argc, char *argv[])
 	rig_set_debug (RIG_DEBUG_TRACE);
 
 	/* launch rig daemon */
-	if (rig_daemon_start (rignum, rigfile, rigspeed, civaddr)) {
+	if (rig_daemon_start (rignum, rigfile, rigspeed, civaddr, rigconf)) {
 		return 1;
 	}
 
@@ -319,8 +353,7 @@ grig_app_create       (gint rignum)
 	title = g_strdup_printf (_("GRIG: %s %s"), brand, model);
 
 	/* window icon file */
-	icon = g_strconcat (PACKAGE_DATA_DIR, G_DIR_SEPARATOR_S, "pixmaps",
-			    G_DIR_SEPARATOR_S, "ic910.png", NULL);
+	icon = g_strconcat (PACKAGE_PIXMAPS_DIR, G_DIR_SEPARATOR_S, "ic910.png", NULL);
 
 	/* create application */
 	app = gtk_window_new (GTK_WINDOW_TOPLEVEL);
@@ -429,21 +462,23 @@ grig_show_help      ()
 {
 
 	g_print (_("Usage: grig [OPTION]...\n\n"));
-	g_print (_("  -m, --model=ID           "\
+	g_print (_("  -m, --model=ID              "\
 		   "select radio model number; see --list\n"));
-	g_print (_("  -r, --rig-file=DEVICE    "\
+	g_print (_("  -r, --rig-file=DEVICE       "\
 		   "set device of the radio, eg. /dev/ttyS0\n"));
-	g_print (_("  -s, --speed=BAUD         "\
+	g_print (_("  -s, --speed=BAUD            "\
 		   "set transfer rate (serial port only)\n"));
-	g_print (_("  -c, --civaddr=ID         "\
+	g_print (_("  -c, --civaddr=ID            "\
 		   "set CI-V address (decimal, ICOM only)\n"));
-	g_print (_("  -d, --debug=LEVEL        "\
+	g_print (_("  -C, --set-conf=param=val    "\
+		   "set config parameter (same as in rigctl)\n"));
+	g_print (_("  -d, --debug=LEVEL           "\
 		   "set hamlib debug level (0..5)\n"));
-	g_print (_("  -l, --list               "\
+	g_print (_("  -l, --list                  "\
 		   "list supported radios and exit\n"));
-	g_print (_("  -h, --help               "\
+	g_print (_("  -h, --help                  "\
 		   "show this help message and exit\n"));
-	g_print (_("  -v, --version            "\
+	g_print (_("  -v, --version               "\
 		   "show version information and exit\n"));
 	g_print ("\n");
 	g_print (_("Example:"));
@@ -471,6 +506,15 @@ grig_show_help      ()
 		   "used by the backend and even if you specify "\
 		   "a value, it can be "\
 		   "overridden by the backend."));
+	g_print ("\n\n");
+	g_print (_("Debug levels:"));
+	g_print ("\n\n");
+	g_print (_("   0    No debug, keep quiet.\n"));
+	g_print (_("   1    Serious bug.\n"));
+	g_print (_("   2    Error case (e.g. protocol, memory allocation).\n"));
+	g_print (_("   3    Warnings.\n"));
+	g_print (_("   4    Verbose information.\n"));
+	g_print (_("   5    Trace.\n"));
 	g_print ("\n\n");
 }
 
