@@ -1,3 +1,17 @@
+2004-11014;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/rig-gui-info.c, src/grig-about.c, src/grig-menubar.c,
+	* src/main.c, src/rig-data.c, src/rig-gui-buttons.c, src/rig-gui-ctrl2.c,
+	* src/rig-gui-lcd.c, src/rig-gui-levels.c, src/rig-gui-smeter.c:
+	Replaced support.h with glib/gi18n.h (bug #1042301).
+
+	* src/support.h:
+	Removed file since we use glib/gi18n.h instead.
+
+	* Makefile.am:
+	Removed support.h from list.
+
+
 2004-11-13;	Alexandru Csete <csete@users.sourceforge.net>
 
 	* src/rig-gui-info.c:
