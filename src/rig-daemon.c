@@ -29,26 +29,116 @@
 	  Boston, MA  02111-1307
 	  USA
 */
+
+/** \file rig-daemon.c
+ *  \ingroup rigd
+ *  \brief Radio control daemon.
+ *
+ * This object manages the connection to the hamradio control libraries.
+ */
+
 #ifdef HAVE_CONFIG_H
 #  include <config.h>
 #endif
-
+#include <gnome.h>
+#include <gconf/gconf.h>
+#include <gconf/gconf-client.h>
+#include <hamlib/rig.h>
 #include "rig-daemon.h"
 
 
 
-void
+
+RIG *myrig = NULL;  /*!< The rig structure. */
+
+
+extern GConfClient *confclient;  /*!< Shared GConfClient. */
+
+
+
+/** \brief Start radio control daemon.
+ *  \param rignum The index of the radio.
+ *  \return 0 if the daemon has been initialized correctly.
+ *
+ * This function initializes the radio and starts the control daemon. The rignum
+ * parameter is the rig number in the GConf configuration.
+ */
+int
 rig_daemon_start (int rignum)
 {
+	gchar *buff;
+	guint  rigid;
+	gint   speed;
+	gchar *rigport;
+	gint   retcode;
 
+
+	/* check if rig is already initialized */
+	if (myrig != NULL) {
+		return;
+	}
+
+
+	/* get configuration */
+	buff = g_strdup_printf ("%s/%i/ID", GRIG_CONFIG_RIG_DIR, rignum);
+	rigid = gconf_client_get_int (confclient, buff, NULL);
+	g_free (buff);
+
+	buff = g_strdup_printf ("%s/%i/port", GRIG_CONFIG_RIG_DIR, rignum);
+	rigport = gconf_client_get_string (confclient, buff, NULL);
+	g_free (buff);
+	
+	buff = g_strdup_printf ("%s/%i/speed", GRIG_CONFIG_RIG_DIR, rignum);
+	speed = gconf_client_get_int (confclient, buff, NULL);
+	g_free (buff);
+	
+
+	/* initilize rig */
+	myrig = rig_init (rigid);
+	if (myrig == NULL) {
+		return 1;
+	}
+
+	/* configure and open device */
+	strncpy (myrig->state.rigport.pathname, rigport, FILPATHLEN);
+	g_free (rigport);
+	if (speed) {
+		myrig->state.rigport.parm.serial.rate = speed;
+	}
+	retcode = rig_open (myrig);
+	if (retcode != RIG_OK) {
+		rig_cleanup (myrig);
+		return 1;
+	}
+
+
+	/* everything is all rigth; initialized shared data */
+
+
+	/* get current settings  */
+
+	/* start daemon */
+
+	return 0;
 }
 
 
 
+/** \brief Stop the radio control daemon.
+ *
+ * This function stops the radio control daemon and frees the resources used
+ * by the control process and backends.
+ */
 void
 rig_daemon_stop  ()
 {
+	/* close radio device */
+	rig_close (myrig);
 
+	/* clean up hamlib */
+	rig_cleanup (myrig);
+
+	myrig = NULL;
 }
 
 

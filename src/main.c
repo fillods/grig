@@ -33,8 +33,13 @@
 #  include <config.h>
 #endif
 #include <gnome.h>
+#include <gconf/gconf.h>
+#include <gconf/gconf-client.h>
 #include "grig-druid.h"
 #include "rig-data.h"
+
+
+GConfClient *confclient;
 
 
 gchar *dummy = N_("Hello");
@@ -94,6 +99,18 @@ main (int argc, char *argv[])
 				      GNOME_PARAM_APP_DATADIR, PACKAGE_DATA_DIR,
 				      NULL);
 
+	/* initialize GConf if needed */
+	if (!gconf_is_initialized ())
+		gconf_init (argc, argv, NULL);
+
+	/* get default GConf client */
+	confclient = gconf_client_get_default ();
+	if (!confclient) {
+		g_print(_("\nERROR: Could not get GConf client.\n"));
+		return 1;
+	}
+
+
 	if (listrigs || listrots) {
 		
 		/* list rig and/or rotators */
@@ -144,6 +161,12 @@ main (int argc, char *argv[])
 //	grig_exit_register ();
 
 	gtk_main ();
+
+	/* To clean up:
+	   GUI
+	   daemon
+	   gconf
+	*/
 
 
 	return 0;

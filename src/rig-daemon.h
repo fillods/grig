@@ -62,7 +62,7 @@ typedef enum {
 } rig_cmd_t;
 
 
-void rig_daemon_start (int);
+int  rig_daemon_start (int);
 void rig_daemon_stop  (void);
 
 

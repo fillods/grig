@@ -55,68 +55,10 @@
 #include "rig-data.h"
 
 
-grig_settings_t  *set = NULL;
-grig_settings_t  *get = NULL;
-grig_cmd_avail_t *new = NULL;
+grig_settings_t  set;
+grig_settings_t  get;
+grig_cmd_avail_t new;
 
-
-/** \brief Initialized shared data.
- *
- * This function allocates memory to the shared data structures
- * and initializes them to zeros. 
- */
-void
-rig_data_init ()
-{
-	/* initialize target settings */
-	if (set != NULL) {
-		g_free (set);
-	}
-	set = g_new0 (grig_settings_t, 1);
-
-	/* initialize acquired settings */
-	if (get != NULL) {
-		g_free (get);
-	}
-	get = g_new0 (grig_settings_t, 1);
-
-	/* initialize target availability record */
-	if (new != NULL) {
-		g_free (new);
-	}
-	new = g_new0 (grig_cmd_avail_t, 1);
-}
-
-
-/** \brief Clean up shared data.
- *
- * This function deallocates the memory used by the shared rig data.
- */
-void
-rig_data_free ()
-{
-	g_free (set);
-	set = NULL;
-
-	g_free (get);
-	get = NULL;
-
-	g_free (new);
-	new = NULL;
-}
-
-
-/** \brief Check whether shared data has been initialized.
- *  \return 1 if all the data is initialized 0 otherwise.
- *
- * This function checks whether the shared data structures have been initialized
- * or not.
- */
-int
-rig_data_initialized ()
-{
-	return ((set != NULL) && (get != NULL) && (new != NULL));
-}
 
 
 
@@ -128,8 +70,8 @@ rig_data_initialized ()
 void 
 rig_data_set_power   (powerstat_t pwr)
 {
-	set->power = pwr;
-	new->power = 1;
+	set.power = pwr;
+	new.power = 1;
 }
 
 
@@ -142,8 +84,8 @@ rig_data_set_power   (powerstat_t pwr)
 void
 rig_data_set_ptt     (ptt_t ptt)
 {
-	set->ptt = ptt;
-	new->ptt = 1;
+	set.ptt = ptt;
+	new.ptt = 1;
 }
 
 
@@ -155,8 +97,8 @@ rig_data_set_ptt     (ptt_t ptt)
 void
 rig_data_set_vfo     (vfo_t vfo)
 {
-	set->vfo = vfo;
-	new->vfo = 1;
+	set.vfo = vfo;
+	new.vfo = 1;
 }
 
 
@@ -172,8 +114,8 @@ rig_data_set_vfo     (vfo_t vfo)
 void
 rig_data_set_mode    (rmode_t mode)
 {
-	set->mode = mode;
-	new->mode = 1;
+	set.mode = mode;
+	new.mode = 1;
 }
 
 
@@ -189,8 +131,8 @@ rig_data_set_mode    (rmode_t mode)
 void
 rig_data_set_pbwidth (pbwidth_t pbw)
 {
-	set->pbw = pbw;
-	new->pbw = 1;
+	set.pbw = pbw;
+	new.pbw = 1;
 }
 
 
@@ -207,13 +149,13 @@ rig_data_set_freq    (int num, freq_t freq)
 	switch (num) {
 
 		/* primary frequency */
-	case 1: set->freq1 = freq;
-		new->freq1 = 1;
+	case 1: set.freq1 = freq;
+		new.freq1 = 1;
 		break;
 
 		/* secondary frequency */
-	case 2: set->freq2 = freq;
-		new->freq2 = 1;
+	case 2: set.freq2 = freq;
+		new.freq2 = 1;
 		break;
 
 		/* this is a bug */
@@ -232,8 +174,8 @@ rig_data_set_freq    (int num, freq_t freq)
 void
 rig_data_set_rit     (shortfreq_t rit)
 {
-	set->rit = rit;
-	new->rit = 1;
+	set.rit = rit;
+	new.rit = 1;
 }
 
 
@@ -245,8 +187,8 @@ rig_data_set_rit     (shortfreq_t rit)
 void
 rig_data_set_xit     (shortfreq_t xit)
 {
-	set->xit = xit;
-	new->xit = 1;
+	set.xit = xit;
+	new.xit = 1;
 }
 
 
@@ -258,7 +200,7 @@ rig_data_set_xit     (shortfreq_t xit)
 powerstat_t
 rig_data_get_power   ()
 {
-	return get->power;
+	return get.power;
 }
 
 
@@ -270,7 +212,7 @@ rig_data_get_power   ()
 ptt_t
 rig_data_get_ptt     ()
 {
-	return get->ptt;
+	return get.ptt;
 }
 
 
@@ -282,7 +224,7 @@ rig_data_get_ptt     ()
 vfo_t
 rig_data_get_vfo     ()
 {
-	return get->vfo;
+	return get.vfo;
 }
 
 
@@ -294,7 +236,7 @@ rig_data_get_vfo     ()
 rmode_t
 rig_data_get_mode    ()
 {
-	return get->mode;
+	return get.mode;
 }
 
 
@@ -307,7 +249,7 @@ rig_data_get_mode    ()
 pbwidth_t
 rig_data_get_pbwidth ()
 {
-	return get->pbw;
+	return get.pbw;
 }
 
 
@@ -326,16 +268,16 @@ rig_data_get_freq    (int num)
 	switch (num) {
 
 		/* primary frequency */
-	case 1: return get->freq1;
+	case 1: return get.freq1;
 		break;
 
 		/* secondary frequenct */
-	case 2: return get->freq2;
+	case 2: return get.freq2;
 		break;
 
 		/* bug */
 	default: g_warning (_("%s: Invalid target: %d\n"), __FUNCTION__, num);
-		return get->freq1;
+		return get.freq1;
 		break;
 	}
 }
@@ -349,7 +291,7 @@ rig_data_get_freq    (int num)
 shortfreq_t
 rig_data_get_rit     ()
 {
-	return get->rit;
+	return get.rit;
 }
 
 
@@ -361,6 +303,6 @@ rig_data_get_rit     ()
 shortfreq_t
 rig_data_get_xit     ()
 {
-	return get->xit;
+	return get.xit;
 }
 
