@@ -47,6 +47,8 @@
 typedef enum rig_gui_buttons_e {
 	RIG_GUI_POWER_BUTTON = 1,   /*!< The Power button */
 	RIG_GUI_PTT_BUTTON,         /*!< The PTT button */
+	RIG_GUI_ATT_SELECTOR,       /*!< Attenuator selector. */
+	RIG_GUI_PREAMP_SELECTOR,    /*!< Preamp selector. */
 } rig_gui_buttons_t;
 
 
