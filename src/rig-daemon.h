@@ -35,7 +35,7 @@
 
 
 
-#define C_MAX_CMD_PER_CYCLE   5    /*!< Max number of commands executed in one cycle */
+#define C_MAX_CMD_PER_CYCLE   6    /*!< Max number of commands executed in one cycle */
 #define C_MAX_CYCLES          6    /*!< Number of cycles */
 
 #define C_RX_CYCLE_DELAY   30   /*!< Delay between two RX cycles in milliseconds */
@@ -77,8 +77,10 @@ typedef enum {
 	RIG_CMD_SET_PREAMP,    /*!< Command to set the pre-amplifier level. */
 
 	RIG_CMD_GET_STRENGTH,  /*!< Command to get signal strength. */
-	RIG_CMD_SET_POWER,     /*!< Command to set TX power */
-	RIG_CMD_GET_POWER,     /*!< Command to get TX power */
+	RIG_CMD_SET_POWER,     /*!< Command to set TX power. */
+	RIG_CMD_GET_POWER,     /*!< Command to get TX power. */
+	RIG_CMD_GET_SWR,       /*!< Command to get SWR level. */
+	RIG_CMD_GET_ALC,       /*!< Command to get ALC level. */
 
 	RIG_CMD_NUMBER         /*!< Number of available commands. */
 } rig_cmd_t;
