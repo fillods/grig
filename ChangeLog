@@ -1,3 +1,11 @@
+2004-07-24;	Alexandru Csete <csete@users.sourceforge.net>
+	* rig-gui.c, rig-gui.h: Added files.
+	* rig-gui-buttons.c, rig-gui-buttons.h: Added files.
+	* main.c: Added call to rig_gui_create.
+
+2004-07-23;	Alexandru Csete <csete@users.sourceforge.net>
+	* main.c, rig-daemon.c: Added patch for bug #996426.
+
 2004-07-18;	Alexandru Csete <csete@users.sourceforge.net>
 	* grig-druid.c: Added basic functionality with start and end
 	pages.

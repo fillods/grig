@@ -32,5 +32,6 @@
 #ifndef RIG_GUI_H
 #define RIG_GUI_H 1
 
+GtkWidget *rig_gui_create (void);
 
 #endif

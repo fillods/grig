@@ -35,3 +35,28 @@
 #include <gnome.h>
 #include <gconf/gconf.h>
 #include "rig-gui.h"
+#include "rig-gui-buttons.h"
+
+
+
+/** \brief Create rig control widgets.
+ *  \return A mega-widget containing the rig controls.
+ *
+ * This function creates the rig control mega-widget by calling the create
+ * function of each sub-object and packing the into a main container.
+ *
+ * \note The main container is a horizontal box.
+ */
+GtkWidget *
+rig_gui_create ()
+{
+	GtkWidget *hbox;     /* the main container */
+
+
+	/* create the main container */
+	hbox = gtk_hbox_new (FALSE, 5);
+
+	gtk_box_pack_start_defaults (GTK_BOX (hbox), rig_gui_buttons_create ());
+
+	return hbox;
+}
