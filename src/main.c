@@ -239,29 +239,17 @@ main (int argc, char *argv[])
 	   priority.
 	*/
 	if (help) {
-
-		/* show help */
 		grig_show_help ();
-
-		/* exit */
 		return 0;
 	}
 
 	if (version) {
-
-		/* show version */
 		grig_show_version ();
-
-		/* exit */
 		return 0;
 	}
 
 	if (listrigs) {
-		
-		/* list rig and/or rotators */
 		grig_list_rigs ();
-
-		/* exit */
 		return 0;
 	}
 
