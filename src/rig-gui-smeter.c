@@ -163,6 +163,21 @@ rig_gui_smeter_create ()
 }
 
 
+/** \brief Get current TX mode.
+ *  \return The current TX mode.
+ *
+ * This function can be used to acquire what the smeter is displaying
+ * when the rig is in TX mode. This function has been added to let the
+ * rig daemon know which TX mode setting should be polled.
+ */
+smeter_tx_mode_t
+rig_gui_smeter_get_tx_mode ()
+{
+	return smeter.txmode;
+}
+
+
+
 /** \brief Create canvas widget.
  *
  * This function creates the drawing area widget, loads the background pixmap and
@@ -588,3 +603,5 @@ rig_gui_smeter_has_tx_mode (guint mode)
 
 	return FALSE;
 }
+
+

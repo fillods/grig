@@ -117,7 +117,8 @@ typedef struct {
 } smeter_t;
 
 
-GtkWidget *rig_gui_smeter_create (void);
+GtkWidget        *rig_gui_smeter_create (void);
+smeter_tx_mode_t  rig_gui_smeter_get_tx_mode (void);
 
 
 #endif
