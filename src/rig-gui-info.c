@@ -51,6 +51,7 @@ static GtkWidget *rig_gui_info_create_header         (void);
 static GtkWidget *rig_gui_info_create_offset_frame   (void);
 static GtkWidget *rig_gui_info_create_level_frame    (void);
 static GtkWidget *rig_gui_info_create_if_frame       (void);
+static GtkWidget *rig_gui_info_create_tunstep_frame  (void);
 
 
 /** \brief Create info dialog.
@@ -95,7 +96,7 @@ rig_gui_info_run ()
 			    TRUE, TRUE, 10);
 
 	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox),
-			    gtk_label_new ("rig caps to come ..."),
+			    rig_gui_info_create_tunstep_frame (),
 			    FALSE, FALSE, 10);
 
 	gtk_widget_show_all (dialog);
@@ -652,5 +653,131 @@ rig_gui_info_create_if_frame      ()
 
 
 	return frame;
+}
+
+
+
+/** \brief Create tuning steps list.
+ *  \return A container widget listing the tuning steps.
+ *
+ * This function creates the container widget which is used to list the
+ * available tuning steps forthe rig. For each available tuning step it
+ * lists the modes for which the tuning step can beused.
+ *
+ * The container structure is very similar to the one found in the level
+ * container (table packed in a scrolled window).
+ */
+static GtkWidget *
+rig_gui_info_create_tunstep_frame  ()
+{
+	GtkWidget *swin;
+	GtkWidget *table;
+	GtkWidget *label;
+	guint      i,j;
+	gchar     *text;
+	gchar     *buffer;
+
+	/* Create a table with enough rows to show the
+	   max possible number of unique tuning steps.
+	*/
+	table = gtk_table_new (TSLSTSIZ, 2, FALSE);
+
+	label = gtk_label_new (NULL);
+	gtk_label_set_markup (GTK_LABEL (label), _("<b>STEP</b>"));
+	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+	gtk_table_attach (GTK_TABLE (table), label,
+			  0, 1, 0, 1,
+			  GTK_EXPAND | GTK_FILL,
+			  GTK_EXPAND | GTK_FILL,
+			  5, 0);
+
+
+	label = gtk_label_new (NULL);
+	gtk_label_set_markup (GTK_LABEL (label), _("<b>MODES</b>"));
+	gtk_table_attach (GTK_TABLE (table), label,
+			  1, 2, 0, 1,
+			  GTK_EXPAND | GTK_FILL,
+			  GTK_EXPAND | GTK_FILL,
+			  5, 0);
+
+	/* pseudo code:
+
+	      for each available tuning step i  {
+	          add tuning step to row i
+		  for each mode j {
+		      if mode is in bitfield for tuning step i {
+		          append mode j to cell (i,1)
+		      }
+		  }
+	      }
+	*/
+	/* for each available tuning ste */
+	for (i = 0; i < TSLSTSIZ; i++) {
+
+		/* if tuning step is zero stop
+		   (note that the RIG_IS_TS_END macro seem to be
+		   buggy, at least when used on the dummy backend
+		*/
+		if (myrig->caps->tuning_steps[i].ts == 0) {
+
+			i = TSLSTSIZ;
+		}
+		
+		/* otherwise continue */
+		else {
+
+			/* create tuning step label */
+			text = g_strdup_printf ("%ld Hz", myrig->caps->tuning_steps[i].ts);
+			label = gtk_label_new (text);
+			gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+			gtk_table_attach (GTK_TABLE (table), label,
+					  0, 1, i+1, i+2,
+					  GTK_EXPAND | GTK_FILL,
+					  GTK_EXPAND | GTK_FILL,
+					  5, 0);
+			g_free (text);
+
+			/* for each mode */
+			for (j = 0; j < 16; j++) {
+
+				/* if the mode is in the bitfield for this tuning step */
+				if (myrig->caps->tuning_steps[i].modes & (1 << j)) {
+
+					/* append mode string to text buffer;
+					   note that the first mode (j=0) requires
+					   special attention, since text is empty.
+					*/
+					if (j > 0) {
+						buffer = g_strdup_printf ("%s %s", text, MODE_STR[j]);
+						g_free (text);
+					}
+					else {
+						buffer = g_strdup_printf ("%s", MODE_STR[j]);
+					}
+					text = g_strdup (buffer);
+					g_free (buffer);
+				}
+
+			}
+
+			/* create label containing the modes */
+			label = gtk_label_new (text);
+			gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+			gtk_table_attach (GTK_TABLE (table), label,
+					  1, 2, i+1, i+2,
+					  GTK_EXPAND | GTK_FILL,
+					  GTK_EXPAND | GTK_FILL,
+					  5, 0);
+		}
+	}
+
+	/* scrolled window and frame */ 
+	swin = gtk_scrolled_window_new (NULL,NULL);
+	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (swin),
+					GTK_POLICY_AUTOMATIC,
+					GTK_POLICY_ALWAYS);
+	gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (swin), table);
+
+	return swin;
 }
 
