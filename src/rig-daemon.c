@@ -51,6 +51,7 @@
  */
 #include <gtk/gtk.h>
 #include <hamlib/rig.h>
+#include <unistd.h>
 #include <string.h>
 #include "grig-config.h"
 #include "rig-anomaly.h"
