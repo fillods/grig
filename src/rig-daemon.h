@@ -80,7 +80,7 @@ typedef enum {
 
 
 
-int  rig_daemon_start (int);
+int  rig_daemon_start (int, const gchar *, int, const gchar *);
 void rig_daemon_stop  (void);
 
 

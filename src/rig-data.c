@@ -416,6 +416,29 @@ rig_data_has_get_strength ()
 }
 
 
+/** \brief Get availablility of RIT.
+ *  \return 1 if available, otherwise 0.
+ *
+ * This function returns the value of the has_get.rit variable.
+ */
+int
+rig_data_has_get_rit ()
+{
+	return has_get.rit;
+}
+
+
+/** \brief Get availablility of XIT.
+ *  \return 1 if available, otherwise 0.
+ *
+ * This function returns the value of the has_get.xit variable.
+ */
+int
+rig_data_has_get_xit ()
+{
+	return has_get.xit;
+}
+
 
 /** \brief Get address of 'get' variable.
  *  \return A pointer to the shared data.
@@ -490,3 +513,151 @@ rig_data_get_has_get_addr ()
 	return &has_get;
 }
 
+
+
+/** \brief Some text.
+ *  \return description
+ *
+ * Detailed description.
+ *
+ * \bug writeme
+ *
+ * \bug should have 1 or 2 as param like get_freq
+ */
+int
+rig_data_has_get_freq1     ()
+{
+	return has_get.freq1;
+}
+
+
+
+/** \brief Some text.
+ *  \return description
+ *
+ * Detailed description.
+ *
+ * \bug writeme
+ */
+int
+rig_data_has_get_freq2     ()
+{
+	return has_get.freq2;
+}
+
+
+
+/** \brief Some text.
+ *  \return description
+ *
+ * Detailed description.
+ *
+ * \bug writeme
+ *
+ * \bug should have 1 or 2 as param like get_freq
+ */
+int
+rig_data_has_set_freq1     ()
+{
+	return has_set.freq1;
+}
+
+
+
+/** \brief Some text.
+ *  \return description
+ *
+ * Detailed description.
+ *
+ * \bug writeme
+ */
+int
+rig_data_has_set_freq2     ()
+{
+	return has_set.freq2;
+}
+
+
+
+
+/** \brief Get lower RIT limit.
+ *  \return The current lower RIT limit.
+ *
+ * This function returns the lower RIT limit which applies to
+ * the current mode.
+ */
+shortfreq_t
+rig_data_get_ritmin     ()
+{
+	return -get.ritmax;
+}
+
+
+
+/** \brief Get upper RIT limit.
+ *  \return The current upper RIT limit.
+ *
+ * This function returns the upper RIT limit which applies to
+ * the current mode.
+ */
+shortfreq_t
+rig_data_get_ritmax     ()
+{
+	return get.ritmax;
+}
+
+
+
+/** \brief Get RIT tuning step.
+ *  \return The current RIT tuning step.
+ *
+ * This function returns the RIT tuning step corresponding to the
+ * current mode.
+ */
+shortfreq_t
+rig_data_get_ritstep    ()
+{
+	return get.ritstep;
+}
+
+
+
+/** \brief Get lower XIT limit.
+ *  \return The current lower XIT limit.
+ *
+ * This function returns the lower XIT limit which applies to
+ * the current mode.
+ */
+shortfreq_t
+rig_data_get_xitmin     ()
+{
+	return -get.xitmax;
+}
+
+
+
+/** \brief Get upper XIT limit.
+ *  \return The current upper XIT limit.
+ *
+ * This function returns the upper XIT limit which applies to
+ * the current mode.
+ */
+shortfreq_t
+rig_data_get_xitmax     ()
+{
+	return get.xitmax;
+}
+
+
+
+/** \brief Get XIT tuning step.
+ *  \return The current XIT tuning step.
+ *
+ * This function returns the XIT tuning step corresponding to the
+ * current mode.
+ */
+shortfreq_t
+rig_data_get_xitstep    ()
+{
+	return get.xitstep;
+}

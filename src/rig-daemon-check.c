@@ -344,6 +344,10 @@ rig_daemon_check_rit      (RIG               *myrig,
 	retcode = rig_set_rit (myrig, RIG_VFO_CURR, get->rit);
 	has_set->rit = (retcode == RIG_OK) ? TRUE : FALSE;
 
+	/* get RIT range and tuning step */
+	get->ritmax = 9990; //myrig->caps->max_rit;
+	get->ritstep = s_Hz(10);
+
 }
 
 
@@ -384,6 +388,10 @@ rig_daemon_check_xit      (RIG               *myrig,
 	/* try to reset XIT */
 	retcode = rig_set_xit (myrig, RIG_VFO_CURR, get->xit);
 	has_set->xit = (retcode == RIG_OK) ? TRUE : FALSE;
+
+	/* get XIT range and tuning step */
+	get->xitmax = myrig->caps->max_xit;
+	get->xitstep = s_Hz(10);
 
 }
 

@@ -29,7 +29,19 @@
 	  Boston, MA  02111-1307
 	  USA
 */
+/** \file    main.c
+ *  \ingroup main
+ *  \bief    Main program file.
+ *
+ * Add some more text.
+ *
+ * \bug What do we do if we don't have getopt.h?
+ *
+ */
 #include <gtk/gtk.h>
+#ifdef HAVE_GETOPT_H
+#  include <getopt.h>
+#endif
 #include "grig-config.h"
 #include "rig-gui.h"
 #include "rig-daemon.h"
@@ -39,39 +51,47 @@
 
 
 
-
 /** \brief Main GUI application widget */
 GtkWidget    *grigapp;
 
 
 /* command line arguments */
-static gint rignum      = -1;    /*!< Flag indicating which radio to use. */
-static gint rotnum      = -1;    /*!< Flag indicating which rotator to use. */
-static gint listrigs    =  0;    /*!< Flag indicating that configured radios should be listed. */ 
-static gint listrots    =  0;    /*!< Flag indicating that configured rotators should be listed. */
+/** FIXME: These need not be global!
+    not in this baseline anyway.
+ */
+static gint      rignum    = 0;                  /*!< Flag indicating which radio to use. */
+static gchar    *rigfile   = NULL;               /*!< The port where the rig is atached. */
+static gchar    *civaddr   = NULL;               /*!< CIV address for ICOM rig. */
+static gint      rigspeed  = 0;                  /*!< Optional serial speed. */
+static gboolean  listrigs  = FALSE;              /*!< List supported radios and exit. */ 
+static gint      debug     = RIG_DEBUG_NONE;     /*!< Hamlib debug level. */
+static gboolean  version   = FALSE;              /*!< Show version and exit. */
+static gboolean  help      = FALSE;              /*!< Show help and exit. */
+
+
+/** \brief Short options. */
+#define SHORT_OPTIONS "m:r:p:s:c:l:u:d:h:v"
+
+/** \brief Table of command line options. */
+static struct option long_options[] =
+{
+	{"model",    1, 0, 'm'},
+	{"rig-file", 1, 0, 'r'},
+	{"serial-speed", 1, 0, 's'},
+	{"civaddr",  1, 0, 'c'},
+	{"list",     0, 0, 'l'},
+	{"dump-caps",  0, 0, 'u'},
+	{"debug",  0, 0, 'd'},
+	{"help",     0, 0, 'h'},
+	{"version",  0, 0, 'v'},
+	{0, 0, 0, 0}
+};
 
 
 
-/* Static structure defining command line arguments for
-   the application.
-*/
-/* static const struct poptOption grig_options[] = */
-/* { */
-/* 	{ "list-rigs", 'i', POPT_ARG_NONE, &listrigs, 1, */
-/* 	  N_("Show a list of configured radios"), NULL }, */
-/* 	{ "list-rots", 'o', POPT_ARG_NONE, &listrots, 1, */
-/* 	  N_("Show a list of configured rotators"), NULL }, */
-/* 	{ "radio", 'r', POPT_ARG_INT, &rignum, 0, */
-/* 	  N_("Use the radio with NUMBER (see --list-rigs)"), */
-/* 	  N_("NUMBER") }, */
-/* 	{ "antenna", 'a', POPT_ARG_INT, &rotnum, 0, */
-/* 	  N_("Use the rotator with NUMBER (see --list-rots)"),  */
-/* 	  N_("NUMBER") }, */
-/* 	{ NULL, '\0', 0, NULL, 0 } */
-/* }; */
 
 
-static void        grig_list_rigs_rots (void);
+static void        grig_list_rigs      (void);
 static GtkWidget  *grig_app_create     (gint);
 static gint        grig_app_delete     (GtkWidget *, GdkEvent *, gpointer);
 static void        grig_app_destroy    (GtkWidget *, gpointer);
@@ -97,26 +117,44 @@ main (int argc, char *argv[])
 	if (!g_thread_supported ())
 		g_thread_init (NULL);
 
+	/* decode command line arguments; this part of the code only sets the
+	   global flags and variables, whereafter we check each variable in
+	   descending priority order. This way it is easy to exit the program
+	   in case of -v -h and such.
+	*/
+	
+	while(1) {
+		int c;
+		int option_index = 0;
+
+		/* get next option */
+		c = getopt_long (argc, argv, SHORT_OPTIONS,
+			long_options, &option_index);
+
+		if (c == -1)
+			break;
+
+		switch(c) {
+
+			/* set rig model*/
+		case 'm':
+			break;
+
+			/* unknown option: show usage */
+		default:
+			break;
+		}
+	}
 
 
-	if (listrigs || listrots) {
+	if (listrigs) {
 		
 		/* list rig and/or rotators */
-		grig_list_rigs_rots ();
+		grig_list_rigs ();
 
 		/* exit */
 		return 0;
 	}
-
-
-
-	/* check whether user has requested a specific radio,
-	   if not, get the default.
-	*/
-	if (rignum == -1) {
-		rignum = 1;
-	}
-
 
 	/* we set hamlib debug level to TRACE while we fire up the daemon; it will be
 	   reset when we create the menubar
@@ -124,7 +162,7 @@ main (int argc, char *argv[])
 	rig_set_debug (RIG_DEBUG_TRACE);
 
 	/* launch rig daemon */
-	if (rig_daemon_start (rignum)) {
+	if (rig_daemon_start (rignum, rigfile, rigspeed, civaddr)) {
 		return 1;
 	}
 
@@ -134,23 +172,7 @@ main (int argc, char *argv[])
 	grigapp = grig_app_create (rignum);
 	gtk_widget_show_all (grigapp);
 
-
-
-	/* check whether user has requested a rotator,
-	   if yes, start rotator controls
-	*/
-	if (rotnum != -1) {
-
-		/* launch rotator daemon */
-//		rot_daemon_start (rotnum);
-
-		/* launch rotator UI */
-//		rot_ctrl_create ();
-	}
-
 	gtk_main ();
-
-
 
 	return 0;
 }
@@ -158,15 +180,15 @@ main (int argc, char *argv[])
 
 
 
-/** \brief List rigs and/or rotators.
+/** \brief List rigs.
  *
- * This function lists the configured radios and rotators if it has
- * been requested by the user (cmd line option).
+ * This function lists the radios suported by hamlib. It shows the
+ * manufacturer, model, driver version in a list sorted by model
+ * number.
  *
- * \bug The types local should be moved to the rot ctrl object.
  */
 static void
-grig_list_rigs_rots ()
+grig_list_rigs ()
 {
 }
 

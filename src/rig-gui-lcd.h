@@ -63,6 +63,8 @@
 #define LCD_FG_DEFAULT_BLUE   33153
 
 
+#define RIG_GUI_LCD_DEF_TVAL 400
+
 /** \brief Coordinate structure for digits. */
 typedef struct {
 	guint x;     /*!< X coordinate. */
@@ -70,14 +72,25 @@ typedef struct {
 } lcd_coor_t;
 
 
-/** \brief LCD data structure. */
+
+/** \brief LCD data structure.
+ *
+ * Other elements:
+ *
+ *   0    first dot
+ *   1    second dot
+ *   2    third (small) dot.
+ *   3    RIT sign
+ *   4    RIT text
+ */
 typedef struct {
 	GtkWidget        *canvas;          /*!< The main canvas. */
 	GdkGC            *gc1;             /*!< Graphics context (normal). */
 	GdkGC            *gc2;             /*!< Graphics context (inverted). */
 	guint             width;           /*!< Canvas width. */
 	guint             height;          /*!< Canvas height. */
-	lcd_coor_t        digits[15];      /*!< Starting points for all digits and commas. */
+	lcd_coor_t        digits[12];      /*!< Starting points for all digits. */
+	lcd_coor_t        others[5];       /*!< Starting points for other elements. */
 	guint             dlw;             /*!< Width of large digits. */
 	guint             dlh;             /*!< Height of large digits. */
 	guint             clw;             /*!< Width of large separator. */
@@ -88,8 +101,13 @@ typedef struct {
 	GdkColor          fg;              /*!< Foreground color. */
 	gboolean          exposed;         /*!< Exposed flag. */
 
-	gdouble           main_freq;       /*!< Main frequency value. */
-	gdouble           sub_freq;        /*!< Secondary frequency value. */
+	gdouble           freq1;           /*!< Main frequency value. */
+	gdouble           freq2;           /*!< Secondary frequency value. */
+	gchar             freqs1[9];       /*!< Frequency array. */
+	gint              rit;             /*!< Current RIT value. */
+	gchar             rits[4];         /*!< -9999 Hz but last digit not shown */
+	gint              xit;             /*!< Current XIT value. */
+	gchar             xits[4];         /*!< -9999 Hz but last digit not shown */
 } lcd_t;
 
 

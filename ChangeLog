@@ -1,3 +1,77 @@
+2004-10-11;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/rig-daemon.c, src/rig-daemon.h:
+	Changed rig_daemon_start interface to take port, speed and CIV address
+	as optional parameters.
+
+	* src/main.c:
+	Modified in accordance with the new rig_daemon_start interface.
+	Removed any rotator related code.
+	
+
+2004-10-10;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/rig-gui-lcd.c:
+	Fixed bug which cause grig to crash when user clicked on RIT decimal
+	separator. Modified code to take new pixmaps with '-' into account.
+	Also found and fixed a memory leak in rig_gui_lcd_set_rit_digits.
+	Added function to draw miscellaneous text on the display.
+	Updated design docs accrdingly.
+	
+	* pixmaps/digits_normal.png, pixmaps/digits_small.png:
+	Added '-'sign.
+
+	* configure.in:
+	Changed version number. Added checks for sys/time.h unistd.h getopt.h
+
+
+2004-10-09;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/rig-data.c, src/rig-data.h:
+	Added has_set_freq and macros to wrap set_freq.
+	Added min/maxfields and functions for RIT and XIT.
+
+	* src/rig-gui-lcd.c:
+	Finished tuning code for both frequency and RIT/XIT. Only RIT is
+	suported at the moment. Also added RIT/XIT mode selection field to
+	the main ata structure.
+
+	* src/rig-daemon-check.c:
+	Store RIT and XIT ranges when check for functionalities.
+	
+
+2004-10-08;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/rig-gui-lcd.c:
+	Added more event handlig code to catch mouse events on the LCD
+	display. Expose event call has been merged into this code.
+	
+
+2004-10-07;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/rig-gui-lcd.c:
+	Added code to display small digits and removed first dot between
+	MHz and kHz (too confusing). Aded RIT/XIT display. Added bug text
+	that it does not work with frequencies above 1 GHz.
+
+	* src/rig-data.c, src/rig-data.h:
+	Added rig_data_has_get_rit() and rig_data_has_get_xit().
+
+
+2004-10-06;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* configure.in, Makefile.am:
+	Even more build environment fixes :(
+
+	* src/rig-data.c, src/rig-data.h:
+	Added rig_data_has_get_freq1 and rig_data_has_get_freq2.
+
+	* src/rig-gui-lcd.c, src/rig-gui-lcd.h:
+	Begun to add and update digits. Frequency readback tested with RPC.
+	Small digits and RIT/XIT still to be done. Adjusted fields in lcd
+	structure accordingly.
+	
+
 2004-10-05;	Alexandru Csete <csete@users.sourceforge.net>
 
 	* NEWS:

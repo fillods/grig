@@ -113,18 +113,22 @@ static void     rig_daemon_exec_cmd  (rig_cmd_t,
 
 
 /** \brief Start radio control daemon.
- *  \param rignum The index of the radio.
+ *  \param rignum   The Hamlib ID of the radio (0 to use default).
+ *  \param port     The port device (NULL to use default).
+ *  \param speed    The serial speed (0 to use default).
+ *  \param civaddr  CIV address for ICOM rigs (NULL means no need to set conf).
  *  \return 0 if the daemon has been initialized correctly.
  *
  * This function initializes the radio and starts the control daemon. The rignum
- * parameter is the rig number in the GConf configuration.
+ * parameter is the rig ID in hamlib.
+ *
+ * \note Thedefault port is /dev/ttyS0 for regular backends and localhost for RPC rig.
+ *
  */
 int
-rig_daemon_start (int rignum)
+rig_daemon_start (int rigid, const gchar *port, int speed, const gchar *civaddr)
 {
 	gchar *buff;
-	guint  rigid;
-	gint   speed;
 	gchar *rigport;
 	gint   retcode;
 
@@ -137,9 +141,26 @@ rig_daemon_start (int rignum)
 		return 1;
 	}
 
-	rigid = rignum;
-	rigport = g_strdup ("/dev/ttyS0");
-	speed = 0;
+	/* use dummy backend if no ID pecified */
+	if (!rigid) {
+		rigid = 1;
+	}
+
+	/* use default port, if none specified */
+	if (port == NULL) {
+
+		/* localhost for RPC rig */
+		if (rigid == 1901) {
+			rigport = g_strdup ("localhost");
+		}
+		/* first serial port otherwise */
+		else {
+			rigport = g_strdup ("/dev/ttyS0");
+		}
+	}
+	else {
+		rigport = g_strdup (port);
+	}
 
 
 	/* send a debug message */
@@ -158,12 +179,20 @@ rig_daemon_start (int rignum)
 		return 1;
 	}
 
-	/* configure and open device */
+	/* configure and open rig device */
 	strncpy (myrig->state.rigport.pathname, rigport, FILPATHLEN);
 	g_free (rigport);
+
+	/* set speed if any special whishes */
 	if (speed) {
 		myrig->state.rigport.parm.serial.rate = speed;
 	}
+
+	if (civaddr) {
+		retcode = rig_set_conf (myrig, rig_token_lookup (myrig, "civaddr"), civaddr);
+	}
+
+	/* open rig */
 	retcode = rig_open (myrig);
 	if (retcode != RIG_OK) {
 

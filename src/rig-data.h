@@ -87,6 +87,10 @@ typedef struct {
 	freq_t          fmin;     /*!< Lower frequency limit for current mode. */
 	freq_t          fmax;     /*!< Upper frequency limit for current mode. */
 	shortfreq_t     fstep;    /*!< Smallest freqency step for current mode. */
+	shortfreq_t     ritmax;   /*!< Absolute max RIT. */
+	shortfreq_t     ritstep;  /*!< Smallest RIT step. */
+	shortfreq_t     xitmax;   /*!< Absolute max XIT. */
+	shortfreq_t     xitstep;  /*!< Smallest XIT step. */
 } grig_settings_t;
 
 
@@ -129,6 +133,9 @@ void rig_data_set_rit     (shortfreq_t);
 void rig_data_set_xit     (shortfreq_t);
 void rig_data_set_agc     (int);
 
+#define rig_data_set_freq1(x) (rig_data_set_freq(1,x))
+#define rig_data_set_freq2(x) (rig_data_set_freq(2,x))
+
 /* get functions */
 powerstat_t      rig_data_get_pstat    (void);
 ptt_t            rig_data_get_ptt      (void);
@@ -143,6 +150,12 @@ int              rig_data_get_strength (void);
 freq_t           rig_data_get_fmin     (void);
 freq_t           rig_data_get_fmax     (void);
 shortfreq_t      rig_data_get_fstep    (void);
+shortfreq_t      rig_data_get_ritmin   (void);
+shortfreq_t      rig_data_get_ritmax   (void);
+shortfreq_t      rig_data_get_ritstep  (void);
+shortfreq_t      rig_data_get_xitmin   (void);
+shortfreq_t      rig_data_get_xitmax   (void);
+shortfreq_t      rig_data_get_xitstep  (void);
 
 /* has_get functions */
 /* int   rig_data_has_get_pstat    (void); */
@@ -150,13 +163,17 @@ shortfreq_t      rig_data_get_fstep    (void);
 /* int   rig_data_has_get_vfo      (void); */
 /* int   rig_data_has_get_mode     (void); */
 /* int   rig_data_has_get_pbwidth  (void); */
-/* int   rig_data_has_get_freq     (void); */
-/* int   rig_data_has_get_rit      (void); */
-/* int   rig_data_has_get_xit      (void); */
+int   rig_data_has_get_freq1     (void);
+int   rig_data_has_get_freq2     (void);
+int   rig_data_has_get_rit      (void);
+int   rig_data_has_get_xit      (void);
 /* int   rig_data_has_get_agc      (void); */
 int   rig_data_has_get_strength (void);
 
 /* has_set functions */
+int   rig_data_has_set_freq1     (void);
+int   rig_data_has_set_freq2     (void);
+
 
 /* address acquisition functions */
 grig_settings_t  *rig_data_get_get_addr     (void);
