@@ -39,7 +39,7 @@
 #define RIG_GUI_INFO_DATA_H 1
 
 
-/** \brief string representations for level symbolic references. */
+/** \brief string representations for RIG_LEVEL symbolic references. */
 const gchar *RIG_LEVEL_STR[] = {
 	N_("PREAMP"),
 	N_("ATT"),
@@ -64,9 +64,9 @@ const gchar *RIG_LEVEL_STR[] = {
 	N_("METER"),
 	N_("VOXGAIN"),
 	N_("ANTIVOX"),
-	"",
-	"",
-	"",
+	N_("N/A"),
+	N_("N/A"),
+	N_("N/A"),
 	N_("RAWSTR"),
 	N_("SQLSTAT"),
 	N_("SWR"),
@@ -74,5 +74,63 @@ const gchar *RIG_LEVEL_STR[] = {
 	N_("STRENGTH")
 };
 
+
+/** \brief String representations for PTT_TYPE_T symbolic references. */
+const gchar *PTT_TYPE_STR[] = {
+	N_("None"),
+	N_("Legacy"),
+	N_("SER_DTR"),
+	N_("SER_RTS"),
+	N_("PARPORT")
+};
+
+/** \brief String representations for DCD_TYPE_T symbolic references. */
+const gchar *DCD_TYPE_STR[] = {
+	N_("None"),
+	N_("Legacy"),
+	N_("SER_DSR"),
+	N_("SER_CTS"),
+	N_("SER_CAR"),
+	N_("PARPORT")
+};
+
+
+/** \brief String representations for RIG_PORT_T symbolic references. */
+const gchar *RIG_PORT_STR[] = {
+	N_("None"),
+	N_("Serial"),
+	N_("Network"),
+	N_("Device"),
+	N_("Packet"),
+	N_("DTMF"),
+	N_("IrDA"),
+	N_("RPC"),
+	N_("Parallel")
+};
+
+
+/** \brief String representations for SERIAL_PARITY_E symbolic references. */
+const gchar *SERIAL_PARITY_STR[] = {
+	N_("None"),
+	N_("Odd"),
+	N_("Even")
+};
+
+/** \brief String representations for SERIAL_HANDSHAKE_E symbolic references. */
+const gchar *SERIAL_HANDSHAKE_STR[] = {
+	N_("None"),
+	N_("XONXOFF"),
+	N_("Hardware")
+};
+
+/** \brief String representations for announce symbolic references. */
+const gchar *ANN_STR[] = {
+	N_("OFF"),
+	N_("FREQ"),
+	N_("RXMODE"),
+	N_("CW"),
+	N_("EMG"),
+	N_("JAP")
+};
 
 #endif
