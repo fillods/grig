@@ -339,7 +339,7 @@ rig_data_set_freq    (int num, freq_t freq)
 
 		/* secondary frequency */
 	case 2: set.freq2 = freq;
-		set.freq2 = freq;
+		get.freq2 = freq;
 		new.freq2 = 1;
 		break;
 
