@@ -36,31 +36,32 @@
  * The main pupose of the LCD display widget is to show the current frequency
  * and to provide easy access to set the current working frequency. The display
  * has 6 large digits left of the decmal and three small digits right of the
- * decimal. It is therefore capable to display the frequency with 1 Hz of accuracy
- * below 1 GHz and with 1kHz of accuracy above 1 GHz. 
+ * decimal. It is therefore capable to display the frequency with 1 Hz of 
+ * accuracy below 1 GHz and with 1kHz of accuracy above 1 GHz. 
  *
- * The master widget consists of a GtkDrawingArea holding on which the digits are
- * drawn (one for each
- * display digit). The digits are pixmaps loaded from two files, one containing the
- * normal sized digits and the other containing the small digits. The size of the
- * canvas is calculated from the size of the digits.
+ * The master widget consists of a GtkDrawingArea holding on which the digits
+ * are drawn (one for each display digit). The digits are pixmaps loaded from
+ * two files, one containing the
+ * normal sized digits and the other containing the small digits. The size of
+ * the canvas is calculated from the size of the digits.
  *
- * In order to have predictable behaviour the pixmap files containing the digits
- * need to contain 12 equal-sized digits and a comma: '0123456789 -.' Each of these
- * digits will then be stored in a GdkPixbuf and used on the canvas as necessary.
- * Furthermore, the last column in the pixmaps must contain alternting pixels with
- * the foreground and the background color which will be used on the canvas.
+ * In order to have predictable behaviour the pixmap files containing the
+ * digits need to contain 12 equal-sized digits and a comma: '0123456789 -.'
+ * Each of these digits will then be stored in a GdkPixbuf and used on the
+ * canvas as necessary. Furthermore, the last column in the pixmaps must
+ * contain alternting pixels with the foreground and the background color
+ * which will be used on the canvas.
  *
- * The comma need not have the same size as the digits; it may be smaller. When the
- * pixmap is read, the size of the digits is calclated as follows:
+ * The comma need not have the same size as the digits; it may be smaller.
+ * When the  pixmap is read, the size of the digits is calclated as follows:
 \code
         DIGIT_WIDTH  = IMG_WIDTH div 12
 	COMMA_WIDTH  = IMG_WIDTH mod 12 - 1  (first column contains color info)
 	DIGIT_HEIGHT = IMG_HEIGHT
 
 \endcode
- * It is therefore quite important that IMG_WIDTH mod 11 > 0 and that the width of the
- * decimal separator is less than 10 pixels.
+ * It is therefore quite important that IMG_WIDTH mod 11 > 0 and that the
+ * width of the decimal separator is less than 10 pixels.
  *
  * \bug Currently it does not work with f >= 1 GHz
  *
@@ -68,11 +69,13 @@
  *
  * \bug Needs to be cleaned up!
  *
- * \bug Mouse events are caught only if RIG has set_freq capabilities. set_rit / set_xit
- * capability must be checked explicitly by the RIT/XIT handling code.
+ * \bug Mouse events are caught only if RIG has set_freq capabilities.
+ *      set_rit / set_xit capability must be checked explicitly by the
+ *      RIT/XIT handling code.
  */
 #include <gtk/gtk.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
+#include <stdlib.h>
 #include <math.h>
 #include <hamlib/rig.h>
 #include "rig-data.h"
@@ -128,6 +131,9 @@ static void           rig_gui_lcd_draw_text        (void);
 
 static gint rig_gui_lcd_timeout_exec  (gpointer);
 static gint rig_gui_lcd_timeout_stop  (gpointer);
+
+static void ritval_to_bytearr (gchar *, shortfreq_t);
+
 
 
 /** \brief Create LCD display widget.
@@ -487,7 +493,11 @@ rig_gui_lcd_handle_event     (GtkWidget *widget,
 
 				/* LEFT button: inrease frequency */
 			case 1:
-				newrit = lcd.rit + deltar;
+				/* ensure correct sign flip */
+				if ((lcd.rit < 0) && (deltar > abs (lcd.rit)))
+					newrit = -lcd.rit;
+				else
+					newrit = lcd.rit + deltar;
 
 				/* check whether we are within current
 				   frequency range; if so, apply new frequency
@@ -527,7 +537,11 @@ rig_gui_lcd_handle_event     (GtkWidget *widget,
 
 				/* RIGHT button: decrease frequency */
 			case 3:
-				newrit = lcd.rit - deltar;
+				/* ensure correct sign flip */
+				if ((lcd.rit > 0) && (deltar > lcd.rit))
+					newrit = -lcd.rit;
+				else
+					newrit = lcd.rit - deltar;
 
 				/* check whether we are within current
 				   frequency range; if so, apply new frequency
@@ -653,7 +667,11 @@ rig_gui_lcd_handle_event     (GtkWidget *widget,
 
 				/* WHEEL UP: inrease frequency */
 			case GDK_SCROLL_UP:
-				newrit = lcd.rit + deltar;
+				/* ensure correct sign flip */
+				if ((lcd.rit < 0) && (deltar > abs (lcd.rit)))
+					newrit = -lcd.rit;
+				else
+					newrit = lcd.rit + deltar;
 
 				/* check whether we are within current
 				   frequency range; if so, apply new frequency
@@ -668,7 +686,11 @@ rig_gui_lcd_handle_event     (GtkWidget *widget,
 
 				/* SCROLL DOWN: decrease frequency */
 			case GDK_SCROLL_DOWN:
-				newrit = lcd.rit - deltar;
+				/* ensure correct sign flip */
+				if ((lcd.rit > 0) && (deltar > lcd.rit))
+					newrit = -lcd.rit;
+				else
+					newrit = lcd.rit - deltar;
 
 				/* check whether we are within current
 				   frequency range; if so, apply new frequency
@@ -849,7 +871,7 @@ rig_gui_lcd_calc_dim    ()
 	lcd.csw = gdk_pixbuf_get_width  (digits_small[12]);
 
 	/* calculate drawing area dimensions */
-	lcd.width = 6*lcd.dlw + 2*lcd.clw + 9*lcd.dsw + lcd.csw + 2*LCD_MARGIN;
+	lcd.width = 6*lcd.dlw + 2*lcd.clw + 8*lcd.dsw + lcd.csw + 2*LCD_MARGIN;
 	lcd.height = 80;
 
 	/* calculate screen position for each digit; this will ease the
@@ -1056,16 +1078,18 @@ rig_gui_lcd_set_rit_digits   (shortfreq_t freq)
 		freq = kHz(9.99);
 	}
 	else if (freq < s_kHz(-9.99)) {
-		freq = s_kHz(9.99);
+		freq = s_kHz(-9.99);
 	}
+
 
 	/* store RIT/XIT frequency for later use */
 	lcd.rit = freq;
 
 	/* convert frequency to string */
-	str = g_strdup_printf ("%5ld", freq);
+	str = g_strdup ("-0000");
+	ritval_to_bytearr (str, freq);
 
-	/* 0th is the sign;
+	/* 0th element is the sign;
 	   must be handled separately because ' ' means clear and not 0
 	*/
 	if (str[0] != lcd.rits[0]) {
@@ -1075,15 +1099,17 @@ rig_gui_lcd_set_rit_digits   (shortfreq_t freq)
 			switch (str[0]) {
 
 			case ' ':
-				gdk_draw_pixbuf (GDK_DRAWABLE (lcd.canvas->window), NULL, digits_small[10],
-						 0, 0, lcd.digits[9].x - lcd.dsw, lcd.digits[9].y, -1, -1,
-						 GDK_RGB_DITHER_NONE, 0, 0);
+				gdk_draw_pixbuf (GDK_DRAWABLE (lcd.canvas->window), NULL,
+						 digits_small[10], 0, 0,
+						 lcd.digits[9].x - lcd.dsw, lcd.digits[9].y,
+						 -1, -1, GDK_RGB_DITHER_NONE, 0, 0);
 				break;
 
 			case '-':
-				gdk_draw_pixbuf (GDK_DRAWABLE (lcd.canvas->window), NULL, digits_small[11],
-						 0, 0, lcd.digits[9].x - lcd.dsw, lcd.digits[9].y, -1, -1,
-						 GDK_RGB_DITHER_NONE, 0, 0);
+				gdk_draw_pixbuf (GDK_DRAWABLE (lcd.canvas->window), NULL,
+						 digits_small[11], 0, 0,
+						 lcd.digits[9].x - lcd.dsw, lcd.digits[9].y,
+						 -1, -1, GDK_RGB_DITHER_NONE, 0, 0);
 				break;
 
 			default: /* critical internal error */
@@ -1315,3 +1341,42 @@ rig_gui_lcd_draw_text        ()
 	/* free PangoLayout */
 	g_object_unref (G_OBJECT (layout));
 }
+
+
+/** \brief Convert RIT value to byte array.
+ *  \param array The array to store the result in.
+ *  \param freq  The frequency to convert.
+ *
+ * This function converts an integer value in the range [-9999;+9999] to a byte array.
+ * The byte array has to be allocated by the caller and have a length of 5 bytes not
+ * including the trailing \0.
+ *
+ * \bug This is a hack! Consider implementing it in a cleaner way.
+ */
+static void
+ritval_to_bytearr (gchar *array, shortfreq_t freq)
+{
+	gint i;
+	shortfreq_t delta;
+
+	if (freq < 0)
+		array[0] = '-';
+	else
+		array[0] = ' ';
+
+	freq = abs (freq);
+
+	for (i = 3; i >= 0; i--) {
+
+		delta = pow (10, i);
+		
+		if (freq >= delta) {
+			array[4-i] = freq / delta + '0';
+			freq %= delta;
+		}
+		else {
+			array[4-i] = '0';
+		}
+	}
+}
+

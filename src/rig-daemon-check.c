@@ -428,8 +428,18 @@ rig_daemon_check_mode     (RIG               *myrig,
 		has_get->mode = TRUE;
 		has_get->pbw  = TRUE;
 		get->mode     = mode;
-		get->pbw      = pbw;
 
+		/* convert and store the new passband width */
+		if (pbw == rig_passband_wide (myrig, mode)) {
+			get->pbw = RIG_DATA_PB_WIDE;
+		}
+		else if (pbw == rig_passband_narrow (myrig, mode)) {
+			get->pbw  = RIG_DATA_PB_NARROW;
+		}
+		else {
+			get->pbw  = RIG_DATA_PB_NORMAL;
+		}
+		
 		/* initialize the frequency range and tuning step */
 		while (!RIG_IS_FRNG_END(myrig->state.rx_range_list[i]) && !found_mode) {
 						

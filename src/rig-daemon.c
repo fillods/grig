@@ -128,7 +128,6 @@ static void     rig_daemon_exec_cmd  (rig_cmd_t,
 int
 rig_daemon_start (int rigid, const gchar *port, int speed, const gchar *civaddr)
 {
-	gchar *buff;
 	gchar *rigport;
 	gint   retcode;
 
@@ -504,18 +503,13 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 
 				rig_anomaly_raise (RIG_CMD_SET_FREQ_1);
 			}
-			else {
-				/* reset flag */
-				new->freq1 = FALSE;
-			}
+
+                        /* reset flag */
+			new->freq1 = FALSE;
+		
 		}
 		
-		/* if rig doesn't have get_freq, we set the get->freq
-		   manually to make widgets happy
-		*/
-		if (!has_get->freq1) {
-			get->freq1 = set->freq1;
-		}
+		get->freq1 = set->freq1;
 
 		break;
 
@@ -643,19 +637,13 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 
 				rig_anomaly_raise (RIG_CMD_SET_FREQ_2);
 			}
-			else {
-				/* reset flag */
-				new->freq2 = FALSE;
-			}
+
+			/* reset flag */
+			new->freq2 = FALSE;
 
 		}
 		
-		/* if rig doesn't have get_freq, we set the get->freq
-		   manually to make widgets happy
-		*/
-		if (!has_get->freq2) {
-			get->freq2 = set->freq2;
-		}
+		get->freq2 = set->freq2;
 
 		break;
 	
@@ -702,20 +690,13 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 
 				rig_anomaly_raise (RIG_CMD_SET_RIT);
 			}
-			else {
 
-				/* reset flag */
-				new->rit = FALSE;
-			}	
+			/* reset flag */
+			new->rit = FALSE;
 
 		}
 
-		/* if rig doesn't have get_rit we set it manually to
-		   make widgets happy
-		*/
-		if (!has_get->rit) {
-			get->rit = set->rit;
-		}
+		get->rit = set->rit;
 
 		break;
 
@@ -762,20 +743,13 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 
 				rig_anomaly_raise (RIG_CMD_SET_XIT);
 			}
-			else {
 
-				/* reset flag */
-				new->xit = FALSE;
-			}	
+			/* reset flag */
+			new->xit = FALSE;
 
 		}
 
-		/* if rig doesn't have get_xit we set it manually to
-		   make widgets happy
-		*/
-		if (!has_get->xit) {
-			get->xit = set->xit;
-		}
+		get->xit = set->xit;
 
 		break;
 
@@ -821,19 +795,12 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 
 				rig_anomaly_raise (RIG_CMD_SET_VFO);
 			}
-			else {
 
-				/* reset flag */
-				new->vfo = FALSE;
-			}	
+			/* reset flag */
+			new->vfo = FALSE;
 		}
 
-		/* if rig doesn't have get_vfo we set it manually to
-		   make widgets happy.
-		*/
-		if (!has_get->vfo) {
-			get->vfo = set->vfo;
-		}
+		get->vfo = set->vfo;
 
 		break;
 
@@ -879,19 +846,12 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 
 				rig_anomaly_raise (RIG_CMD_SET_PSTAT);
 			}
-			else {
 
-				/* reset flag */
-				new->pstat = FALSE;
-			}	
+			/* reset flag */
+			new->pstat = FALSE;
 		}
 
-		/* if rig doesn't have get_pstat we set it manually to
-		   make widgets happy.
-		*/
-		if (!has_get->pstat) {
-			get->pstat = set->pstat;
-		}
+		get->pstat = set->pstat;
 
 		break;
 
@@ -937,19 +897,12 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 
 				rig_anomaly_raise (RIG_CMD_SET_PTT);
 			}
-			else {
 
-				/* reset flag */
-				new->ptt = FALSE;
-			}	
+			/* reset flag */
+			new->ptt = FALSE;
 		}
 
-		/* if rig doesn't have get_ptt we set it manually to
-		   make widgets happy.
-		*/
-		if (!has_get->ptt) {
-			get->ptt = set->ptt;
-		}
+		get->ptt = set->ptt;
 
 		break;
 
@@ -976,8 +929,16 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 				int i = 0;           /* iterator */
 				int found_mode = 0;  /* flag to indicate found mode */
 
-		  
-				get->pbw  = pbw;
+				/* convert and store the new passband width */
+				if (pbw == rig_passband_wide (myrig, mode)) {
+					get->pbw = RIG_DATA_PB_WIDE;
+				}
+				else if (pbw == rig_passband_narrow (myrig, mode)) {
+					get->pbw  = RIG_DATA_PB_NARROW;
+				}
+				else {
+					get->pbw  = RIG_DATA_PB_NORMAL;
+				}
 
 				/* if mode has changed we need to update frequency limits */
 				if (get->mode != mode) {
@@ -1024,9 +985,40 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 
 		/* check whether command is available */
 		if ((has_set->mode && new->mode) || (has_set->pbw  && new->pbw)) {
+			pbwidth_t pbw;
+			rmode_t   mode;
+
+			if (new->mode) {
+				mode = set->mode;
+			}
+			else {
+				mode = get->mode;
+			}
+
+			/* don't modify pbw unless asked by user */
+			if (new->pbw) {
+				switch (set->pbw) {
+				case RIG_DATA_PB_WIDE:
+					pbw = rig_passband_wide (myrig, mode);
+					break;
+				case RIG_DATA_PB_NORMAL:
+					pbw = rig_passband_normal (myrig, mode);
+					break;
+				case RIG_DATA_PB_NARROW:
+					pbw = rig_passband_narrow (myrig, mode);
+					break;
+				default:
+					/* we have no idea what to set! */
+					pbw = get->pbw;
+					break;
+				}
+			}
+			else {
+				pbw = get->pbw;
+			}
 
 			/* try to execute command */
-			retcode = rig_set_mode (myrig, RIG_VFO_CURR, set->mode, set->pbw);
+			retcode = rig_set_mode (myrig, RIG_VFO_CURR, set->mode, pbw);
 
 			/* raise anomaly if execution did not succeed */
 			if (retcode != RIG_OK) {
@@ -1036,18 +1028,15 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 
 				rig_anomaly_raise (RIG_CMD_SET_MODE);
 			}
-			else {
-				new->mode = FALSE;
-				new->pbw  = FALSE;
-			}
 		}
 
-		/* if rig doesn't have get_mode we set it manually to
-		   make widgets happy.
-		*/
-		if (!has_get->mode) {
+		if (new->mode) {
 			get->mode = set->mode;
+			new->mode = FALSE;
+		}
+		if (new->pbw) {
 			get->pbw  = set->pbw;
+			new->pbw  = FALSE;
 		}
 
 		break;
@@ -1097,19 +1086,12 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 
 				rig_anomaly_raise (RIG_CMD_SET_AGC);
 			}
-			else {
-
-				/* reset flag */
-				new->agc = FALSE;
-			}	
+			/* reset flag */
+			new->agc = FALSE;
 		}
 
-		/* if rig doesn't have get_ptt we set it manually to
-		   make widgets happy.
-		*/
-		if (!has_get->agc) {
-			get->agc = set->agc;
-		}
+		get->agc = set->agc;
+
 		break;
 
 

@@ -77,7 +77,8 @@ grig_about_run ()
 
 
 	/* Add the logo and notebook; show everything we've added to the dialog. */
-	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), grig_about_logo_create (), FALSE, FALSE, 10);
+	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox),
+			    grig_about_logo_create (), FALSE, FALSE, 10);
 	gtk_box_pack_end   (GTK_BOX (GTK_DIALOG (dialog)->vbox), notebook, FALSE, FALSE, 5);
 	gtk_widget_show_all (dialog);
 }
@@ -112,10 +113,13 @@ grig_about_about_create ()
 	gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 5);
 
 	/* info */
-	label = gtk_label_new (_("Grig is a graphical user interface for the Hamradio Control Libraries.\n"\
-				 "Grig is free software licensed under the terms and conditions of the\n"\
+	label = gtk_label_new (_("Grig is a graphical user interface for the Hamradio "\
+				 "Control Libraries.\n"\
+				 "Grig is free software licensed under the terms and "\
+				 "conditions of the\n"\
 				 "GNU General Public License version 2 or later.\n\n"\
-				 "Comments, questions and bug reports can be made on the project\npage at:"));
+				 "Comments, questions and bug reports can be made on "
+				 "the project\npage at:"));
 	gtk_misc_set_padding (GTK_MISC (label), 5, 0);
 	gtk_misc_set_alignment (GTK_MISC (label), 0.5, 0.5);
 	gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
@@ -140,7 +144,7 @@ static GtkWidget *
 grig_about_credits_create ()
 {
 	GtkWidget *vbox;
-	GtkWidget *label
+	GtkWidget *label;
 
 	vbox = gtk_vbox_new (FALSE, 0);
 
@@ -157,9 +161,15 @@ static GtkWidget *
 grig_about_sysinfo_create ()
 {
 	GtkWidget *vbox;
+	GtkWidget *table;
+
+
+	table = gtk_table_new (10, 3, FALSE);
+
 
 	vbox = gtk_vbox_new (FALSE, 0);
-
+	gtk_box_pack_start_defaults (GTK_BOX (vbox), table);
+				    
 	return vbox;
 }
 

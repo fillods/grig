@@ -62,18 +62,18 @@ GtkWidget    *grigapp;
 /* FIXME: These need not be global!
     not in this baseline anyway.
  */
-static gint      rignum    = 0;                  /*!< Flag indicating which radio to use. */
-static gchar    *rigfile   = NULL;               /*!< The port where the rig is atached. */
-static gchar    *civaddr   = NULL;               /*!< CI-V address for ICOM rig. */
-static gint      rigspeed  = 0;                  /*!< Optional serial speed. */
-static gboolean  listrigs  = FALSE;              /*!< List supported radios and exit. */ 
-       gint      debug     = RIG_DEBUG_NONE;     /*!< Hamlib debug level. */
-static gboolean  version   = FALSE;              /*!< Show version and exit. */
-static gboolean  help      = FALSE;              /*!< Show help and exit. */
+static gint     rignum    = 0;       /*!< Flag indicating which radio to use.*/
+static gchar   *rigfile   = NULL;    /*!< The port where the rig is atached. */
+static gchar   *civaddr   = NULL;    /*!< CI-V address for ICOM rig. */
+static gint     rigspeed  = 0;       /*!< Optional serial speed. */
+static gboolean listrigs  = FALSE;   /*!< List supported radios and exit. */ 
+       gint     debug     = RIG_DEBUG_NONE; /*!< Hamlib debug level. */
+static gboolean version   = FALSE;   /*!< Show version and exit. */
+static gboolean help      = FALSE;   /*!< Show help and exit. */
 
 
 /** \brief Short options. */
-#define SHORT_OPTIONS "m:r:s:c:d:lhv"  /* note: group those which take no arg */
+#define SHORT_OPTIONS "m:r:s:c:d:lhv"  /* group those which take no arg */
 
 /** \brief Table of command line options. */
 static struct option long_options[] =
@@ -92,11 +92,11 @@ static struct option long_options[] =
 
 /** \brief Radio info to be used by list-rigs. */
 typedef struct {
-	gint            id;       /*!< Model ID. */
-	gchar          *mfg;      /*!< Manufacurer name (eg. KENWOOD). */
-	gchar          *model;    /*!< Radio model (eg. TS-440). */
-	gchar          *version;  /*!< Driver version (eg. 0.3.2) */
-        gint            status;   /*!< Driver status (0..5 use rig_strstatus). */
+	gint    id;       /*!< Model ID. */
+	gchar  *mfg;      /*!< Manufacurer name (eg. KENWOOD). */
+	gchar  *model;    /*!< Radio model (eg. TS-440). */
+	gchar  *version;  /*!< Driver version (eg. 0.3.2) */
+        gint    status;   /*!< Driver status (0..5 use rig_strstatus). */
 } grig_rig_info_t;
 
 
@@ -266,8 +266,8 @@ main (int argc, char *argv[])
 	}
 
 
-	/* we set hamlib debug level to TRACE while we fire up the daemon; it will be
-	   reset when we create the menubar
+	/* we set hamlib debug level to TRACE while we fire up the daemon;
+	   it will be reset when we create the menubar
 	*/
 	rig_set_debug (RIG_DEBUG_TRACE);
 
@@ -305,7 +305,8 @@ main (int argc, char *argv[])
 
 /** \brief Create and initialize main application window.
  *  \param rignum The index of the radio wich is controled by the app
- *  \return The new GnomeApp widget or NULL if the specified rig number is invalid
+ *  \return The new GnomeApp widget or NULL if the specified rig number
+ *          is invalid
  *
  * This function creates and initializes a new application widget, adds
  * menubar and statusbar, etc...
@@ -316,14 +317,9 @@ static GtkWidget *
 grig_app_create       (gint rignum)
 {
 	GtkWidget *app;        /* The main application */
-	GtkWidget *menushell;  /* Menu shell; used to set debug level */
-	GtkWidget *menuitem;   /* Menu item; used to set debug level */
-	gint       pos;        /* position of the menu item */
-	gint       debug;      /* hamlib debug level */
 	gchar     *title;      /* the window title  */
 	gchar     *brand;
 	gchar     *model;
-	gchar     *buff;       /* text buffer */
 	gchar     *icon;
 
 
@@ -366,10 +362,10 @@ grig_app_create       (gint rignum)
  *  \param data   User data (NULL).
  *  \param return Always FALSE to indicate that the app should be destroyed.
  *
- * This function handles the delete event received by the main application window
- * (eg. when the window is closed by the WM). This function simply returns FALSE
- * indicating that the main application window should be destroyed by emiting the
- * destroy signal.
+ * This function handles the delete event received by the main application
+ * window (eg. when the window is closed by the WM). This function simply
+ * returns FALSE indicating that the main application window should be
+ * destroyed by emiting the destroy signal.
  *
  */
 static gint
@@ -423,32 +419,47 @@ grig_show_help      ()
 {
 
 	g_print (_("Usage: grig [OPTION]...\n\n"));
-	g_print (_("  -m, --model=ID           select radio model number; see --list\n"));
-	g_print (_("  -r, --rig-file=DEVICE    set device of the radio, eg. /dev/ttyS0\n"));
-	g_print (_("  -s, --speed=BAUD         set transfer rate (serial port only)\n"));
-	g_print (_("  -c, --civaddr=ID         set CI-V address (decimal, ICOM only)\n"));
-	g_print (_("  -d, --debug=LEVEL        set hamlib debug level (0..5)\n"));
-	g_print (_("  -l, --list               list supported radios and exit\n"));
-	g_print (_("  -h, --help               show this help message and exit\n"));
-	g_print (_("  -v, --version            show version information and exit\n"));
+	g_print (_("  -m, --model=ID           "\
+		   "select radio model number; see --list\n"));
+	g_print (_("  -r, --rig-file=DEVICE    "\
+		   "set device of the radio, eg. /dev/ttyS0\n"));
+	g_print (_("  -s, --speed=BAUD         "\
+		   "set transfer rate (serial port only)\n"));
+	g_print (_("  -c, --civaddr=ID         "\
+		   "set CI-V address (decimal, ICOM only)\n"));
+	g_print (_("  -d, --debug=LEVEL        "\
+		   "set hamlib debug level (0..5)\n"));
+	g_print (_("  -l, --list               "\
+		   "list supported radios and exit\n"));
+	g_print (_("  -h, --help               "\
+		   "show this help message and exit\n"));
+	g_print (_("  -v, --version            "\
+		   "show version information and exit\n"));
 	g_print ("\n");
 	g_print (_("Example:"));
 	g_print ("\n");
 	g_print (_("Start grig using YAESU FT-990 connected to the first "\
-		   "serial port, using 4800 baud and debug level set to warning:"));
+		   "serial port, using 4800 baud and debug level set to "\
+		   "warning:"));
 	g_print ("\n\n");
 	g_print ("     grig -m 116 -r /dev/ttyS0 -s 4800 -d 3");
 	g_print ("\n\n");
 	g_print (_("or if you prefer the long options:"));
 	g_print ("\n\n");
-	g_print ("     grig --model=116 --rig-file=/dev/ttyS0 --speed=4800 --debug=3");
+	g_print ("     grig --model=116 --rig-file=/dev/ttyS0 "\
+		 "--speed=4800 --debug=3");
 	g_print ("\n\n");
-	g_print (_("It is usually enough to specify the model ID and the DEVICE."));
+	g_print (_("It is usually enough to specify the model "\
+		   "ID and the DEVICE."));
 	g_print ("\n\n");
-	g_print (_("If you start grig without any options it will use the Dummy backend "\
-		   "and set the debug level to RIG_DEBUG_NONE. If you don't specify "\
-		   "the transfer rate for the serial port, the default value will be "\
-		   "used by the backend and even if you specify a value, it can be "\
+	g_print (_("If you start grig without any options it "\
+		   "will use the Dummy backend "\
+		   "and set the debug level to RIG_DEBUG_NONE. "\
+		   "If you don't specify "\
+		   "the transfer rate for the serial port, the "\
+		   "default value will be "\
+		   "used by the backend and even if you specify "\
+		   "a value, it can be "\
 		   "overridden by the backend."));
 	g_print ("\n\n");
 }
@@ -462,13 +473,15 @@ static void
 grig_show_version   ()
 {
 	g_print (_("grig %s\n"), VERSION);
-	g_print (_("Graphical User Interface for the Hamradio Control Libraries."));
+	g_print (_("Graphical User Interface for the "\
+		   "Hamradio Control Libraries."));
 	g_print ("\n\n");
 	g_print (_("Copyright (C)  2001-2004  Alexandru Csete."));
 	g_print ("\n");
-	g_print (_("This is free software; see the source for copying conditions. "));
-	g_print (_("There is NO warranty; not even for MERCHANTABILITY or FITNESS "\
-		   "FOR A PARTICULAR PURPOSE."));
+	g_print (_("This is free software; see the source for "\
+		   "copying conditions. "));
+	g_print (_("There is NO warranty; not even for MERCHANTABILITY "
+		   "or FITNESS FOR A PARTICULAR PURPOSE."));
 	g_print ("\n");
 
 }
@@ -514,8 +527,10 @@ grig_list_rigs ()
 	g_array_sort (array, grig_list_compare);
 
 	g_print ("\n");
-	g_print ("   ID  Manufacurer      Model                  Ver.   Status\n");
-	g_print ("---------------------------------------------------------------\n");
+	g_print ("   ID  Manufacurer      Model                  "\
+		 "Ver.   Status\n");
+	g_print ("-----------------------------------------------"\
+		 "----------------\n");
 
 	/* loop over each element of array; after printing one element
 	   free the dynamically allocated strings because GArray does
@@ -525,8 +540,12 @@ grig_list_rigs ()
 
 		info = &g_array_index (array, grig_rig_info_t, i);
 
-		g_print ("%5d  %-16s %-22s %-6s %s\n", info->id, info->mfg, info->model,
-			 info->version, rig_strstatus (info->status));
+		g_print ("%5d  %-16s %-22s %-6s %s\n",
+			 info->id,
+			 info->mfg,
+			 info->model,
+			 info->version,
+			 rig_strstatus (info->status));
 
 		/* free dynamic strings */
 		g_free (info->mfg);
@@ -541,7 +560,8 @@ grig_list_rigs ()
 
 /** \brief Add new entry to list of radios.
  *  \param caps Structure with the capablities of thecurrent radio.
- *  \param array Pointer to the GArray into which the new entry should be stored.
+ *  \param array Pointer to the GArray into which the new entry should be 
+ *               stored.
  *  \return Always 1 to keep rig_list_foreach running.
  *
  * This function is called by the rig_list_foreach hamlib function for each

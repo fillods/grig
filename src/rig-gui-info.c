@@ -52,7 +52,8 @@ rig_gui_info_run ()
 {
 	GtkWidget *dialog;
 
-	dialog = gtk_dialog_new_with_buttons (_("Radio Info"), GTK_WINDOW (grigapp), GTK_DIALOG_DESTROY_WITH_PARENT,
+	dialog = gtk_dialog_new_with_buttons (_("Radio Info"), GTK_WINDOW (grigapp),
+					      GTK_DIALOG_DESTROY_WITH_PARENT,
 					      GTK_STOCK_CLOSE, GTK_RESPONSE_NONE, NULL);
    
 	/* Ensure that the dialog box is destroyed when the user responds. */
@@ -62,8 +63,15 @@ rig_gui_info_run ()
 				  dialog);
 
 	/* Add the label, and show everything we've added to the dialog. */
-	gtk_box_pack_start (GTK_BOX (GTK_DIALOG(dialog)->vbox), rig_gui_info_create_header (), FALSE, FALSE, 0);
-	gtk_box_pack_start (GTK_BOX (GTK_DIALOG(dialog)->vbox), gtk_hseparator_new (), FALSE, FALSE, 10);
+	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox),
+			    rig_gui_info_create_header (),
+			    FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox),
+			    gtk_hseparator_new (),
+			    FALSE, FALSE, 10);
+	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox),
+			    gtk_label_new ("rig caps to come ..."),
+			    FALSE, FALSE, 10);
 
 	gtk_widget_show_all (dialog);
 	
@@ -100,7 +108,7 @@ rig_gui_info_create_header ()
 
 	/* driver version */
 	label = gtk_label_new (NULL);
-	text = g_strdup ("<b>Version:</b>");
+	text = g_strdup ("<b>Driver Version:</b>");
 	gtk_label_set_markup (GTK_LABEL (label), text);
 	g_free (text);
 	gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
@@ -119,7 +127,7 @@ rig_gui_info_create_header ()
 
 	/* driver status */
 	label = gtk_label_new (NULL);
-	text = g_strdup ("<b>Status:</b>");
+	text = g_strdup ("<b>Driver Status:</b>");
 	gtk_label_set_markup (GTK_LABEL (label), text);
 	g_free (text);
 	gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
@@ -138,7 +146,7 @@ rig_gui_info_create_header ()
 
 	/* copyright label */
 	label = gtk_label_new (NULL);
-	text = g_strdup ("<b>License:</b>");
+	text = g_strdup ("<b>Driver License:</b>");
 	gtk_label_set_markup (GTK_LABEL (label), text);
 	g_free (text);
 	gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
