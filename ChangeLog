@@ -1,3 +1,9 @@
+2005-01-07;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/rig-data.c:
+	Fix a mis-spelling.
+
+
 2004-12-21;	Alexandru Csete <csete@users.sourceforge.net>
 
 	* src/rig-daemon-check.c:
