@@ -83,6 +83,7 @@
 #endif
 #include <hamlib/rig.h>
 #include "rig-data.h"
+#include "grig-gtk-workarounds.h"
 #include "rig-gui-lcd.h"
 
 
@@ -138,7 +139,8 @@ static gint           rig_gui_lcd_timeout_stop     (gpointer);
 
 static void           ritval_to_bytearr            (gchar *, shortfreq_t);
 
-
+static GtkWidget     *rig_gui_create_vfo_selector  (void);
+static void           rig_gui_lcd_vfo_cb           (GtkWidget *, gpointer);
 
 
 /** \brief Create LCD display widget.
@@ -150,7 +152,8 @@ static void           ritval_to_bytearr            (gchar *, shortfreq_t);
 GtkWidget *
 rig_gui_lcd_create ()
 {
-	GtkWidget *vbox;
+	GtkWidget *vbox,*hbox;
+	GtkWidget *vfosel;      /* vfo selector */
 	guint      timerid;
 	guint      i;
 
@@ -197,6 +200,10 @@ rig_gui_lcd_create ()
 	}
 #endif
 
+	/* control widgets */
+
+
+	/* pack LCD and controls into a vertical box */
 	vbox = gtk_vbox_new (FALSE, 0);
 
 	gtk_box_pack_start (GTK_BOX (vbox), lcd.canvas, FALSE, FALSE, 5);
@@ -1414,3 +1421,63 @@ ritval_to_bytearr (gchar *array, shortfreq_t freq)
 		}
 	}
 }
+
+
+
+/** \brief Create VFO selector widget.
+ *  \returns A combo box containg the available VFOs.
+ *
+ * This function creates and initialises the VFO selector combo box.
+ * The list in the combo box is populated with data from the VFO list
+ * available via rig_data_get_vfos.
+ *
+ * \bug must make a custom tree-model to store numeric value for each entry...
+ */
+static GtkWidget *
+rig_gui_create_vfo_selector  ()
+{
+	GtkWidget *combo;
+	gint       vfos;
+
+	/* get list of VFOs */
+	vfos = rig_data_get_vfos ();
+
+	/* create and initialize widget */
+	combo = gtk_combo_box_new_text ();
+
+	if (vfos & RIG_VFO_A) {
+		gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("VFO A"));
+	}
+	if (vfos & RIG_VFO_B) {
+		gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("VFO B"));
+	}
+	if (vfos & RIG_VFO_C) {
+		gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("VFO C"));
+	}
+	if (vfos & RIG_VFO_MAIN) {
+		gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("Main"));
+	}
+	if (vfos & RIG_VFO_SUB) {
+		gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("Sub"));
+	}
+
+
+
+	/* add tooltips when widget is realized */
+	g_signal_connect (combo, "realize",
+			  G_CALLBACK (grig_set_combo_tooltips),
+			  _("Select active VFO"));
+
+
+	return combo;
+
+}
+
+
+
+static void
+rig_gui_lcd_vfo_cb           (GtkWidget *widget, gpointer data)
+{
+
+}
+

@@ -38,6 +38,8 @@
 #ifndef RIG_GUI_LCD_H
 #define RIG_GUI_LCD_H 1
 
+#include <hamlib/rig.h>
+
 
 /* default LCD color components.  We kep them public so that the config
    module can access them.
@@ -101,6 +103,7 @@ typedef struct {
 	GdkColor          fg;              /*!< Foreground color. */
 	gboolean          exposed;         /*!< Exposed flag. */
 
+	vfo_t             vfo;             /*!< Current VFO. */
 	gdouble           freq1;           /*!< Main frequency value. */
 	gdouble           freq2;           /*!< Secondary frequency value. */
 	gchar             freqs1[9];       /*!< Frequency array. */
