@@ -1,3 +1,36 @@
+2004-09-22;	Alexandru Csete <csete@users.sourceforge.net>
+	* src/rig-gui-smeter.c: Added callback functions to mode and range selector
+	widgets. The s-meter callback now checks whether we are in RX or TX mode.
+	* src/rig-gui-smeter.h: Adjusted fall-off delays.
+
+2004-09-21;	Alexandru Csete <csete@users.sourceforge.net>
+	* src/rig-gui-smeter.h: Renamed rig_gui_smeter_t to smeter_t. Added
+	enumerations smeter_scale_t and smeter_tx_mode_t for selecting s-meter
+	configuration.
+	* src/rig-gui-smeter.c: Renamed rig_gui_smeter_t to smeter_t. Added
+	combo boxes for scale and mode selection.
+
+2004-09-20;	Alexandru Csete <csete@users.sourceforge.net>
+	* src/rig-data.[ch]: Added rig_data_get_strength function. Added almost
+	all rig_data_has_get_xxx functions (at least prototype templates).
+	* src/rig-daemon.c: Changed powerstat sequence to set-and-get instead of
+	get-and-set which could cause override of GUI command.
+	
+2004-09-18;	Alexandru Csete <csete@users.sourceforge.net>
+	* src/rig-gui-smeter-conv.[ch]: Added files. Contain utility
+	functions to convert dB to needle angle and then needle angle to (x,y)
+	coordinates. The conversion is done in two passes with the needle angle
+	as intermediate result, so that it can be adjusted for mechanical
+	delays.
+	* src/rig-gui-smeter.c: Removed conversion macros in favor of new
+	conversion utility functions in the aboe mentioned file.
+	* src/Makefile.am: Added new files to list.
+
+2004-09-13;	Alexandru Csete <csete@users.sourceforge.net>
+	* src/rig-gui-smeter.c: Added constants an macros to convert from dB to
+	degrees correspondingto the inclination of the needle. The S-meter will
+	be a so-called perfect S-meter with 6dB per S-unit and S9 = 0dB.
+
 2004-08-03;	Alexandru Csete <csete@users.sourceforge.net>
 	* rig-utils.c: mode_to_index algorithm was buggy. Fixed.
 	* rig-gui-smeter.c, rig-gui-smeter.h: Added files containing S-meter
