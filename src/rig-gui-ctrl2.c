@@ -37,6 +37,7 @@
 #include <glib/gi18n.h>
 #include "rig-data.h"
 #include "rig-utils.h"
+#include "grig-gtk-workarounds.h"
 #include "rig-gui-ctrl2.h"
 
 
@@ -131,16 +132,11 @@ static GtkWidget *
 rig_gui_ctrl2_create_agc_selector    ()
 {
 	GtkWidget         *combo;
-	GtkTooltips       *tips;
 	gint               sigid;
 	
 
 	/* create and initialize widget */
 	combo = gtk_combo_box_new_text ();
-	tips = gtk_tooltips_new ();
-	gtk_tooltips_set_tip (tips, combo,
-			      _("Automatic Gain Control"),
-			      _("Select the delay of the AGC"));
 
 	/* FIXME: Hamlib does also have 'user' */
 	gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("AGC OFF"));
@@ -148,6 +144,11 @@ rig_gui_ctrl2_create_agc_selector    ()
 	gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("Fast"));
 	gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("Medium"));
 	gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("Slow"));
+
+	/* add tooltips when widget is realized */
+	g_signal_connect (combo, "realize",
+			  G_CALLBACK (grig_set_combo_tooltips),
+			  _("Automatic Gain Control Level"));
 
 	/* select current level */
 	switch (rig_data_get_agc ()) {
@@ -218,16 +219,11 @@ static GtkWidget *
 rig_gui_ctrl2_create_mode_selector   ()
 {
 	GtkWidget   *combo;
-	GtkTooltips *tips;
 	gint         sigid;
 	
 
 	/* create and initialize widget */
 	combo = gtk_combo_box_new_text ();
-	tips = gtk_tooltips_new ();
-	gtk_tooltips_set_tip (tips, combo,
-			      _("Communication Mode"),
-			      _("Select the communication mode"));
 
 	/* FIXME: Hamlib does also have RIG_MODE_NONE */
 	gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("AM"));
@@ -250,6 +246,11 @@ rig_gui_ctrl2_create_mode_selector   ()
 	/* set current mode */
 	gtk_combo_box_set_active (GTK_COMBO_BOX (combo),
 				  rig_utils_mode_to_index (rig_data_get_mode ()));
+
+	/* add tooltips when widget is realized */
+	g_signal_connect (combo, "realize",
+			  G_CALLBACK (grig_set_combo_tooltips),
+			  _("Communication Mode"));
 
 	/* connect 'changed' signal */
 	sigid = g_signal_connect (G_OBJECT (combo), "changed",
@@ -281,16 +282,11 @@ static GtkWidget *
 rig_gui_ctrl2_create_filter_selector ()
 {
 	GtkWidget   *combo;
-	GtkTooltips *tips;
 	gint         sigid;
 	
 
 	/* create and initialize widget */
 	combo = gtk_combo_box_new_text ();
-	tips = gtk_tooltips_new ();
-	gtk_tooltips_set_tip (tips, combo,
-			      _("Passband width"),
-			      _("Use this menu to select the passband width"));
 
 	/* Add items */
 	gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("Wide"));
@@ -317,6 +313,11 @@ rig_gui_ctrl2_create_filter_selector ()
 		gtk_combo_box_set_active (GTK_COMBO_BOX (combo), 3);
 		break;
 	}
+
+	/* add tooltips when widget is realized */
+	g_signal_connect (combo, "realize",
+			  G_CALLBACK (grig_set_combo_tooltips),
+			  _("Passband Width"));
 
 	/* connect 'changed' signal */
 	sigid = g_signal_connect (G_OBJECT (combo), "changed",

@@ -16,6 +16,7 @@ grig_SOURCES = \
 	main.c \
 	grig-about.c grig-about.h \
 	grig-config.c grig-config.h \
+	grig-gtk-workarounds.c grig-gtk-workarounds.h \
 	grig-menubar.c grig-menubar.h \
 	rig-anomaly.c rig-anomaly.h \
 	rig-daemon.c rig-daemon.h \

@@ -177,6 +177,7 @@ shortfreq_t      rig_data_get_xitmin   (void);
 shortfreq_t      rig_data_get_xitmax   (void);
 shortfreq_t      rig_data_get_xitstep  (void);
 
+
 /* has_get functions */
 int   rig_data_has_get_pstat    (void);
 int   rig_data_has_get_ptt      (void);

@@ -34,6 +34,7 @@
 #include <glib/gi18n.h>
 #include "rig-data.h"
 #include "rig-utils.h"
+#include "grig-gtk-workarounds.h"
 #include "rig-gui-buttons.h"
 
 
@@ -260,6 +261,11 @@ rig_gui_buttons_create_att_selector    ()
 		gtk_widget_set_sensitive (att, FALSE);
 	}
 
+	/* add tooltips when widget is realized */
+	g_signal_connect (att, "realize",
+			  G_CALLBACK (grig_set_combo_tooltips),
+			  _("Attenuator Level"));
+
 	/* connect 'changed' signal */
 	sigid = g_signal_connect (G_OBJECT (att), "changed",
 				  G_CALLBACK (rig_gui_buttons_att_cb),
@@ -317,6 +323,11 @@ rig_gui_buttons_create_preamp_selector    ()
 	if (!rig_data_has_set_preamp ()) {
 		gtk_widget_set_sensitive (preamp, FALSE);
 	}
+
+	/* add tooltips when widget is realized */
+	g_signal_connect (preamp, "realize",
+			  G_CALLBACK (grig_set_combo_tooltips),
+			  _("Preamp Level"));
 
 	/* connect 'changed' signal */
 	sigid = g_signal_connect (G_OBJECT (preamp), "changed",

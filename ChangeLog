@@ -1,3 +1,79 @@
+2004-12-03;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* grig.desktop:
+	Removed file.
+	
+
+2004-12-02;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/grig-gtk-workarounds.c, src/griggtk-workarounds.h:
+	Created files. Intended to contain various workaround tricks for Gtk+
+	bugs and limitations. Currently it contains funtions to allow tooltips
+	with the GtkComboBox widget.
+
+	* src/rig-guit-ctrl2.c, src/rig-gui-buttons.c:
+	Added tooltips for combo boxes using the new utilities.
+	Fixes bug #1002573.
+
+	* src/Makefile.am:
+	Added new files to the list.
+
+
+2004-12-01;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* configure.in:
+	Added configure option to enable coverage report generation by gcov.
+
+
+2004-11-30;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/main.c:
+	Catch SIGTERM, SIGINT and SIGABRT and try to make a clean exit.
+
+	* doc/man/grig.1.in:
+	Fixed a typo.
+
+
+2004-11-27;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* configure.in, grig.1.in:
+	Moved man page to doc/man/ subdirectory. Added more text to man page.
+
+	* doc/man/Makefile.am, doc/Makefile.am:
+	Created files. Man page now installed correctly (fixes bug #1065828).
+
+	* README:
+	Updated.
+
+	* Makefile.am:
+	Removed explicit handling of man page.
+	
+
+2004-11-23;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/rig-daemon.c:
+	Added rig_daemon.get_brand and rig_daemon_get_model functions. Ideally,
+	these function should have been in rig-data but since the only user at
+	the moment is main.c which already has visibility on rig-daemon, it was
+	easiest to implement them here.
+	Fixed a typo.
+
+	* src/main.c:
+	Use new get_brand and get_model functions. This fixes bug #1069293.
+
+	* src/rig-gui-info.c:
+	Changed packing options for tuning step frame.
+
+	* src/rig-gui.c:
+	Don't include the levels widget since it contains nothing yet.
+
+
+2004-11-21;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/rig-gui-info.c:
+	Finished preamp and att info frame and reorganized main container.
+	
+
 2004-11-19;	Alexandru Csete <csete@users.sourceforge.net>
 
 	* src/rig-data.c:

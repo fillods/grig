@@ -410,6 +410,8 @@ rig_daemon_check_xit      (RIG               *myrig,
  * This function tests the availability of the mode and passband width
  * settings. These are checked together because this is the way hamlib
  * manages them.
+ *
+ * \bug get tuningstep not implemented?
  */
 void
 rig_daemon_check_mode     (RIG               *myrig,
