@@ -79,6 +79,8 @@ typedef struct {
 	shortfreq_t      xit;     /*!< XIT. */
 	float            power;   /*!< TX power. */
 	int              agc;     /*!< AGC level. */
+	int              att;     /*!< Attenuator. */
+	int              preamp;  /*!< Pre-amplifier. */
 
 	/* read only fields */
 	int             strength; /*!< Signal strength. */
@@ -106,6 +108,8 @@ typedef struct {
 	int         xit;
 	int         power;
 	int         agc;
+	int         att;
+	int         preamp;
 
 	/* read only fields */
 	int         strength;
@@ -114,8 +118,9 @@ typedef struct {
 } grig_cmd_avail_t;
 
 
-#define GRIG_LEVEL_RD (RIG_LEVEL_RFPOWER | RIG_LEVEL_AGC | RIG_LEVEL_SWR | RIG_LEVEL_ALC | RIG_LEVEL_STRENGTH)
-#define GRIG_LEVEL_WR (RIG_LEVEL_RFPOWER | RIG_LEVEL_AGC)
+#define GRIG_LEVEL_RD (RIG_LEVEL_RFPOWER | RIG_LEVEL_AGC | RIG_LEVEL_SWR | RIG_LEVEL_ALC | \
+		       RIG_LEVEL_STRENGTH | RIG_LEVEL_ATT | RIG_LEVEL_PREAMP)
+#define GRIG_LEVEL_WR (RIG_LEVEL_RFPOWER | RIG_LEVEL_AGC | RIG_LEVEL_ATT | RIG_LEVEL_PREAMP)
 
 /* init functions */
 void rig_data_init        (void);
@@ -132,6 +137,8 @@ void rig_data_set_freq    (int, freq_t);
 void rig_data_set_rit     (shortfreq_t);
 void rig_data_set_xit     (shortfreq_t);
 void rig_data_set_agc     (int);
+void rig_data_set_att     (int);
+void rig_data_set_preamp  (int);
 
 #define rig_data_set_freq1(x) (rig_data_set_freq(1,x))
 #define rig_data_set_freq2(x) (rig_data_set_freq(2,x))
@@ -146,6 +153,8 @@ freq_t           rig_data_get_freq     (int);
 shortfreq_t      rig_data_get_rit      (void);
 shortfreq_t      rig_data_get_xit      (void);
 int              rig_data_get_agc      (void);
+int              rig_data_get_att      (void);
+int              rig_data_get_preamp   (void);
 int              rig_data_get_strength (void);
 freq_t           rig_data_get_fmin     (void);
 freq_t           rig_data_get_fmax     (void);
@@ -167,12 +176,16 @@ int   rig_data_has_get_freq1     (void);
 int   rig_data_has_get_freq2     (void);
 int   rig_data_has_get_rit      (void);
 int   rig_data_has_get_xit      (void);
-/* int   rig_data_has_get_agc      (void); */
+int   rig_data_has_get_agc      (void);
+int   rig_data_has_get_att      (void);
+int   rig_data_has_get_preamp   (void);
 int   rig_data_has_get_strength (void);
 
 /* has_set functions */
 int   rig_data_has_set_freq1     (void);
 int   rig_data_has_set_freq2     (void);
+int   rig_data_has_set_att      (void);
+int   rig_data_has_set_preamp   (void);
 
 
 /* address acquisition functions */

@@ -223,6 +223,34 @@ rig_data_set_agc     (int agc)
 }
 
 
+/** \brief Set attenuator level.
+ *  \param rit The new attenuator level.
+ *
+ * This function sets the targeted attenuator level to att.
+ */
+void
+rig_data_set_att     (int att)
+{
+	set.att = att;
+	get.att = att;
+	new.att = 1;
+}
+
+
+/** \brief Set pre-amplifier level.
+ *  \param rit The new pre-amplifier level.
+ *
+ * This function sets the targeted pre-amplifier level to preamp.
+ */
+void
+rig_data_set_preamp     (int preamp)
+{
+	set.preamp = preamp;
+	get.preamp = preamp;
+	new.preamp = 1;
+}
+
+
 /** \brief Get power status.
  *  \return The current power status.
  *
@@ -392,6 +420,18 @@ rig_data_get_agc     ()
 }
 
 
+/** \brief Get attenuator level.
+ *  \return The current value of the attenuator.
+ *
+ * This function returns the current value of the attenuator.
+ */
+int
+rig_data_get_att     ()
+{
+	return get.att;
+}
+
+
 /** \brief Get signal strength.
  *  \return The current value of the signal strength.
  *
@@ -428,6 +468,7 @@ rig_data_has_get_rit ()
 }
 
 
+
 /** \brief Get availablility of XIT.
  *  \return 1 if available, otherwise 0.
  *
@@ -440,78 +481,44 @@ rig_data_has_get_xit ()
 }
 
 
-/** \brief Get address of 'get' variable.
- *  \return A pointer to the shared data.
+
+/** \brief Get availablility of AGC.
+ *  \return 1 if available, otherwise 0.
  *
- * This function is used to obtain the address of the 'get' global data.
- * This is primarly used by the radio daemon for fast access to the data
- * structure.
+ * This function returns the value of the has_get.agc variable.
  */
-grig_settings_t  *
-rig_data_get_get_addr ()
+int
+rig_data_has_get_agc ()
 {
-	return &get;
+	return has_get.agc;
 }
 
 
 
-/** \brief Get address of 'set' variable.
- *  \return A pointer to the shared data.
+/** \brief Get availablility of attenuator.
+ *  \return 1 if available, otherwise 0.
  *
- * This function is used to obtain the address of the 'set' global data.
- * This is primarly used by the radio daemon for fast access to the data
- * structure.
+ * This function returns the value of the has_get.att variable.
  */
-grig_settings_t  *
-rig_data_get_set_addr ()
+int
+rig_data_has_get_att ()
 {
-	return &set;
+	return has_get.att;
 }
 
 
 
-/** \brief Get address of 'new' variable.
- *  \return A pointer to the shared data.
+/** \brief Get availablility of pre-amp.
+ *  \return 1 if available, otherwise 0.
  *
- * This function is used to obtain the address of the 'new' global data.
- * This is primarly used by the radio daemon for fast access to the data
- * structure.
+ * This function returns the value of the has_get.preamp variable.
  */
-grig_cmd_avail_t *
-rig_data_get_new_addr ()
+int
+rig_data_has_get_preamp ()
 {
-	return &new;
+	return has_get.preamp;
 }
 
-
-
-/** \brief Get address of 'has_set' variable.
- *  \return A pointer to the shared data.
- *
- * This function is used to obtain the address of the 'has_set' global data.
- * This is primarly used by the radio daemon for fast access to the data
- * structure.
- */
-grig_cmd_avail_t *
-rig_data_get_has_set_addr ()
-{
-	return &has_set;
-}
-
-
-
-/** \brief Get address of 'has_get' variable.
- *  \return A pointer to the shared data.
- *
- * This function is used to obtain the address of the 'has_get' global data.
- * This is primarly used by the radio daemon for fast access to the data
- * structure.
- */
-grig_cmd_avail_t *
-rig_data_get_has_get_addr ()
-{
-	return &has_get;
-}
 
 
 
@@ -577,6 +584,36 @@ rig_data_has_set_freq2     ()
 	return has_set.freq2;
 }
 
+
+
+/** \brief Some text.
+ *  \return description
+ *
+ * Detailed description.
+ *
+ * \bug writeme
+ */
+int
+rig_data_has_set_att    ()
+{
+	return has_set.att;
+}
+
+
+
+
+/** \brief Some text.
+ *  \return description
+ *
+ * Detailed description.
+ *
+ * \bug writeme
+ */
+int
+rig_data_has_set_preamp     ()
+{
+	return has_set.preamp;
+}
 
 
 
@@ -661,3 +698,78 @@ rig_data_get_xitstep    ()
 {
 	return get.xitstep;
 }
+
+
+/** \brief Get address of 'get' variable.
+ *  \return A pointer to the shared data.
+ *
+ * This function is used to obtain the address of the 'get' global data.
+ * This is primarly used by the radio daemon for fast access to the data
+ * structure.
+ */
+grig_settings_t  *
+rig_data_get_get_addr ()
+{
+	return &get;
+}
+
+
+
+/** \brief Get address of 'set' variable.
+ *  \return A pointer to the shared data.
+ *
+ * This function is used to obtain the address of the 'set' global data.
+ * This is primarly used by the radio daemon for fast access to the data
+ * structure.
+ */
+grig_settings_t  *
+rig_data_get_set_addr ()
+{
+	return &set;
+}
+
+
+
+/** \brief Get address of 'new' variable.
+ *  \return A pointer to the shared data.
+ *
+ * This function is used to obtain the address of the 'new' global data.
+ * This is primarly used by the radio daemon for fast access to the data
+ * structure.
+ */
+grig_cmd_avail_t *
+rig_data_get_new_addr ()
+{
+	return &new;
+}
+
+
+
+/** \brief Get address of 'has_set' variable.
+ *  \return A pointer to the shared data.
+ *
+ * This function is used to obtain the address of the 'has_set' global data.
+ * This is primarly used by the radio daemon for fast access to the data
+ * structure.
+ */
+grig_cmd_avail_t *
+rig_data_get_has_set_addr ()
+{
+	return &has_set;
+}
+
+
+
+/** \brief Get address of 'has_get' variable.
+ *  \return A pointer to the shared data.
+ *
+ * This function is used to obtain the address of the 'has_get' global data.
+ * This is primarly used by the radio daemon for fast access to the data
+ * structure.
+ */
+grig_cmd_avail_t *
+rig_data_get_has_get_addr ()
+{
+	return &has_get;
+}
+
