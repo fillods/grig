@@ -52,6 +52,7 @@ static GtkWidget *rig_gui_info_create_offset_frame   (void);
 static GtkWidget *rig_gui_info_create_level_frame    (void);
 static GtkWidget *rig_gui_info_create_if_frame       (void);
 static GtkWidget *rig_gui_info_create_tunstep_frame  (void);
+static GtkWidget *rig_gui_info_create_frontend_frame (void);
 
 
 /** \brief Create info dialog.
@@ -97,6 +98,10 @@ rig_gui_info_run ()
 
 	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox),
 			    rig_gui_info_create_tunstep_frame (),
+			    FALSE, FALSE, 10);
+
+	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox),
+			    rig_gui_info_create_frontend_frame (),
 			    FALSE, FALSE, 10);
 
 	gtk_widget_show_all (dialog);
@@ -780,4 +785,48 @@ rig_gui_info_create_tunstep_frame  ()
 
 	return swin;
 }
+
+
+
+/** \brief Create front end info frame.
+ *  \return A container widget containing the info.
+ *
+ * This function creates the widgets used to display the front end
+ * information (pre-amp, attenuator).
+ */
+static GtkWidget *
+rig_gui_info_create_frontend_frame ()
+{
+	GtkWidget *frame;
+	GtkWidget *table;
+	GtkWidget *label;
+	gchar     *text;
+
+	table = gtk_table_new (2, 2, TRUE);
+
+	label = gtk_label_new (_("PREAMP:"));
+	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+	gtk_table_attach (GTK_TABLE (table), label,
+			  0, 1, 0, 1,
+			  GTK_EXPAND | GTK_FILL,
+			  GTK_EXPAND | GTK_FILL,
+			  5, 0);
+
+
+	label = gtk_label_new (_("ATT:"));
+	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+	gtk_table_attach (GTK_TABLE (table), label,
+			  0, 1, 1, 2,
+			  GTK_EXPAND | GTK_FILL,
+			  GTK_EXPAND | GTK_FILL,
+			  5, 0);
+
+
+	frame = gtk_frame_new (_("Front End"));
+	gtk_frame_set_label_align (GTK_FRAME (frame), 0.5, 0.5);
+	gtk_container_add (GTK_CONTAINER (frame), table);
+
+	return frame;
+}
+
 
