@@ -1,3 +1,16 @@
+2004-12-21;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/rig-daemon-check.c:
+	Worked on a fix for bug #1082325, which causes misbehaviour if the rig
+	is OFF when grig is started. Basically, only the powerstatus is tested
+	for real, all other setting availabilities are obtained from the rig
+	caps. If power status is not available from rig, RIG_POWER_ON is stored
+	in the rig data structure.
+
+	* src/rig-daemon.c:
+	Only get/set power status if rig is in power off state.
+
+
 2004-12-12;	Alexandru Csete <csete@users.sourceforge.net>
 
 	* src/rig-daemon.c, src/rig-daemon.h:
