@@ -101,9 +101,9 @@ rig_daemon_check_pwrstat         (RIG              *myrig,
  *  \param has_set Pointer to shared data 'has_set'.
  *
  * This function check the availability of the PTT status. The check is done
- * by trying to read the PTT status and then trying to reset it to the read
- * value. If the read was unsuccessful the write check is performed with
- * RIG_PTT_OFF.
+ * by reading the caps->get_ptt and caps->set_ptt. These are pointersto the
+ * actual backend functions and should only be non-null if the backend atually
+ * supports these operations.
  */
 void
 rig_daemon_check_ptt     (RIG               *myrig,
@@ -112,25 +112,9 @@ rig_daemon_check_ptt     (RIG               *myrig,
 			  grig_cmd_avail_t  *has_set)
 
 {
-	int               retcode;                 /* Hamlib status code */
-	ptt_t             ptt = RIG_PTT_OFF;       /* PTT status */
-
-
-	/* PTT status */
-	retcode = rig_get_ptt (myrig, RIG_VFO_CURR, &ptt);
-	if (retcode == RIG_OK) {
-		has_get->ptt = TRUE;
-		get->ptt = ptt;
-	}
-	else {
-		has_get->ptt = FALSE;
-		get->ptt = RIG_PTT_OFF;
-	}
-
-	/* try to set PTT status */
-	retcode = rig_set_ptt (myrig, RIG_VFO_CURR, get->ptt);
-	has_set->ptt = (retcode == RIG_OK) ? TRUE : FALSE;
-
+	has_get->ptt = (myrig->caps->get_ptt != NULL) ? TRUE : FALSE;
+	has_set->ptt = (myrig->caps->set_ptt != NULL) ? TRUE : FALSE;
+	get->ptt = RIG_PTT_OFF;
 }
 
 
@@ -142,10 +126,7 @@ rig_daemon_check_ptt     (RIG               *myrig,
  *  \param has_set Pointer to shared data 'has_set'.
  *
  * This function check the availability of VFO selection. The check is done
- * by trying to read the selected VFO and then trying to reset it to the read
- * value. If the read was unsuccessful the write check is not performed because
- * it doesn't make much sense to set any VFO when we don't even know what kind
- * of VFO's we have (VFOA/B or MAIN/SUB).
+ * by looking for in the rig_caps structure of myrig.
  */
 void
 rig_daemon_check_vfo     (RIG               *myrig,
@@ -158,28 +139,30 @@ rig_daemon_check_vfo     (RIG               *myrig,
 	vfo_t             vfo = RIG_VFO_NONE;      /* current VFO */
 
 
-	/* try to get current VFO */
-	retcode = rig_get_vfo (myrig, &vfo);
-	if (retcode == RIG_OK) {
-		has_get->vfo = TRUE;
-		get->vfo = vfo;
-	}
-	else {
-		has_get->vfo = FALSE;
-		get->vfo = RIG_VFO_NONE;
-	}
-
-	if (has_get->vfo) {
-		/* check set_vfo functionality */
-		retcode = rig_set_vfo (myrig, get->vfo);
-		has_set->vfo = (retcode == RIG_OK) ? TRUE : FALSE;
-	}
-	else {
-		has_set->vfo = FALSE;
-	}
+	/* check whether we can get/set VFO */
+	has_get->vfo = (myrig->caps->get_vfo != NULL) ? TRUE : FALSE;
+	has_set->vfo = (myrig->caps->set_vfo != NULL) ? TRUE : FALSE;
 
 	/* store available VFOs */
-	rig_data_set_vfos (myrig->state.vfo_list);
+	if ((has_get->vfo || has_set->vfo) && (myrig->state.vfo_list != 0)) {
+		rig_data_set_vfos (myrig->state.vfo_list);
+	}
+	else {
+		rig_debug (RIG_DEBUG_BUG,
+			   "*** GRIG: %s: Can not find VFO list for this "\
+			   "backend! Bug in backed?\n", __FUNCTION__);
+	}
+
+	/* try to get current VFO */
+	if (has_get->vfo) {
+		retcode = rig_get_vfo (myrig, &vfo);
+		if (retcode == RIG_OK) {
+			get->vfo = vfo;
+		}
+		else {
+			get->vfo = RIG_VFO_NONE;
+		}
+	}
 }
 
 
@@ -191,10 +174,10 @@ rig_daemon_check_vfo     (RIG               *myrig,
  *  \param has_get Pointer to shared data 'has_get'.
  *  \param has_set Pointer to shared data 'has_set'.
  *
- * This function tests whether the rig is capable to get/set the frequency. First
- * the primary frequency is checked (the one on RIG_VFO_CURR). Then, if the primary
- * frequency operations are ok and we know about the available VFOs, the secondary
- * frequency is tested.
+ * This function tests whether the rig is capable to get/set the frequency. 
+ * The test is done by checking the get_freq and set_freq pointers in the
+ * rig_caps structure. Furthermore, if the rig is capable of getting the
+ * frequency, the curent frequency is read.
  */
 void
 rig_daemon_check_freq     (RIG               *myrig,
@@ -204,114 +187,27 @@ rig_daemon_check_freq     (RIG               *myrig,
 
 {
 	int               retcode;                 /* Hamlib status code */
-	vfo_t             vfo = RIG_VFO_NONE;      /* current VFO */
 	freq_t            freq;                    /* current frequency */
 
 
+	/* check get/set freq availabilities */
+	has_get->freq1 = (myrig->caps->get_freq != NULL) ? TRUE : FALSE;
+	has_set->freq1 = (myrig->caps->set_freq != NULL) ? TRUE : FALSE;
+	
 
-	/* check get_freq functionality for the primary/working
-	   frequency.
-	*/
-	retcode = rig_get_freq (myrig, RIG_VFO_CURR, &freq);
-	if (retcode == RIG_OK) {
-		has_get->freq1 = TRUE;
-		get->freq1 = freq;
+	if (has_get->freq1) {
+		/* try to obtain current frequncy */
+		retcode = rig_get_freq (myrig, RIG_VFO_CURR, &freq);
+		if (retcode == RIG_OK) {
+			get->freq1 = freq;
+		}
+		else {
+			get->freq1 = 0.0;
+		}
 	}
 	else {
-		has_get->freq1 = FALSE;
 		get->freq1 = 0.0;
 	}
-
-	/* try to reset the current frequency but only if we
-	   have get_freq; if not don't bother with set_freq ???
-	*/
-	if (has_get->freq1) {
-		retcode = rig_set_freq (myrig, RIG_VFO_CURR, get->freq1);
-		has_set->freq1 = (retcode == RIG_OK) ? TRUE : FALSE;
-	}
-	else {
-		has_set->freq1 = FALSE;
-	}
-
-
-	/* now we try the secondary frequency, ie. not the one on RIG_VFO_CURR */
-	if (has_get->freq1) {
-		switch (get->vfo) {
-			
-			/* VFO A */
-		case RIG_VFO_A:
-			vfo = RIG_VFO_B;
-			break;
-
-			/* VFO B or C; grig is too stupid to know about 3 VFOs ...
-			   or at least I am to lazy to bother about 3 VFOs ;)
-			*/
-		case RIG_VFO_B:
-		case RIG_VFO_C:
-			vfo = RIG_VFO_A;
-			break;
-
-			/* Main VFO */
-		case RIG_VFO_MAIN:
-			vfo = RIG_VFO_SUB;
-			break;
-
-			/* Sub VFO */
-		case RIG_VFO_SUB:
-			vfo = RIG_VFO_MAIN;
-			break;
-
-			/* trouble... */
-		case RIG_VFO_CURR:
-		case RIG_VFO_NONE:
-		default:
-
-			/* send an error report */
-			rig_debug (RIG_DEBUG_ERR,
-				   "*** GRIG: %s: I can't figure out available VFOs (got %d)\n",
-				   __FUNCTION__, get->vfo);
-
-			vfo = RIG_VFO_NONE;
-			break;
-		}
-
-		if (vfo != RIG_VFO_NONE) {
-			retcode = rig_get_freq (myrig, vfo, &freq);
-			if (retcode == RIG_OK) {
-				has_get->freq2 = TRUE;
-				get->freq2 = freq;
-			}
-			else {
-				has_get->freq2 = FALSE;
-				get->freq2 = 0.0;
-			}
-		}
-		else {
-			has_get->freq2 = FALSE;
-			get->freq2 = 0.0;
-		}
-
-		/* try to set secondary frequency; normally we should not do it
-		   here (inside the if), but it makes no difference due to the
-		   "No Get => No Set" policy
-		*/
-		if (has_get->freq2) {
-
-			/* NB: has_get->freq2 TRUE => vfo is different from RIG_VFO_NONE */
-			retcode = rig_set_freq (myrig, vfo, get->freq2);
-			has_set->freq2 = (retcode == RIG_OK) ? TRUE : FALSE;
-		}
-		else {
-			has_set->freq2 = FALSE;
-		}
-
-	}
-	else {
-		has_get->freq2 = FALSE;
-		get->freq2 = 0.0;
-	}
-
-
 }
 
 
@@ -321,9 +217,11 @@ rig_daemon_check_freq     (RIG               *myrig,
  *  \param has_get Pointer to shared data 'has_get'.
  *  \param has_set Pointer to shared data 'has_set'.
  *
- * This function check the availability of the RIT value. The check is done
- * by trying to read the RIT value and then trying to reset it to the read
- * value. If the read was unsuccessful the write check is performed with 0Hz.
+ * This function check the availability of the RIT value. The test is done
+ * by checking the get_rit and set-rit pointers in the rig_caps structure.
+ * Furthermore, if get_rit is available the current value is read and stored.
+ *
+ * \bug The code sets the ritstep to 10Hz.
  */
 void
 rig_daemon_check_rit      (RIG               *myrig,
@@ -336,26 +234,29 @@ rig_daemon_check_rit      (RIG               *myrig,
 	int               retcode;                 /* Hamlib status code */
 	shortfreq_t       sfreq;                   /* current RIT setting */
 
+	/* checkfor RIT availability */
+	has_get->rit = (myrig->caps->get_rit != NULL) ? TRUE : FALSE;
+	has_set->rit = (myrig->caps->set_rit != NULL) ? TRUE : FALSE;
 
-	/* try to get RIT setting */
-	retcode = rig_get_rit (myrig, RIG_VFO_CURR, &sfreq);
-	if (retcode == RIG_OK) {
-		has_get->rit = TRUE;
-		get->rit = sfreq;
+	if (has_get->rit) {
+		/* try to get RIT setting */
+		retcode = rig_get_rit (myrig, RIG_VFO_CURR, &sfreq);
+		if (retcode == RIG_OK) {
+			get->rit = sfreq;
+		}
+		else {
+			get->rit = 0;
+		}
 	}
 	else {
-		has_get->rit = FALSE;
 		get->rit = 0;
 	}
 
-	/* try to reset RIT */
-	retcode = rig_set_rit (myrig, RIG_VFO_CURR, get->rit);
-	has_set->rit = (retcode == RIG_OK) ? TRUE : FALSE;
-
-	/* get RIT range and tuning step */
-	get->ritmax = 9990; //myrig->caps->max_rit;
-	get->ritstep = s_Hz(10);
-
+	if (has_get->rit && has_set->rit) {
+		/* get RIT range and tuning step */
+		get->ritmax = myrig->caps->max_rit;
+		get->ritstep = s_Hz(10);
+	}
 }
 
 
@@ -366,9 +267,11 @@ rig_daemon_check_rit      (RIG               *myrig,
  *  \param has_get Pointer to shared data 'has_get'.
  *  \param has_set Pointer to shared data 'has_set'.
  *
- * This function check the availability of the XIT value. The check is done
- * by trying to read the XIT value and then trying to reset it to the read
- * value. If the read was unsuccessful the write check is performed with 0Hz.
+ * This function check the availability of the XIT value. The test is done
+ * by checking the get_xit and set-xit pointers in the rig_caps structure.
+ * Furthermore, if get_xit is available the current value is read and stored.
+ *
+ * \bug The code sets the xitstep to 10Hz.
  */
 void
 rig_daemon_check_xit      (RIG               *myrig,
@@ -381,26 +284,29 @@ rig_daemon_check_xit      (RIG               *myrig,
 	int               retcode;                 /* Hamlib status code */
 	shortfreq_t       sfreq;                   /* current XIT setting */
 
+	/* checkfor XIT availability */
+	has_get->xit = (myrig->caps->get_xit != NULL) ? TRUE : FALSE;
+	has_set->xit = (myrig->caps->set_xit != NULL) ? TRUE : FALSE;
 
-	/* try to get XIT */
-	retcode = rig_get_xit (myrig, RIG_VFO_CURR, &sfreq);
-	if (retcode == RIG_OK) {
-		has_get->xit = TRUE;
-		get->xit = sfreq;
+	if (has_get->xit) {
+		/* try to get RIT setting */
+		retcode = rig_get_xit (myrig, RIG_VFO_CURR, &sfreq);
+		if (retcode == RIG_OK) {
+			get->xit = sfreq;
+		}
+		else {
+			get->xit = 0;
+		}
 	}
 	else {
-		has_get->xit = FALSE;
 		get->xit = 0;
 	}
 
-	/* try to reset XIT */
-	retcode = rig_set_xit (myrig, RIG_VFO_CURR, get->xit);
-	has_set->xit = (retcode == RIG_OK) ? TRUE : FALSE;
-
-	/* get XIT range and tuning step */
-	get->xitmax = myrig->caps->max_xit;
-	get->xitstep = s_Hz(10);
-
+	if (has_get->xit && has_set->xit) {
+		/* get XIT range and tuning step */
+		get->xitmax = myrig->caps->max_xit;
+		get->xitstep = s_Hz(10);
+	}
 }
 
 
@@ -432,11 +338,15 @@ rig_daemon_check_mode     (RIG               *myrig,
 	int               found_mode = 0;          /* flag to indicate found mode */
 
 
+	has_get->mode = (myrig->caps->get_mode != NULL) ? TRUE : FALSE;
+	has_set->mode = (myrig->caps->set_mode != NULL) ? TRUE : FALSE;
+
+	has_get->pbw = has_get->mode;
+	has_set->pbw = has_set->mode;
+
 	/* try to get mode and passband width */
 	retcode = rig_get_mode (myrig, RIG_VFO_CURR, &mode, &pbw);
 	if (retcode == RIG_OK) {
-		has_get->mode = TRUE;
-		has_get->pbw  = TRUE;
 		get->mode     = mode;
 
 		/* convert and store the new passband width */
@@ -477,8 +387,6 @@ rig_daemon_check_mode     (RIG               *myrig,
 	}
 
 	else {
-		has_get->mode = FALSE;
-		has_get->pbw  = FALSE;
 		get->mode     = RIG_MODE_NONE;
 		get->pbw      = RIG_PASSBAND_NORMAL;
 
@@ -486,19 +394,6 @@ rig_daemon_check_mode     (RIG               *myrig,
 		get->fmin  = kHz(30);
 		get->fmax  = GHz(1);
 		get->fstep = Hz(10);
-	}
-
-	/* try to reset mode and passband width;
-	   ok to set RIG_MODE_NONE?
-	*/
-	retcode = rig_set_mode (myrig, RIG_VFO_CURR, get->mode, get->pbw);
-	if (retcode == RIG_OK) {
-		has_set->mode = TRUE;
-		has_set->pbw  = TRUE;
-	}
-	else {
-		has_set->mode = FALSE;
-		has_set->pbw  = FALSE;
 	}
 
 }
@@ -513,7 +408,7 @@ rig_daemon_check_mode     (RIG               *myrig,
  * This function tests the availability of various level settings.
  * Please note, that while some levels are both readable and writeable, others
  * are only readable (eg. signal strength, SWR). Only the levels supported
- * byt grig are tested.
+ * by grig are tested.
  */
 void
 rig_daemon_check_level     (RIG               *myrig,
@@ -551,9 +446,6 @@ rig_daemon_check_level     (RIG               *myrig,
 			rig_debug (RIG_DEBUG_ERR,
 				   "*** GRIG: %s: Could not get RF power\n",
 				   __FUNCTION__);
-			
-			/* disable command */
-			has_get->power = FALSE;
 		}
 	}
 
@@ -567,9 +459,6 @@ rig_daemon_check_level     (RIG               *myrig,
 			rig_debug (RIG_DEBUG_ERR,
 				   "*** GRIG: %s: Could not get signal strength\n",
 				   __FUNCTION__);
-			
-			/* disable command */
-			has_get->strength = FALSE;
 
 			get->strength = -54;
 		}
@@ -585,9 +474,6 @@ rig_daemon_check_level     (RIG               *myrig,
 			rig_debug (RIG_DEBUG_ERR,
 				   "*** GRIG: %s: Could not get SWR\n",
 				   __FUNCTION__);
-			
-			/* disable command */
-			has_get->swr = FALSE;
 		}
 	}
 
@@ -601,10 +487,6 @@ rig_daemon_check_level     (RIG               *myrig,
 			rig_debug (RIG_DEBUG_ERR,
 				   "*** GRIG: %s: Could not get ALC\n",
 				   __FUNCTION__);
-			
-			/* disable command */
-			has_get->alc = FALSE;
-			
 		}
 	}
 
@@ -618,10 +500,6 @@ rig_daemon_check_level     (RIG               *myrig,
 			rig_debug (RIG_DEBUG_ERR,
 				   "*** GRIG: %s: Could not get AGC\n",
 				   __FUNCTION__);
-			
-			/* disable command */
-			has_get->agc = FALSE;
-			
 		}
 	}
 
@@ -635,9 +513,6 @@ rig_daemon_check_level     (RIG               *myrig,
 			rig_debug (RIG_DEBUG_ERR,
 				   "*** GRIG: %s: Could not get ATT\n",
 				   __FUNCTION__);
-
-			/* disable ATT */
-			has_get->att = FALSE;
 		}
 	}
 
@@ -651,9 +526,6 @@ rig_daemon_check_level     (RIG               *myrig,
 			rig_debug (RIG_DEBUG_ERR,
 				   "*** GRIG: %s: Could not get PREAMP\n",
 				   __FUNCTION__);
-
-			/* disable PREAMP */
-			has_get->preamp = FALSE;
 		}
 	}
 
