@@ -441,29 +441,29 @@ grig_app_create       (gint rignum)
 
 	if (!gconf_client_dir_exists (confclient, buff, NULL)) {
 		g_free (buff);
-
+		
 		brand = g_strdup ("Hamlib");
 		model = g_strdup ("Dummy");
 	}
 	else {
 		g_free (buff);
 // end PATCH-996426
-	/* get rig brand */
-	buff = g_strdup_printf ("%s/%i/Brand", GRIG_CONFIG_RIG_DIR, rignum);
-	brand = gconf_client_get_string (confclient, buff, NULL);
-	g_free (buff);
+		/* get rig brand */
+		buff = g_strdup_printf ("%s/%i/Brand", GRIG_CONFIG_RIG_DIR, rignum);
+		brand = gconf_client_get_string (confclient, buff, NULL);
+		g_free (buff);
 
-	/* get rig model */
-	buff = g_strdup_printf ("%s/%i/Model", GRIG_CONFIG_RIG_DIR, rignum);
-	model = gconf_client_get_string (confclient, buff, NULL);
-	g_free (buff);
+		/* get rig model */
+		buff = g_strdup_printf ("%s/%i/Model", GRIG_CONFIG_RIG_DIR, rignum);
+		model = gconf_client_get_string (confclient, buff, NULL);
+		g_free (buff);
 
 // begin PATCH-996426
 	}
 // end PATCH-996426
 
 	/* construct title */
-	title = g_strdup_printf (_("Gnome RIG %s: %s %s)", VERSION, brand, model);
+	title = g_strdup_printf (_("Gnome RIG %s: %s %s"), VERSION, brand, model);
 
 	/* create application */
 	app = gnome_app_new (PACKAGE, title);
@@ -481,6 +481,7 @@ grig_app_create       (gint rignum)
 	/* add menubar */
 	gnome_app_create_menus (GNOME_APP (app), grig_menubar);
 
+				 
 
 	/* Set the correct debug level in the menubar */
 	debug = gconf_client_get_int (confclient, GRIG_CONFIG_DEBUG_KEY, NULL);
