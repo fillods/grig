@@ -118,7 +118,7 @@ rig_daemon_start (int rignum)
 
 	/* check if rig is already initialized */
 	if (myrig != NULL) {
-		return;
+		return 1;
 	}
 
 
