@@ -1,3 +1,63 @@
+2004-10-21;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/grig-menubar.c:
+	Removed about-callback since grig_about_run an be used directly as
+	menu callback.
+
+	* src/grig-about.c:
+	Added dialog window, logo and some info.
+
+	* grig.spec.in:
+
+
+2004-10-20;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/grig-menubar.c:
+	Added debug level menu items.
+
+	* src/rig-gui-info.c, src/rig-gui-info.h:
+	Added files. Contains popup dialog showing rig-caps.
+
+	* src/Makefile.am:
+	Added new files to list.
+
+
+2004-10-19;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/grig-menubar.c, src/grig-menubar.h:
+	Remove rotator and GConf related code. Created menubar using GtkAction
+	achitecture.
+
+	* src/rig-gui.c:
+	Include menubar in the GUI.
+	
+	* src/main.c:
+	Rearranged some code in the creation of the main window so that the
+	window is ceated before the creation of the menubar.
+	
+
+2004-10-18;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/main.c:
+	Added grig_show_help, grig_show_version, grig_list_add and
+	grig_list_compare. Implemented grig_list_rigs. Command line arguments are
+	now working (all of them).
+
+
+2004-10-17;	Alexandru Csete - SK1563 <csete@users.sourceforge.net>
+
+	* src/main.c:
+	More work on command line arguments.
+	
+
+2004-10-15;	Alexandru Csete - CDG <csete@users.sourceforge.net>
+
+	* src/main.c:
+	Begun work on command line arguments. Added list of args and while loop
+	skeleton. Had to stop because departure was only 30 min delayed instead
+	of the first announced 2h30.
+	
+
 2004-10-11;	Alexandru Csete <csete@users.sourceforge.net>
 
 	* src/rig-daemon.c, src/rig-daemon.h:
@@ -186,7 +246,7 @@
 	Added files.
 
 	
-2004-09-26;	Alexandru Csete (SK1563) <csete@users.sourceforge.net>
+2004-09-26;	Alexandru Csete - SK1563 <csete@users.sourceforge.net>
 
 	* src/rig-data.c:
 	rig_data_set functions will temporarely set the 'get' data to 
