@@ -1,5 +1,42 @@
+2004-08-03;	Alexandru Csete <csete@users.sourceforge.net>
+	* rig-utils.c: mode_to_index algorithm was buggy. Fixed.
+	* rig-gui-smeter.c, rig-gui-smeter.h: Added files containing S-meter
+	skeleton (no functionality yet).
+	* rig-gui.c: Include S-meter widget. Changed packing mode from default to
+	FALSE/FALSE.
+	* Makefile.am: Added new files to list. Resolved patch for bug 996435 (bug
+	closed).
+
+2004-08-02;	Alexandru Csete <csete@users.sourceforge.net>
+	* rig-gui-buttons.c: Finished readback handlers. Also, connected signal
+	handler for the filter selector (looks like I forgot to add it before).
+	This component should be quite finished now, except some outstanding
+	issues with no tooltips for the combo boxes.
+	* rig-gui-buttons.h: Moved the default timeout value def to this file.
+	Also defined min and max values for the timer delay.
+	* grig-about.c: Added logo pixmap.
+	
+2004-08-01;	Alexandru Csete <csete@users.sourceforge.net>
+	* rig-daemon-check.c, rig-daemon-check.h: Added function to check AGC.
+	This is part of the rig_daemon_check_level() function.
+	* rig-daemon.c, rig-daemon.h: Added code handling AGC commands.
+	* mkinstalldirs: Added file because it is not copied into grig automatically.
+	* Makefile.am: Added mkinstalldirs to dist files. 
+	* rig-gui-buttons.c: Added readback timeout.
+	
+2004-07-31;	Alexandru Csete <csete@users.sourceforge.net>
+	* main.c: Added more info on -r and -a options.
+	* grig-menu.c: Changed debug parameters to use hamlib symbols
+	instead of hardcoded numbers.
+	* rig-utils.c, rig-utils.h: Created files. Contains conversion
+	functions between hamlib mode and array index type.
+	* Makefile.am: Added new files to the list.
+	* rig-gui-buttons.c: Added mode and filter selectors. Fixed up layout.
+	* rig-data.h, rig-data.c: Added internal representation for
+	passband width. Changed GET and SET function prototypes accordingly.
+
 2004-07-28;	Alexandru Csete <csete@users.sourceforge.net>
-	* configure.in: Require Gtk+ 2.4
+	* configure.in: Require Gtk+ >= 2.4
 	
 2004-07-24;	Alexandru Csete <csete@users.sourceforge.net>
 	* rig-gui.c, rig-gui.h: Added files.
