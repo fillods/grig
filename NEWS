@@ -11,6 +11,7 @@ GRIG 0.4.2:
 - power off...
 - Fixed a bug which caused the README, NEWS, AUTHORS, COPYING
   and ChangeLog files not to be installed.
+- Only poll the selected meter setting when in TX mode.
 
 
 GRIG 0.4.1:

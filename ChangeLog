@@ -1,3 +1,33 @@
+2005-02-12;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/rig-daemon.c:
+	Implemented timeout based daemon process. The timeout
+	delay is 2*cmd_del*nb_of_cmd.
+	Only poll selected setting when in TX mode (power, alc
+	or swr but not all). Modified default TX cycle
+	accordingly. Decreased command delay factor for TX mode
+	from 3 to 2.
+	
+
+	* src/rig-gui-smeter.c, src/rig-gui-smeter.h:
+	Added function to acquire the current meter setting
+	in TX mode. This allows the daemon to decide which
+	level to poll when the rig is in TX mode.
+	
+	* doc/man/grig.1.in:
+	Updated man page with info about the -n or --nothread
+	option.
+
+	* configure.ac:
+	Updated version to 0.4.2
+
+	* src/*:
+	Updated year.
+	
+	* NEWS:
+	Updated info.
+
+	
 2005-02-11;	Alexandru Csete <csete@users.sourceforge.net>
 
 	* src/main.c:
