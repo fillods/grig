@@ -51,6 +51,7 @@
 #include "grig-config.h"
 #include "rig-anomaly.h"
 #include "rig-data.h"
+#include "rig-gui-smeter.h"
 #include "rig-daemon-check.h"
 #include "rig-daemon.h"
 
@@ -98,12 +99,12 @@ static const rig_cmd_t DEF_RX_CYCLE[C_MAX_CYCLES][C_MAX_CMD_PER_CYCLE] = {
  *
  */
 static const rig_cmd_t DEF_TX_CYCLE[C_MAX_CYCLES][C_MAX_CMD_PER_CYCLE] = {
-	{ RIG_CMD_SET_PTT,   RIG_CMD_NONE, RIG_CMD_GET_POWER, RIG_CMD_NONE, RIG_CMD_GET_ALC, RIG_CMD_NONE },
-	{ RIG_CMD_GET_PTT,   RIG_CMD_NONE, RIG_CMD_GET_POWER, RIG_CMD_NONE, RIG_CMD_GET_SWR, RIG_CMD_NONE },
-	{ RIG_CMD_SET_POWER, RIG_CMD_NONE, RIG_CMD_GET_POWER, RIG_CMD_NONE, RIG_CMD_GET_ALC, RIG_CMD_NONE },
-	{ RIG_CMD_SET_PTT,   RIG_CMD_NONE, RIG_CMD_GET_POWER, RIG_CMD_NONE, RIG_CMD_GET_SWR, RIG_CMD_NONE },
-	{ RIG_CMD_GET_PTT,   RIG_CMD_NONE, RIG_CMD_GET_POWER, RIG_CMD_NONE, RIG_CMD_GET_ALC, RIG_CMD_NONE },
-	{ RIG_CMD_SET_POWER, RIG_CMD_NONE, RIG_CMD_GET_POWER, RIG_CMD_NONE, RIG_CMD_GET_SWR, RIG_CMD_NONE }
+	{ RIG_CMD_SET_PTT,   RIG_CMD_NONE, RIG_CMD_GET_POWER, RIG_CMD_GET_SWR, RIG_CMD_GET_ALC, RIG_CMD_NONE },
+	{ RIG_CMD_GET_PTT,   RIG_CMD_NONE, RIG_CMD_GET_POWER, RIG_CMD_GET_SWR, RIG_CMD_GET_ALC, RIG_CMD_NONE },
+	{ RIG_CMD_SET_POWER, RIG_CMD_NONE, RIG_CMD_GET_POWER, RIG_CMD_GET_SWR, RIG_CMD_GET_ALC, RIG_CMD_NONE },
+	{ RIG_CMD_SET_PTT,   RIG_CMD_NONE, RIG_CMD_GET_POWER, RIG_CMD_GET_SWR, RIG_CMD_GET_ALC, RIG_CMD_NONE },
+	{ RIG_CMD_GET_PTT,   RIG_CMD_NONE, RIG_CMD_GET_POWER, RIG_CMD_GET_SWR, RIG_CMD_GET_ALC, RIG_CMD_NONE },
+	{ RIG_CMD_SET_POWER, RIG_CMD_NONE, RIG_CMD_GET_POWER, RIG_CMD_GET_SWR, RIG_CMD_GET_ALC, RIG_CMD_NONE }
 };
 
 
@@ -677,9 +678,9 @@ rig_daemon_cycle_cb  (gpointer data)
 						     has_get, has_set);
 /* slow motion in debug mode */
 #ifdef GRIG_DEBUG
-				usleep (15000 * cmd_delay);
+				usleep (10000 * cmd_delay);
 #else
-				usleep (3000 * cmd_delay);
+				usleep (2000 * cmd_delay);
 #endif
 			}
 
@@ -1584,7 +1585,7 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 	case RIG_CMD_GET_POWER:
 
 		/* check whether command is available */
-		if (has_get->power) {
+		if (has_get->power && (rig_gui_smeter_get_tx_mode() == SMETER_TX_MODE_POWER)) {
 			value_t val;
 
 			/* try to execute command */
@@ -1609,7 +1610,7 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 	case RIG_CMD_GET_SWR:
 
 		/* check whether command is available */
-		if (has_get->swr) {
+		if (has_get->swr && (rig_gui_smeter_get_tx_mode() == SMETER_TX_MODE_SWR)) {
 			value_t val;
 
 			/* try to execute command */
@@ -1634,7 +1635,7 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 	case RIG_CMD_GET_ALC:
 
 		/* check whether command is available */
-		if (has_get->alc) {
+		if (has_get->alc && (rig_gui_smeter_get_tx_mode() == SMETER_TX_MODE_ALC)) {
 			value_t val;
 
 			/* try to execute command */
