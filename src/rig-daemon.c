@@ -633,7 +633,7 @@ rig_daemon_cycle_cb  (gpointer data)
 
 
 	/* send a debug message */
-	rig_debug (RIG_DEBUG_TRACE, "*** GRIG: %s started.\n", __FUNCTION__);
+	rig_debug (RIG_DEBUG_TRACE, "*** GRIG: %s called.\n", __FUNCTION__);
 
 
 	/* first we check whether rig is powered ON since some rigs
