@@ -1,3 +1,22 @@
+2005-01-20;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/rig-data.h:
+	Removed TX levels that are not available via rig_get_level.
+
+	* src/rig-data.c, src/rig-daemon.c, src/rig-daemon.h:
+	Added support for TX power, SWR and ALC.
+
+	* src/rig-daemon.h, src/rig-daemon.c:
+	Change MAX_CMD_PER_CYCLE from 5 to 6.
+
+	* src/rig-data.c, src/rig-data.h:
+	Added has_get for ALC, SWR and RFPOWER.
+
+	* src/rig-gui-smeter-conv.c, src/rig-gui-smeter-conv.h:
+	Added function to convert floating point number between 0.0 and 1.0 to
+	s-meter angle. Still need to define conversion parameters.
+
+
 2005-01-07;	Alexandru Csete <csete@users.sourceforge.net>
 
 	* src/rig-data.c:
@@ -30,8 +49,8 @@
 
 	* src/main.c:
 	Added check for pixmap files to exit cleanly with an error message if
-	installation isicomplete. Changed pixmap paths from PACKAGE_DATA_DIR to
-	PACKAGE_PIXMAPS_DIR.
+	installation is incomplete (bug #1057427). Changed pixmap paths from
+	PACKAGE_DATA_DIR to PACKAGE_PIXMAPS_DIR.
 
 	* src/grig-about.c:
 	Changed pixmap paths from PACKAGE_DATA_DIR to PACKAGE_PIXMAPS_DIR.
