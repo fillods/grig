@@ -10,6 +10,7 @@ bin_PROGRAMS = grig
 grig_SOURCES = \
 	main.c \
 	grig-druid.c grig-druid.h \
+	rig-daemon.c rig-daemon.h \
 	rig-data.c rig-data-h
 
 
