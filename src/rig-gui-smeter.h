@@ -46,8 +46,8 @@
 /** \brief Minimum delay in msec between s-meter updates (50 fps) */
 #define RIG_GUI_SMETER_MIN_TVAL 20
 
-/** \brief Default delay in msec between s-meter updates (? fps). */
-#define RIG_GUI_SMETER_DEF_TVAL 60
+/** \brief Default delay in msec between s-meter updates (15 fps). */
+#define RIG_GUI_SMETER_DEF_TVAL 67
 
 /** \brief Maximum delay in msec between s-meter updates (5 fps). */
 #define RIG_GUI_SMETER_MAX_TVAL 500
@@ -57,7 +57,7 @@
 #define RIG_GUI_SMETER_MIN_FALLOFF 10.0
 
 /** \brief Default falloff speed in deg/sec */
-#define RIG_GUI_SMETER_DEF_FALLOFF 100.0
+#define RIG_GUI_SMETER_DEF_FALLOFF 150.0
 
 /** \brief Maximum falloff speed in deg/sec */
 #define RIG_GUI_SMETER_MAX_FALLOFF 360.0
