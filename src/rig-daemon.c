@@ -44,6 +44,7 @@
 #include <gconf/gconf.h>
 #include <gconf/gconf-client.h>
 #include <hamlib/rig.h>
+#include "rig-data.h"
 #include "rig-daemon.h"
 
 
@@ -53,6 +54,11 @@ RIG *myrig = NULL;  /*!< The rig structure. */
 
 
 extern GConfClient *confclient;  /*!< Shared GConfClient. */
+
+
+/* private function prototypes */
+static void rig_daemon_post_init (void);
+
 
 
 
@@ -71,7 +77,7 @@ rig_daemon_start (int rignum)
 	gint   speed;
 	gchar *rigport;
 	gint   retcode;
-
+	grig_settings_t *get;
 
 	/* check if rig is already initialized */
 	if (myrig != NULL) {
@@ -112,12 +118,11 @@ rig_daemon_start (int rignum)
 	}
 
 
-	/* everything is all rigth; initialized shared data */
-
-
-	/* get current settings  */
+	/* get capabilities and settings  */
+	rig_daemon_post_init ();
 
 	/* start daemon */
+
 
 	return 0;
 }
@@ -132,6 +137,8 @@ rig_daemon_start (int rignum)
 void
 rig_daemon_stop  ()
 {
+	/* send stop signal to daemon process */
+
 	/* close radio device */
 	rig_close (myrig);
 
@@ -142,3 +149,237 @@ rig_daemon_stop  ()
 }
 
 
+/** \brief Execute post initialization tasks.
+ *
+ * This function executes some tasks after initialization of the radio
+ * hardware. These include testing the radio capabilities and obtaining
+ * the current settings. The test results are communicated to the user
+ * via the rig_debug() Hamlib function.
+ */
+static void
+rig_daemon_post_init ()
+{
+	grig_settings_t  *get;                     /* pointer to shared data 'get' */
+	grig_cmd_avail_t *has_get;                 /* pointer to shared data 'has_get' */
+	grig_cmd_avail_t *has_set;                 /* pointer to shared data 'has_set' */
+	int               retcode;                 /* Hamlib status code */
+	powerstat_t       pwr = RIG_POWER_OFF;     /* power status */
+	ptt_t             ptt = RIG_PTT_OFF;       /* PTT status */
+	vfo_t             vfo = RIG_VFO_NONE;      /* current VFO */
+	freq_t            freq;                    /* current frequency */
+	shortfreq_t       sfreq;                   /* current RIT/XIT setting */
+	rmode_t           mode;                    /* current mode */
+	pbwidth_t         pbw;                     /* current passband width */
+
+
+
+	/* get pointers to shared data */
+	get     = rig_data_get_get_addr ();
+	has_get = rig_data_get_has_get_addr ();
+	has_set = rig_data_get_has_set_addr ();
+
+
+	/* get power status; we are very paranoid and accept only
+	   RIG_OK as good status.
+	*/
+	retcode = rig_get_powerstat (myrig, &pwr);
+	if (retcode == RIG_OK) {
+		has_get->power = TRUE;
+		get->power = pwr;
+	}
+	else {
+		has_get->power = FALSE;
+		get->power = RIG_POWER_OFF;
+	}
+
+	/* try to set power status */
+	retcode = rig_set_powerstat (myrig, get->power);
+	has_set->power = (retcode == RIG_OK) ? TRUE : FALSE;
+
+	/* PTT status */
+	retcode = rig_get_ptt (myrig, RIG_VFO_CURR, &ptt);
+	if (retcode == RIG_OK) {
+		has_get->ptt = TRUE;
+		get->ptt = ptt;
+	}
+	else {
+		has_get->ptt = FALSE;
+		get->ptt = RIG_PTT_OFF;
+	}
+
+	/* try to set PTT status */
+	retcode = rig_set_ptt (myrig, RIG_VFO_CURR, get->ptt);
+	has_set->ptt = (retcode == RIG_OK) ? TRUE : FALSE;
+
+	/* try to get current VFO */
+	retcode = rig_get_vfo (myrig, &vfo);
+	if (retcode == RIG_OK) {
+		has_get->vfo = TRUE;
+		get->vfo = vfo;
+	}
+	else {
+		has_get->vfo = FALSE;
+		get->vfo = RIG_VFO_NONE;
+	}
+
+	/* check set_vfo functionality */
+	retcode = rig_set_vfo (myrig, get->vfo);
+	has_set->vfo = (retcode == RIG_OK) ? TRUE : FALSE;
+
+	/* check get_freq functionality for the primary/working
+	   frequency.
+	*/
+	retcode = rig_get_freq (myrig, RIG_VFO_CURR, &freq);
+	if (retcode == RIG_OK) {
+		has_get->freq1 = TRUE;
+		get->freq1 = freq;
+	}
+	else {
+		has_get->freq1 = FALSE;
+		get->freq1 = 0.0;
+	}
+
+	/* try to reset the current frequency but only if we
+	   have get_freq; if not don't bother with set_freq ???
+	*/
+	if (has_get->freq1) {
+		retcode = rig_set_freq (myrig, RIG_VFO_CURR, get->freq1);
+		has_set->freq1 = (retcode == RIG_OK) ? TRUE : FALSE;
+	}
+	else {
+		has_set->freq1 = FALSE;
+	}
+
+
+	/* now we try the secondary frequency, ie. not the one on RIG_VFO_CURR */
+	if (has_get->freq1) {
+		switch (get->vfo) {
+			
+			/* VFO A */
+		case RIG_VFO_A:
+			retcode = rig_get_freq (myrig, RIG_VFO_B, &freq);
+			break;
+
+			/* VFO B or C; grig is too stupid to know about 3 VFOs ...
+			   or at least I am to lazy to bother about 3 VFOs ;)
+			*/
+		case RIG_VFO_B:
+		case RIG_VFO_C:
+			vfo = RIG_VFO_A;
+			break;
+
+			/* Main VFO */
+		case RIG_VFO_MAIN:
+			vfo = RIG_VFO_SUB;
+			break;
+
+			/* Sub VFO */
+		case RIG_VFO_SUB:
+			vfo = RIG_VFO_MAIN;
+			break;
+
+			/* trouble... */
+		case RIG_VFO_CURR:
+		case RIG_VFO_NONE:
+		default:
+			vfo = RIG_VFO_NONE;
+			break;
+		}
+
+		if (vfo != RIG_VFO_NONE) {
+			retcode = rig_get_freq (myrig, vfo, &freq);
+			if (retcode == RIG_OK) {
+				has_get->freq2 = TRUE;
+				get->freq2 = freq;
+			}
+			else {
+				has_get->freq2 = FALSE;
+				get->freq2 = 0.0;
+			}
+		}
+		else {
+			has_get->freq2 = FALSE;
+			get->freq2 = 0.0;
+		}
+
+		/* try to set secondary frequency; normally we should not do it
+		   here (inside the if), but it makes no difference due to the
+		   "No Get => No Set" policy
+		*/
+		if (has_get->freq2) {
+
+			/* NB: has_get->freq2 TRUE => vfo is different from RIG_VFO_NONE */
+			retcode = rig_set_freq (myrig, vfo, get->freq2);
+			has_set->freq2 = (retcode == RIG_OK) ? TRUE : FALSE;
+		}
+		else {
+			has_set->freq2 = FALSE;
+		}
+
+	}
+	else {
+		has_get->freq2 = FALSE;
+		get->freq2 = 0.0;
+	}
+
+
+	/* try to get RIT setting */
+	retcode = rig_get_rit (myrig, RIG_VFO_CURR, &sfreq);
+	if (retcode == RIG_OK) {
+		has_get->rit = TRUE;
+		get->rit = sfreq;
+	}
+	else {
+		has_get->rit = FALSE;
+		get->rit = 0;
+	}
+
+	/* try to reset RIT */
+	retcode = rig_set_rit (myrig, RIG_VFO_CURR, get->rit);
+	has_set->rit = (retcode == RIG_OK) ? TRUE : FALSE;
+
+
+	/* try to get XIT */
+	retcode = rig_get_xit (myrig, RIG_VFO_CURR, &sfreq);
+	if (retcode == RIG_OK) {
+		has_get->xit = TRUE;
+		get->xit = sfreq;
+	}
+	else {
+		has_get->xit = FALSE;
+		get->xit = 0;
+	}
+
+	/* try to reset XIT */
+	retcode = rig_set_xit (myrig, RIG_VFO_CURR, get->xit);
+	has_set->xit = (retcode == RIG_OK) ? TRUE : FALSE;
+
+
+	/* try to get mode and passband width */
+	retcode = rig_get_mode (myrig, RIG_VFO_CURR, &mode, &pbw);
+	if (retcode == RIG_OK) {
+		has_get->mode = TRUE;
+		has_get->pbw  = TRUE;
+		get->mode     = mode;
+		get->pbw      = pbw;
+	}
+	else {
+		has_get->mode = FALSE;
+		has_get->pbw  = FALSE;
+		get->mode     = RIG_MODE_NONE;
+		get->pbw      = RIG_PASSBAND_NORMAL;
+	}
+
+	/* try to reset mode and passband width;
+	   ok to set RIG_MODE_NONE?
+	*/
+	retcode = rig_set_mode (myrig, RIG_VFO_CURR, get->mode, get->pbw);
+	if (retcode == RIG_OK) {
+		has_set->mode = TRUE;
+		has_set->pbw  = TRUE;
+	}
+	else {
+		has_set->mode = FALSE;
+		has_set->pbw  = FALSE;
+	}
+}

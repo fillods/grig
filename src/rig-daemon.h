@@ -33,6 +33,9 @@
 #define RIG_DAEMON_H 1
 
 
+#define GRIG_CONFIG_RIG_DIR "test"
+
+
 /** \brief List of available commands.
  *
  * This enumeration lists the available commands that can be executed by the RIG daemon.

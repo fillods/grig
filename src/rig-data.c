@@ -55,10 +55,11 @@
 #include "rig-data.h"
 
 
-grig_settings_t  set;
-grig_settings_t  get;
-grig_cmd_avail_t new;
-
+grig_settings_t  set;      /*!< These values are sent to the radio. */
+grig_settings_t  get;      /*!< These values are read from the radio. */
+grig_cmd_avail_t new;      /*!< Flags to indicate whether new value is available. */
+grig_cmd_avail_t has_set;  /*!< Flags to indicate writing capabilities. */
+grig_cmd_avail_t has_get;  /*!< Flags to indicate reading capabilities. */
 
 
 
@@ -304,5 +305,80 @@ shortfreq_t
 rig_data_get_xit     ()
 {
 	return get.xit;
+}
+
+
+
+/** \brief Get address of 'get' variable.
+ *  \return A pointer to the shared data.
+ *
+ * This function is used to obtain the address of the 'get' global data.
+ * This is primarly used by the radio daemon for fast access to the data
+ * structure.
+ */
+grig_settings_t  *
+rig_data_get_get_addr ()
+{
+	return &get;
+}
+
+
+
+/** \brief Get address of 'set' variable.
+ *  \return A pointer to the shared data.
+ *
+ * This function is used to obtain the address of the 'set' global data.
+ * This is primarly used by the radio daemon for fast access to the data
+ * structure.
+ */
+grig_settings_t  *
+rig_data_get_set_addr ()
+{
+	return &set;
+}
+
+
+
+/** \brief Get address of 'new' variable.
+ *  \return A pointer to the shared data.
+ *
+ * This function is used to obtain the address of the 'new' global data.
+ * This is primarly used by the radio daemon for fast access to the data
+ * structure.
+ */
+grig_cmd_avail_t *
+rig_data_get_new_addr ()
+{
+	return &new;
+}
+
+
+
+/** \brief Get address of 'has_set' variable.
+ *  \return A pointer to the shared data.
+ *
+ * This function is used to obtain the address of the 'has_set' global data.
+ * This is primarly used by the radio daemon for fast access to the data
+ * structure.
+ */
+grig_cmd_avail_t *
+rig_data_get_has_set_addr ()
+{
+	return &has_set;
+}
+
+
+
+/** \brief Get address of 'has_get' variable.
+ *  \return A pointer to the shared data.
+ *
+ * This function is used to obtain the address of the 'has_get' global data.
+ * This is primarly used by the radio daemon for fast access to the data
+ * structure.
+ */
+grig_cmd_avail_t *
+rig_data_get_has_get_addr ()
+{
+	return &has_get;
 }
 

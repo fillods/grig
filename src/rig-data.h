@@ -102,4 +102,11 @@ freq_t      rig_data_get_freq    (int);
 shortfreq_t rig_data_get_rit     (void);
 shortfreq_t rig_data_get_xit     (void);
 
+/* address acquisition functions */
+grig_settings_t  *rig_data_get_get_addr     (void);
+grig_settings_t  *rig_data_get_set_addr     (void);
+grig_cmd_avail_t *rig_data_get_new_addr     (void);
+grig_cmd_avail_t *rig_data_get_has_set_addr (void);
+grig_cmd_avail_t *rig_data_get_has_get_addr (void);
+
 #endif
