@@ -1,100 +1,323 @@
+2004-10-05;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* NEWS:
+	Readded file currently containing primary objectives for this 
+	development baseline.
+
+	* src/rig-gui-lcd.c:
+	First draft of calculating digit positions. Can be optimized or made
+	nicer.
+	
+
+2004-10-04;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/main.c, src/rig-gui-lcd.c, src/rig-gui-smeter.c:
+	Replaced "/" with G_DIR_SEPARATOR_S.
+
+	* src/rig-gui-lcd.c:
+	Added rig_gui_lcd_calc_dim which will calculate frequently used sizes
+	and positions. <CONTINUE>
+	
+
+2004-10-03;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/rig-data.h:
+	Added fields to store frequency limits and tuning step for the current
+	mode. The fields are fmin, fmax and fstep.
+
+	* src/rig-data.c:
+	Added rig_data_get_fmax, rig_data_get_fmin and rig_data_get_fstep.
+
+	* src/rig-daemon.c, src/rig-daemon-check.c:
+	Added code to update frequency limits and tuning step at initialization
+	and each time the mode is acquired.
+
+
+2004-10-02;	Alexandru Csete <csete@users.sourcforge.net>
+
+	* src/rig-gui-smeter.c, src/rig-gui-smeter.h:
+	Finished implementation of s-meter using GtkDrawingArea. Added code to
+	test s-meter with random numbers. Adjusted the default constants and
+	updated design docs.
+
+
+2004-10-02;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/rig-gui-meter.c, src/rig-gui-smeter.h, src/rig-gui-smeter-conv.c,
+	* src/rig-gui-lcd.c, src/rig-gui-lcd.h, src/rig-gui-buttons.c,
+	Removed GNOME and GConf dependencies so that files can be compiled.
+	Replaced code which is deprecated in Gtk+ 2.4
+
+	* src/grig-menu.c:
+	Changed file name to grig-menubar.c, added corresponding header file
+	and removed GNOME dependencies.
+
+	* src/Makeile.am:
+	Updated list with new files.
+
+	* configure.in:
+	Added check for gthread-2.0 >= 2.4.0; explicitly required to use 
+	gthread.
+
+	* src/Makevars:
+	Added file.
+
+	* src/main.c:
+	Added window icon. Changed title style.
+	
+
+2004-10-01;	Alexandru Csete <csete@isers.sourceforge.net>
+
+	* src/grig-duid.[ch]:
+	Deleted files.
+
+	* src/Makefile.am:
+	Removed grig-druid from list.
+
+	* src/support.h:
+	Added file containing gettext macros.
+
+	* src/main.c, src/grig-about.c, src/rig-anomaly.c,
+	* src/rig-daemon.c, src/rig-daemon-check.c, src/rig-data.c:
+	* src/rig-gui.c
+	Remved GNOME and GConf dependencies so that files can be compiled.
+	Replaced code which is deprecated in Gtk+ 2.4
+
+	
+2004-09-30;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/main.c:
+	Removed GNOME dependencies.
+
+	* autogen.sh, Makefile.am, cofigure.in:
+	Updated for Gtk+ only.
+	
+	* src/Makefile.am:
+	Updated for Gtk+ only.
+	
+	* ChangeLog:
+	Updated.
+
+	* aclocal.m4, config.h.in:
+	Deleted files.
+
+	* grig.1.in, grig.desktop, grig.spec.in, acinclude.m4, config.guess,
+	* config.sub:
+	Aded files.
+
+
+2004-09-29;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* pixmaps/digits_normal.png, digits_small.png:
+	Added files.
+
+	
+2004-09-26;	Alexandru Csete (SK1563) <csete@users.sourceforge.net>
+
+	* src/rig-data.c:
+	rig_data_set functions will temporarely set the 'get' data to 
+	the 'set' value to avoid gui flip-back when daemon is to slow to
+	update the 'get' variable.
+
+	* src/rig-gui-smeter.c: 
+	Added bug comment about object limitations. Corrected description 
+	of rig_gui_meter_create.
+
+	* src/rig-gui-lcd.[ch]: 
+	Created files containing LCD widgets.
+
+	* src/Makefile.am: 
+	Added the two new iles to the list.
+
+	
 2004-09-22;	Alexandru Csete <csete@users.sourceforge.net>
-	* src/rig-gui-smeter.c: Added callback functions to mode and range selector
-	widgets. The s-meter callback now checks whether we are in RX or TX mode.
-	* src/rig-gui-smeter.h: Adjusted fall-off delays.
 
+	* src/rig-gui-smeter.c: 
+	Added callback functions to mode and range selector widgets. 
+	The s-meter callback now checks whether we are in RX or TX mode.
+
+	* src/rig-gui-smeter.h: 
+	Adjusted fall-off delays.
+
+	
 2004-09-21;	Alexandru Csete <csete@users.sourceforge.net>
-	* src/rig-gui-smeter.h: Renamed rig_gui_smeter_t to smeter_t. Added
-	enumerations smeter_scale_t and smeter_tx_mode_t for selecting s-meter
-	configuration.
-	* src/rig-gui-smeter.c: Renamed rig_gui_smeter_t to smeter_t. Added
-	combo boxes for scale and mode selection.
 
+	* src/rig-gui-smeter.h: 
+	Renamed rig_gui_smeter_t to smeter_t. Added enumerations 
+	smeter_scale_t and smeter_tx_mode_t for selecting s-meter 
+	configuration.
+
+	* src/rig-gui-smeter.c: 
+	Renamed rig_gui_smeter_t to smeter_t. Added combo boxes for scale 
+	and mode selection.
+
+	
 2004-09-20;	Alexandru Csete <csete@users.sourceforge.net>
-	* src/rig-data.[ch]: Added rig_data_get_strength function. Added almost
-	all rig_data_has_get_xxx functions (at least prototype templates).
-	* src/rig-daemon.c: Changed powerstat sequence to set-and-get instead of
-	get-and-set which could cause override of GUI command.
+
+	* src/rig-data.[ch]: 
+	Added rig_data_get_strength function. Added almost all 
+	rig_data_has_get_xxx functions (at least prototype templates).
+
+	* src/rig-daemon.c: Changed powerstat sequence to set-and-get 
+	instead of get-and-set which could cause override of GUI command.
+
 	
 2004-09-18;	Alexandru Csete <csete@users.sourceforge.net>
-	* src/rig-gui-smeter-conv.[ch]: Added files. Contain utility
-	functions to convert dB to needle angle and then needle angle to (x,y)
-	coordinates. The conversion is done in two passes with the needle angle
-	as intermediate result, so that it can be adjusted for mechanical
-	delays.
-	* src/rig-gui-smeter.c: Removed conversion macros in favor of new
-	conversion utility functions in the aboe mentioned file.
-	* src/Makefile.am: Added new files to list.
 
+	* src/rig-gui-smeter-conv.[ch]: 
+	Added files. Contain utility functions to convert dB to needle angle 
+	and then needle angle to (x,y) coordinates. The conversion is done in 
+	two passes with the needle angle as intermediate result, so that it 
+	can be adjusted for mechanical delays.
+	
+	* src/rig-gui-smeter.c: 
+	Removed conversion macros in favor of new conversion utility functions 
+	in the aboe mentioned file.
+
+	* src/Makefile.am: 
+	Added new files to list.
+
+	
 2004-09-13;	Alexandru Csete <csete@users.sourceforge.net>
-	* src/rig-gui-smeter.c: Added constants an macros to convert from dB to
+
+	* src/rig-gui-smeter.c: 
+	Added constants an macros to convert from dB to
 	degrees correspondingto the inclination of the needle. The S-meter will
 	be a so-called perfect S-meter with 6dB per S-unit and S9 = 0dB.
 
+	
 2004-08-03;	Alexandru Csete <csete@users.sourceforge.net>
-	* rig-utils.c: mode_to_index algorithm was buggy. Fixed.
-	* rig-gui-smeter.c, rig-gui-smeter.h: Added files containing S-meter
-	skeleton (no functionality yet).
-	* rig-gui.c: Include S-meter widget. Changed packing mode from default to
+
+	* src/rig-utils.c: 
+	mode_to_index algorithm was buggy. Fixed.
+
+	* src/rig-gui-smeter.c, src/rig-gui-smeter.h: 
+	Added files containing S-meter skeleton (no functionality yet).
+
+	* src/rig-gui.c: 
+	Include S-meter widget. Changed packing mode from default to 
 	FALSE/FALSE.
-	* Makefile.am: Added new files to list. Resolved patch for bug 996435 (bug
-	closed).
+
+	* src/Makefile.am: 
+	Added new files to list. Resolved patch for bug 996435 (bug closed).
+	
 
 2004-08-02;	Alexandru Csete <csete@users.sourceforge.net>
-	* rig-gui-buttons.c: Finished readback handlers. Also, connected signal
+
+	* src/rig-gui-buttons.c: 
+	Finished readback handlers. Also, connected signal
 	handler for the filter selector (looks like I forgot to add it before).
 	This component should be quite finished now, except some outstanding
 	issues with no tooltips for the combo boxes.
-	* rig-gui-buttons.h: Moved the default timeout value def to this file.
+
+	* src/rig-gui-buttons.h: 
+	Moved the default timeout value def to this file.
 	Also defined min and max values for the timer delay.
-	* grig-about.c: Added logo pixmap.
+
+	* src/grig-about.c: 
+	Added logo pixmap.
+
 	
 2004-08-01;	Alexandru Csete <csete@users.sourceforge.net>
-	* rig-daemon-check.c, rig-daemon-check.h: Added function to check AGC.
+
+	* src/rig-daemon-check.c, src/rig-daemon-check.h: 
+	Added function to check AGC.
 	This is part of the rig_daemon_check_level() function.
-	* rig-daemon.c, rig-daemon.h: Added code handling AGC commands.
-	* mkinstalldirs: Added file because it is not copied into grig automatically.
-	* Makefile.am: Added mkinstalldirs to dist files. 
-	* rig-gui-buttons.c: Added readback timeout.
+
+	* src/rig-daemon.c, src/rig-daemon.h: 
+	Added code handling AGC commands.
+
+	* mkinstalldirs: 
+	Added file because it is not copied into grig automatically.
+
+	* Makefile.am: 
+	Added mkinstalldirs to dist files. 
+
+	* src/rig-gui-buttons.c: 
+	Added readback timeout.
+
 	
 2004-07-31;	Alexandru Csete <csete@users.sourceforge.net>
-	* main.c: Added more info on -r and -a options.
-	* grig-menu.c: Changed debug parameters to use hamlib symbols
-	instead of hardcoded numbers.
-	* rig-utils.c, rig-utils.h: Created files. Contains conversion
-	functions between hamlib mode and array index type.
-	* Makefile.am: Added new files to the list.
-	* rig-gui-buttons.c: Added mode and filter selectors. Fixed up layout.
-	* rig-data.h, rig-data.c: Added internal representation for
-	passband width. Changed GET and SET function prototypes accordingly.
 
+	* src/main.c: 
+	Added more info on -r and -a options.
+
+	* src/grig-menu.c: 
+	Changed debug parameters to use hamlib symbols instead of 
+	hardcoded numbers.
+
+	* src/rig-utils.c, src/rig-utils.h: 
+	Created files. Contains conversion functions between hamlib 
+	mode and array index type.
+
+	* src/Makefile.am: 
+	Added new files to the list.
+
+	* src/rig-gui-buttons.c: 
+	Added mode and filter selectors. Fixed up layout.
+
+	* src/rig-data.h, src/rig-data.c: 
+	Added internal representation for passband width. Changed GET 
+	and SET function prototypes accordingly.
+
+	
 2004-07-28;	Alexandru Csete <csete@users.sourceforge.net>
+
 	* configure.in: Require Gtk+ >= 2.4
+
 	
 2004-07-24;	Alexandru Csete <csete@users.sourceforge.net>
-	* rig-gui.c, rig-gui.h: Added files.
-	* rig-gui-buttons.c, rig-gui-buttons.h: Added files.
-	* main.c: Added call to rig_gui_create.
-	* rig-daemon.c: Added code to manually update 'get' data if
-	rig doesn't support any get functions.
-	* rig-data.c, rig-data.h: Added AGC.
+
+	* src/rig-gui.c, src/rig-gui.h: 
+	Added files.
+
+	* src/rig-gui-buttons.c, src/rig-gui-buttons.h: 
+	Added files.
+
+	* src/main.c: 
+	Added call to rig_gui_create.
+
+	* src/rig-daemon.c: 
+	Added code to manually update 'get' data if rig doesn't support 
+	any get functions.
+
+	* src/rig-data.c, src/rig-data.h: 
+	Added AGC.
+
 	
 2004-07-23;	Alexandru Csete <csete@users.sourceforge.net>
-	* main.c, rig-daemon.c: Added patch for bug #996426.
 
+	* src/main.c, src/rig-daemon.c: 
+	Added patch for bug #996426.
+
+	
 2004-07-18;	Alexandru Csete <csete@users.sourceforge.net>
-	* grig-druid.c: Added basic functionality with start and end
-	pages.
 
+	* src/grig-druid.c: 
+	Added basic functionality with start and end pages.
+
+	
 2004-07-17;	Alexandru Csete <csete@users.sourceforge.net>
-	* grig-about.c, grig-about.h: Added files.
 
+	* src/grig-about.c, src/grig-about.h: 
+	Added files.
+
+	
 2004-07-14;	Alexandru Csete <csete@users.sourceforge.net>
-	* main.c: Implemented missing functions and added main application
+
+	* src/main.c: 
+	Implemented missing functions and added main application
 	window.
-	* grig-menu.c: Added file with menu declarations.
-	* rig-ctrl.c, rig-ctrl.h: Created files.
+
+	* src/grig-menu.c: 
+	Added file with menu declarations.
+
+	* src/rig-ctrl.c, src/rig-ctrl.h: 
+	Created files.
+
 	
 2004-07-01;	Alexandru Csete <csete@users.sourceforge.net>
-	* rig-daemon.c, rig-daemon.h: Finished first draft of rig daemon.
+
+	* src/rig-daemon.c, src/rig-daemon.h: 
+	Finished first draft of rig daemon.
 	
