@@ -1,3 +1,25 @@
+2005-02-02;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/rig-daemon.h, src/rig-daemon.c:
+	Replaced cycle delay with a default command delay. The
+	delay in TX mode is three times the delay in RX mode.
+	Added possibility for user defined delay.
+
+	* src/main.c:
+	Added command line option for command delay.
+
+	* doc/man/grig.1.in:
+	Added section about comamnd delays and buggy power off
+	state.
+
+	* Makefile.am:
+	Added AUTHORS, NEWS, COPYING, README and ChangeLog to
+	install data.
+
+	* NEWS:
+	Updated with some 0.4.2 info.
+	
+
 2005-02-01;	Alexandru Csete <csete@users.sourceforge.net>
 
 	* configure.ac:
