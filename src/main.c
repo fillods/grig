@@ -99,6 +99,10 @@ main (int argc, char *argv[])
 				      GNOME_PARAM_APP_DATADIR, PACKAGE_DATA_DIR,
 				      NULL);
 
+	/* initialize threads */
+	if (!g_thread_supported ())
+		g_thread_init (NULL);
+
 	/* initialize GConf if needed */
 	if (!gconf_is_initialized ())
 		gconf_init (argc, argv, NULL);
@@ -136,6 +140,7 @@ main (int argc, char *argv[])
 	if (rignum == -1) {
 //		rignum = grig_get_default_rig ();
 	}
+
 
 	/* launch rig daemon */
 	rig_daemon_start (rignum);
