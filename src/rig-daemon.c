@@ -103,12 +103,12 @@ static const rig_cmd_t DEF_RX_CYCLE[C_MAX_CYCLES][C_MAX_CMD_PER_CYCLE] = {
  *
  */
 static const rig_cmd_t DEF_TX_CYCLE[C_MAX_CYCLES][C_MAX_CMD_PER_CYCLE] = {
-	{ RIG_CMD_SET_PTT, RIG_CMD_NONE, RIG_CMD_NONE, RIG_CMD_NONE, RIG_CMD_NONE },
-	{ RIG_CMD_GET_PTT, RIG_CMD_NONE, RIG_CMD_NONE, RIG_CMD_NONE, RIG_CMD_NONE },
-	{ RIG_CMD_NONE,    RIG_CMD_NONE, RIG_CMD_NONE, RIG_CMD_NONE, RIG_CMD_NONE },
-	{ RIG_CMD_SET_PTT, RIG_CMD_NONE, RIG_CMD_NONE, RIG_CMD_NONE, RIG_CMD_NONE },
-	{ RIG_CMD_GET_PTT, RIG_CMD_NONE, RIG_CMD_NONE, RIG_CMD_NONE, RIG_CMD_NONE },
-	{ RIG_CMD_NONE,    RIG_CMD_NONE, RIG_CMD_NONE, RIG_CMD_NONE, RIG_CMD_NONE }
+	{ RIG_CMD_SET_PTT,   RIG_CMD_NONE, RIG_CMD_GET_POWER, RIG_CMD_NONE, RIG_CMD_NONE },
+	{ RIG_CMD_GET_PTT,   RIG_CMD_NONE, RIG_CMD_GET_POWER, RIG_CMD_NONE, RIG_CMD_NONE },
+	{ RIG_CMD_SET_POWER, RIG_CMD_NONE, RIG_CMD_GET_POWER, RIG_CMD_NONE, RIG_CMD_NONE },
+	{ RIG_CMD_SET_PTT,   RIG_CMD_NONE, RIG_CMD_GET_POWER, RIG_CMD_NONE, RIG_CMD_NONE },
+	{ RIG_CMD_GET_PTT,   RIG_CMD_NONE, RIG_CMD_GET_POWER, RIG_CMD_NONE, RIG_CMD_NONE },
+	{ RIG_CMD_SET_POWER, RIG_CMD_NONE, RIG_CMD_GET_POWER, RIG_CMD_NONE, RIG_CMD_NONE }
 };
 
 
@@ -1366,8 +1366,37 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 
 		break;
 
+		/* set transmitter power */
+	case RIG_CMD_SET_POWER:
+
+		/* check whether command is available */
+		if (has_set->power && new->power) {
+			value_t val;
+
+			val.f = set->power;
+
+			/* try to execute command */
+			retcode = rig_set_level (myrig, RIG_VFO_CURR, RIG_LEVEL_RFPOWER, val);
+
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				rig_debug (RIG_DEBUG_ERR,
+					   "*** GRIG: %s: Failed to execute RIG_CMD_SET_POWER\n",
+					   __FUNCTION__);
+
+				rig_anomaly_raise (RIG_CMD_SET_POWER);
+			}
+
+			/* reset flag */
+			new->power = FALSE;
+			get->power = set->power;
+
+		}
+
+		break;
+
 		/* get transmitter power */
-	case RIG_CMD_GET_PWR:
+	case RIG_CMD_GET_POWER:
 
 		/* check whether command is available */
 		if (has_get->power) {
@@ -1379,10 +1408,10 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 			/* raise anomaly if execution did not succeed */
 			if (retcode != RIG_OK) {
 				rig_debug (RIG_DEBUG_ERR,
-					   "*** GRIG: %s: Failed to execute RIG_CMD_GET_PWR\n",
+					   "*** GRIG: %s: Failed to execute RIG_CMD_GET_POWER\n",
 					   __FUNCTION__);
 
-				rig_anomaly_raise (RIG_CMD_GET_PWR);
+				rig_anomaly_raise (RIG_CMD_GET_POWER);
 			}
 			else {
 				get->power = val.f;

@@ -284,6 +284,25 @@ rig_data_set_vfo     (vfo_t vfo)
 
 
 
+
+
+/** \brief Set TX power.
+ *  \param power The new TX power.
+ *
+ * This function sets the desired TX power.
+ */
+void
+rig_data_set_power   (float power)
+{
+	set.power = power;
+	get.power = power;
+	new.power = TRUE;
+}
+
+
+
+
+
 /** \brief Set mode.
  *  \param mode The new mode.
  *
@@ -935,6 +954,7 @@ rig_data_get_xitstep    ()
 {
 	return get.xitstep;
 }
+
 
 
 /** \brief Get address of 'get' variable.

@@ -154,6 +154,8 @@ void rig_data_set_xit     (shortfreq_t);
 void rig_data_set_agc     (int);
 void rig_data_set_att     (int);
 void rig_data_set_preamp  (int);
+void rig_data_set_power   (float);
+
 
 #define rig_data_set_freq1(x) (rig_data_set_freq(1,x))
 #define rig_data_set_freq2(x) (rig_data_set_freq(2,x))
@@ -180,7 +182,6 @@ shortfreq_t      rig_data_get_ritstep  (void);
 shortfreq_t      rig_data_get_xitmin   (void);
 shortfreq_t      rig_data_get_xitmax   (void);
 shortfreq_t      rig_data_get_xitstep  (void);
-
 
 /* has_get functions */
 int   rig_data_has_get_pstat    (void);

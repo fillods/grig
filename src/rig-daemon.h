@@ -77,7 +77,8 @@ typedef enum {
 	RIG_CMD_SET_PREAMP,    /*!< Command to set the pre-amplifier level. */
 
 	RIG_CMD_GET_STRENGTH,  /*!< Command to get signal strength. */
-	RIG_CMD_GET_PWR,       /*!< ... */
+	RIG_CMD_SET_POWER,     /*!< Command to set TX power */
+	RIG_CMD_GET_POWER,     /*!< Command to get TX power */
 
 	RIG_CMD_NUMBER         /*!< Number of available commands. */
 } rig_cmd_t;
