@@ -1,0 +1,16 @@
+2004-07-18;	Alexandru Csete <csete@users.sourceforge.net>
+	* grig-druid.c: Added basic functionality with start and end
+	pages.
+
+2004-07-17;	Alexandru Csete <csete@users.sourceforge.net>
+	* grig-about.c, grig-about.h: Added files.
+
+2004-07-14;	Alexandru Csete <csete@users.sourceforge.net>
+	* main.c: Implemented missing functions and added main application
+	window.
+	* grig-menu.c: Added file with menu declarations.
+	* rig-ctrl.c, rig-ctrl.h: Created files.
+	
+2004-07-01;	Alexandru Csete <csete@users.sourceforge.net>
+	* rig-daemon.c, rig-daemon.h: Finished first draft of rig daemon.
+	
