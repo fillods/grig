@@ -10,4 +10,5 @@ grig_pixmaps_DATA = \
 	smeter.png
 
 
-EXTRA_DIST = $(grig_pixmas_DATA)
+EXTRA_DIST = $(grig_pixmaps_DATA)
+
