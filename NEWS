@@ -1,3 +1,22 @@
+GRIG 0.4.2:
+
+- Added comand line option to specify a delay between the
+  execution of each command. This has been introduced as an
+  attempt to avoid buffer overflow in some radios caused by
+  to fast polling.
+- gthreads on BSD...
+- Flicker bug...
+- power off...
+- Fixed a bug which caused the README, NEWS, AUTHORS, COPYING
+  and ChangeLog files not to be installed.
+
+
+GRIG 0.4.1:
+
+- Fixed a bug which caused the pixmaps to be omitted from
+  the source package.
+
+
 GRIG 0.4.0:
 
 - Ported to Gtk2; requires Gtk+ 2.4 or greater. Removed
