@@ -50,7 +50,7 @@ extern RIG         *myrig;      /* define in rig-demon.c */
 static GtkWidget *rig_gui_info_create_header         (void);
 static GtkWidget *rig_gui_info_create_offset_frame   (void);
 static GtkWidget *rig_gui_info_create_level_frame    (void);
-static GtkWidget *rig_gui_info_create_port_frame     (void);
+static GtkWidget *rig_gui_info_create_if_frame       (void);
 
 
 /** \brief Create info dialog.
@@ -88,6 +88,10 @@ rig_gui_info_run ()
 
 	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox),
 			    rig_gui_info_create_level_frame (),
+			    TRUE, TRUE, 10);
+
+	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox),
+			    rig_gui_info_create_if_frame (),
 			    TRUE, TRUE, 10);
 
 	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox),
@@ -381,15 +385,272 @@ rig_gui_info_create_level_frame    ()
 }
 
 
+
+/** \brief Create interface frame.
+ *  \return Container widget containing the individual settings.
+ *
+ * This function creates the info widgets to show the rig port type, DCD type,
+ * PTT type, parity and handshake.
+ *
+ */
 static GtkWidget *
-rig_gui_info_create_port_frame      ()
+rig_gui_info_create_if_frame      ()
 {
 	GtkWidget *frame;
+	GtkWidget *table;
+	GtkWidget *label;
+	gchar     *text;
+
+	table = gtk_table_new (7, 2, FALSE);
+
+	/* connection type */
+	label = gtk_label_new (_("Port Type:"));
+	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+	gtk_table_attach (GTK_TABLE (table), label,
+			  0, 1, 0, 1,
+			  GTK_EXPAND | GTK_FILL,
+			  GTK_EXPAND | GTK_FILL,
+			  5, 0);
+
+	label = gtk_label_new (NULL);
+
+	/* protection against index out of range */
+	if ((myrig->caps->port_type >= RIG_PORT_NONE) &&
+	    (myrig->caps->port_type <= RIG_PORT_PARALLEL)) {
+		
+		gtk_label_set_text (GTK_LABEL (label),
+				    RIG_PORT_STR[myrig->caps->port_type]);
+	}
+	else {
+		gtk_label_set_text (GTK_LABEL (label), _("Unknown"));
+	}
+
+	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+	gtk_table_attach (GTK_TABLE (table), label,
+			  1, 2, 0, 1,
+			  GTK_EXPAND | GTK_FILL,
+			  GTK_EXPAND | GTK_FILL,
+			  5, 0);
+
+	/* DCD */
+	label = gtk_label_new (_("DCD Type:"));
+	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+	gtk_table_attach (GTK_TABLE (table), label,
+			  0, 1, 1, 2,
+			  GTK_EXPAND | GTK_FILL,
+			  GTK_EXPAND | GTK_FILL,
+			  5, 0);
+
+	label = gtk_label_new (NULL);
+
+	/* protection against index out of range */
+	if ((myrig->caps->dcd_type >= RIG_DCD_NONE) &&
+	    (myrig->caps->dcd_type <= RIG_DCD_PARALLEL)) {
+		
+		gtk_label_set_text (GTK_LABEL (label),
+				    DCD_TYPE_STR[myrig->caps->dcd_type]);
+	}
+	else {
+		gtk_label_set_text (GTK_LABEL (label), _("Unknown"));
+	}
+
+	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+	gtk_table_attach (GTK_TABLE (table), label,
+			  1, 2, 1, 2,
+			  GTK_EXPAND | GTK_FILL,
+			  GTK_EXPAND | GTK_FILL,
+			  5, 0);
+
+	/* PTT */
+	label = gtk_label_new (_("PTT Type:"));
+	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+	gtk_table_attach (GTK_TABLE (table), label,
+			  0, 1, 2, 3,
+			  GTK_EXPAND | GTK_FILL,
+			  GTK_EXPAND | GTK_FILL,
+			  5, 0);
+
+	label = gtk_label_new (NULL);
+
+	/* protection against index out of range */
+	if ((myrig->caps->ptt_type >= RIG_PTT_NONE) &&
+	    (myrig->caps->ptt_type <= RIG_PTT_PARALLEL)) {
+		
+		gtk_label_set_text (GTK_LABEL (label),
+				    PTT_TYPE_STR[myrig->caps->dcd_type]);
+	}
+	else {
+		gtk_label_set_text (GTK_LABEL (label), _("Unknown"));
+	}
+
+	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+	gtk_table_attach (GTK_TABLE (table), label,
+			  1, 2, 2, 3,
+			  GTK_EXPAND | GTK_FILL,
+			  GTK_EXPAND | GTK_FILL,
+			  5, 0);
+
+	/* serial speed */
+	label = gtk_label_new (_("Serial Speed:"));
+	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+	gtk_table_attach (GTK_TABLE (table), label,
+			  0, 1, 3, 4,
+			  GTK_EXPAND | GTK_FILL,
+			  GTK_EXPAND | GTK_FILL,
+			  5, 0);
+
+	label = gtk_label_new (NULL);
+
+	if (myrig->caps->port_type == RIG_PORT_SERIAL) {
+		text = g_strdup_printf (_("%d..%d baud"),
+					myrig->caps->serial_rate_min,
+					myrig->caps->serial_rate_max);
+		gtk_label_set_text (GTK_LABEL (label), text);
+		g_free (text);
+	}
+	else {
+		gtk_label_set_text (GTK_LABEL (label), _("N/A"));
+	}
+
+	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+	gtk_table_attach (GTK_TABLE (table), label,
+			  1, 2, 3, 4,
+			  GTK_EXPAND | GTK_FILL,
+			  GTK_EXPAND | GTK_FILL,
+			  5, 0);
+
+	/* data bits */
+	label = gtk_label_new (_("Data bits:"));
+	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+	gtk_table_attach (GTK_TABLE (table), label,
+			  0, 1, 4, 5,
+			  GTK_EXPAND | GTK_FILL,
+			  GTK_EXPAND | GTK_FILL,
+			  5, 0);
+
+	label = gtk_label_new (NULL);
+
+	if (myrig->caps->port_type == RIG_PORT_SERIAL) {
+		text = g_strdup_printf ("%d", myrig->caps->serial_data_bits);
+		gtk_label_set_text (GTK_LABEL (label), text);
+		g_free (text);
+	}
+	else {
+		gtk_label_set_text (GTK_LABEL (label), _("N/A"));
+	}
+
+	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+	gtk_table_attach (GTK_TABLE (table), label,
+			  1, 2, 4, 5,
+			  GTK_EXPAND | GTK_FILL,
+			  GTK_EXPAND | GTK_FILL,
+			  5, 0);
+
+	/* stop bits */
+	label = gtk_label_new (_("Stop bits:"));
+	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+	gtk_table_attach (GTK_TABLE (table), label,
+			  0, 1, 5, 6,
+			  GTK_EXPAND | GTK_FILL,
+			  GTK_EXPAND | GTK_FILL,
+			  5, 0);
+
+	label = gtk_label_new (NULL);
+
+	if (myrig->caps->port_type == RIG_PORT_SERIAL) {
+		text = g_strdup_printf ("%d", myrig->caps->serial_stop_bits);
+		gtk_label_set_text (GTK_LABEL (label), text);
+		g_free (text);
+	}
+	else {
+		gtk_label_set_text (GTK_LABEL (label), _("N/A"));
+	}
+
+	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+	gtk_table_attach (GTK_TABLE (table), label,
+			  1, 2, 5, 6,
+			  GTK_EXPAND | GTK_FILL,
+			  GTK_EXPAND | GTK_FILL,
+			  5, 0);
+
+	/* serial parity */
+	label = gtk_label_new (_("Parity:"));
+	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+	gtk_table_attach (GTK_TABLE (table), label,
+			  0, 1, 6, 7,
+			  GTK_EXPAND | GTK_FILL,
+			  GTK_EXPAND | GTK_FILL,
+			  5, 0);
+
+	label = gtk_label_new (NULL);
+
+	if (myrig->caps->port_type == RIG_PORT_SERIAL) {
+
+		/* protection against index out of range */
+		if ((myrig->caps->serial_parity >= RIG_PARITY_NONE) &&
+		    (myrig->caps->serial_parity <= RIG_PARITY_EVEN)) {
+		
+			gtk_label_set_text (GTK_LABEL (label),
+					    RIG_PARITY_STR[myrig->caps->serial_parity]);
+		}
+		else {
+			gtk_label_set_text (GTK_LABEL (label), _("Unknown"));
+		}
+	}
+	else {
+		gtk_label_set_text (GTK_LABEL (label), _("N/A"));
+	}
+
+	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+	gtk_table_attach (GTK_TABLE (table), label,
+			  1, 2, 6, 7,
+			  GTK_EXPAND | GTK_FILL,
+			  GTK_EXPAND | GTK_FILL,
+			  5, 0);
+
+	/* serial handshake */
+	label = gtk_label_new (_("Handshake:"));
+	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+	gtk_table_attach (GTK_TABLE (table), label,
+			  0, 1, 7, 8,
+			  GTK_EXPAND | GTK_FILL,
+			  GTK_EXPAND | GTK_FILL,
+			  5, 0);
+
+	label = gtk_label_new (NULL);
+
+	if (myrig->caps->port_type == RIG_PORT_SERIAL) {
+
+		/* protection against index out of range */
+		if ((myrig->caps->serial_handshake >= RIG_HANDSHAKE_NONE) &&
+		    (myrig->caps->serial_handshake <= RIG_HANDSHAKE_HARDWARE)) {
+		
+			gtk_label_set_text (GTK_LABEL (label),
+					    RIG_HANDSHAKE_STR[myrig->caps->serial_handshake]);
+		}
+		else {
+			gtk_label_set_text (GTK_LABEL (label), _("Unknown"));
+		}
+	}
+	else {
+		gtk_label_set_text (GTK_LABEL (label), _("N/A"));
+	}
+
+	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+	gtk_table_attach (GTK_TABLE (table), label,
+			  1, 2, 7, 8,
+			  GTK_EXPAND | GTK_FILL,
+			  GTK_EXPAND | GTK_FILL,
+			  5, 0);
 
 
-	frame = gtk_frame_new (_("Port"));
+	/* frame */
+	frame = gtk_frame_new (_("Interface"));
 	gtk_frame_set_label_align (GTK_FRAME (frame), 0.5, 0.5);
-//	gtk_container_add (GTK_CONTAINER (frame), table);
+	gtk_container_add (GTK_CONTAINER (frame), table);
+
+
 
 	return frame;
 }
+
