@@ -1,12 +1,12 @@
 GRIG 0.4.2:
 
-- Added comand line option to specify a delay between the
+- Added command line option to specify a delay between the
   execution of each command. This has been introduced as an
   attempt to avoid buffer overflow in some radios caused by
   to fast polling.
-- gthreads on BSD...
-  Terminate with error message when daemon process can not be
-  started.
+- Added command line option to disable threads and use a
+  regular timeout based daemon process instead (problem
+  reported on FreeBSD).
 - Fixed a bug which caused the frequency display to flicker.
 - Fixed a bug which caused the README, NEWS, AUTHORS, COPYING
   and ChangeLog files not to be installed.
