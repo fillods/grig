@@ -35,6 +35,9 @@ set hamlib debug level (0..5)
 .TP
 \fB\-D\fR, \fB\-\-delay\fR=\fIVALUE\fR
 set delay between commands in msec (see below)
+.TP
+\fB\-D\fR, \fB\-\-nothread\fR
+use timeout calls instead of thread (see below)
 .TP 
 \fB\-l\fR, \fB\-\-list\fR
 list supported radios and exit
@@ -93,6 +96,13 @@ default value is 10 milliseconds and the smallest possible value is 1 millisecon
 (if one specifies 0 millisecond on the command line, the default value will be used).
 If you find a value which is better for your radio than the default value, please
 let us know about it.
+.TP
+Daemon Never Starts on FreeBSD
+There have been reports on that the new, thread-based daemon process is never
+started on FreeBSD, while the old, timeout-based daemon worked fine. It is therefore
+possible to choose the two ways to run the daemon process. The default is the new
+thread based daemon, but if you use FreeBSD and nothing seems to work after start-up
+you can select the timout-based daemon with the -n or --nothread command line option.
 .TP
 Connection Settings
 Once you have started grig you can not change the radio settings (model, device,
