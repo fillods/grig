@@ -16,7 +16,7 @@
 
 	* src/rig-gui-lcd.c:
 	Added rig_gui_lcd_calc_dim which will calculate frequently used sizes
-	and positions. <CONTINUE>
+	and positions.
 	
 
 2004-10-03;	Alexandru Csete <csete@users.sourceforge.net>
@@ -45,8 +45,8 @@
 
 	* src/rig-gui-meter.c, src/rig-gui-smeter.h, src/rig-gui-smeter-conv.c,
 	* src/rig-gui-lcd.c, src/rig-gui-lcd.h, src/rig-gui-buttons.c,
-	Removed GNOME and GConf dependencies so that files can be compiled.
-	Replaced code which is deprecated in Gtk+ 2.4
+	Removed GNOME and GConf dependencies so that files can be compiled
+	with Gtk+ only. Replaced code which is deprecated in Gtk+ 2.4
 
 	* src/grig-menu.c:
 	Changed file name to grig-menubar.c, added corresponding header file
@@ -80,8 +80,8 @@
 	* src/main.c, src/grig-about.c, src/rig-anomaly.c,
 	* src/rig-daemon.c, src/rig-daemon-check.c, src/rig-data.c:
 	* src/rig-gui.c
-	Remved GNOME and GConf dependencies so that files can be compiled.
-	Replaced code which is deprecated in Gtk+ 2.4
+	Removed GNOME and GConf dependencies so that files can be compiled
+	with Gtk+ only. Replaced code which is deprecated in Gtk+ 2.4
 
 	
 2004-09-30;	Alexandru Csete <csete@users.sourceforge.net>
@@ -103,7 +103,7 @@
 
 	* grig.1.in, grig.desktop, grig.spec.in, acinclude.m4, config.guess,
 	* config.sub:
-	Aded files.
+	Added files.
 
 
 2004-09-29;	Alexandru Csete <csete@users.sourceforge.net>

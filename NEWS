@@ -1,0 +1,14 @@
+Primary Objectives for this baseline:
+
+- Continuous readback of rig settings so that rig and GUI can be used
+  in parallel.
+
+- Dependence on Gtk+ only (no more GNOME libs or GConf). Currently gtk+-2.4
+  is used.
+
+- GUI should never be influenced by hardware (no freeze nor slow response from
+  GUI)
+
+- Ability to select any rig supproted by hamlib from the command line, meaning 
+  no more need for explicitly configuring a rig before beeing able to use it.
+
