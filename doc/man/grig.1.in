@@ -32,6 +32,9 @@ set additiional configuration parameters
 .TP 
 \fB\-d\fR, \fB\-\-debug\fR=\fILEVEL\fR
 set hamlib debug level (0..5)
+.TP
+\fB\-D\fR, \fB\-\-delay\fR=\fIVALUE\fR
+set delay between commands in msec (see below)
 .TP 
 \fB\-l\fR, \fB\-\-list\fR
 list supported radios and exit
@@ -76,7 +79,20 @@ radio is RPC\-rig.
 .br
 5    Trace.
 
-.SH "LIMITATIONS"
+.SH "KNOWN BUGS AND LIMITATIONS"
+.TP
+Buffer Overflow in Radio
+By default, grig tries to execute rig commands as fast as possible in order to
+achieve an almost real-time remote control experience. This strategy has turned out
+to cause problems with some radios, probably because these radios acknowledge the
+reception of a command before executing them, whereby the next command will be sent
+before the previous one has terminated. To avoid any possible buffer overflow
+in these situations, one can try to experiment with the -D or --debug command line
+argument, which will put the specified delay in between each executed command. The
+default value is 10 milliseconds and the smallest possible value is 1 millisecond
+(if one specifies 0 millisecond on the command line, the default value will be used).
+If you find a value which is better for your radio than the default value, please
+let us know about it.
 .TP
 Connection Settings
 Once you have started grig you can not change the radio settings (model, device,
@@ -89,6 +105,12 @@ starting several instances of grig as long as they do not try to control the
 same radio. An exception to this is the RPC\-rig backend in which case
 the rpc rig daemon will act as a server while grig or any other hamlib
 frontends will act as a clients.
+.TP
+Power OFF State
+On some radios, grig does not cope very well with the power off state. It is yet
+not known whether this is a bug in the hamlib backend or in grig and we will
+definitely appreciate your input.
+
 
 .SH "AUTHOR"
 Written by Alexandru Csete, OZ9AEC.
