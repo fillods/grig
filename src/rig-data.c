@@ -57,8 +57,8 @@
 
 #include <gtk/gtk.h>
 #include <hamlib/rig.h>
+#include <glib/gi18n.h>
 #include "rig-data.h"
-#include "support.h"
 
 
 grig_settings_t  set;      /*!< These values are sent to the radio. */

@@ -36,8 +36,9 @@
  * This file contains the function to create and manage the about dialog box.
  */
 #include <gtk/gtk.h>
+#include <glib/gi18n.h>
 #include "grig-about.h"
-#include "support.h"
+
 
 extern GtkWidget   *grigapp;    /* defined in main.c */
 

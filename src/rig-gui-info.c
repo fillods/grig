@@ -38,7 +38,7 @@
  */
 #include <gtk/gtk.h>
 #include <hamlib/rig.h>
-#include "support.h"
+#include <glib/gi18n.h>
 #include "rig-gui-info.h"
 #include "rig-gui-info-data.h"
 

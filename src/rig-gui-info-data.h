@@ -110,14 +110,14 @@ const gchar *RIG_PORT_STR[] = {
 
 
 /** \brief String representations for SERIAL_PARITY_E symbolic references. */
-const gchar *SERIAL_PARITY_STR[] = {
+const gchar *RIG_PARITY_STR[] = {
 	N_("None"),
 	N_("Odd"),
 	N_("Even")
 };
 
 /** \brief String representations for SERIAL_HANDSHAKE_E symbolic references. */
-const gchar *SERIAL_HANDSHAKE_STR[] = {
+const gchar *RIG_HANDSHAKE_STR[] = {
 	N_("None"),
 	N_("XONXOFF"),
 	N_("Hardware")

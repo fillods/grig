@@ -30,11 +30,11 @@
 	  USA
 */
 #include <gtk/gtk.h>
+#include <glib/gi18n.h>
 #include <hamlib/rig.h>
 #include "rig-data.h"
 #include "rig-utils.h"
 #include "rig-gui-levels.h"
-#include "support.h"
 
 
 

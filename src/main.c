@@ -41,6 +41,7 @@
  */
 #include <stdlib.h>
 #include <gtk/gtk.h>
+#include <glib/gi18n.h>
 #include <hamlib/rig.h>
 #ifdef HAVE_GETOPT_H
 #  include <getopt.h>
@@ -49,8 +50,6 @@
 #include "rig-gui.h"
 #include "rig-daemon.h"
 #include "rig-data.h"
-#include "support.h"
-
 
 
 

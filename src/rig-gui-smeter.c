@@ -44,11 +44,12 @@
  */
 #include <gtk/gtk.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
+#include <glib/gi18n.h>
 #include <math.h>
 #include "rig-data.h"
 #include "rig-gui-smeter-conv.h"
 #include "rig-gui-smeter.h"
-#include "support.h"
+
 
 
 //#define SMETER_TEST 1

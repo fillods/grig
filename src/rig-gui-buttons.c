@@ -31,10 +31,10 @@
 */
 #include <gtk/gtk.h>
 #include <hamlib/rig.h>
+#include <glib/gi18n.h>
 #include "rig-data.h"
 #include "rig-utils.h"
 #include "rig-gui-buttons.h"
-#include "support.h"
 
 
 

@@ -75,12 +75,13 @@
  */
 #include <gtk/gtk.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
+#include <glib/gi18n.h>
 #include <stdlib.h>
 #include <math.h>
 #include <hamlib/rig.h>
 #include "rig-data.h"
 #include "rig-gui-lcd.h"
-#include "support.h"
+
 
 
 /** \brief Event objects.

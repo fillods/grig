@@ -34,10 +34,11 @@
 
 #include <gtk/gtk.h>
 #include <hamlib/rig.h>
+#include <glib/gi18n.h>
 #include "rig-data.h"
 #include "rig-utils.h"
 #include "rig-gui-ctrl2.h"
-#include "support.h"
+
 
 
 /** \brief Enumerated values representing the widgets.

@@ -31,12 +31,13 @@
 */
 #include <stdlib.h>
 #include <gtk/gtk.h>
+#include <glib/gi18n.h>
 #include <hamlib/rig.h>
 #include "grig-about.h"
 #include "grig-config.h"
 #include "grig-menubar.h"
 #include "rig-gui-info.h"
-#include "support.h"
+
 
 
 
