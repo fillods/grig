@@ -39,6 +39,7 @@
 #include <gtk/gtk.h>
 #include <hamlib/rig.h>
 #include <glib/gi18n.h>
+#include "rig-data.h"
 #include "rig-gui-info.h"
 #include "rig-gui-info-data.h"
 
@@ -64,18 +65,52 @@ void
 rig_gui_info_run ()
 {
 	GtkWidget *dialog;
+	GtkWidget *hbox;
+	GtkWidget *vbox1;
+	GtkWidget *vbox2;
 
+	vbox1 = gtk_vbox_new (FALSE, 5);
+
+	gtk_box_pack_start (GTK_BOX (vbox1), 
+			    rig_gui_info_create_if_frame (),
+			    FALSE, FALSE, 0);
+
+	gtk_box_pack_start (GTK_BOX (vbox1), 
+			    rig_gui_info_create_offset_frame (),
+			    FALSE, FALSE, 0);
+
+	gtk_box_pack_start (GTK_BOX (vbox1), 
+			    rig_gui_info_create_frontend_frame (),
+			    FALSE, FALSE, 0);
+
+
+	vbox2 = gtk_vbox_new (FALSE, 5);
+
+	gtk_box_pack_start (GTK_BOX (vbox2), 
+			    rig_gui_info_create_tunstep_frame (),
+			    FALSE, FALSE, 5);
+
+	gtk_box_pack_start (GTK_BOX (vbox2),
+			    rig_gui_info_create_level_frame (),
+			    TRUE, TRUE, 0);
+
+	hbox = gtk_hbox_new (TRUE, 15);
+
+	gtk_box_pack_start (GTK_BOX (hbox), vbox1, FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (hbox), vbox2, TRUE, TRUE, 0);
+
+
+	/* create dialog and add hbox */
 	dialog = gtk_dialog_new_with_buttons (_("Radio Info"), GTK_WINDOW (grigapp),
 					      GTK_DIALOG_DESTROY_WITH_PARENT,
 					      GTK_STOCK_CLOSE, GTK_RESPONSE_NONE, NULL);
-   
+  
 	/* Ensure that the dialog box is destroyed when the user responds. */
 	g_signal_connect_swapped (dialog,
 				  "response", 
 				  G_CALLBACK (gtk_widget_destroy),
 				  dialog);
 
-	/* Add the label, and show everything we've added to the dialog. */
 	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox),
 			    rig_gui_info_create_header (),
 			    FALSE, FALSE, 0);
@@ -85,24 +120,7 @@ rig_gui_info_run ()
 			    FALSE, FALSE, 10);
 
 	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox),
-			    rig_gui_info_create_offset_frame (),
-			    FALSE, FALSE, 10);
-
-	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox),
-			    rig_gui_info_create_level_frame (),
-			    TRUE, TRUE, 10);
-
-	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox),
-			    rig_gui_info_create_if_frame (),
-			    TRUE, TRUE, 10);
-
-	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox),
-			    rig_gui_info_create_tunstep_frame (),
-			    FALSE, FALSE, 10);
-
-	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox),
-			    rig_gui_info_create_frontend_frame (),
-			    FALSE, FALSE, 10);
+			    hbox, TRUE, TRUE, 10);
 
 	gtk_widget_show_all (dialog);
 	
@@ -801,13 +819,55 @@ rig_gui_info_create_frontend_frame ()
 	GtkWidget *table;
 	GtkWidget *label;
 	gchar     *text;
+	gchar     *buffer;
+	guint      i;
+	gint       data;
 
-	table = gtk_table_new (2, 2, TRUE);
+	table = gtk_table_new (2, 2, FALSE);
 
 	label = gtk_label_new (_("PREAMP:"));
 	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
 	gtk_table_attach (GTK_TABLE (table), label,
 			  0, 1, 0, 1,
+			  GTK_EXPAND | GTK_FILL,
+			  GTK_EXPAND | GTK_FILL,
+			  5, 0);
+	
+	text = g_strdup ("");
+
+	/* loop over all available preamp values and concatenate them into a label */
+	for (i = 0; i < MAXDBLSTSIZ; i++) {
+
+		data = rig_data_get_preamp_data (i);
+
+		/* check whether we have a real data or we have
+		   reached the terminator
+		*/
+		if (data == 0) {
+			i = MAXDBLSTSIZ;
+		}
+		else {
+			if (i > 0) {
+
+				buffer = g_strdup_printf ("%s %ddB", text, data);
+				g_free (text);
+
+				text = g_strdup (buffer);
+				g_free (buffer);
+			}
+			else {
+				g_free (text);
+				text = g_strdup_printf ("%ddB", data);
+			}
+
+		}
+
+	}
+	label = gtk_label_new (text);
+	g_free (text);
+	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+	gtk_table_attach (GTK_TABLE (table), label,
+			  1, 2, 0, 1,
 			  GTK_EXPAND | GTK_FILL,
 			  GTK_EXPAND | GTK_FILL,
 			  5, 0);
@@ -817,6 +877,42 @@ rig_gui_info_create_frontend_frame ()
 	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
 	gtk_table_attach (GTK_TABLE (table), label,
 			  0, 1, 1, 2,
+			  GTK_EXPAND | GTK_FILL,
+			  GTK_EXPAND | GTK_FILL,
+			  5, 0);
+
+	/* loop over all available attenuator values and concatenate them into a label */
+	for (i = 0; i < MAXDBLSTSIZ; i++) {
+
+		data = rig_data_get_att_data (i);
+
+		/* check whether we have a real data or we have
+		   reached the terminator
+		*/
+		if (data == 0) {
+			i = MAXDBLSTSIZ;
+		}
+		else {
+			if (i > 0) {
+
+				buffer = g_strdup_printf ("%s; -%ddB", text, data);
+				g_free (text);
+
+				text = g_strdup (buffer);
+				g_free (buffer);
+			}
+			else {
+				text = g_strdup_printf ("-%ddB", data);
+			}
+
+		}
+
+	}
+	label = gtk_label_new (text);
+	g_free (text);
+	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+	gtk_table_attach (GTK_TABLE (table), label,
+			  1, 2, 1, 2,
 			  GTK_EXPAND | GTK_FILL,
 			  GTK_EXPAND | GTK_FILL,
 			  5, 0);
