@@ -95,7 +95,7 @@ GTK_V=`pkg-config --modversion gtk+-2.0`
 
 
 
-AC_OUTPUT([ po/Makefile.in m4/Makefile 
+AC_OUTPUT([
 Makefile
 grig.1
 grig.spec

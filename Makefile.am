@@ -1,8 +1,8 @@
 ## Process this file with automake to produce Makefile.in
 
-SUBDIRS = m4  src
+SUBDIRS = src
 
-EXTRA_DIST = config.rpath mkinstalldirs  config.rpath mkinstalldirs  config.rpath  config.rpath mkinstalldirs \
+EXTRA_DIST = mkinstalldirs \
 	grig.1.in \
 	grig.desktop \
 	grig.spec.in \
