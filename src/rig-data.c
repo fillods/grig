@@ -645,6 +645,42 @@ rig_data_get_strength ()
 }
 
 
+/** \brief Get TX power.
+ *  \return The current value of the TX power.
+ *
+ * This function returns the current value of the TX power.
+ */
+float
+rig_data_get_power    ()
+{
+	return get.power;
+}
+
+
+/** \brief Get SWR.
+ *  \return The current value of the SWR.
+ *
+ * This function returns the current value of the SWR.
+ */
+float
+rig_data_get_swr      ()
+{
+	return get.swr;
+}
+
+
+/** \brief Get ALC.
+ *  \return The current value of the ALC.
+ *
+ * This function returns the current value of the ALC.
+ */
+float
+rig_data_get_alc      ()
+{
+	return get.alc;
+}
+
+
 /** \brief Get availablility of signal strength readback.
  *  \return 1 if available, otherwise 0.
  *

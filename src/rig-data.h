@@ -173,6 +173,9 @@ int              rig_data_get_agc      (void);
 int              rig_data_get_att      (void);
 int              rig_data_get_preamp   (void);
 int              rig_data_get_strength (void);
+float            rig_data_get_power    (void);
+float            rig_data_get_swr      (void);
+float            rig_data_get_alc      (void);
 freq_t           rig_data_get_fmin     (void);
 freq_t           rig_data_get_fmax     (void);
 shortfreq_t      rig_data_get_fstep    (void);
@@ -182,6 +185,7 @@ shortfreq_t      rig_data_get_ritstep  (void);
 shortfreq_t      rig_data_get_xitmin   (void);
 shortfreq_t      rig_data_get_xitmax   (void);
 shortfreq_t      rig_data_get_xitstep  (void);
+
 
 /* has_get functions */
 int   rig_data_has_get_pstat    (void);
