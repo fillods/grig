@@ -50,6 +50,7 @@ extern RIG         *myrig;      /* define in rig-demon.c */
 static GtkWidget *rig_gui_info_create_header         (void);
 static GtkWidget *rig_gui_info_create_offset_frame   (void);
 static GtkWidget *rig_gui_info_create_level_frame    (void);
+static GtkWidget *rig_gui_info_create_port_frame     (void);
 
 
 /** \brief Create info dialog.
@@ -87,7 +88,7 @@ rig_gui_info_run ()
 
 	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox),
 			    rig_gui_info_create_level_frame (),
-			    FALSE, FALSE, 10);
+			    TRUE, TRUE, 10);
 
 	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox),
 			    gtk_label_new ("rig caps to come ..."),
@@ -277,33 +278,33 @@ rig_gui_info_create_offset_frame ()
 /** \brief Create frame containing levels info.
  *  \return Frame containing the widgets.
  *
- * This function creates the widgets to display various
- * level settings information. The container is made of a 2x2 table
- * showing SET and GET levels and it is surrounded by a nice
- * frame.
- *
- *  REWRITE: vertical scrollbar!
+ * This function creates the widget used to display the set and get
+ * level availabilities. The various levels are listed in a vertical
+ * table and for each of them a label indicates
+ * whether the level is available or not (actualy one label for read and
+ * one for write).
  *
  *             READ    WRITE
  *
  *  LEVEL 1     X        X
  *  LEVEL 2     X
+ *
  */
 static GtkWidget *
 rig_gui_info_create_level_frame    ()
 {
-	GtkWidget *frame;
+	GtkWidget *swin;
 	GtkWidget *table;
 	GtkWidget *label;
-	gchar     *text;
-	gchar     *buff;
-	setting_t  levels;
+	setting_t  levels_rd;
+	setting_t  levels_wr;
 	guint      i;
-	guint      count = 0;
 
-	table = gtk_table_new (2, 2, FALSE);
 
-	label = gtk_label_new (_("READ:"));
+	table = gtk_table_new (30, 3, FALSE);
+
+	label = gtk_label_new (NULL);
+	gtk_label_set_markup (GTK_LABEL (label), _("<b>LEVEL</b>"));
 	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
 	gtk_table_attach (GTK_TABLE (table), label,
 			  0, 1, 0, 1,
@@ -311,60 +312,84 @@ rig_gui_info_create_level_frame    ()
 			  GTK_EXPAND | GTK_FILL,
 			  5, 0);
 
-	/* get read levels */
-	text = g_strdup (" ");
-	levels = rig_has_get_level (myrig, 0xFFFFFF);
-	
-	/* loop over all values */
-	for (i = 0; i < 31; i++) {
 
-		/* if we have level append it to string */
-		if (levels & (1 << i)) {
-
-			buff = g_strdup_printf ("%s %s", text, RIG_LEVEL_STR[i]);
-			count++;
-
-			g_free (text);
-			text = g_strdup (buff);
-			g_free (buff);
-		}
-
-		if (count >= 5) {
-			buff = g_strdup_printf ("%s\n", text);
-			count = 0;
-
-			g_free (text);
-			text = g_strdup (buff);
-			g_free (buff);
-		}
-
-
-	}
-
-	label = gtk_label_new (text);
-	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+	label = gtk_label_new (NULL);
+	gtk_label_set_markup (GTK_LABEL (label), _("<b>READ</b>"));
 	gtk_table_attach (GTK_TABLE (table), label,
 			  1, 2, 0, 1,
 			  GTK_EXPAND | GTK_FILL,
 			  GTK_EXPAND | GTK_FILL,
 			  5, 0);
-	g_free (text);
 
-	label = gtk_label_new (_("WRITE:"));
-	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+	label = gtk_label_new (NULL);
+	gtk_label_set_markup (GTK_LABEL (label), _("<b>WRITE</b>"));
 	gtk_table_attach (GTK_TABLE (table), label,
-			  0, 1, 1, 2,
+			  2, 3, 0, 1,
 			  GTK_EXPAND | GTK_FILL,
 			  GTK_EXPAND | GTK_FILL,
 			  5, 0);
 
-	/* get write levels */
-	levels = rig_has_set_level (myrig, 0xFFFFFF);
+
+	/* get levels */
+	levels_rd = rig_has_get_level (myrig, 0xFFFFFFFF);
+	levels_wr = rig_has_set_level (myrig, 0xFFFFFFFF);
+	
+	/* loop over all levels; unfortunately there is no nice way to avoid
+	   the empty values but, since there are not so many of them, it is all
+	   right...
+	*/
+	for (i = 0; i < 31; i++) {
+
+		/* add RIG_LEVEL_STR[i] to the row i+1 */
+		label = gtk_label_new (RIG_LEVEL_STR[i]);
+		gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+		gtk_table_attach (GTK_TABLE (table), label,
+				  0, 1, i+1, i+2,
+				  GTK_EXPAND | GTK_FILL,
+				  GTK_EXPAND | GTK_FILL,
+				  5, 0);
+		
+		/* add READ label to row i+1 */
+		label = gtk_label_new (_("-"));
+		gtk_table_attach_defaults (GTK_TABLE (table), label,
+					   1, 2, i+1, i+2);
+
+		if (levels_rd & (1 << i)) {
+			gtk_label_set_text (GTK_LABEL (label), _("X"));
+		}
+
+		/* add WRITE label to row i+1 */
+		label = gtk_label_new (_("-"));
+		gtk_table_attach_defaults (GTK_TABLE (table), label,
+					   2, 3, i+1, i+2);
+
+		if (levels_wr & (1 << i)) {
+			gtk_label_set_text (GTK_LABEL (label), _("X"));
+		}
+
+	}
+
+	/* scrolled window and frame */ 
+	swin = gtk_scrolled_window_new (NULL,NULL);
+	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (swin),
+					GTK_POLICY_NEVER,
+					GTK_POLICY_ALWAYS);
+	gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (swin), table);
+		
+
+	return swin;
+}
 
 
-	frame = gtk_frame_new (_("Levels"));
+static GtkWidget *
+rig_gui_info_create_port_frame      ()
+{
+	GtkWidget *frame;
+
+
+	frame = gtk_frame_new (_("Port"));
 	gtk_frame_set_label_align (GTK_FRAME (frame), 0.5, 0.5);
-	gtk_container_add (GTK_CONTAINER (frame), table);
+//	gtk_container_add (GTK_CONTAINER (frame), table);
 
 	return frame;
 }
