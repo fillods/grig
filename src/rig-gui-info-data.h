@@ -133,4 +133,24 @@ const gchar *ANN_STR[] = {
 	N_("JAP")
 };
 
+/** \brief String representation for mode symbolic references. */
+const gchar *MODE_STR[] = {
+	N_("AM"),
+	N_("CW"),
+	N_("USB"),
+	N_("LSB"),
+	N_("RTTY"),
+	N_("FM"),
+	N_("WFM"),
+	N_("CWR"),
+	N_("RTTYR"),
+	N_("AMS"),
+	N_("PKTLSB"),
+	N_("PKTUSB"),
+	N_("PKTFM"),
+	N_("ECSSUSB"),
+	N_("ECSSLSB"),
+	N_("FAX")
+};
+
 #endif
