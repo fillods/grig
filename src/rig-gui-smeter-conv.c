@@ -287,7 +287,7 @@ convert_angle_to_rect  (gfloat angle, coordinate_t *coor)
 	gfloat rad;
 	gfloat s,c;
 
-	/* numerical protection: 0 < angle < 180 */
+	/* numerical protection: 0.0 < angle < 180.0 */
 	if (!(0.0 < angle) || !(angle < 180.0)) {
 		angle = 90.0;
 	}
