@@ -74,10 +74,10 @@
 typedef enum {
 	SMETER_SCALE_5 = 0,     /*!< Use scale 0..5 */
 	SMETER_SCALE_10,        /*!< Use scale 0..10 */
-	SMETER_SCALE_50,        /*!< Use scale 0..10 */
-	SMETER_SCALE_100,       /*!< Use scale 0..10 */
-	SMETER_SCALE_500,       /*!< Use scale 0..10 */
-	SMETER_SCALE_LAST       /*!< Dummy...               */
+	SMETER_SCALE_50,        /*!< Use scale 0..50 */
+	SMETER_SCALE_100,       /*!< Use scale 0..100 */
+	SMETER_SCALE_500,       /*!< Use scale 0..500 */
+	SMETER_SCALE_LAST       /*!< Dummy...         */
 } smeter_scale_t;
 
 

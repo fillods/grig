@@ -50,6 +50,7 @@
 #  include <config.h>
 #endif
 #include "rig-data.h"
+#include "grig-gtk-workarounds.h"
 #include "rig-gui-smeter-conv.h"
 #include "rig-gui-smeter.h"
 
@@ -57,18 +58,17 @@
 /* uncomment to test smeter dynamics */
 //#define SMETER_TEST 1
 
-/* smeter */
+/** \brief The smeter */
 static smeter_t smeter;
 
-/* needle coordinates - can be made local */
+/** \brief Needle coordinates - can be made local */
 static coordinate_t coor;
 
-
-/* offscreen drawable */
+/** \brief Off-screen drawable */
 static GdkPixmap *buffer;
 
 
-/* TX mode strings used for optionmenu */
+/** \brief TX mode strings used for optionmenu */
 static const gchar *TX_MODE_S[] = {
 	N_("None"),
 	N_("Power"),
@@ -79,7 +79,7 @@ static const gchar *TX_MODE_S[] = {
 };
 
 
-/* TX scale strings used for optionmenu */
+/** \brief TX scale strings used for optionmenu */
 static const gchar *TX_SCALE_S[] = {
 	N_("0..5"),
 	N_("0..10"),
@@ -87,6 +87,10 @@ static const gchar *TX_SCALE_S[] = {
 	N_("0..100"),
 	N_("0..500")
 };
+
+
+/** \brief Conversion table to conver combo box index to smeter_tx_mode_t. */
+static smeter_tx_mode_t index_to_mode[SMETER_TX_MODE_LAST];
 
 
 /* private fuunction prototypes */
@@ -101,6 +105,8 @@ static void rig_gui_smeter_mode_cb     (GtkWidget *, gpointer);
 static void rig_gui_smeter_scale_cb    (GtkWidget *, gpointer);
 
 static gboolean rig_gui_smeter_expose_cb   (GtkWidget *, GdkEventExpose *, gpointer);
+
+static gboolean rig_gui_smeter_has_tx_mode (guint);
 
 
 /** \brief Create signal strength meter widget.
@@ -133,8 +139,6 @@ rig_gui_smeter_create ()
 	gtk_box_pack_start_defaults (GTK_BOX (hbox), rig_gui_scale_selector_create ());
 	gtk_box_pack_start_defaults (GTK_BOX (hbox), rig_gui_mode_selector_create ());
 
-	/* disable for now (unsupported) */
-	gtk_widget_set_sensitive (hbox, FALSE);
 
 	/* create cnvas */
 	rig_gui_smeter_create_canvas ();
@@ -326,16 +330,34 @@ rig_gui_mode_selector_create  ()
 {
 	GtkWidget *combo;
 	guint i;
+	guint modes = 0;
 
 	combo = gtk_combo_box_new_text ();
 
-	/* Add entries to combo box */
+	/* Add entries to combo box; but only if rig supports it
+	   Also fill index_to_mode conversion table.
+	*/
 	for (i = SMETER_TX_MODE_NONE; i < SMETER_TX_MODE_LAST; i++) {
-		gtk_combo_box_append_text (GTK_COMBO_BOX (combo), TX_MODE_S[i]);
+		if (rig_gui_smeter_has_tx_mode (i)) {
+			gtk_combo_box_append_text (GTK_COMBO_BOX (combo), TX_MODE_S[i]);
+			index_to_mode[modes] = i;
+			modes++;
+		}
 	}
 
-	/* temporary disable */
+	/* if the conversion array is not filled we must add
+	   a last element containing -1
+	*/
+	if (modes < SMETER_TX_MODE_LAST) {
+		index_to_mode[modes] = -1;
+	}
+
 	gtk_combo_box_set_active (GTK_COMBO_BOX (combo), SMETER_TX_MODE_NONE);
+
+	/* add tooltips when widget is realized */
+	g_signal_connect (combo, "realize",
+			  G_CALLBACK (grig_set_combo_tooltips),
+			  _("Select TX mode for the meter"));
 
 	/* connect changed signal */
 	g_signal_connect (G_OBJECT (combo), "changed",
@@ -479,4 +501,38 @@ rig_gui_smeter_expose_cb   (GtkWidget      *widget,
 
 
 	return TRUE;
+}
+
+
+
+/** \brief Check whether a specific TX mode is available.
+ *  \param The TX mode; should be one of smeter_tx_mode_t.
+ *  \return A boolean indicationg whether the TX mode is available or not.
+ *
+ */
+static gboolean
+rig_gui_smeter_has_tx_mode (guint mode)
+{
+	switch (mode) {
+
+		/* NONE is always enabled */
+	case SMETER_TX_MODE_NONE:
+		return TRUE;
+		break;
+
+	case SMETER_TX_MODE_POWER:
+	case SMETER_TX_MODE_SWR:
+	case SMETER_TX_MODE_ALC:
+	case SMETER_TX_MODE_COMP:
+	case SMETER_TX_MODE_IC:
+		return FALSE;
+		break;
+
+	default:
+		return FALSE;
+		break;
+	}
+
+
+	return FALSE;
 }
