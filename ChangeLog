@@ -4,6 +4,9 @@
 	Fixed typo which caused pixmaps not to be included in
 	datapack.
 
+	* configure.ac:
+	Incremented version number.
+
 
 2005-01-22;	Alexandru Csete <csete@users.sourceforge.net>
 
