@@ -2,7 +2,7 @@
 
 SUBDIRS = src doc po
 
-EXTRA_DIST = config.rpath mkinstalldirs  config.rpath mkinstalldirs  mkinstalldirs \
+EXTRA_DIST = config.rpath mkinstalldirs  config.rpath mkinstalldirs  config.rpath mkinstalldirs  mkinstalldirs \
 	grig.spec.in \
 	grig.spec
 
