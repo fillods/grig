@@ -1,3 +1,10 @@
+2005-01-27;     Alexandru Csete <csete@users.sourceforge.net>
+
+	* pixmaps/Makefile.am:
+	Fixed typo which caused pixmaps not to be included in
+	datapack.
+
+
 2005-01-22;	Alexandru Csete <csete@users.sourceforge.net>
 
 	* src/rig-gui-smeter-conv.c, src/rig-gui-smeter-conv.h:
