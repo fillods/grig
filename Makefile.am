@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-SUBDIRS = src po
+SUBDIRS = src
 
 EXTRA_DIST = config.rpath mkinstalldirs  config.rpath  config.rpath mkinstalldirs \
 	grig.1.in \
