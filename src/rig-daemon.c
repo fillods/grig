@@ -66,7 +66,7 @@ RIG *myrig;  /*!< The rig structure. We keep this public so GUI can access the i
 //#define GRIG_DEBUG 1
 
 #ifdef GRIG_DEBUG
-/** \brief MAtrix defining the default RX cycle in debug mode */
+/** \brief Matrix defining the default RX cycle in debug mode */
 static const rig_cmd_t DEF_RX_CYCLE[C_MAX_CYCLES][C_MAX_CMD_PER_CYCLE] = {
 	{ RIG_CMD_SET_AGC, RIG_CMD_GET_AGC, RIG_CMD_NONE, RIG_CMD_NONE, RIG_CMD_NONE },
 	{ RIG_CMD_NONE,    RIG_CMD_NONE,    RIG_CMD_NONE, RIG_CMD_NONE, RIG_CMD_NONE },
@@ -1327,4 +1327,47 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 	}
 
 
+}
+
+
+
+/** \brief Get radio brand.
+ *  \return A character string containing the radio brand.
+ *
+ * This function returns the brand of the currently active radio.
+ * If no radio has yet been initialised the function returns NULL.
+ * The returned string should be freed when no longer needed.
+ */
+gchar *
+rig_daemon_get_brand ()
+{
+	gchar *text;
+
+	if (myrig == NULL) {
+		return NULL;
+	}
+	text = g_strdup (myrig->caps->mfg_name);
+
+	return text;
+}
+
+
+/** \brief Get radio model.
+ *  \return A character string containing the radio model.
+ *
+ * This function returns the model of the currently active radio.
+ * If no radio has yet been initialised the function returns NULL.
+ * The returned string should be freed when no longer needed.
+ */
+gchar *
+rig_daemon_get_model ()
+{
+	gchar *text;
+
+	if (myrig == NULL) {
+		return NULL;
+	}
+	text = g_strdup (myrig->caps->model_name);
+
+	return text;
 }

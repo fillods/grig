@@ -84,8 +84,9 @@ typedef enum {
 
 
 
-int  rig_daemon_start (int, const gchar *, int, const gchar *);
-void rig_daemon_stop  (void);
-
+int    rig_daemon_start (int, const gchar *, int, const gchar *);
+void   rig_daemon_stop  (void);
+gchar *rig_daemon_get_brand (void);
+gchar *rig_daemon_get_model (void);
 
 #endif
