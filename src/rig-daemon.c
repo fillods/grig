@@ -44,10 +44,6 @@
  *
  * More about cycles and periods...
  *
- * \bug rig-daemon.c:221: warning: implicit declaration of function `usleep'
- *
- * \bug rig-daemon.c:125: warning: unused variable `buff'
- *
  */
 #include <gtk/gtk.h>
 #include <hamlib/rig.h>
@@ -159,6 +155,7 @@ rig_daemon_start       (int          rigid,
 	gint    retcode;
 	gchar **confvec;   
 	gchar **confent;
+	GError *err = NULL;  /* used when starting daemon thread */
 
 
 	/* send a debug message */
@@ -299,7 +296,27 @@ rig_daemon_start       (int          rigid,
 
 #ifndef DISABLE_HW
 	/* start daemon */
-	g_thread_create (rig_daemon_cycle, NULL, FALSE, NULL);
+	g_thread_create (rig_daemon_cycle, NULL, FALSE, &err);
+
+	/* check whether any error occurred when starting the daemon
+	   thread; if yes, close rig and return with error code
+	   (assuming that in case of error err->code will be non-zero)
+	*/
+	if (err != NULL) {
+
+		rig_debug (RIG_DEBUG_ERR,
+			   "*** GRIG: %s: Failed to start daemon process\n",
+			   __FUNCTION__);
+		rig_debug (RIG_DEBUG_ERR,
+			   "*** GRIG: %s: Error %d: %s\n",
+			   __FUNCTION__, err->code, err->message);
+
+		rig_close (myrig);
+		rig_cleanup (myrig);
+
+		return err->code;
+	}
+
 #endif
 
 	return 0;

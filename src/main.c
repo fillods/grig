@@ -166,9 +166,13 @@ main (int argc, char *argv[])
 
 	g_free (fname);
 
-	/* initialize threads */
+	/* initialize threads; according to glib docs, this call will terminate
+	   the program if threads are not supported... then why doesn''t it work
+	   on FreeBSD?
+	*/
 	if (!g_thread_supported ())
 		g_thread_init (NULL);
+
 
 	/* decode command line arguments; this part of the code only sets the
 	   global flags and variables, whereafter we check each variable in
