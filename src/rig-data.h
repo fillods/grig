@@ -37,6 +37,7 @@
  * This file containes the data type definitions for the shared rig data
  * object.
  *
+ * \bug packege is incomplete!
  */
 
 #ifndef RIG_DATA_H
