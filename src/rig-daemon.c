@@ -71,7 +71,7 @@ extern GConfClient *confclient;  /*!< Shared GConfClient. */
  *
  */
 static const rig_cmd_t DEF_RX_CYCLE[C_MAX_CYCLES][C_MAX_CMD_PER_CYCLE] = {
-	{ RIG_CMD_GET_STRENGTH, RIG_CMD_SET_FREQ_1, RIG_CMD_GET_FREQ_1, RIG_CMD_GET_PSTAT, RIG_CMD_SET_PSTAT },
+	{ RIG_CMD_GET_STRENGTH, RIG_CMD_SET_FREQ_1, RIG_CMD_GET_FREQ_1, RIG_CMD_SET_PSTAT, RIG_CMD_GET_PSTAT },
 	{ RIG_CMD_GET_STRENGTH, RIG_CMD_SET_FREQ_2, RIG_CMD_GET_FREQ_2, RIG_CMD_SET_RIT,   RIG_CMD_GET_RIT   },
 	{ RIG_CMD_GET_STRENGTH, RIG_CMD_SET_FREQ_1, RIG_CMD_GET_FREQ_1, RIG_CMD_SET_AGC,   RIG_CMD_GET_AGC   },
 	{ RIG_CMD_GET_STRENGTH, RIG_CMD_SET_FREQ_2, RIG_CMD_GET_FREQ_2, RIG_CMD_SET_XIT,   RIG_CMD_GET_XIT   },
@@ -154,6 +154,10 @@ rig_daemon_start (int rignum)
 		/* initialize values */
 		rigid = 1;
 		rigport = g_strdup ("/dev/ttyS0");
+
+/* 		rigid = 1901; */
+/* 		rigport = g_strdup ("localhost"); */
+
 		speed = 0;
 	}
 	else {
