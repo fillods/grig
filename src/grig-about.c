@@ -46,9 +46,11 @@ void
 grig_about_run ()
 {
 	GtkWidget *dialog;
+	GdkPixbuf *logo;
+	gchar     *fname;
 
 	const gchar *authors[] = {
-		"Alexandru Csete, OZ9AEC, <csete@users.sourceforge.net>",
+		"Alexandru Csete, OZ9AEC.",
 		NULL
 	};
 
@@ -58,8 +60,12 @@ grig_about_run ()
 	};
 
 	/* This should be "translated" in the .po files */
-	const gchar *translator = N_("Alexandru Csete, OZ9AEC");
+	const gchar *translator = N_("Alexandru Csete, OZ9AEC.");
 
+	/* create logo pixmap */
+	fname = g_strconcat (PACKAGE_DATA_DIR, "/pixmaps/grig/grig-logo.png", NULL);
+	logo = gdk_pixbuf_new_from_file (fname, NULL);
+	g_free (fname);
 
 	/* create the about dialog box */
 	dialog = gnome_about_new (_("Gnome RIG"),
@@ -69,7 +75,7 @@ grig_about_run ()
 				  authors,
 				  documenters,
 				  translator,
-				  NULL);
+				  logo);
 
 	/* show dialog */
 	gtk_widget_show (dialog);
