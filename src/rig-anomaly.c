@@ -42,12 +42,9 @@
  * Furthermore, in order to know about the various rig commands, this object needs
  * access to the rig-daemon data types as well.
  *
+ * \bug File includes gtk.h but not really needed?
  */
-
-#ifdef HAVE_CONFIG_H
-#  include <config.h>
-#endif
-#include <gnome.h>
+#include <gtk/gtk.h>
 #include <hamlib/rig.h>
 #include "rig-data.h"
 #include "rig-daemon.h"

@@ -29,15 +29,12 @@
 	  Boston, MA  02111-1307
 	  USA
 */
-#ifdef HAVE_CONFIG_H
-#  include <config.h>
-#endif
-#include <gnome.h>
-#include <gconf/gconf.h>
+#include <gtk/gtk.h>
 #include <hamlib/rig.h>
 #include "rig-data.h"
 #include "rig-utils.h"
 #include "rig-gui-buttons.h"
+#include "support.h"
 
 
 
@@ -106,9 +103,9 @@ rig_gui_buttons_create ()
 	gtk_box_pack_end   (GTK_BOX (vbox), rig_gui_buttons_create_mode_selector (), FALSE, FALSE, 0);
 
 	/* start readback timer */
-	timerid = gtk_timeout_add (RIG_GUI_BUTTONS_DEF_TVAL,
-				   rig_gui_buttons_timeout_exec,
-				   vbox);
+	timerid = g_timeout_add (RIG_GUI_BUTTONS_DEF_TVAL,
+				 rig_gui_buttons_timeout_exec,
+				 vbox);
 
 	/* register timer_stop function at exit */
 	gtk_quit_add (gtk_main_level (), rig_gui_buttons_timeout_stop,
@@ -153,14 +150,14 @@ rig_gui_buttons_create_power_button    ()
 				  NULL);
 
 	/* set widget ID */
-	gtk_object_set_data (GTK_OBJECT (button),
-			     WIDGET_ID_KEY,
-			     GUINT_TO_POINTER (RIG_GUI_POWER_BUTTON));
+	g_object_set_data (G_OBJECT (button),
+			   WIDGET_ID_KEY,
+			   GUINT_TO_POINTER (RIG_GUI_POWER_BUTTON));
 
 	/* set handler ID */
-	gtk_object_set_data (GTK_OBJECT (button),
-			     HANDLER_ID_KEY,
-			     GINT_TO_POINTER (sigid));
+	g_object_set_data (G_OBJECT (button),
+			   HANDLER_ID_KEY,
+			   GINT_TO_POINTER (sigid));
 
 	return button;
 }
@@ -198,12 +195,12 @@ rig_gui_buttons_create_ptt_button    ()
 				  NULL);
 
 	/* set widget ID */
-	gtk_object_set_data (GTK_OBJECT (button),
+	g_object_set_data (G_OBJECT (button),
 			     WIDGET_ID_KEY,
 			     GUINT_TO_POINTER (RIG_GUI_PTT_BUTTON));
 
 	/* set handler ID */
-	gtk_object_set_data (GTK_OBJECT (button),
+	g_object_set_data (G_OBJECT (button),
 			     HANDLER_ID_KEY,
 			     GINT_TO_POINTER (sigid));
 
@@ -275,12 +272,12 @@ rig_gui_buttons_create_agc_selector    ()
 				  NULL);
 
 	/* set widget ID */
-	gtk_object_set_data (GTK_OBJECT (combo),
+	g_object_set_data (G_OBJECT (combo),
 			     WIDGET_ID_KEY,
 			     GUINT_TO_POINTER (RIG_GUI_AGC_SELECTOR));
 
 	/* set handler ID */
-	gtk_object_set_data (GTK_OBJECT (combo),
+	g_object_set_data (G_OBJECT (combo),
 			     HANDLER_ID_KEY,
 			     GINT_TO_POINTER (sigid));
 
@@ -346,12 +343,12 @@ rig_gui_buttons_create_mode_selector   ()
 				  NULL);
 
 	/* set widget ID */
-	gtk_object_set_data (GTK_OBJECT (combo),
+	g_object_set_data (G_OBJECT (combo),
 			     WIDGET_ID_KEY,
 			     GUINT_TO_POINTER (RIG_GUI_MODE_SELECTOR));
 
 	/* set handler ID */
-	gtk_object_set_data (GTK_OBJECT (combo),
+	g_object_set_data (G_OBJECT (combo),
 			     HANDLER_ID_KEY,
 			     GINT_TO_POINTER (sigid));
 
@@ -408,12 +405,12 @@ rig_gui_buttons_create_filter_selector ()
 				  NULL);
 
 	/* set widget ID */
-	gtk_object_set_data (GTK_OBJECT (combo),
+	g_object_set_data (G_OBJECT (combo),
 			     WIDGET_ID_KEY,
 			     GUINT_TO_POINTER (RIG_GUI_FILTER_SELECTOR));
 
 	/* set handler ID */
-	gtk_object_set_data (GTK_OBJECT (combo),
+	g_object_set_data (G_OBJECT (combo),
 			     HANDLER_ID_KEY,
 			     GINT_TO_POINTER (sigid));
 
@@ -585,7 +582,7 @@ static gint
 rig_gui_buttons_timeout_stop  (gpointer timer)
 {
 
-	gtk_timeout_remove (GPOINTER_TO_UINT (timer));
+	g_source_remove (GPOINTER_TO_UINT (timer));
 
 	return TRUE;
 }
@@ -616,7 +613,7 @@ rig_gui_buttons_update        (GtkWidget *widget, gpointer data)
 
 
 	/* get widget id */
-	id = GPOINTER_TO_UINT (gtk_object_get_data (GTK_OBJECT (widget), WIDGET_ID_KEY));
+	id = GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (widget), WIDGET_ID_KEY));
 
 	switch (id) {
 
@@ -627,7 +624,7 @@ rig_gui_buttons_update        (GtkWidget *widget, gpointer data)
 		pstat = rig_data_get_pstat ();
 
 		/* get signal handler ID */
-		handler = GPOINTER_TO_INT (gtk_object_get_data (GTK_OBJECT (widget), HANDLER_ID_KEY));
+		handler = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (widget), HANDLER_ID_KEY));
 
 		/* block the signal handler */
 		g_signal_handler_block (G_OBJECT (widget), handler);
@@ -648,7 +645,7 @@ rig_gui_buttons_update        (GtkWidget *widget, gpointer data)
 		ptt = rig_data_get_ptt ();
 
 		/* get signal handler ID */
-		handler = GPOINTER_TO_INT (gtk_object_get_data (GTK_OBJECT (widget), HANDLER_ID_KEY));
+		handler = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (widget), HANDLER_ID_KEY));
 
 		/* block the signal handler */
 		g_signal_handler_block (G_OBJECT (widget), handler);
@@ -666,7 +663,7 @@ rig_gui_buttons_update        (GtkWidget *widget, gpointer data)
 	case RIG_GUI_AGC_SELECTOR:
 
 		/* get signal handler ID */
-		handler = GPOINTER_TO_INT (gtk_object_get_data (GTK_OBJECT (widget), HANDLER_ID_KEY));
+		handler = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (widget), HANDLER_ID_KEY));
 
 		/* block the signal handler */
 		g_signal_handler_block (G_OBJECT (widget), handler);
@@ -707,7 +704,7 @@ rig_gui_buttons_update        (GtkWidget *widget, gpointer data)
 	case RIG_GUI_MODE_SELECTOR:
 
 		/* get signal handler ID */
-		handler = GPOINTER_TO_INT (gtk_object_get_data (GTK_OBJECT (widget), HANDLER_ID_KEY));
+		handler = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (widget), HANDLER_ID_KEY));
 
 		/* block the signal handler */
 		g_signal_handler_block (G_OBJECT (widget), handler);
@@ -725,7 +722,7 @@ rig_gui_buttons_update        (GtkWidget *widget, gpointer data)
 	case RIG_GUI_FILTER_SELECTOR:
 
 		/* get signal handler ID */
-		handler = GPOINTER_TO_INT (gtk_object_get_data (GTK_OBJECT (widget), HANDLER_ID_KEY));
+		handler = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (widget), HANDLER_ID_KEY));
 
 		/* block the signal handler */
 		g_signal_handler_block (G_OBJECT (widget), handler);

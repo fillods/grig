@@ -41,14 +41,12 @@
  * function to adjust the needle angle for various corrections (faalback
  * delay, etc.)
  *
- * \note The conversion functions depend on the physical size of the smeter
+ * \bug  The conversion functions depend on the physical size of the smeter
  *       pixmap. The corresponding constant must therefore be updated if
  *       the pixmap size changes.
  */
-#ifdef HAVE_CONFIG_H
-#  include <config.h>
-#endif
-#include <gnome.h>
+#include <gtk/gtk.h>
+#include <math.h>
 #include "rig-gui-smeter-conv.h"
 
 

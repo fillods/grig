@@ -29,10 +29,7 @@
 	  Boston, MA  02111-1307
 	  USA
 */
-#ifdef HAVE_CONFIG_H
-#  include <config.h>
-#endif
-#include <gnome.h>
+#include <gtk/gtk.h>
 #include "rig-utils.h"
 
 

@@ -36,12 +36,10 @@
  *
  * This file contains various supporting functions which are executed
  * after the radio has been initialized.
+ *
+ * \bug File includes gtk.h but not really needed?
  */
-
-#ifdef HAVE_CONFIG_H
-#  include <config.h>
-#endif
-#include <gnome.h>
+#include <gtk/gtk.h>
 #include <hamlib/rig.h>
 #include "rig-data.h"
 #include "rig-daemon-check.h"
@@ -412,7 +410,8 @@ rig_daemon_check_mode     (RIG               *myrig,
 	int               retcode;                 /* Hamlib status code */
 	rmode_t           mode;                    /* current mode */
 	pbwidth_t         pbw;                     /* current passband width */
-
+	int               i = 0;                   /* iterator */
+	int               found_mode = 0;          /* flag to indicate found mode */
 
 
 	/* try to get mode and passband width */
@@ -422,12 +421,43 @@ rig_daemon_check_mode     (RIG               *myrig,
 		has_get->pbw  = TRUE;
 		get->mode     = mode;
 		get->pbw      = pbw;
+
+		/* initialize the frequency range and tuning step */
+		while (!RIG_IS_FRNG_END(myrig->state.rx_range_list[i]) && !found_mode) {
+						
+			/* is this list good for current mode? */
+			if ((mode & myrig->state.rx_range_list[i].modes) == mode) {
+							
+				found_mode = 1;
+				get->fmin = myrig->state.rx_range_list[i].start;
+				get->fmax = myrig->state.rx_range_list[i].end;
+			}
+			else {
+				i++;
+			}
+			
+		}
+
+		/* if we did not find any suitable range there could be a bug
+		   in the backend!
+		*/
+		if (!found_mode) {
+			rig_debug (RIG_DEBUG_BUG,
+				   "*** GRIG: %s: Can not find frequency range for this mode (%d)! "\
+				   "Bug in backed?\n", __FUNCTION__, mode);
+		}
 	}
+
 	else {
 		has_get->mode = FALSE;
 		has_get->pbw  = FALSE;
 		get->mode     = RIG_MODE_NONE;
 		get->pbw      = RIG_PASSBAND_NORMAL;
+
+		/* initialize frequency range and tuning step to what? */
+		get->fmin  = kHz(30);
+		get->fmax  = GHz(1);
+		get->fstep = Hz(10);
 	}
 
 	/* try to reset mode and passband width;

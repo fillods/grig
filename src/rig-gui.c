@@ -29,14 +29,17 @@
 	  Boston, MA  02111-1307
 	  USA
 */
-#ifdef HAVE_CONFIG_H
-#  include <config.h>
-#endif
-#include <gnome.h>
-#include <gconf/gconf.h>
+/** \file rig-gui.c
+ *  \ingroup gui
+ *  \brief Master GUI object.
+ *
+ * This file encapsulates the various GUI parts into one big composite widget.
+ */
+#include <gtk/gtk.h>
 #include "rig-gui.h"
 #include "rig-gui-buttons.h"
 #include "rig-gui-smeter.h"
+#include "rig-gui-lcd.h"
 
 
 
@@ -59,6 +62,7 @@ rig_gui_create ()
 
 	gtk_box_pack_start (GTK_BOX (hbox), rig_gui_buttons_create (), FALSE, FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (hbox), rig_gui_smeter_create (), FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (hbox), rig_gui_lcd_create (), FALSE, FALSE, 0);
 
 	return hbox;
 }
