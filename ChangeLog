@@ -1,3 +1,12 @@
+2005-02-11;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/main.c:
+	Added --nothread command line option.
+
+	* src/rig-daemon.c, src/rig-daemon.h:
+	Added (empty) branch for the --nothread option.
+
+
 2005-02-09;	Alexandru Csete <csete@users.sourceforge.net>
 
 	* src/rig-daemon.c:
