@@ -1,3 +1,6 @@
+2004-07-28;	Alexandru Csete <csete@users.sourceforge.net>
+	* configure.in: Require Gtk+ 2.4
+	
 2004-07-24;	Alexandru Csete <csete@users.sourceforge.net>
 	* rig-gui.c, rig-gui.h: Added files.
 	* rig-gui-buttons.c, rig-gui-buttons.h: Added files.
