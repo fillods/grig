@@ -33,7 +33,6 @@
 #define RIG_DAEMON_H 1
 
 
-#define GRIG_CONFIG_RIG_DIR "test"
 
 
 #define C_MAX_CMD_PER_CYCLE   5    /*!< Max number of commands executed in one cycle */
