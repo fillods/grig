@@ -36,6 +36,7 @@
 #include <gconf/gconf.h>
 #include "rig-gui.h"
 #include "rig-gui-buttons.h"
+#include "rig-gui-smeter.h"
 
 
 
@@ -56,7 +57,8 @@ rig_gui_create ()
 	/* create the main container */
 	hbox = gtk_hbox_new (FALSE, 5);
 
-	gtk_box_pack_start_defaults (GTK_BOX (hbox), rig_gui_buttons_create ());
+	gtk_box_pack_start (GTK_BOX (hbox), rig_gui_buttons_create (), FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (hbox), rig_gui_smeter_create (), FALSE, FALSE, 0);
 
 	return hbox;
 }
