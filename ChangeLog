@@ -1,8 +1,11 @@
 2005-01-07;	Alexandru Csete <csete@users.sourceforge.net>
 
 	* src/rig-data.c:
-	Fix a mis-spelling.
+	Fixed a mis-spelling.
 
+	* src/rig-gui-smeter.h:
+	Updated doxygen comments for smeter_scale_t.
+	
 
 2004-12-21;	Alexandru Csete <csete@users.sourceforge.net>
 
