@@ -19,6 +19,7 @@ grig_SOURCES = \
 	rig-gui.c rig-gui.h \
 	rig-gui-buttons.c rig-gui-buttons.h \
 	rig-gui-smeter.c rig-gui-smeter.h \
+	rig-gui-smeter-conv.c rig-gui-smeter-conv.h \
 	rig-utils.c rig-utils.h \
 	grig-menu.c
 
