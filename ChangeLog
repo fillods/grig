@@ -1,3 +1,49 @@
+2004-10-25;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/rig-gui-lcd.c:
+	Fixed a bug which caused incorrect RIT jumps especially when the RIT
+	sign chnges (eg. -0.40 + 1.00 gave 0.60 instead of 0.40). Added utility
+	function to explicitly convert RIT/XIT values to byte array.
+
+	* configure.in:
+	Added summary of library versions (hamlib, glib, gthread, gdk and gtk).
+
+
+2004-10-24;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/rig-gui-lcd.c:
+	Fixed bug where RIT could jump from -9.99 to 9.99 kHz. 
+
+
+2004-10-23;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/grig-about.c:
+	Added missing ';' character (caused compiled error).
+
+	* src/main:
+	Cleaning. Removed unused variables and split lines which were too long.
+
+	* src/rig-gui-lcd.c:
+	Reduced display width by one small digit.
+
+	* src/rig-gui-ctrl2.c, src/rig-gui-ctrl2.h:
+	Added files. Mode, filter and AGC selector moved into this container.
+	This container is displayed on the right side of the LCD.
+
+	* src/rig-gui-buttons.c:
+	Removed mode, filter and AGC selectors.
+
+	* src/Makefile.am:
+	Added new files to the list.
+
+	* src/rig-daemon.c:
+	The passband width code was buggy it made implicit conversion from
+	frequency to rig_data_pbw_e. Fixed using rig_passband_xxx hamlib
+	functions. Changed new flags to be reset to FALSE even if write error
+	ocurres (maybe I will change that back). get variables are always set
+	to the value of set after writing new value.
+	
+
 2004-10-21;	Alexandru Csete <csete@users.sourceforge.net>
 
 	* src/grig-menubar.c:
@@ -8,7 +54,8 @@
 	Added dialog window, logo and some info.
 
 	* grig.spec.in:
-
+	Added some info.
+	
 
 2004-10-20;	Alexandru Csete <csete@users.sourceforge.net>
 
@@ -40,8 +87,8 @@
 
 	* src/main.c:
 	Added grig_show_help, grig_show_version, grig_list_add and
-	grig_list_compare. Implemented grig_list_rigs. Command line arguments are
-	now working (all of them).
+	grig_list_compare. Implemented grig_list_rigs. Command line arguments
+	are now working (all of them).
 
 
 2004-10-17;	Alexandru Csete - SK1563 <csete@users.sourceforge.net>
