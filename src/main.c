@@ -37,6 +37,7 @@
 #include <gconf/gconf-client.h>
 #include "grig-config.h"
 #include "grig-druid.h"
+#include "rig-gui.h"
 #include "rig-data.h"
 
 
@@ -479,9 +480,7 @@ grig_app_create       (gint rignum)
 			  G_CALLBACK (grig_app_destroy), NULL);
 
 	/* add menubar */
-	gnome_app_create_menus (GNOME_APP (app), grig_menubar);
-
-				 
+	gnome_app_create_menus (GNOME_APP (app), grig_menubar);	 
 
 	/* Set the correct debug level in the menubar */
 	debug = gconf_client_get_int (confclient, GRIG_CONFIG_DEBUG_KEY, NULL);
@@ -518,6 +517,10 @@ grig_app_create       (gint rignum)
 	}
 	menuitem = GTK_WIDGET (g_list_nth_data (GTK_MENU_SHELL (menushell)->children, pos-1));
 	gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (menuitem), TRUE);
+
+
+	/* add contents */
+	gnome_app_set_contents (GNOME_APP (app), rig_gui_create ());
 
 
 	return app;
