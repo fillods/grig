@@ -3,7 +3,7 @@
 SUBDIRS = src po
 
 EXTRA_DIST = \
-	autogen.sh 
+	autogen.sh mkinstalldirs
 
 
 install-data-local:
