@@ -70,9 +70,9 @@ RIG *myrig;  /*!< The rig structure. We keep this public so GUI can access the i
  */
 static const rig_cmd_t DEF_RX_CYCLE[C_MAX_CYCLES][C_MAX_CMD_PER_CYCLE] = {
 	{ RIG_CMD_GET_STRENGTH, RIG_CMD_SET_FREQ_1, RIG_CMD_GET_FREQ_1, RIG_CMD_SET_PSTAT, RIG_CMD_GET_PSTAT },
-	{ RIG_CMD_GET_STRENGTH, RIG_CMD_SET_FREQ_2, RIG_CMD_GET_FREQ_2, RIG_CMD_SET_RIT,   RIG_CMD_GET_RIT   },
+	{ RIG_CMD_GET_STRENGTH, RIG_CMD_SET_ATT,    RIG_CMD_GET_ATT,    RIG_CMD_SET_RIT,   RIG_CMD_GET_RIT   },
 	{ RIG_CMD_GET_STRENGTH, RIG_CMD_SET_FREQ_1, RIG_CMD_GET_FREQ_1, RIG_CMD_SET_AGC,   RIG_CMD_GET_AGC   },
-	{ RIG_CMD_GET_STRENGTH, RIG_CMD_SET_FREQ_2, RIG_CMD_GET_FREQ_2, RIG_CMD_SET_XIT,   RIG_CMD_GET_XIT   },
+	{ RIG_CMD_GET_STRENGTH, RIG_CMD_SET_PREAMP, RIG_CMD_GET_PREAMP, RIG_CMD_SET_XIT,   RIG_CMD_GET_XIT   },
 	{ RIG_CMD_GET_STRENGTH, RIG_CMD_SET_FREQ_1, RIG_CMD_GET_FREQ_1, RIG_CMD_SET_MODE,  RIG_CMD_GET_MODE  },
 	{ RIG_CMD_GET_STRENGTH, RIG_CMD_SET_VFO,    RIG_CMD_GET_VFO,    RIG_CMD_SET_PTT,   RIG_CMD_GET_PTT   }
 };
@@ -191,6 +191,7 @@ rig_daemon_start (int rigid, const gchar *port, int speed, const gchar *civaddr)
 		retcode = rig_set_conf (myrig, rig_token_lookup (myrig, "civaddr"), civaddr);
 	}
 
+#ifndef DISABLE_HW
 	/* open rig */
 	retcode = rig_open (myrig);
 	if (retcode != RIG_OK) {
@@ -204,6 +205,7 @@ rig_daemon_start (int rigid, const gchar *port, int speed, const gchar *civaddr)
 		rig_cleanup (myrig);
 		return 1;
 	}
+#endif
 
 	/* send a debug message */
 	rig_debug (RIG_DEBUG_TRACE,
@@ -218,9 +220,10 @@ rig_daemon_start (int rigid, const gchar *port, int speed, const gchar *civaddr)
 		   "*** GRIG: %s: Starting rig daemon\n",
 		   __FUNCTION__);
 
+#ifndef DISABLE_HW
 	/* start daemon */
 	g_thread_create (rig_daemon_cycle, NULL, FALSE, NULL);
-
+#endif
 
 	return 0;
 }
@@ -253,8 +256,10 @@ rig_daemon_stop  ()
 		   "*** GRIG: %s: Cleaning up rig\n",
 		   __FUNCTION__);
 
+#ifndef DISABLE_HW
 	/* close radio device */
 	rig_close (myrig);
+#endif
 
 	/* clean up hamlib */
 	rig_cleanup (myrig);
@@ -486,6 +491,7 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 
 		break;
 
+
 		/* set primary frequency */
 	case RIG_CMD_SET_FREQ_1:
 
@@ -512,6 +518,7 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 		get->freq1 = set->freq1;
 
 		break;
+
 
 		/* get secondary frequency */
 	case RIG_CMD_GET_FREQ_2:
@@ -578,6 +585,7 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 		}
 
 		break;
+
 
 		/* set secondary frequency */
 	case RIG_CMD_SET_FREQ_2:
@@ -646,6 +654,7 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 		get->freq2 = set->freq2;
 
 		break;
+
 	
 		/* get RIT offset */
 	case RIG_CMD_GET_RIT:
@@ -672,6 +681,7 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 		}
 
 		break;
+
 
 		/* set RIT offset */
 	case RIG_CMD_SET_RIT:
@@ -700,6 +710,7 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 
 		break;
 
+
 		/* get XIT offset */
 	case RIG_CMD_GET_XIT:
 
@@ -725,6 +736,7 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 		}
 
 		break;
+
 
 		/* set XIT offset */
 	case RIG_CMD_SET_XIT:
@@ -753,6 +765,7 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 
 		break;
 
+
 		/* get current VFO */
 	case RIG_CMD_GET_VFO:
 
@@ -777,6 +790,7 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 		}
 
 		break;
+
 
 		/* set current VFO */
 	case RIG_CMD_SET_VFO:
@@ -804,6 +818,7 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 
 		break;
 
+
 		/* get power status */
 	case RIG_CMD_GET_PSTAT:
 
@@ -828,6 +843,7 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 		}
 
 		break;
+
 
 		/* set power status */
 	case RIG_CMD_SET_PSTAT:
@@ -855,6 +871,7 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 
 		break;
 
+
 		/* get PTT status */
 	case RIG_CMD_GET_PTT:
 
@@ -879,6 +896,7 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 		}
 
 		break;
+
 
 		/* set PTT status */
 	case RIG_CMD_SET_PTT:
@@ -905,6 +923,7 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 		get->ptt = set->ptt;
 
 		break;
+
 
 		/* get current mode and passband width */
 	case RIG_CMD_GET_MODE:
@@ -980,6 +999,7 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 
 		break;
 
+
 		/* set current mode and passband width */
 	case RIG_CMD_SET_MODE:
 
@@ -1041,6 +1061,7 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 
 		break;
 
+
 		/* get AGC level */
 	case RIG_CMD_GET_AGC:
 
@@ -1065,6 +1086,7 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 		}
 
 		break;
+
 
 		/* set AGC level */
 	case RIG_CMD_SET_AGC:
@@ -1091,6 +1113,116 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 		}
 
 		get->agc = set->agc;
+
+		break;
+
+
+		/* get attenuator level */
+	case RIG_CMD_GET_ATT:
+
+		/* check whether command is available */
+		if (has_get->att) {
+			value_t val;
+
+			/* try to execute command */
+			retcode = rig_get_level (myrig, RIG_VFO_CURR, RIG_LEVEL_ATT, &val);
+
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				rig_debug (RIG_DEBUG_ERR,
+					   "*** GRIG: %s: Failed to execute RIG_CMD_GET_ATT\n",
+					   __FUNCTION__);
+
+				rig_anomaly_raise (RIG_CMD_GET_ATT);
+			}
+			else {
+				get->att = val.i;
+			}
+		}
+		
+		break;
+
+			
+		/* set attenuator level */
+	case RIG_CMD_SET_ATT:
+
+		/* check whether command is available */
+		if (has_set->att && new->att) {
+			value_t val;
+
+			val.i = set->att;
+
+			/* try to execute command */
+			retcode = rig_set_level (myrig, RIG_VFO_CURR, RIG_LEVEL_ATT, val);
+
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				rig_debug (RIG_DEBUG_ERR,
+					   "*** GRIG: %s: Failed to execute RIG_CMD_SET_ATT\n",
+					   __FUNCTION__);
+
+				rig_anomaly_raise (RIG_CMD_SET_ATT);
+			}
+			/* reset flag */
+			new->att = FALSE;
+		}
+
+		get->att = set->att;
+
+		break;
+
+
+		/* get pre-amp level */
+	case RIG_CMD_GET_PREAMP:
+
+		/* check whether command is available */
+		if (has_get->preamp) {
+			value_t val;
+
+			/* try to execute command */
+			retcode = rig_get_level (myrig, RIG_VFO_CURR, RIG_LEVEL_PREAMP, &val);
+
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				rig_debug (RIG_DEBUG_ERR,
+					   "*** GRIG: %s: Failed to execute RIG_CMD_GET_PREAMP\n",
+					   __FUNCTION__);
+
+				rig_anomaly_raise (RIG_CMD_GET_PREAMP);
+			}
+			else {
+				get->preamp = val.i;
+			}
+		}
+		
+		break;
+
+			
+		/* set pre-amp level */
+	case RIG_CMD_SET_PREAMP:
+
+		/* check whether command is available */
+		if (has_set->preamp && new->preamp) {
+			value_t val;
+
+			val.i = set->preamp;
+
+			/* try to execute command */
+			retcode = rig_set_level (myrig, RIG_VFO_CURR, RIG_LEVEL_PREAMP, val);
+
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				rig_debug (RIG_DEBUG_ERR,
+					   "*** GRIG: %s: Failed to execute RIG_CMD_SET_PREAMP\n",
+					   __FUNCTION__);
+
+				rig_anomaly_raise (RIG_CMD_SET_PREAMP);
+			}
+			/* reset flag */
+			new->preamp = FALSE;
+		}
+
+		get->preamp = set->preamp;
 
 		break;
 
