@@ -92,8 +92,6 @@ typedef enum {
 	SMETER_TX_MODE_POWER,          /*!< Show TX power.         */
 	SMETER_TX_MODE_SWR,            /*!< Show SWR.              */
 	SMETER_TX_MODE_ALC,            /*!< Show ALC level.        */
-	SMETER_TX_MODE_COMP,           /*!< Show compressor level. */
-	SMETER_TX_MODE_IC,             /*!< Show IC.               */
 	SMETER_TX_MODE_LAST            /*!< Dummy...               */
 } smeter_tx_mode_t;
 

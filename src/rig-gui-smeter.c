@@ -73,9 +73,7 @@ static const gchar *TX_MODE_S[] = {
 	N_("None"),
 	N_("Power"),
 	N_("SWR"),
-	N_("ALC"),
-	N_("Comp."),
-	N_("IC")
+	N_("ALC")
 };
 
 
@@ -520,12 +518,19 @@ rig_gui_smeter_has_tx_mode (guint mode)
 		return TRUE;
 		break;
 
+		/* RF power */
 	case SMETER_TX_MODE_POWER:
+		return rig_data_has_get_power ();
+		break;
+
+		/* SWR */
 	case SMETER_TX_MODE_SWR:
+		return rig_data_has_get_swr ();
+		break;
+
+		/* ALC */
 	case SMETER_TX_MODE_ALC:
-	case SMETER_TX_MODE_COMP:
-	case SMETER_TX_MODE_IC:
-		return FALSE;
+		return rig_data_has_get_alc ();
 		break;
 
 	default:
