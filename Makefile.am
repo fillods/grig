@@ -1,10 +1,8 @@
 ## Process this file with automake to produce Makefile.in
 
-SUBDIRS = src
+SUBDIRS = src doc
 
-EXTRA_DIST = mkinstalldirs \
-	grig.1.in \
-	grig.desktop \
+EXTRA_DIST = config.rpath mkinstalldirs  mkinstalldirs \
 	grig.spec.in \
 	grig.spec
 
@@ -22,11 +20,6 @@ install-data-local:
 			fi \
 		done \
 	fi
-## manual page into mandir
-	if test -f $(srcdir)/xlog.1; then \
-		$(mkinstalldirs) $(DESTDIR)$(mandir)/man1; \
-		$(INSTALL_DATA) xlog.1 $(DESTDIR)$(mandir)/man1; \
-	fi
 
 ##	$(INSTALL_DATA) FAQ $(DESTDIR)$(pkgdatadir)
 	$(INSTALL_DATA) README $(DESTDIR)$(pkgdatadir)
@@ -34,7 +27,6 @@ install-data-local:
 ##	$(INSTALL_DATA) TODO $(DESTDIR)$(pkgdatadir)
 	$(INSTALL_DATA) AUTHORS $(DESTDIR)$(pkgdatadir)
 ##	$(INSTALL_DATA) THANKS $(DESTDIR)$(pkgdatadir)
-##	$(INSTALL_DATA) MANUAL $(DESTDIR)$(pkgdatadir)
 	$(INSTALL_DATA) ChangeLog $(DESTDIR)$(pkgdatadir)
 
 dist-hook:
