@@ -132,19 +132,31 @@ static void     rig_daemon_exec_cmd  (rig_cmd_t,
  *  \param port     The port device (NULL to use default).
  *  \param speed    The serial speed (0 to use default).
  *  \param civaddr  CIV address for ICOM rigs (NULL means no need to set conf).
+ *  \param rigconf  Additional config options necessary for some rigs.
  *  \return 0 if the daemon has been initialized correctly.
  *
  * This function initializes the radio and starts the control daemon. The rignum
  * parameter is the rig ID in hamlib.
  *
- * \note Thedefault port is /dev/ttyS0 for regular backends and localhost for RPC rig.
+ * The \a rigconf parameter contains one or more configuration options that are
+ * necessary for some rigs. The syntax is param=value and if more than one config
+ * options are specified, they are separated by comma.
+ *
+ * \note The default port is /dev/ttyS0 for regular backends and localhost for RPC rig.
  *
  */
 int
-rig_daemon_start (int rigid, const gchar *port, int speed, const gchar *civaddr)
+rig_daemon_start       (int          rigid,
+			const gchar *port,
+			int          speed,
+			const gchar *civaddr,
+			const gchar *rigconf)
 {
-	gchar *rigport;
-	gint   retcode;
+
+	gchar  *rigport;
+	gint    retcode;
+	gchar **confvec;   
+	gchar **confent;
 
 
 	/* send a debug message */
@@ -205,6 +217,43 @@ rig_daemon_start (int rigid, const gchar *port, int speed, const gchar *civaddr)
 	if (civaddr) {
 		retcode = rig_set_conf (myrig, rig_token_lookup (myrig, "civaddr"), civaddr);
 	}
+
+	/* split conf parameter string; */
+	if (rigconf) {
+		guint i = 0;
+
+		confvec = g_strsplit (rigconf, ",", 0);
+
+		/* split each conf entity into param and val
+		   and set conf
+		*/
+		while (confvec[i]) {
+
+			confent = g_strsplit (confvec[i], "=", 2);
+
+			rig_debug (RIG_DEBUG_VERBOSE,
+				   "*** GRIG: %s: Setting conf param (%s,%s)...",
+				   __FUNCTION__, confent[0], confent[1]);
+
+			retcode = rig_set_conf (myrig,
+						rig_token_lookup (myrig, confent[0]),
+						confent[1]);
+
+			if (retcode == RIG_OK) {
+				rig_debug (RIG_DEBUG_VERBOSE, "OK\n");
+			}
+			else {
+				rig_debug (RIG_DEBUG_VERBOSE, "Failed (%d)\n", retcode);
+			}
+					   
+			i++;
+
+			g_strfreev (confent);
+		}
+
+		g_strfreev (confvec);
+	}
+
 
 #ifndef DISABLE_HW
 	/* open rig */
