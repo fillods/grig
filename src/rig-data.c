@@ -131,7 +131,7 @@ rig_data_set_mode    (rmode_t mode)
  *       are set within the same function call.
  */
 void
-rig_data_set_pbwidth (pbwidth_t pbw)
+rig_data_set_pbwidth (rig_data_pbw_t pbw)
 {
 	set.pbw = pbw;
 	new.pbw = 1;
@@ -261,7 +261,7 @@ rig_data_get_mode    ()
  *
  * This function returns the current passband width.
  */
-pbwidth_t
+rig_data_pbw_t
 rig_data_get_pbwidth ()
 {
 	return get.pbw;

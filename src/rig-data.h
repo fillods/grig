@@ -45,6 +45,22 @@
 
 #include <hamlib/rig.h>
 
+/** \brief Grig representation of passband widths.
+ *
+ * Grig has to keep it's own passband values due to the fact
+ * that the passband width is varying with the mode and the
+ * GUI is not supposed to poll hamlib in order to have the
+ * correct numerical value of the passband width. Therefore we
+ * use this representation and the daemon will convert it while
+ * talking to hamlib.
+ */
+typedef enum rig_data_pbw_e {
+	RIG_DATA_PB_WIDE = 0,   /**!< Passband corresponding to wide */
+	RIG_DATA_PB_NORMAL,     /**!< Passband corresponding to normal */
+	RIG_DATA_PB_NARROW      /**!< Passband corresponding to narrow */
+} rig_data_pbw_t;
+
+
 /** \brief Structure representing rig settings
  *
  * This structure is used to hold rig settings (frequency, mode, vfo, etc).
@@ -52,17 +68,17 @@
  * holds the actual settings obtained from the rig.
  */ 
 typedef struct {
-	powerstat_t pstat;   /*!< Power status (ON/OFF). */
-	ptt_t       ptt;     /*!< PTT status (ON/OFF). */
-	vfo_t       vfo;     /*!< VFO. */
-	rmode_t     mode;    /*!< Mode. */
-	pbwidth_t   pbw;     /*!< Passband width. */
-	freq_t      freq1;   /*!< Primary (working) frequency. */
-	freq_t      freq2;   /*!< Secondary frequency. */
-	shortfreq_t rit;     /*!< RIT. */
-	shortfreq_t xit;     /*!< XIT. */
-	float       power;   /*!< TX power. */
-	int         agc;     /*!< AGC level. */
+	powerstat_t      pstat;   /*!< Power status (ON/OFF). */
+	ptt_t            ptt;     /*!< PTT status (ON/OFF). */
+	vfo_t            vfo;     /*!< VFO. */
+	rmode_t          mode;    /*!< Mode. */
+	rig_data_pbw_t   pbw;     /*!< Passband width. */
+	freq_t           freq1;   /*!< Primary (working) frequency. */
+	freq_t           freq2;   /*!< Secondary frequency. */
+	shortfreq_t      rit;     /*!< RIT. */
+	shortfreq_t      xit;     /*!< XIT. */
+	float            power;   /*!< TX power. */
+	int              agc;     /*!< AGC level. */
 
 	/* read only fields */
 	int         strength; /*!< Signal strength. */
@@ -104,22 +120,22 @@ void rig_data_set_pstat   (powerstat_t);
 void rig_data_set_ptt     (ptt_t);
 void rig_data_set_vfo     (vfo_t);
 void rig_data_set_mode    (rmode_t);
-void rig_data_set_pbwidth (pbwidth_t);
+void rig_data_set_pbwidth (rig_data_pbw_t);
 void rig_data_set_freq    (int, freq_t);
 void rig_data_set_rit     (shortfreq_t);
 void rig_data_set_xit     (shortfreq_t);
 void rig_data_set_agc     (int);
 
 /* get functions */
-powerstat_t rig_data_get_pstat   (void);
-ptt_t       rig_data_get_ptt     (void);
-vfo_t       rig_data_get_vfo     (void);
-rmode_t     rig_data_get_mode    (void);
-pbwidth_t   rig_data_get_pbwidth (void);
-freq_t      rig_data_get_freq    (int);
-shortfreq_t rig_data_get_rit     (void);
-shortfreq_t rig_data_get_xit     (void);
-int         rig_data_get_agc     (void);
+powerstat_t      rig_data_get_pstat   (void);
+ptt_t            rig_data_get_ptt     (void);
+vfo_t            rig_data_get_vfo     (void);
+rmode_t          rig_data_get_mode    (void);
+rig_data_pbw_t   rig_data_get_pbwidth (void);
+freq_t           rig_data_get_freq    (int);
+shortfreq_t      rig_data_get_rit     (void);
+shortfreq_t      rig_data_get_xit     (void);
+int              rig_data_get_agc     (void);
 
 /* address acquisition functions */
 grig_settings_t  *rig_data_get_get_addr     (void);
