@@ -1,0 +1,16 @@
+.\" 
+.TH "GRIG" "1" "version @VERSION@" "Alexandru Csete" "Hamradio"
+
+.SH "NAME"
+grig \- GTK+ User Interface for the Ham Radio Control Libraries
+
+.SH "DESCRIPTION"
+\fBgrig\fR
+is a logging program for Amateur Radio Operators. The main
+window consists of a button bar, QSO frame, and
+a browseable log. Logs will be saved to a flat text file.
+You can create, open and close logs as you need them.
+
+.SH "SEE ALSO"
+\fI@prefix@/share/xlog/MANUAL\fR for a complete manual, but you could also
+select Help->Documentation->Manual from the menu once xlog is started.

@@ -1,0 +1,64 @@
+# xlog.spec
+#
+# Copyright (c) 2002-2004 Joop Stakenborg pg4i@amsat.org
+#
+%define name grig
+%define version @VERSION@
+%define release 1
+
+# required items
+Name: %{name}
+Version: %{version}
+Release: %{release}
+Copyright: GPL
+Group: Application/Comunications
+Prefix: /usr
+BuildRoot: /var/tmp/%{name}-%{version}
+Summary: User Interface for the Ham Radio Control Libraries
+Vendor: Alexandru Csete <alex@oz9aec.dk>
+URL: http://grig.oz9aec.dk/
+Packager: Alexandru Csete <alex@oz9aec.dk>
+Source: %{name}-%{version}.tar.gz
+
+%description
+xlog is a logging program for amateur radio operators. The log is stored
+into a text file. QSO's are presented in a list. Items in the list can be
+added, deleted or updated. For each contact, dxcc information is displayed
+and bearings and distance is calculated, both short and long path.
+xlog supports trlog, adif, cabrillo, edit, twlog and editest files.
+
+%prep
+%setup -q
+
+%build
+export RPM_OPT_FLAGS="-O2 -march=i386"
+export CFLAGS="-O2"
+%configure --enable-hamlib
+make
+
+%install
+rm -rf $RPM_BUILD_ROOT
+mkdir -p $RPM_BUILD_ROOT
+make DESTDIR=$RPM_BUILD_ROOT install
+
+%clean
+rm -rf $RPM_BUILD_ROOT
+
+%files
+%defattr(-,root,root)
+%doc ChangeLog
+/usr/bin/grig
+/usr/share/grig/pixmaps/*.xpm
+/usr/share/grig/pixmaps/*.png
+/usr/share/man/man1/grig.1.gz
+/usr/share/xlog/README
+/usr/share/xlog/FAQ
+/usr/share/xlog/THANKS
+/usr/share/xlog/TODO
+/usr/share/xlog/AUTHORS
+/usr/share/xlog/ChangeLog
+
+%changelog
+* Thu Sep 30 2004 Alexandru Csete
+- Initial spec file
+OC
