@@ -272,7 +272,7 @@ main (int argc, char *argv[])
 
 			/* no threads */
 		case 'n':
-			nothreads = TRUE;
+			nothread = TRUE;
 			break;
 
 			/* show help */
