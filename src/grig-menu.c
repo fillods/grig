@@ -46,6 +46,7 @@ extern GConfClient *confclient;
 
 
 /* private function prototypes */
+static void  grig_menu_rot_open        (GtkWidget *, gpointer);
 static void  grig_menu_app_exit        (GtkWidget *, gpointer);
 static void  grig_menu_set_debug_level (GtkWidget *, gpointer);
 static void  grig_menu_config          (GtkWidget *, gpointer);
@@ -55,8 +56,8 @@ static void  grig_menu_about           (GtkWidget *, gpointer);
 
 /** \brief File menu declaration. */
 GnomeUIInfo grig_file_menu[] = {
-//	GNOMEUIINFO_ITEM_DATA (N_("Rotator"), N_("Open rotator control window"),
-//			       grig_menubar_rot_open_cb, NULL, NULL),
+	GNOMEUIINFO_ITEM_DATA (N_("Rotator"), N_("Ope rotator control window"),
+			       grig_menu_rot_open, NULL, NULL),
 	GNOMEUIINFO_SEPARATOR,
 	GNOMEUIINFO_MENU_EXIT_ITEM (grig_menu_app_exit, NULL),
 	GNOMEUIINFO_END
@@ -122,6 +123,20 @@ GnomeUIInfo grig_menubar[] = {
 };
 
 
+/** \brief Open rotator control window.
+ *  \param widget The widget which received the signal.
+ *  \param data   User data (NULL).
+ *
+ * This function calls the function which initializes and starts the
+ * rotator related services (daemon, GUI, etc.). It is designed as a
+ * callback function to be directly callable from the menubar, but it
+ * does not use the parameters to anything.
+ */
+static void
+grig_menu_rot_open        (GtkWidget *widget, gpointer data)
+{
+
+}
 
 
 /** \brief Exit application.
@@ -133,8 +148,7 @@ GnomeUIInfo grig_menubar[] = {
  * does not use the parameters to anything.
  */
 static void
-grig_menu_app_exit       (GtkWidget *widget,
-		     gpointer data)
+grig_menu_app_exit       (GtkWidget *widget, gpointer data)
 {
 
 	gtk_widget_destroy (grigapp);
@@ -188,3 +202,4 @@ grig_menu_about (GtkWidget *widget, gpointer data)
 {
 	grig_about_run ();
 }
+
