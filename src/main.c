@@ -72,13 +72,14 @@ static gchar   *civaddr   = NULL;    /*!< CI-V address for ICOM rig. */
 static gchar   *rigconf   = NULL;    /*!< Configuration parameter. */
 static gint     rigspeed  = 0;       /*!< Optional serial speed. */
 static gboolean listrigs  = FALSE;   /*!< List supported radios and exit. */ 
-gint     debug     = RIG_DEBUG_NONE; /*!< Hamlib debug level. */
+gint     debug     = RIG_DEBUG_NONE; /*!< Hamlib debug level. Note: not static since menubar.c needs access. */
+static gint     delay     = 0;       /*!< Command delay. */
 static gboolean version   = FALSE;   /*!< Show version and exit. */
 static gboolean help      = FALSE;   /*!< Show help and exit. */
 
 
 /** \brief Short options. */
-#define SHORT_OPTIONS "m:r:s:c:C:d:lhv"  /* group those which take no arg */
+#define SHORT_OPTIONS "m:r:s:c:C:d:D:lhv"  /* group those which take no arg */
 
 /** \brief Table of command line options. */
 static struct option long_options[] =
@@ -89,6 +90,7 @@ static struct option long_options[] =
 	{"civaddr",      1, 0, 'c'},
 	{"set-conf",     1, 0, 'C'},
 	{"debug",        1, 0, 'd'},
+	{"delay",        1, 0, 'D'},
 	{"list",         0, 0, 'l'},
 	{"help",         0, 0, 'h'},
 	{"version",      0, 0, 'v'},
@@ -252,6 +254,16 @@ main (int argc, char *argv[])
 			}
 			break;
 
+			/* command delay */
+		case 'D':
+			if (!optarg) {
+				help = TRUE;
+			}
+			else {
+				delay = atoi (optarg);
+			}
+			break;
+
 			/* show help */
 		case 'h':
 			help = TRUE;
@@ -295,7 +307,7 @@ main (int argc, char *argv[])
 	rig_set_debug (RIG_DEBUG_TRACE);
 
 	/* launch rig daemon */
-	if (rig_daemon_start (rignum, rigfile, rigspeed, civaddr, rigconf)) {
+	if (rig_daemon_start (rignum, rigfile, rigspeed, civaddr, rigconf, delay)) {
 		return 1;
 	}
 
@@ -474,6 +486,8 @@ grig_show_help      ()
 		   "set config parameter (same as in rigctl)\n"));
 	g_print (_("  -d, --debug=LEVEL           "\
 		   "set hamlib debug level (0..5)\n"));
+	g_print (_("  -D, --delay=val             "\
+		   "set delay between commands in msec\n"));
 	g_print (_("  -l, --list                  "\
 		   "list supported radios and exit\n"));
 	g_print (_("  -h, --help                  "\
