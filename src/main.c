@@ -35,14 +35,21 @@
 #include <gnome.h>
 #include <gconf/gconf.h>
 #include <gconf/gconf-client.h>
+#include "grig-config.h"
 #include "grig-druid.h"
 #include "rig-data.h"
 
 
+extern GnomeUIInfo grig_menubar[];  /* menubar defined in grig-menu.c */
+
+
+/** \brief Shared GConf client. */
 GConfClient *confclient;
 
+/** \brief Main GUI application widget */
+GtkWidget    *grigapp;
 
-gchar *dummy = N_("Hello");
+
 
 
 /* command line arguments */
@@ -75,14 +82,17 @@ static const struct poptOption grig_options[] =
 
 
 /* private function prototypes */
-static int  grig_check_config   (void);
-static void grig_list_rigs_rots (void);
-
+static int         grig_check_config   (void);
+static void        grig_list_rigs_rots (void);
+static GtkWidget  *grig_app_create     (gint);
+static gint        grig_app_delete     (GtkWidget *, GdkEvent *, gpointer);
+static void        grig_app_destroy    (GtkWidget *, gpointer);
 
 int
 main (int argc, char *argv[])
 {
-	GnomeProgram *program;
+	GnomeProgram *program;      /* GNOME program */
+
 
 	/* Initialize NLS support */
 #ifdef ENABLE_NLS
@@ -131,22 +141,37 @@ main (int argc, char *argv[])
 	*/
 	rundruid = rundruid && grig_check_config ();
 	if (rundruid) {
-//		grig_druid_run ();
+
+		/* run druid and check result */
+		if (grig_druid_run ()) {
+
+			/* something bad happened */
+
+		}
 	}
 
 	/* check whether user has requested a specific radio,
 	   if not, get the default.
 	*/
 	if (rignum == -1) {
-//		rignum = grig_get_default_rig ();
+		rignum = gconf_client_get_int (confclient, GRIG_CONFIG_RIG_DEF_KEY, NULL);
 	}
 
+	/* we set hamlib debug level to TRACE while we fire up the daemon; it will be
+	   reset when we create the menubar
+	*/
+	rig_set_debug (RIG_DEBUG_TRACE);
 
 	/* launch rig daemon */
-	rig_daemon_start (rignum);
+	if (rig_daemon_start (rignum)) {
+		return 1;
+	}
 
-	/* launch rig UI */
-//	rig_ctrl_create ();
+	/* create application */
+	grigapp = grig_app_create (rignum);
+	gtk_widget_show_all (grigapp);
+
+
 
 	/* check whether user has requested a rotator,
 	   if yes, start rotator controls
@@ -160,20 +185,11 @@ main (int argc, char *argv[])
 //		rot_ctrl_create ();
 	}
 
-	/* register function which should be called when
-	   the program is terminated
-	*/
-//	grig_exit_register ();
-
 	gtk_main ();
 
-	/* To clean up:
-	   GUI
-	   daemon
-	   gconf
-	*/
+//	gconf_client_notify_remove (confclient, cnx_id);
+//	gconf_client_remove_dir    (confclient, GRIG_CONFIG_DIR, NULL);
 
-	rig_daemon_stop ();
 
 	return 0;
 }
@@ -193,7 +209,42 @@ main (int argc, char *argv[])
 static int
 grig_check_config ()
 {
-	return 0;
+	gboolean rigok = FALSE;    /* flag indicating result of rig check */
+	gboolean rotok = FALSE;    /* flag indicating result of rotator check */
+	gint     def   = -1;       /* default rig or rotator */
+	gint     number = 0;       /* number of rigs/rots */
+	gchar   *buff;             /* striing buffer */
+
+
+	/* check rig config */
+	def = gconf_client_get_int (confclient, GRIG_CONFIG_RIG_DEF_KEY, NULL);
+
+	buff = g_strdup_printf ("%s/%i", GRIG_CONFIG_RIG_DIR, def);
+	rigok = gconf_client_dir_exists (confclient, buff, NULL);
+	g_free (buff);
+
+	/* check that number of rigs > 0 */
+	number = gconf_client_get_int (confclient, GRIG_CONFIG_RIG_NUM_KEY, NULL);
+	
+	rigok = (rigok && number);
+
+	def = -1;
+	number = 0;
+
+	/* check rotator config */
+	def = gconf_client_get_int (confclient, GRIG_CONFIG_ROT_DEF_KEY, NULL);
+
+	buff = g_strdup_printf ("%s/%i", GRIG_CONFIG_ROT_DIR, def);
+	rotok = gconf_client_dir_exists (confclient, buff, NULL);
+	g_free (buff);
+
+	/* check that number of rots > 0 */
+	number = gconf_client_get_int (confclient, GRIG_CONFIG_ROT_NUM_KEY, NULL);
+
+	rotok = (rotok && number);
+
+
+	return (rigok && rotok);
 }
 
 
@@ -201,16 +252,277 @@ grig_check_config ()
  *
  * This function lists the configured radios and rotators if it has
  * been requested by the user (cmd line option).
+ *
+ * \bug The types local should be moved to the rot ctrl object.
  */
 static void
 grig_list_rigs_rots ()
 {
+	gint   i;             /* loop iterator */
+	gchar *buff;          /* text buffer */
+	gint   number;        /* number of rigs/rots */
+	gint   def;           /* default rig/rot */
+	gchar *brand;         /* brand of the rig/rot */
+	gchar *model;         /* model of the rig/rot */
+	gchar *port;          /* port of the rig/rot */
+	gint   speed;         /* serial speed */
+	gint   type;          /* rotator type */
+
+	/* BUG */
+	gchar *types[] = { "AZ/EL", "AZ", "EL" };
+
 
 	if (listrigs) {
+		/* get number of rigs */
+		number = gconf_client_get_int (confclient, GRIG_CONFIG_RIG_NUM_KEY, NULL);
+
+		/* get default rig */
+		def = gconf_client_get_int (confclient, GRIG_CONFIG_RIG_DEF_KEY, NULL);
+
+		g_print ("\n\n List of configured radios:\n\n");
+		g_print ("  #   Brand         Model         Port            Speed      Def\n");
+		
+		/* loop over aal rigs */
+		for (i = 0; i < number; i++) {
+
+			/* get Brand */
+			buff = g_strdup_printf ("%s/%i/Brand", GRIG_CONFIG_RIG_DIR, i);
+			brand = gconf_client_get_string (confclient, buff, NULL);
+			g_free (buff);
+
+			/* get model */
+			buff = g_strdup_printf ("%s/%i/Model", GRIG_CONFIG_RIG_DIR, i);
+			model = gconf_client_get_string (confclient, buff, NULL);
+			g_free (buff);
+
+			/* get port */
+			buff = g_strdup_printf ("%s/%i/port", GRIG_CONFIG_RIG_DIR, i);
+			port = gconf_client_get_string (confclient, buff, NULL);
+			g_free (buff);
+
+			/* get speed */
+			buff = g_strdup_printf ("%s/%i/speed", GRIG_CONFIG_RIG_DIR, i);
+			speed = gconf_client_get_int (confclient, buff, NULL);
+			g_free (buff);
+
+			/* get type */
+			buff = g_strdup_printf ("%s/%i/type", GRIG_CONFIG_RIG_DIR, i);
+			type = gconf_client_get_int (confclient, buff, NULL);
+			g_free (buff);
+
+			if (speed != 0) {
+				printf ("%3d   %-13s %-13s %-15s %-10d %s\n",
+					i, brand, model, port, speed, (i==def) ? " * " : "");
+			}
+			else {
+				printf ("%3d   %-13s %-13s %-15s %-10s %s\n",
+					i, brand, model, port, "DEF", (i==def) ? " * " : "");
+			}
+
+			g_free (brand);
+			g_free (model);
+			g_free (port);
+		}
 
 	}
 
 	if (listrots) {
+		/* get number of rots */
+		number = gconf_client_get_int (confclient, GRIG_CONFIG_ROT_NUM_KEY, NULL);
+
+		/* get default rot */
+		def = gconf_client_get_int (confclient, GRIG_CONFIG_ROT_DEF_KEY, NULL);
+
+		g_print ("\n\n List of configured rotators:\n\n");
+		g_print ("  #   Brand         Model         Type    Port            Speed      Def\n");
+		
+		/* loop over all rots */
+		for (i = 0; i < number; i++) {
+
+			/* get Brand */
+			buff = g_strdup_printf ("%s/%i/Brand", GRIG_CONFIG_ROT_DIR, i);
+			brand = gconf_client_get_string (confclient, buff, NULL);
+			g_free (buff);
+
+			/* get model */
+			buff = g_strdup_printf ("%s/%i/Model", GRIG_CONFIG_ROT_DIR, i);
+			model = gconf_client_get_string (confclient, buff, NULL);
+			g_free (buff);
+
+			/* get port */
+			buff = g_strdup_printf ("%s/%i/port", GRIG_CONFIG_ROT_DIR, i);
+			port = gconf_client_get_string (confclient, buff, NULL);
+			g_free (buff);
+
+			/* get speed */
+			buff = g_strdup_printf ("%s/%i/speed", GRIG_CONFIG_ROT_DIR, i);
+			speed = gconf_client_get_int (confclient, buff, NULL);
+			g_free (buff);
+
+			if (speed != 0) {
+				printf ("%3d   %-13s %-13s %-7s %-15s %-10d %s\n",
+					i, brand, model, types[type], port, speed, (i==def) ? " * " : "");
+			}
+			else {
+				printf ("%3d   %-13s %-13s %-7s %-15s %-10s %s\n",
+					i, brand, model, types[type], port, "DEF", (i==def) ? " * " : "");
+			}
+
+			g_free (brand);
+			g_free (model);
+			g_free (port);
+		}
 
 	}
 }
+
+
+
+/** \brief Create and initialize main application window.
+ *  \param rignum The index of the radio wich is controled by the app
+ *  \return The new GnomeApp widget or NULL if the specified rig number is invalid
+ *
+ * This function creates and initializes a new GnomeApp widget, adds
+ * menubar and statusbar, etc...
+ *
+ */
+static GtkWidget *
+grig_app_create       (gint rignum)
+{
+	GtkWidget *app;        /* The main application */
+	GtkWidget *menushell;  /* Menu shell; used to set debug level */
+	GtkWidget *menuitem;   /* Menu item; used to set debug level */
+	gint       pos;        /* position of the menu item */
+	gint       debug;      /* hamlib debug level */
+	gchar     *title;      /* the window title  */
+	gchar     *brand;
+	gchar     *model;
+	gchar     *buff;       /* text buffer */
+
+	/* just a last sanity check to make sure we have a rig */
+	g_return_val_if_fail (rignum >= 0, NULL);
+
+	/* get rig brand */
+	buff = g_strdup_printf ("%s/%i/Brand", GRIG_CONFIG_RIG_DIR, rignum);
+	brand = gconf_client_get_string (confclient, buff, NULL);
+	g_free (buff);
+
+	/* get rig model */
+	buff = g_strdup_printf ("%s/%i/Model", GRIG_CONFIG_RIG_DIR, rignum);
+	model = gconf_client_get_string (confclient, buff, NULL);
+	g_free (buff);
+
+	/* construct title */
+	title = g_strdup_printf ("grig %s: %s %s", VERSION, brand, model);
+
+	/* create application */
+	app = gnome_app_new (PACKAGE, title);
+
+	g_free (title);
+	g_free (brand);
+	g_free (model);
+
+	/* connect delete and destroy signals */
+	g_signal_connect (G_OBJECT (app), "delete_event",
+			  G_CALLBACK (grig_app_delete), NULL);    
+	g_signal_connect (G_OBJECT (app), "destroy",
+			  G_CALLBACK (grig_app_destroy), NULL);
+
+	/* add menubar */
+	gnome_app_create_menus (GNOME_APP (app), grig_menubar);
+
+
+	/* Set the correct debug level in the menubar */
+	debug = gconf_client_get_int (confclient, GRIG_CONFIG_DEBUG_KEY, NULL);
+	switch (debug) {
+	case RIG_DEBUG_BUG:
+		menushell = gnome_app_find_menu_pos (GNOME_APP(app)->menubar,
+						     "Settings/Debug Level/Bug",
+						     &pos);
+		break;
+	case RIG_DEBUG_ERR:
+		menushell = gnome_app_find_menu_pos (GNOME_APP(app)->menubar,
+						     "Settings/Debug Level/Error",
+						     &pos);
+		break;
+	case RIG_DEBUG_WARN:
+		menushell = gnome_app_find_menu_pos (GNOME_APP(app)->menubar,
+						     "Settings/Debug Level/Warning",
+						     &pos);
+		break;
+	case RIG_DEBUG_VERBOSE:
+		menushell = gnome_app_find_menu_pos (GNOME_APP(app)->menubar,
+						     "Settings/Debug Level/Verbose",
+						     &pos);
+		break;
+	case RIG_DEBUG_TRACE:
+		menushell = gnome_app_find_menu_pos (GNOME_APP(app)->menubar,
+						     "Settings/Debug Level/Trace",
+						     &pos);
+		break;
+	default:
+		menushell = gnome_app_find_menu_pos (GNOME_APP(app)->menubar,
+						     "Settings/Debug Level/None",
+						     &pos);
+	}
+	menuitem = GTK_WIDGET (g_list_nth_data (GTK_MENU_SHELL (menushell)->children, pos-1));
+	gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (menuitem), TRUE);
+
+
+	return app;
+}
+
+
+
+/** \brief Handle delete events.
+ *  \param widget The widget which received the delete event signal.
+ *  \param event  Data structure describing the event.
+ *  \param data   User data (NULL).
+ *  \param return Always FALSE to indicate that the app should be destroyed.
+ *
+ * This function handles the delete event received by the main application window
+ * (eg. when the window is closed by the WM). This function simply returns FALSE
+ * indicating that the main application window should be destroyed by emiting the
+ * destroy signal.
+ *
+ */
+static gint
+grig_app_delete      (GtkWidget *widget,
+		      GdkEvent  *event,
+		      gpointer   data)
+{
+
+	/* return FALSE so that Gtk+ will emit the destroy signal */
+	return FALSE;
+}
+
+
+
+/** \brief Handle destroy signals.
+ *  \param widget The widget which received the signal.
+ *  \param data   User data (NULL).
+ *
+ * This function is called when the main application window receives the
+ * destroy signal, ie. it is destroyed. This function signals all daemons
+ * and other threads to stop and exits the Gtk+ main loop.
+ *
+ */
+static void
+grig_app_destroy    (GtkWidget *widget,
+		     gpointer   data)
+{
+
+	/* set debug level to TRACE */
+	rig_set_debug (RIG_DEBUG_TRACE);
+
+	/* stop daemons */
+	rig_daemon_stop ();
+//	rot_daemon_stop ();
+
+	/* stop timeouts */
+
+	/* exit Gtk+ */
+	gtk_main_quit ();
+}
+
+
