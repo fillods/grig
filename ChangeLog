@@ -7,12 +7,17 @@
 	or swr but not all). Modified default TX cycle
 	accordingly. Decreased command delay factor for TX mode
 	from 3 to 2.
-	
+	Added function to acquire the command delay. This allows
+	the GUI to adjust the callback delays for the widgets.
 
 	* src/rig-gui-smeter.c, src/rig-gui-smeter.h:
 	Added function to acquire the current meter setting
 	in TX mode. This allows the daemon to decide which
 	level to poll when the rig is in TX mode.
+
+	* src/rig-gui-lcd.c:
+	Check frequency for lower limit to avoid flicker
+	(bug #1082319).
 	
 	* doc/man/grig.1.in:
 	Updated man page with info about the -n or --nothread

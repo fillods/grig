@@ -7,8 +7,7 @@ GRIG 0.4.2:
 - gthreads on BSD...
   Terminate with error message when daemon process can not be
   started.
-- Flicker bug...
-- power off...
+- Fixed a bug which caused the frequency display to flicker.
 - Fixed a bug which caused the README, NEWS, AUTHORS, COPYING
   and ChangeLog files not to be installed.
 - Only poll the selected meter setting when in TX mode.
