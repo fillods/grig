@@ -303,7 +303,7 @@ rig_daemon_start       (int          rigid,
 	if (nothread == TRUE) {
 
 		/* we start a regular g_timeout;
-		   we use 2 * C_MAX_CYCLES * C_MAX_CMD_PER_CYCLE * cmd_delay
+		   we use C_MAX_CYCLES * C_MAX_CMD_PER_CYCLE * cmd_delay
 		   for delay.
 		*/
 		timeoutid = g_timeout_add (2 * C_MAX_CYCLES * C_MAX_CMD_PER_CYCLE * cmd_delay,
@@ -631,8 +631,6 @@ rig_daemon_cycle_cb  (gpointer data)
 	has_get = rig_data_get_has_get_addr ();
 	has_set = rig_data_get_has_set_addr ();
 
-	/* initialize major cycle */
-	major = 0;
 
 	/* send a debug message */
 	rig_debug (RIG_DEBUG_TRACE, "*** GRIG: %s started.\n", __FUNCTION__);
@@ -653,44 +651,44 @@ rig_daemon_cycle_cb  (gpointer data)
 		if (get->ptt == RIG_PTT_OFF) {
 			/* Execute receiver cycle */
 
-			/* loop through the current cycle in the command table */
-			for (minor = 0; minor < C_MAX_CMD_PER_CYCLE; minor++) {
+			for (major = 0; major < C_MAX_CYCLES; major++) {
+			
+				/* loop through the current cycle in the command table */
+				for (minor = 0; minor < C_MAX_CMD_PER_CYCLE; minor++) {
 				
-				rig_daemon_exec_cmd (DEF_RX_CYCLE[major][minor],
-						     get, set, new,
-						     has_get, has_set);
+					rig_daemon_exec_cmd (DEF_RX_CYCLE[major][minor],
+							     get, set, new,
+							     has_get, has_set);
 /* slow motion in debug mode */
 #ifdef GRIG_DEBUG
-				usleep (5000 * cmd_delay);
+					usleep (5000 * cmd_delay);
 #else
-				usleep (1000 * cmd_delay);
+					usleep (1000 * cmd_delay);
 #endif
+				}
 			}
 		}
 		else {
 			/* Execute transmitter cycle */
 
-			/* loop through the current cycle in the commad table. */
-			for (minor = 0; minor < C_MAX_CMD_PER_CYCLE; minor++) {
+			for (major = 0; major < C_MAX_CYCLES; major++) {
 
-				rig_daemon_exec_cmd (DEF_TX_CYCLE[major][minor],
-						     get, set, new,
-						     has_get, has_set);
+				/* loop through the current cycle in the commad table. */
+				for (minor = 0; minor < C_MAX_CMD_PER_CYCLE; minor++) {
+
+					rig_daemon_exec_cmd (DEF_TX_CYCLE[major][minor],
+							     get, set, new,
+							     has_get, has_set);
 /* slow motion in debug mode */
 #ifdef GRIG_DEBUG
-				usleep (10000 * cmd_delay);
+					usleep (10000 * cmd_delay);
 #else
-				usleep (2000 * cmd_delay);
+					usleep (2000 * cmd_delay);
 #endif
+				}
 			}
 
 		}
-
-		/* increment major cycle counter;
-		   reset to zero if it reaches the maximum count
-		*/
-		if (++major == C_MAX_CYCLES)
-			major = 0;
 	}
 
 	/* otherwise check the power status only */
