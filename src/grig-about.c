@@ -74,10 +74,10 @@ grig_about_run ()
 	notebook = gtk_notebook_new ();
 	gtk_notebook_append_page (GTK_NOTEBOOK (notebook), grig_about_about_create (), 
 				  gtk_label_new (_("About")));
-	gtk_notebook_append_page (GTK_NOTEBOOK (notebook), grig_about_credits_create (), 
-				  gtk_label_new (_("Credits")));
-	gtk_notebook_append_page (GTK_NOTEBOOK (notebook), grig_about_sysinfo_create (), 
-				  gtk_label_new (_("Sysinfo")));
+/* 	gtk_notebook_append_page (GTK_NOTEBOOK (notebook), grig_about_credits_create (),  */
+/* 				  gtk_label_new (_("Credits"))); */
+/* 	gtk_notebook_append_page (GTK_NOTEBOOK (notebook), grig_about_sysinfo_create (),  */
+/* 				  gtk_label_new (_("Sysinfo"))); */
 
 
 	/* Add the logo and notebook; show everything we've added to the dialog. */
