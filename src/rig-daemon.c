@@ -127,6 +127,9 @@ rig_daemon_start (int rignum)
 	gint   retcode;
 	grig_settings_t *get;
 
+	/* send a debug message */
+	rig_debug (RIG_DEBUG_TRACE, "*** GRIG: %s entered", __FUNCTION__);
+
 	/* check if rig is already initialized */
 	if (myrig != NULL) {
 		return 1;
@@ -147,9 +150,19 @@ rig_daemon_start (int rignum)
 	g_free (buff);
 	
 
+	/* send a debug message */
+	rig_debug (RIG_DEBUG_TRACE,
+		   "*** GRIG: %s: Initializing rig (id=%d)",
+		   __FUNCTION__, rigid);
+
 	/* initilize rig */
 	myrig = rig_init (rigid);
 	if (myrig == NULL) {
+
+		/* send error report */
+		rig_debug (RIG_DEBUG_ERR,
+			   "*** GRIG: %s: Init failed; Hamlib returned NULL!", __FUNCTION__);
+
 		return 1;
 	}
 
@@ -161,16 +174,33 @@ rig_daemon_start (int rignum)
 	}
 	retcode = rig_open (myrig);
 	if (retcode != RIG_OK) {
+
+		/* send error report */
+		rig_debug (RIG_DEBUG_ERR,
+			   "*** GRIG: %s: Failed to open rig port %s (permissions?)",
+			   __FUNCTION__,
+			   myrig->state.rigport.pathname);
+
 		rig_cleanup (myrig);
 		return 1;
 	}
 
+	/* send a debug message */
+	rig_debug (RIG_DEBUG_TRACE,
+		   "*** GRIG: %s: Init successfull; executing post-init",
+		   __FUNCTION__);
 
 	/* get capabilities and settings  */
 	rig_daemon_post_init ();
 
+	/* send a debug message */
+	rig_debug (RIG_DEBUG_TRACE,
+		   "*** GRIG: %s: Starting rig daemon",
+		   __FUNCTION__);
+
 	/* start daemon */
 	g_thread_create (rig_daemon_cycle, NULL, FALSE, NULL);
+
 
 	return 0;
 }
@@ -185,11 +215,23 @@ rig_daemon_start (int rignum)
 void
 rig_daemon_stop  ()
 {
+
+	/* send a debug message */
+	rig_debug (RIG_DEBUG_TRACE,
+		   "*** GRIG: %s: Sending stop signal to rig daemon",
+		   __FUNCTION__);
+
+
 	/* send stop signal to daemon process */
 	stopdaemon = TRUE;
 
-	/* wait */
+	/* give the daemon som time to exit */
 	usleep (C_RIG_DAEMON_STOP_TIMEOUT);
+
+	/* send a debug message */
+	rig_debug (RIG_DEBUG_TRACE,
+		   "*** GRIG: %s: Cleaning up rig",
+		   __FUNCTION__);
 
 	/* close radio device */
 	rig_close (myrig);
@@ -334,6 +376,12 @@ rig_daemon_post_init ()
 		case RIG_VFO_CURR:
 		case RIG_VFO_NONE:
 		default:
+
+			/* send an error report */
+			rig_debug (RIG_DEBUG_ERR,
+				   "*** GRIG: %s: I can't figure out available VFOs (got %d)",
+				   __FUNCTION__, get->vfo);
+
 			vfo = RIG_VFO_NONE;
 			break;
 		}
@@ -434,6 +482,35 @@ rig_daemon_post_init ()
 		has_set->mode = FALSE;
 		has_set->pbw  = FALSE;
 	}
+
+	/* debug info about detected has-get caps */
+	rig_debug (RIG_DEBUG_TRACE,
+		   "*** GRIG: %s: GET bits: %d%d%d%d%d%d%d%d%d",
+		   __FUNCTION__,
+		   has_get->power,
+		   has_get->ptt,
+		   has_get->vfo,
+		   has_get->mode,
+		   has_get->pbw,
+		   has_get->freq1,
+		   has_get->freq2,
+		   has_get->rit,
+		   has_get->xit);
+
+	/* debug info about detected has-set caps */
+	rig_debug (RIG_DEBUG_TRACE,
+		   "*** GRIG: %s: SET bits: %d%d%d%d%d%d%d%d%d",
+		   __FUNCTION__,
+		   has_set->power,
+		   has_set->ptt,
+		   has_set->vfo,
+		   has_set->mode,
+		   has_set->pbw,
+		   has_set->freq1,
+		   has_set->freq2,
+		   has_set->rit,
+		   has_set->xit);
+
 }
 
 
@@ -466,6 +543,9 @@ rig_daemon_cycle     (gpointer data)
 
 	/* initialize major cycle */
 	major = 0;
+
+	/* send a debug message */
+	rig_debug (RIG_DEBUG_TRACE, "*** GRIG: %s started.", __FUNCTION__);
 
 	/* loop forever until reception of STOP signal */
 	while (stopdaemon == FALSE) {
@@ -513,6 +593,9 @@ rig_daemon_cycle     (gpointer data)
 
 	}
 
+	/* send a debug message */
+	rig_debug (RIG_DEBUG_TRACE, "*** GRIG: %s stopped", __FUNCTION__);
+
 	return NULL;
 }
 
@@ -528,7 +611,8 @@ rig_daemon_cycle     (gpointer data)
  * This function is responsible for the execution of the specified rig command.
  * First, it checks whether the command is supported by the current radio, if yes,
  * it executes the corresponding hamlib API call. If the command execution is not
- * successfull, an anomaly report is sent to the rig error manager.
+ * successfull, an anomaly report is sent to the rig error manager which will take
+ * care of any further actions like disabling repeatedly failing commands.
  */
 static void
 rig_daemon_exec_cmd         (rig_cmd_t cmd,
@@ -538,82 +622,232 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 			     grig_cmd_avail_t *has_set)
 
 {
+	int retcode;
+
 
 	switch (cmd) {
 
+		/* No command. Do nothing */
+	case RIG_CMD_NONE:
+		break;
+
 		/* get primary frequency */
 	case RIG_CMD_GET_FREQ_1:
+
+		/* check whether command is available */
+		if (has_get->freq1) {
+			freq_t freq;
+
+			/* try to execute command */
+			retcode = rig_get_freq (myrig, RIG_VFO_CURR, &freq);
+
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				rig_debug (RIG_DEBUG_ERR,
+					   "*** GRIG: %s: Failed to execute RIG_CMD_GET_FREQ_1",
+					   __FUNCTION__);
+
+//				rig_error_raise_anomaly (RIG_CMD_GET_FREQ_1);
+			}
+			else {
+				get->freq1 = freq;
+			}
+		}
+
 		break;
 
 		/* set primary frequency */
 	case RIG_CMD_SET_FREQ_1:
+
+		/* check whether command is available */
+
+		/* try to execute command */
+
+		/* raise anomaly if execution did not succeed */
+
 		break;
 
 		/* get secondary frequency */
 	case RIG_CMD_GET_FREQ_2:
+
+		/* check whether command is available */
+
+		/* try to execute command */
+
+		/* raise anomaly if execution did not succeed */
+
 		break;
 
 		/* set secondary frequency */
 	case RIG_CMD_SET_FREQ_2:
+
+		/* check whether command is available */
+
+		/* try to execute command */
+
+		/* raise anomaly if execution did not succeed */
+
 		break;
 	
 		/* get RIT offset */
 	case RIG_CMD_GET_RIT:
+
+		/* check whether command is available */
+
+		/* try to execute command */
+
+		/* raise anomaly if execution did not succeed */
+
 		break;
 
 		/* set RIT offset */
 	case RIG_CMD_SET_RIT:
+
+		/* check whether command is available */
+
+		/* try to execute command */
+
+		/* raise anomaly if execution did not succeed */
+
 		break;
 
 		/* get XIT offset */
 	case RIG_CMD_GET_XIT:
+
+		/* check whether command is available */
+
+		/* try to execute command */
+
+		/* raise anomaly if execution did not succeed */
+
 		break;
 
 		/* set XIT offset */
 	case RIG_CMD_SET_XIT:
+
+		/* check whether command is available */
+
+		/* try to execute command */
+
+		/* raise anomaly if execution did not succeed */
+
 		break;
 
 		/* get current VFO */
 	case RIG_CMD_GET_VFO:
+
+		/* check whether command is available */
+
+		/* try to execute command */
+
+		/* raise anomaly if execution did not succeed */
+
 		break;
 
 		/* set current VFO */
 	case RIG_CMD_SET_VFO:
+
+		/* check whether command is available */
+
+		/* try to execute command */
+
+		/* raise anomaly if execution did not succeed */
+
 		break;
 
 		/* get power status */
 	case RIG_CMD_GET_PSTAT:
+
+		/* check whether command is available */
+
+		/* try to execute command */
+
+		/* raise anomaly if execution did not succeed */
+
 		break;
 
 		/* set power status */
 	case RIG_CMD_SET_PSTAT:
+
+		/* check whether command is available */
+
+		/* try to execute command */
+
+		/* raise anomaly if execution did not succeed */
+
 		break;
 
 		/* get PTT status */
 	case RIG_CMD_GET_PTT:
+
+		/* check whether command is available */
+
+		/* try to execute command */
+
+		/* raise anomaly if execution did not succeed */
+
 		break;
 
 		/* set PTT status */
 	case RIG_CMD_SET_PTT:
+
+		/* check whether command is available */
+
+		/* try to execute command */
+
+		/* raise anomaly if execution did not succeed */
+
 		break;
 
 		/* get current mode and passband width */
 	case RIG_CMD_GET_MODE:
+
+		/* check whether command is available */
+
+		/* try to execute command */
+
+		/* raise anomaly if execution did not succeed */
+
 		break;
 
 		/* set current mode and passband width */
 	case RIG_CMD_SET_MODE:
+
+		/* check whether command is available */
+
+		/* try to execute command */
+
+		/* raise anomaly if execution did not succeed */
+
 		break;
 
 		/* get signal strength, S-meter */
 	case RIG_CMD_GET_STRENGTH:
+
+		/* check whether command is available */
+
+		/* try to execute command */
+
+		/* raise anomaly if execution did not succeed */
+
 		break;
 
 		/* get transmitter power */
 	case RIG_CMD_GET_PWR:
+
+		/* check whether command is available */
+
+		/* try to execute command */
+
+		/* raise anomaly if execution did not succeed */
+
 		break;
 
+		/* bug in grig! */
 	default:
+		rig_debug (RIG_DEBUG_BUG,
+			   "*** GRIG: %s: Unknown command %d (grig bug)",
+			   __FUNCTION__, cmd);
 		break;
 
 	}

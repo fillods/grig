@@ -52,7 +52,7 @@
  * These values should be used to define each daemon cycle.
  */
 typedef enum {
-	RIG_CMD_NONE = 0,     /*!< Not command. Used to end a sequence of commands. */
+	RIG_CMD_NONE = 0,     /*!< Not command. Can be used for delays between commands. */
 
 	RIG_CMD_GET_FREQ_1,    /*!< Command to acquire primary frequency from rig. */
 	RIG_CMD_SET_FREQ_1,    /*!< Command to set primary frequency. */
