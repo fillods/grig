@@ -72,8 +72,7 @@ PKG_CHECK_MODULES(HAMLIB, hamlib, [
 ])
 
 
-AC_OUTPUT([m4/Makefile
-po/Makefile.in
+AC_OUTPUT([
 Makefile
 grig.1
 grig.spec
