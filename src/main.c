@@ -35,7 +35,7 @@
  *
  * Add some more text.
  *
- * \bug What do we do if we don't have getopt.h?
+ * \bug What do we do if we don't have getopt.h? Change to glib getopt in 2.6
  *
  * \bug Debug level is not read from hamlib. Original debug level is
  *      overwritten if used on rpcrig.
@@ -74,12 +74,13 @@ static gint     rigspeed  = 0;       /*!< Optional serial speed. */
 static gboolean listrigs  = FALSE;   /*!< List supported radios and exit. */ 
 gint     debug     = RIG_DEBUG_NONE; /*!< Hamlib debug level. Note: not static since menubar.c needs access. */
 static gint     delay     = 0;       /*!< Command delay. */
+static gboolean nothread  = FALSE;   /*!< Don't use threads, just a regular gtk-timeout. */
 static gboolean version   = FALSE;   /*!< Show version and exit. */
 static gboolean help      = FALSE;   /*!< Show help and exit. */
 
 
 /** \brief Short options. */
-#define SHORT_OPTIONS "m:r:s:c:C:d:D:lhv"  /* group those which take no arg */
+#define SHORT_OPTIONS "m:r:s:c:C:d:D:nlhv"  /* group those which take no arg */
 
 /** \brief Table of command line options. */
 static struct option long_options[] =
@@ -91,6 +92,7 @@ static struct option long_options[] =
 	{"set-conf",     1, 0, 'C'},
 	{"debug",        1, 0, 'd'},
 	{"delay",        1, 0, 'D'},
+	{"nothread",     0, 0, 'n'},
 	{"list",         0, 0, 'l'},
 	{"help",         0, 0, 'h'},
 	{"version",      0, 0, 'v'},
@@ -268,6 +270,11 @@ main (int argc, char *argv[])
 			}
 			break;
 
+			/* no threads */
+		case 'n':
+			nothreads = TRUE;
+			break;
+
 			/* show help */
 		case 'h':
 			help = TRUE;
@@ -311,7 +318,7 @@ main (int argc, char *argv[])
 	rig_set_debug (RIG_DEBUG_TRACE);
 
 	/* launch rig daemon */
-	if (rig_daemon_start (rignum, rigfile, rigspeed, civaddr, rigconf, delay)) {
+	if (rig_daemon_start (rignum, rigfile, rigspeed, civaddr, rigconf, delay, nothread)) {
 		return 1;
 	}
 
@@ -492,6 +499,8 @@ grig_show_help      ()
 		   "set hamlib debug level (0..5)\n"));
 	g_print (_("  -D, --delay=val             "\
 		   "set delay between commands in msec\n"));
+	g_print (_("  -n, --nothread              "\
+		   "start daemon without using threads\n"));
 	g_print (_("  -l, --list                  "\
 		   "list supported radios and exit\n"));
 	g_print (_("  -h, --help                  "\
