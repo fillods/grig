@@ -1,3 +1,25 @@
+2005-01-22;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/rig-gui-smeter-conv.c, src/rig-gui-smeter-conv.h:
+	Implemented linear conversion for TX scale. No need for
+	polynomial fit since TX scale is linear.
+
+	* src/rig-gui-smeter.c:
+	Enabled TX meter. Disable scale selector.
+
+	* src/rig-gui-smeter.h:
+	Increased default fall-off speed and frames per second.
+
+	* src/grig-about.c:
+	Removed empty notebook pages.
+
+	* NEWS:
+	Updated.
+
+	* configure.ac:
+	Changed versionnumber to 0.4
+
+
 2005-01-21;	Alexandru Csete <csete@users.sourceforge.net>
 
 	* src/rig-data.c, src/rig-data.h:

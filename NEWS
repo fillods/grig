@@ -4,6 +4,7 @@ GRIG 0.4.0:
   Gnome and GConf dependencies.
 - Requires Hamlib 1.2.0 or greater.
 - Added continuous readback from radio.
+- Read signal strength, tx-power, swr and alc when available.
 - Removed rotator support (will be in a separate program).
 - Radio configuration is set via the command line and the
   first time wizard has been completely removed.
