@@ -26,6 +26,7 @@ grig_SOURCES = \
 	rig-gui-ctrl2.c rig-gui-ctrl2.h \
 	rig-gui-info.c rig-gui-info.h \
 	rig-gui-lcd.c rig-gui-lcd.h \
+	rig-gui-levels.c rig-gui-levels.h \
 	rig-gui-smeter.c rig-gui-smeter.h \
 	rig-gui-smeter-conv.c rig-gui-smeter-conv.h \
 	rig-utils.c rig-utils.h \
