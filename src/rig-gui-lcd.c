@@ -953,7 +953,7 @@ rig_gui_lcd_set_freq_digits  (freq_t freq)
 
 	
 	/* is drawing area ready? */
-	if (!lcd.exposed)
+	if (!lcd.exposed || (freq < rig_data_get_fmin ()))
 		return;
 
 	/* saturate frequency */
@@ -1078,8 +1078,6 @@ rig_gui_lcd_set_freq_digits  (freq_t freq)
  * displayed.
  *
  * \bug 'default' case should send a critical error message.
- *
- * \bug \b CRITICAL: sign is not handled.
  *
  * \sa rig_gui_lcd_set_freq_digits
  */

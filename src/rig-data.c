@@ -77,6 +77,11 @@ static int preamp[MAXDBLSTSIZ];
 /** \brief Bit field of available VFO's */
 static int vfo_list;
 
+/** \brief Minimum frequency. */
+static freq_t fmin;
+
+/** \brief Maximum frequency. */
+static freq_t fmax;
 
 
 /** \brief Getavailable VFOs.
