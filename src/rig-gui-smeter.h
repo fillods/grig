@@ -33,6 +33,8 @@
  *  \ingroup smeter
  *  \brief Signal strength meter widget (interface).
  *
+ * \bug The defaults and ranges defined in this files shall be moved
+ *      to a centralized object.
  */
 #ifndef RIG_GUI_SMETER_H
 #define RIG_GUI_SMETER_H 1
@@ -44,21 +46,21 @@
 /** \brief Minimum delay in msec between s-meter updates (50 fps) */
 #define RIG_GUI_SMETER_MIN_TVAL 20
 
-/** \brief Default delay in msec between s-meter updates (25 fps). */
-#define RIG_GUI_SMETER_DEF_TVAL 40
+/** \brief Default delay in msec between s-meter updates (? fps). */
+#define RIG_GUI_SMETER_DEF_TVAL 60
 
 /** \brief Maximum delay in msec between s-meter updates (5 fps). */
 #define RIG_GUI_SMETER_MAX_TVAL 500
 
 
 /** \brief Minimum falloff speed in deg/sec */
-#define RIG_GUI_SMETER_MIN_FALLOFF 100.0
+#define RIG_GUI_SMETER_MIN_FALLOFF 10.0
 
 /** \brief Default falloff speed in deg/sec */
-#define RIG_GUI_SMETER_DEF_FALLOFF 400.0
+#define RIG_GUI_SMETER_DEF_FALLOFF 100.0
 
 /** \brief Maximum falloff speed in deg/sec */
-#define RIG_GUI_SMETER_MAX_FALLOFF 700.0
+#define RIG_GUI_SMETER_MAX_FALLOFF 360.0
 
 
 /** \brief Scale setting for s-meter.
@@ -104,19 +106,21 @@ typedef enum {
  * needed to calculate the dynamic behaviour of the needle.
  */
 typedef struct {
-	GtkWidget              *canvas;      /*!< The GnomeCanvas widget. */
-	GnomeCanvasItem        *pixmap;      /*!< The background pixmap.  */
-	GnomeCanvasItem        *needle;      /*!< The needle widget.      */
-	gfloat                  value;       /*!< Current value (angle).  */
-	gfloat                  lastvalue;   /*!< Previous value (angle). */
-	guint                   tval;        /*!< Current update delay.   */
-	gfloat                  falloff;     /*!< Current falloff delay.  */
-	smeter_scale_t          scale;       /*!< Current scale.          */
-	smeter_tx_mode_t        txmode;      /*!< Display mode in TX.     */
+	GtkWidget              *canvas;      /*!< The drawing area widget. */
+	GdkPixbuf              *pixbuf;      /*!< The background pixmap.   */
+	GdkGC                  *gc;          /*!< Graphics context for drawing. */
+	gboolean                exposed;     /*!< Flag to indicate whether canvas is ready. */
+	gfloat                  value;       /*!< Current value (angle).   */
+	gfloat                  lastvalue;   /*!< Previous value (angle).  */
+	guint                   tval;        /*!< Current update delay.    */
+	gfloat                  falloff;     /*!< Current falloff delay.   */
+	smeter_scale_t          scale;       /*!< Current scale.           */
+	smeter_tx_mode_t        txmode;      /*!< Display mode in TX.      */
 } smeter_t;
 
 
 GtkWidget *rig_gui_smeter_create (void);
+
 
 #endif
 
