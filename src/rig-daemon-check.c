@@ -260,7 +260,7 @@ rig_daemon_check_freq     (RIG               *myrig,
 
 			/* send an error report */
 			rig_debug (RIG_DEBUG_ERR,
-				   "*** GRIG: %s: I can't figure out available VFOs (got %d)",
+				   "*** GRIG: %s: I can't figure out available VFOs (got %d)\n",
 				   __FUNCTION__, get->vfo);
 
 			vfo = RIG_VFO_NONE;
@@ -461,8 +461,8 @@ rig_daemon_check_mode     (RIG               *myrig,
 		*/
 		if (!found_mode) {
 			rig_debug (RIG_DEBUG_BUG,
-				   "*** GRIG: %s: Can not find frequency range for this mode (%d)! "\
-				   "Bug in backed?\n", __FUNCTION__, mode);
+				   "*** GRIG: %s: Can not find frequency range for this "\
+				   "mode (%d)! Bug in backed?\n", __FUNCTION__, mode);
 		}
 	}
 
@@ -527,6 +527,8 @@ rig_daemon_check_level     (RIG               *myrig,
 	has_get->swr      = (haslevel && RIG_LEVEL_SWR);
 	has_get->alc      = (haslevel && RIG_LEVEL_ALC);
 	has_get->agc      = (haslevel && RIG_LEVEL_AGC);
+	has_get->att      = (haslevel && RIG_LEVEL_ATT);
+	has_get->preamp   = (haslevel && RIG_LEVEL_PREAMP);
 
 	/* read values */
 	if (has_get->power) {
@@ -536,7 +538,8 @@ rig_daemon_check_level     (RIG               *myrig,
 		}
 		else {
 			/* send an error report */
-			rig_debug (RIG_DEBUG_ERR, "*** GRIG: %s: Could not get RF power",
+			rig_debug (RIG_DEBUG_ERR,
+				   "*** GRIG: %s: Could not get RF power\n",
 				   __FUNCTION__);
 			
 			/* disable command */
@@ -551,7 +554,8 @@ rig_daemon_check_level     (RIG               *myrig,
 		}
 		else {
 			/* send an error report */
-			rig_debug (RIG_DEBUG_ERR, "*** GRIG: %s: Could not get signal strength",
+			rig_debug (RIG_DEBUG_ERR,
+				   "*** GRIG: %s: Could not get signal strength\n",
 				   __FUNCTION__);
 			
 			/* disable command */
@@ -566,7 +570,8 @@ rig_daemon_check_level     (RIG               *myrig,
 		}
 		else {
 			/* send an error report */
-			rig_debug (RIG_DEBUG_ERR, "*** GRIG: %s: Could not get SWR",
+			rig_debug (RIG_DEBUG_ERR,
+				   "*** GRIG: %s: Could not get SWR\n",
 				   __FUNCTION__);
 			
 			/* disable command */
@@ -581,7 +586,8 @@ rig_daemon_check_level     (RIG               *myrig,
 		}
 		else {
 			/* send an error report */
-			rig_debug (RIG_DEBUG_ERR, "*** GRIG: %s: Could not get ALC",
+			rig_debug (RIG_DEBUG_ERR,
+				   "*** GRIG: %s: Could not get ALC\n",
 				   __FUNCTION__);
 			
 			/* disable command */
@@ -597,7 +603,8 @@ rig_daemon_check_level     (RIG               *myrig,
 		}
 		else {
 			/* send an error report */
-			rig_debug (RIG_DEBUG_ERR, "*** GRIG: %s: Could not get AGC",
+			rig_debug (RIG_DEBUG_ERR,
+				   "*** GRIG: %s: Could not get AGC\n",
 				   __FUNCTION__);
 			
 			/* disable command */
@@ -606,11 +613,48 @@ rig_daemon_check_level     (RIG               *myrig,
 		}
 	}
 
+	if (has_get->att) {
+		retcode = rig_get_level (myrig, RIG_VFO_CURR, RIG_LEVEL_ATT, &val);
+		if (retcode == RIG_OK) {
+			get->att = val.i;
+		}
+		else {
+			/* send an error report */
+			rig_debug (RIG_DEBUG_ERR,
+				   "*** GRIG: %s: Could not get ATT\n",
+				   __FUNCTION__);
 
-	/* get available write levels
-	 */
+			/* disable ATT */
+			has_get->att = FALSE;
+		}
+	}
+
+	if (has_get->preamp) {
+		retcode = rig_get_level (myrig, RIG_VFO_CURR, RIG_LEVEL_PREAMP, &val);
+		if (retcode == RIG_OK) {
+			get->preamp = val.i;
+		}
+		else {
+			/* send an error report */
+			rig_debug (RIG_DEBUG_ERR,
+				   "*** GRIG: %s: Could not get PREAMP\n",
+				   __FUNCTION__);
+
+			/* disable PREAMP */
+			has_get->preamp = FALSE;
+		}
+	}
+
+
+	/* get available write levels */
 	haslevel = rig_has_set_level (myrig, GRIG_LEVEL_WR);
 
-	has_set->power = (haslevel && RIG_LEVEL_RFPOWER);
-	has_set->agc   = (haslevel && RIG_LEVEL_AGC);
+	/* we don't perform explicit testing of set levels
+	   (like we did with the get levels) since we might
+	   not have any good values to send
+	*/
+	has_set->power  = (haslevel && RIG_LEVEL_RFPOWER);
+	has_set->agc    = (haslevel && RIG_LEVEL_AGC);
+	has_set->att    = (haslevel && RIG_LEVEL_ATT);
+	has_set->preamp = (haslevel && RIG_LEVEL_PREAMP);
 }
