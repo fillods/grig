@@ -29,111 +29,132 @@
 	  Boston, MA  02111-1307
 	  USA
 */
+#include <stdlib.h>
 #include <gtk/gtk.h>
 #include <hamlib/rig.h>
 #include "grig-about.h"
 #include "grig-config.h"
 #include "grig-menubar.h"
+#include "rig-gui-info.h"
 #include "support.h"
 
 
 
 extern GtkWidget   *grigapp;    /* defined in main.c */
-
+extern gint         debug;      /* defined in main.c */
 
 
 /* private function prototypes */
-static void  grig_menu_rot_open        (GtkWidget *, gpointer);
 static void  grig_menu_app_exit        (GtkWidget *, gpointer);
-static void  grig_menu_set_debug_level (GtkWidget *, gpointer);
+static void  grig_menu_set_debug_level (GtkRadioAction *, gpointer);
 static void  grig_menu_config          (GtkWidget *, gpointer);
-static void  grig_menu_about           (GtkWidget *, gpointer);
+
+
+/** \brief Regular menu items. */
+static GtkActionEntry entries[] = {
+	{ "FileMenu", NULL, N_("_Radio") },
+	{ "SettingsMenu", NULL, N_("_Settings") },
+	{ "HelpMenu", NULL, N_("_Help") },
+
+	{ "Info", GTK_STOCK_DND, N_("_Info"), "<control>I", N_("Show info about radio"), G_CALLBACK (rig_gui_info_run) },
+	{ "Stop", GTK_STOCK_STOP, N_("St_op daemon"), NULL, N_("Stop the Grig daemon"), NULL },
+	{ "Start", GTK_STOCK_EXECUTE, N_("St_art daemon"), NULL, N_("Start the Grig daemon"), NULL},
+	{ "Exit", GTK_STOCK_QUIT, N_("E_xit"), "<control>Q", N_("Exit the program"), G_CALLBACK (grig_menu_app_exit) },
+
+	{ "Debug", NULL, N_("_Debug Level"), NULL, N_("Set Hamlib debug level"), NULL},
+
+	{ "About", GTK_STOCK_DIALOG_INFO, N_("_About"), NULL, N_("Shouw about dialog"), G_CALLBACK (grig_about_run) },
+};
+
+
+/** \brief Radio items for selectinghamlib debug level. */
+static GtkRadioActionEntry radio_entries[] = {
+  { "None",    NULL, N_("_No Debug"), NULL, N_("Don't show any debug mesages"),                0 },
+  { "Bug",     NULL, N_("_Bug"),      NULL, N_("Show error messages caused by possible bugs"), 1 },
+  { "Error",   NULL, N_("_Error"),    NULL, N_("Show run-time error messages"),                2 },
+  { "Warn",    NULL, N_("_Warning"),  NULL, N_("Show warnings"),                               3 },
+  { "Verbose", NULL, N_("_Verbose"),  NULL, N_("Verbose reporting"),                           4 },
+  { "Trace",   NULL, N_("_Trace"),    NULL, N_("Trace everything"),                            5 }
+};
+
+
+/** \brief UI description string. */
+static const char *menu_desc = 
+"<ui>"
+"  <menubar name='GrigMenu'>"
+"    <menu action='FileMenu'>"
+"       <menuitem action='Info'/>"
+"       <separator/>"
+/*"       <menuitem action='Start'/>"
+"       <menuitem action='Stop'/>"
+"       <separator/>"*/
+"       <menuitem action='Exit'/>"
+"    </menu>"
+"    <menu action='SettingsMenu'>"
+"       <menu action='Debug'>"
+"          <menuitem action='None'/>"
+"          <separator/>"
+"          <menuitem action='Bug'/>"
+"          <menuitem action='Error'/>"
+"          <menuitem action='Warn'/>"
+"          <menuitem action='Verbose'/>"
+"          <menuitem action='Trace'/>"
+"       </menu>"
+"    </menu>"
+"    <menu action='HelpMenu'>"
+"       <menuitem action='About'/>"
+"    </menu>"
+"  </menubar>"
+"</ui>";
 
 
 
-/** \brief File menu declaration. */
-/* GnomeUIInfo grig_file_menu[] = { */
-/* 	GNOMEUIINFO_ITEM_DATA (N_("Rotator"), N_("Ope rotator control window"), */
-/* 			       grig_menu_rot_open, NULL, NULL), */
-/* 	GNOMEUIINFO_SEPARATOR, */
-/* 	GNOMEUIINFO_MENU_EXIT_ITEM (grig_menu_app_exit, NULL), */
-/* 	GNOMEUIINFO_END */
-/* }; */
-
-
-
-/** \brief rig_set_debug items in a radiolist */
-/* GnomeUIInfo grig_settings_debug_list[] = { */
-/* 	GNOMEUIINFO_RADIOITEM_DATA (N_("_None"), N_("No debug info"), */
-/* 				    grig_menu_set_debug_level, */
-/* 				    GUINT_TO_POINTER (RIG_DEBUG_NONE), NULL), */
-/* 	GNOMEUIINFO_RADIOITEM_DATA (N_("_Bug"), N_("Serious bugs"), */
-/* 				    grig_menu_set_debug_level, */
-/* 				    GUINT_TO_POINTER (RIG_DEBUG_BUG), NULL), */
-/* 	GNOMEUIINFO_RADIOITEM_DATA (N_("_Error"), N_("Error case"), */
-/* 				    grig_menu_set_debug_level, */
-/* 				    GUINT_TO_POINTER (RIG_DEBUG_ERR), NULL), */
-/* 	GNOMEUIINFO_RADIOITEM_DATA (N_("_Warning"), N_("Also show warnings"), */
-/* 				    grig_menu_set_debug_level, */
-/* 				    GUINT_TO_POINTER (RIG_DEBUG_WARN), NULL), */
-/* 	GNOMEUIINFO_RADIOITEM_DATA (N_("_Verbose"), N_("Verbose output"), */
-/* 				    grig_menu_set_debug_level, */
-/* 				    GUINT_TO_POINTER (RIG_DEBUG_VERBOSE), NULL), */
-/* 	GNOMEUIINFO_RADIOITEM_DATA (N_("_Trace"), N_("Print everything"), */
-/* 				    grig_menu_set_debug_level, */
-/* 				    GUINT_TO_POINTER (RIG_DEBUG_TRACE), NULL), */
-/* 	GNOMEUIINFO_END */
-/* }; */
-
-
-/** \brief The submenu containing the debug level radiolist */
-/* GnomeUIInfo grig_settings_debug_submenu[] = { */
-/* 	GNOMEUIINFO_RADIOLIST (grig_settings_debug_list), */
-/* 	GNOMEUIINFO_END */
-/* }; */
-
-
-/** \brief Settings menu declaration. */
-/* GnomeUIInfo grig_settings_menu[] = { */
-/* 	GNOMEUIINFO_MENU_PREFERENCES_ITEM (grig_menu_config, NULL), */
-/* 	GNOMEUIINFO_SEPARATOR, */
-/* 	GNOMEUIINFO_SUBTREE (N_("_Debug Level"), grig_settings_debug_submenu), */
-/* 	GNOMEUIINFO_END */
-/* }; */
-
-
-/** \brief The help menu declaration. */
-/* GnomeUIInfo grig_help_menu[] = { */
-/* 	GNOMEUIINFO_HELP ("grig"), */
-/* 	GNOMEUIINFO_SEPARATOR, */
-/* 	GNOMEUIINFO_MENU_ABOUT_ITEM (grig_menu_about, NULL), */
-/* 	GNOMEUIINFO_END */
-/* }; */
-
-
-/** \brief The menubar declaration. */
-/* GnomeUIInfo grig_menubar[] = { */
-/* 	GNOMEUIINFO_MENU_FILE_TREE (grig_file_menu), */
-/* 	GNOMEUIINFO_SUBTREE (N_("_Settings"), grig_settings_menu), */
-/* 	GNOMEUIINFO_MENU_HELP_TREE (grig_help_menu), */
-/* 	GNOMEUIINFO_END */
-/* }; */
-
-
-/** \brief Open rotator control window.
- *  \param widget The widget which received the signal.
- *  \param data   User data (NULL).
+/** \brief Create Grig menubar.
+ *  \return The menubar widget.
  *
- * This function calls the function which initializes and starts the
- * rotator related services (daemon, GUI, etc.). It is designed as a
- * callback function to be directly callable from the menubar, but it
- * does not use the parameters to anything.
+ * This function creates and initializes the main menubar for grig.
+ * It should be called from the main gui_create function.
  */
-static void
-grig_menu_rot_open        (GtkWidget *widget, gpointer data)
+GtkWidget *
+grig_menubar_create ()
 {
+	GtkWidget      *menubar;
+	GtkActionGroup *actgrp;
+	GtkUIManager   *uimgr;
+	GtkAccelGroup  *accgrp;
+	GError         *error;
 
+	/* create action group */
+	actgrp = gtk_action_group_new ("MenuActions");
+	gtk_action_group_add_actions (actgrp, entries, G_N_ELEMENTS (entries), NULL);
+	gtk_action_group_add_radio_actions (actgrp, radio_entries, G_N_ELEMENTS (radio_entries), debug,
+					    G_CALLBACK (grig_menu_set_debug_level), NULL);
+
+
+	/* create UI manager */
+	uimgr = gtk_ui_manager_new ();
+	gtk_ui_manager_insert_action_group (uimgr, actgrp, 0);
+
+	/* accelerator group */
+	accgrp = gtk_ui_manager_get_accel_group (uimgr);
+	gtk_window_add_accel_group (GTK_WINDOW (grigapp), accgrp);
+
+	/* try to create UI from XML*/
+	error = NULL;
+	if (!gtk_ui_manager_add_ui_from_string (uimgr, menu_desc, -1, &error)) {
+		g_print (_("Failed to build menubar: %s"), error->message);
+		g_error_free (error);
+
+		return NULL;
+	}
+
+	/* now, finally, get the menubar */
+	menubar = gtk_ui_manager_get_widget (uimgr, "/GrigMenu");
+
+	return menubar;
 }
+
+
 
 
 /** \brief Exit application.
@@ -154,21 +175,17 @@ grig_menu_app_exit       (GtkWidget *widget, gpointer data)
 
 
 /** \brief Set debug level.
- *  \param widget The menu item that received the signal.
- *  \param level  Pointer to an integer representing the debug level.
+ *  \param action The GtkRadioAction item.
+ *  \param data  Pointer to user data (not used).
  *
  * This function is called when the user selects a new debug level.
  * The new debug level is stored in the GConf domain.
  *
  */
 static void
-grig_menu_set_debug_level (GtkWidget *widget, gpointer level)
+grig_menu_set_debug_level (GtkRadioAction *action, gpointer data)
 {
-	rig_set_debug (GPOINTER_TO_UINT (level));
-/* 	gconf_client_set_int (confclient, GRIG_CONFIG_DEBUG_KEY, */
-/* 			      GPOINTER_TO_UINT (level), */
-/* 			      NULL); */
-/* 	gconf_client_suggest_sync (confclient, NULL); */
+	rig_set_debug (gtk_radio_action_get_current_value (action));
 }
 
 
@@ -186,17 +203,4 @@ grig_menu_config (GtkWidget *widget, gpointer data)
 //	grig_config_run ();
 }
 
-
-/** \brief Show about box.
- *  \param widget The menu item that received the signal.
- *  \param data   User data (NULL).
- *
- * This function is called when the user selects the about menu item
- * in the menu bar. It executes the about box component.
- */
-static void
-grig_menu_about (GtkWidget *widget, gpointer data)
-{
-	grig_about_run ();
-}
 

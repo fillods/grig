@@ -33,4 +33,7 @@
 #define GRIG_MENUBAR_H 1
 
 
+GtkWidget *grig_menubar_create (void);
+
+
 #endif
