@@ -29,6 +29,13 @@
 	  Boston, MA  02111-1307
 	  USA
 */
+/** \file rig-gui-info.c
+ *  \ingroup info
+ *  \brief Radio info box.
+ *
+ * The purpose of this package is to show the contents of the rig_caps
+ * structure in a nicely organized fashion.
+ */
 #include <gtk/gtk.h>
 #include <hamlib/rig.h>
 #include "rig-gui-info.h"
@@ -166,3 +173,5 @@ rig_gui_info_create_header ()
 
 	return table;
 }
+
+

@@ -29,6 +29,9 @@
 	  Boston, MA  02111-1307
 	  USA
 */
+
+/** \bug should disable widgets if not available! */
+
 #include <gtk/gtk.h>
 #include <hamlib/rig.h>
 #include "rig-data.h"

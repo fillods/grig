@@ -68,6 +68,141 @@ grig_cmd_avail_t has_set;  /*!< Flags to indicate writing capabilities. */
 grig_cmd_avail_t has_get;  /*!< Flags to indicate reading capabilities. */
 
 
+static int att[MAXDBLSTSIZ];
+static int preamp[MAXDBLSTSIZ];
+
+
+
+/** \brief Set attenuator data.
+ *  \param index The index of the element to set
+ *  \param data The value of the element.
+ *
+ * This function sets the element at index in the att array to data.
+ * This function is usedby the rig-daemon-check function to initialise
+ * the attenuator array.
+ */
+void
+rig_data_set_att_data (int index, int data)
+{
+	if ((index >= 0) && (index < MAXDBLSTSIZ))
+		att[index] = data;
+}
+
+
+/** \brief Get attenuator value.
+ *  \param index The index of the element.
+ *  \return The value at index.
+ *
+ * This function returns the attenuator vlue stored at index.
+ * the function can be used by the GUI to initialise the attenuator
+ * widget.
+ */
+int
+rig_data_get_att_data (int index)
+{
+	if ((index >= 0) && (index < MAXDBLSTSIZ)) {
+		return att[index];
+	}
+	else {
+		return 0;
+	}
+}
+
+
+/** \brief Get array index of a specific att value.
+ *  \param data The att value to check.
+ *  \return The array index of data. -1 if data not in array.
+ *
+ * This function scans the att array for data and returns it's array
+ * index if data can be found in the array.
+ */
+int
+rig_data_get_att_index    (int data)
+{
+	int i = 0;
+
+	/* invali att value */
+	if (data <= 0)
+		return -1;
+
+	/* scan through the array */
+	while ((i < MAXDBLSTSIZ) && (att[i] != 0)) {
+		if (att[i] == data) {
+			return i;
+		}
+		i++;
+	}
+
+	/* data not in array */
+	return -1;
+}
+
+
+
+/** \brief Set preamp data.
+ *  \param index The index of the element to set
+ *  \param data The value of the element.
+ *
+ * This function sets the element at index in the preamp array to data.
+ * This function is usedby the rig-daemon-check function to initialise
+ * the preamp array.
+ */
+void
+rig_data_set_preamp_data (int index, int data)
+{
+	if ((index >= 0) && (index < MAXDBLSTSIZ))
+		preamp[index] = data;
+}
+
+
+/** \brief Get preamp value.
+ *  \param index The index of the element.
+ *  \return The value at index.
+ *
+ * This function returns the preamp value stored at index.
+ * the function can be used by the GUI to initialise the preamp
+ * widget.
+ */
+int
+rig_data_get_preamp_data (int index)
+{
+	if ((index >= 0) && (index < MAXDBLSTSIZ)) {
+		return preamp[index];
+	}
+	else {
+		return 0;
+	}
+}
+
+
+
+/** \brief Get array index of a specific preamp value.
+ *  \param data The preamp value to check.
+ *  \return The array index of data. -1 if data not in array.
+ *
+ * This function scans the preamp array for data and returns it's array
+ * index if data can be found in the array.
+ */
+int
+rig_data_get_preamp_index    (int data)
+{
+	int i = 0;
+
+	/* invalid preamp value */
+	if (data <= 0)
+		return -1;
+
+	/* scan through the array */
+	while ((i < MAXDBLSTSIZ) && (preamp[i] != 0)) {
+		if (preamp[i] == data) {
+			return i;
+		}
+		i++;
+	}
+
+	/* data not in array */
+	return -1;
+}
 
 
 /** \brief Set power status.
@@ -432,6 +567,18 @@ rig_data_get_att     ()
 }
 
 
+/** \brief Get preamp level.
+ *  \return The current value of the preamp.
+ *
+ * This function returns the current value of the preamp.
+ */
+int
+rig_data_get_preamp     ()
+{
+	return get.preamp;
+}
+
+
 /** \brief Get signal strength.
  *  \return The current value of the signal strength.
  *
@@ -454,6 +601,34 @@ rig_data_has_get_strength ()
 {
 	return has_get.strength;
 }
+
+
+
+
+/** \brief Get availablility of power status.
+ *  \return 1 if available, otherwise 0.
+ *
+ * This function returns the value of the has_get.pstat variable.
+ */
+int
+rig_data_has_get_pstat ()
+{
+	return has_get.pstat;
+}
+
+
+
+/** \brief Get availablility of PTT.
+ *  \return 1 if available, otherwise 0.
+ *
+ * This function returns the value of the has_get.ptt variable.
+ */
+int
+rig_data_has_get_ptt ()
+{
+	return has_get.ptt;
+}
+
 
 
 /** \brief Get availablility of RIT.
@@ -550,6 +725,33 @@ int
 rig_data_has_get_freq2     ()
 {
 	return has_get.freq2;
+}
+
+
+
+
+/** \brief Get availablility of power status.
+ *  \return 1 if available, otherwise 0.
+ *
+ * This function returns the value of the has_set.pstat variable.
+ */
+int
+rig_data_has_set_pstat ()
+{
+	return has_set.pstat;
+}
+
+
+
+/** \brief Get availablility of PTT.
+ *  \return 1 if available, otherwise 0.
+ *
+ * This function returns the value of the has_set.ptt variable.
+ */
+int
+rig_data_has_set_ptt ()
+{
+	return has_set.ptt;
 }
 
 

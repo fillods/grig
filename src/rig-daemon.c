@@ -64,6 +64,19 @@
 RIG *myrig;  /*!< The rig structure. We keep this public so GUI can access the info fields. */
 
 
+#ifdef GRIG_DEBUG
+/** \brief MAtrix defining the default RX cycle in debug mode */
+static const rig_cmd_t DEF_RX_CYCLE[C_MAX_CYCLES][C_MAX_CMD_PER_CYCLE] = {
+	{ RIG_CMD_SET_ATT, RIG_CMD_GET_ATT, RIG_CMD_NONE, RIG_CMD_NONE, RIG_CMD_NONE },
+	{ RIG_CMD_NONE,    RIG_CMD_NONE,    RIG_CMD_NONE, RIG_CMD_NONE, RIG_CMD_NONE },
+	{ RIG_CMD_NONE,    RIG_CMD_NONE,    RIG_CMD_NONE, RIG_CMD_NONE, RIG_CMD_NONE },
+	{ RIG_CMD_NONE,    RIG_CMD_NONE,    RIG_CMD_NONE, RIG_CMD_NONE, RIG_CMD_NONE },
+	{ RIG_CMD_NONE,    RIG_CMD_NONE,    RIG_CMD_NONE, RIG_CMD_NONE, RIG_CMD_NONE },
+	{ RIG_CMD_NONE,    RIG_CMD_NONE,    RIG_CMD_NONE, RIG_CMD_NONE, RIG_CMD_NONE }
+};
+
+#else
+
 /** \brief Matrix defining the default RX cycle.
  *
  * More description of the idea.
@@ -77,7 +90,7 @@ static const rig_cmd_t DEF_RX_CYCLE[C_MAX_CYCLES][C_MAX_CMD_PER_CYCLE] = {
 	{ RIG_CMD_GET_STRENGTH, RIG_CMD_SET_FREQ_1, RIG_CMD_GET_FREQ_1, RIG_CMD_SET_MODE,  RIG_CMD_GET_MODE  },
 	{ RIG_CMD_GET_STRENGTH, RIG_CMD_SET_VFO,    RIG_CMD_GET_VFO,    RIG_CMD_SET_PTT,   RIG_CMD_GET_PTT   }
 };
-
+#endif
 
 
 /** \brief MAtrix defining the default TX cycle.
@@ -303,10 +316,12 @@ rig_daemon_post_init ()
 
 	/* debug info about detected has-get caps */
 	rig_debug (RIG_DEBUG_TRACE,
-		   "*** GRIG: %s: GET bits: %d%d%d%d%d%d%d%d%d%d%d%d%d%d\n",
+		   "*** GRIG: %s: GET bits: %d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d\n",
 		   __FUNCTION__,
 		   has_get->pstat,
 		   has_get->ptt,
+		   has_get->att,
+		   has_get->preamp,
 		   has_get->vfo,
 		   has_get->mode,
 		   has_get->pbw,
@@ -322,10 +337,12 @@ rig_daemon_post_init ()
 
 	/* debug info about detected has-set caps */
 	rig_debug (RIG_DEBUG_TRACE,
-		   "*** GRIG: %s: SET bits: %d%d%d%d%d%d%d%d%d%d%dXXX\n",
+		   "*** GRIG: %s: SET bits: %d%d%d%d%d%d%d%d%d%d%d%d%dXXX\n",
 		   __FUNCTION__,
 		   has_set->pstat,
 		   has_set->ptt,
+		   has_set->att,
+		   has_set->preamp,
 		   has_set->vfo,
 		   has_set->mode,
 		   has_set->pbw,
@@ -395,9 +412,12 @@ rig_daemon_cycle     (gpointer data)
 						     has_get, has_set);
 						     
 			}
-
+/* slow motion in debug mode */
+#ifdef GRIG_DEBUG
+			usleep (5000 * C_RX_CYCLE_DELAY);
+#else
 			usleep (1000 * C_RX_CYCLE_DELAY);
-
+#endif
 		}
 		else {
 			/* Execute transmitter cycle */
@@ -411,8 +431,12 @@ rig_daemon_cycle     (gpointer data)
 
 			}
 
+/* slow motion in debug mode */
+#ifdef GRIG_DEBUG
+			usleep (5000 * C_TX_CYCLE_DELAY);
+#else
 			usleep (1000 * C_TX_CYCLE_DELAY);
-
+#endif
 		}
 
 		/* increment major cycle counter;

@@ -128,6 +128,14 @@ void rig_data_init        (void);
 void rig_data_free        (void);
 int  rig_data_initialized (void);
 
+/* init and get preamp and att data */
+void rig_data_set_att_data     (int index, int data);
+int  rig_data_get_att_data     (int index);
+int  rig_data_get_att_index    (int data);
+void rig_data_set_preamp_data  (int index, int data);
+int  rig_data_get_preamp_data  (int index);
+int  rig_data_get_preamp_index (int data);
+
 /* set functions */
 void rig_data_set_pstat   (powerstat_t);
 void rig_data_set_ptt     (ptt_t);
@@ -168,8 +176,8 @@ shortfreq_t      rig_data_get_xitmax   (void);
 shortfreq_t      rig_data_get_xitstep  (void);
 
 /* has_get functions */
-/* int   rig_data_has_get_pstat    (void); */
-/* int   rig_data_has_get_ptt      (void); */
+int   rig_data_has_get_pstat    (void);
+int   rig_data_has_get_ptt      (void);
 /* int   rig_data_has_get_vfo      (void); */
 /* int   rig_data_has_get_mode     (void); */
 /* int   rig_data_has_get_pbwidth  (void); */
@@ -183,6 +191,8 @@ int   rig_data_has_get_preamp   (void);
 int   rig_data_has_get_strength (void);
 
 /* has_set functions */
+int   rig_data_has_set_pstat    (void);
+int   rig_data_has_set_ptt      (void);
 int   rig_data_has_set_freq1     (void);
 int   rig_data_has_set_freq2     (void);
 int   rig_data_has_set_att      (void);

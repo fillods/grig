@@ -657,4 +657,24 @@ rig_daemon_check_level     (RIG               *myrig,
 	has_set->agc    = (haslevel && RIG_LEVEL_AGC);
 	has_set->att    = (haslevel && RIG_LEVEL_ATT);
 	has_set->preamp = (haslevel && RIG_LEVEL_PREAMP);
+
+	/* initialise preamp and att arrays in rig-data */
+	if (has_get->att || has_set->att) {
+		int i = 0;
+
+		while ((i < MAXDBLSTSIZ) && (myrig->caps->attenuator[i] != 0)) {
+			rig_data_set_att_data (i, myrig->caps->attenuator[i]);
+			i++;
+		}
+		
+	}
+
+	if (has_get->preamp || has_set->preamp) {
+		int i = 0;
+
+		while ((i < MAXDBLSTSIZ) && (myrig->caps->preamp[i] != 0)) {
+			rig_data_set_preamp_data (i, myrig->caps->preamp[i]);
+			i++;
+		}
+	}
 }

@@ -1,3 +1,86 @@
+2004-11-04;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/rig-gui-buttons.c:
+	Added preamp selector. Added code to disable controls if read or write
+	ability not present.
+
+	* src/rig-data-c, src/rig-data.h:
+	Added has_get and has_set for power status and PTT.
+
+	* src/rig-daemon.c:
+	Added RX matrix for debug mode.
+
+
+2004-11-02;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/rig-data.c, src/rig-data.h:
+	Added global private data to store ATT and PREAMP levels. Also added
+	unctions to set and read these arrays. Also added functions to get
+	the index of a specific value (useful to the GUI).
+
+	* src/rig-daemon-check.c:
+	Added code to initialise attenuator and preamp arrays.
+
+	* src/rig-gui-buttons.c:
+	Finished ATT selector code.
+
+
+2004-10-30;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/rig-gui-info.c:
+	Added doxygen description.
+
+	* src/rig-data.c, src/rig-data.h:
+	Added attenuator and preamp related fields and functions. Also added
+	has_get_agc and has_set_agc. Minor rearrangements in the code. Added
+	a comment about the incompleteness of the package.
+
+	* src/rig-daemon.h:
+	Added RIG_CMD_GET_ATT, RIG_CMD_SET_ATT, RIG_CMD_GET_PREAMP,
+	RIG_CMD_SET_PREAMP to the list of modes. Include unistd.h to avoid
+	compiler warning about implicit declaration of usleep.
+
+	* src/rig-daemon.c:
+	Added ATT and PREAMP command handling.
+
+	* src/rig-daemon-check.c:
+	Added checks for ATT and PREAMP under the levels checking function.
+
+	* src/rig-gui-buttons.c:
+	Added RIG_GUI_ATT_SELECTOR and RIG_GUI_PREAMP_SELECTOR to the list of
+	object IDs.
+
+	* src/rig-gui-levels.c, src/rig-gui-levels.h:
+	Added files. Contain level controls hidden using a GtkExpander widget.
+
+	* src/Makefile.am:
+	Added new files to list.
+
+	* src/rig-gui.c:
+	Include level controls.
+	
+
+2004-10-29;	Alexandru Csete - SK568 <csete@uers.sourceforge.net>
+
+	* src/main.c:
+	Removed some useless comments from command line option handlig code and
+	compressed code a little.
+
+	* NOTE:
+	error in doxygen comment in rig.h:rig_caps saying rotator type instead
+	of rig_type.
+	
+
+2004-10-26;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* configure.in:
+	Added --disable-hardware option to disable any hamlib operations except
+	rig_init and rig_cleanup (usefull to test rig caps and such).
+
+	* src/rig-daemon-check.c:
+	Added '\n' to the end of error messages.
+
+
 2004-10-25;	Alexandru Csete <csete@users.sourceforge.net>
 
 	* src/rig-gui-lcd.c:

@@ -48,10 +48,8 @@ typedef enum rig_gui_buttons_e {
 	RIG_GUI_POWER_BUTTON = 1,   /*!< The Power button */
 	RIG_GUI_PTT_BUTTON,         /*!< The PTT button */
 	RIG_GUI_ATT_SELECTOR,       /*!< Attenuator selector. */
-	RIG_GUI_PREAMP_SELECTOR,    /*!< Preamp selector. */
+	RIG_GUI_PREAMP_SELECTOR     /*!< Preamp selector. */
 } rig_gui_buttons_t;
-
-
 
 
 
@@ -65,9 +63,13 @@ typedef enum rig_gui_buttons_e {
 /* private function prototypes */
 static GtkWidget *rig_gui_buttons_create_power_button    (void);
 static GtkWidget *rig_gui_buttons_create_ptt_button      (void);
+static GtkWidget *rig_gui_buttons_create_att_selector    (void);
+static GtkWidget *rig_gui_buttons_create_preamp_selector (void);
 
 static void rig_gui_buttons_power_cb    (GtkWidget *, gpointer);
 static void rig_gui_buttons_ptt_cb      (GtkWidget *, gpointer);
+static void rig_gui_buttons_att_cb      (GtkWidget *, gpointer);
+static void rig_gui_buttons_preamp_cb   (GtkWidget *, gpointer);
 
 static gint rig_gui_buttons_timeout_exec  (gpointer);
 static gint rig_gui_buttons_timeout_stop  (gpointer);
@@ -95,6 +97,14 @@ rig_gui_buttons_create ()
 			    FALSE, FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (vbox),
 			    rig_gui_buttons_create_ptt_button (),
+			    FALSE, FALSE, 0);
+
+	gtk_box_pack_end   (GTK_BOX (vbox),
+			    rig_gui_buttons_create_preamp_selector (),
+			    FALSE, FALSE, 0);
+
+	gtk_box_pack_end   (GTK_BOX (vbox),
+			    rig_gui_buttons_create_att_selector (),
 			    FALSE, FALSE, 0);
 
 	/* start readback timer */
@@ -139,20 +149,25 @@ rig_gui_buttons_create_power_button    ()
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button), 
 				      pstat ? TRUE : FALSE);
 
+	if (!rig_data_has_set_pstat ()) {
+		gtk_widget_set_sensitive (button, FALSE);
+	}
+
+
 	/* connect "toggle" signal */
 	sigid = g_signal_connect (G_OBJECT (button), "toggled",
 				  G_CALLBACK (rig_gui_buttons_power_cb),
 				  NULL);
 
-	/* set widget ID */
-	g_object_set_data (G_OBJECT (button),
-			   WIDGET_ID_KEY,
-			   GUINT_TO_POINTER (RIG_GUI_POWER_BUTTON));
-
 	/* set handler ID */
 	g_object_set_data (G_OBJECT (button),
 			   HANDLER_ID_KEY,
 			   GINT_TO_POINTER (sigid));
+
+	/* set widget ID */
+	g_object_set_data (G_OBJECT (button),
+			   WIDGET_ID_KEY,
+			   GUINT_TO_POINTER (RIG_GUI_POWER_BUTTON));
 
 	return button;
 }
@@ -184,22 +199,142 @@ rig_gui_buttons_create_ptt_button    ()
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button), 
 				      ptt ? TRUE : FALSE);
 
+	if (!rig_data_has_set_ptt ()) {
+		gtk_widget_set_sensitive (button, FALSE);
+	}
+
 	/* connect "toggle" signal */
 	sigid = g_signal_connect (G_OBJECT (button), "toggled",
 				  G_CALLBACK (rig_gui_buttons_ptt_cb),
 				  NULL);
+
+	/* set handler ID */
+	g_object_set_data (G_OBJECT (button),
+			   HANDLER_ID_KEY,
+			   GINT_TO_POINTER (sigid));
 
 	/* set widget ID */
 	g_object_set_data (G_OBJECT (button),
 			     WIDGET_ID_KEY,
 			     GUINT_TO_POINTER (RIG_GUI_PTT_BUTTON));
 
-	/* set handler ID */
-	g_object_set_data (G_OBJECT (button),
-			     HANDLER_ID_KEY,
-			     GINT_TO_POINTER (sigid));
-
 	return button;
+}
+
+
+
+/** \brief Create ATT selector.
+ *  \return
+ */
+static GtkWidget *
+rig_gui_buttons_create_att_selector    ()
+{
+	GtkWidget *att;
+	gint       i = 0;
+	gchar     *text;
+	gint       sigid;
+
+	att = gtk_combo_box_new_text ();
+              
+	/* add ATT OFF ie. 0 dB */
+	gtk_combo_box_append_text (GTK_COMBO_BOX (att), _("ATT OFF"));
+
+	/* note: MAXDBLSTSIZ is defined in hamlib; it is the max size of the
+	   ATT and preamp arrays.
+	*/
+	while ((i < MAXDBLSTSIZ) && rig_data_get_att_data (i)) {
+
+		text = g_strdup_printf ("-%d dB", rig_data_get_att_data (i));
+		gtk_combo_box_append_text (GTK_COMBO_BOX (att), text);
+		g_free (text);
+		i++;
+	}
+
+	/* get current ATT value; remember that -1 => ATT OFF
+	   which is the 0th element in the combo box list.
+	*/
+	i = rig_data_get_att_index (rig_data_get_att ()) + 1;
+	gtk_combo_box_set_active (GTK_COMBO_BOX (att), i);
+
+	if (!rig_data_has_set_att ()) {
+		gtk_widget_set_sensitive (att, FALSE);
+	}
+
+	/* connect 'changed' signal */
+	sigid = g_signal_connect (G_OBJECT (att), "changed",
+				  G_CALLBACK (rig_gui_buttons_att_cb),
+				  NULL);
+	
+	/* set handler ID */
+	g_object_set_data (G_OBJECT (att),
+			   HANDLER_ID_KEY,
+			   GINT_TO_POINTER (sigid));
+
+	/* set widget ID */
+	g_object_set_data (G_OBJECT (att),
+			   WIDGET_ID_KEY,
+			   GUINT_TO_POINTER (RIG_GUI_ATT_SELECTOR));
+	
+
+	return att;
+}
+
+
+
+/** \brief Create preamp selector.
+ *  \return
+ */
+static GtkWidget *
+rig_gui_buttons_create_preamp_selector    ()
+{
+	GtkWidget *preamp;
+	gint       i = 0;
+	gchar     *text;
+	gint       sigid;
+
+	preamp = gtk_combo_box_new_text ();
+              
+	/* add ATT OFF ie. 0 dB */
+	gtk_combo_box_append_text (GTK_COMBO_BOX (preamp), _("PREAMP OFF"));
+
+	/* note: MAXDBLSTSIZ is defined in hamlib; it is the max size of the
+	   ATT and preamp arrays.
+	*/
+	while ((i < MAXDBLSTSIZ) && rig_data_get_preamp_data (i)) {
+
+		text = g_strdup_printf ("%d dB", rig_data_get_preamp_data (i));
+		gtk_combo_box_append_text (GTK_COMBO_BOX (preamp), text);
+		g_free (text);
+		i++;
+	}
+
+	/* get current preamp value; remember that -1 => PREAMP OFF
+	   which is the 0th element in the combo box list.
+	*/
+	i = rig_data_get_preamp_index (rig_data_get_preamp ()) + 1;
+	gtk_combo_box_set_active (GTK_COMBO_BOX (preamp), i);
+
+	if (!rig_data_has_set_preamp ()) {
+		gtk_widget_set_sensitive (preamp, FALSE);
+	}
+
+	/* connect 'changed' signal */
+	sigid = g_signal_connect (G_OBJECT (preamp), "changed",
+				  G_CALLBACK (rig_gui_buttons_preamp_cb),
+				  NULL);
+
+	/* set handler ID */
+	g_object_set_data (G_OBJECT (preamp),
+			   HANDLER_ID_KEY,
+			   GINT_TO_POINTER (sigid));
+
+	/* set widget ID */
+	g_object_set_data (G_OBJECT (preamp),
+			   WIDGET_ID_KEY,
+			   GUINT_TO_POINTER (RIG_GUI_PREAMP_SELECTOR));
+	
+
+	return preamp;
 }
 
 
@@ -241,6 +376,52 @@ rig_gui_buttons_ptt_cb   (GtkWidget *widget, gpointer data)
 	else {
 		rig_data_set_ptt (RIG_PTT_OFF);
 	}
+
+}
+
+
+/** \brief Select attenuator level.
+ *  \param widget The widget which received the signal.
+ *  \param data   User data, always NULL.
+ *
+ * This function is called when the user selects a new attenuator level.
+ * It acquires the selected menu item, converts it to hamlib ATT value
+ * and sends the new value to the rig-data component.
+ */
+static void
+rig_gui_buttons_att_cb   (GtkWidget *widget, gpointer data)
+{
+	gint index;
+
+	/* get selected item */
+	index = gtk_combo_box_get_active (GTK_COMBO_BOX (widget));
+
+	/* convert it and send to rig-data */
+	rig_data_set_att (rig_data_get_att_data (index-1));
+
+
+}
+
+
+/** \brief Select preamp level.
+ *  \param widget The widget which received the signal.
+ *  \param data   User data, always NULL.
+ *
+ * This function is called when the user selects a new preamp level.
+ * It acquires the selected menu item, converts it to hamlib preamp value
+ * and sends the new value to the rig-data component.
+ */
+static void
+rig_gui_buttons_preamp_cb   (GtkWidget *widget, gpointer data)
+{
+	gint index;
+
+	/* get selected item */
+	index = gtk_combo_box_get_active (GTK_COMBO_BOX (widget));
+
+	/* convert it and send to rig-data */
+	rig_data_set_preamp (rig_data_get_preamp_data (index-1));
+
 
 }
 
@@ -303,6 +484,10 @@ rig_gui_buttons_timeout_stop  (gpointer timer)
  *       with the widget settings, instead the callback signal
  *       is blocked and the widget state is set to the rig state.
  *       Hereafter the signal handler is unblocked again.
+ *
+ * \note We don't check the availability of the get functionssince
+ *       it is done by the daemon an we wish to display some values
+ *       anyway.
  */
 static void
 rig_gui_buttons_update        (GtkWidget *widget, gpointer data)
@@ -311,7 +496,7 @@ rig_gui_buttons_update        (GtkWidget *widget, gpointer data)
 	gint  handler;
 	powerstat_t pstat;
 	ptt_t       ptt;
-
+	int         attidx;
 
 	/* get widget id */
 	id = GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (widget), WIDGET_ID_KEY));
@@ -325,7 +510,8 @@ rig_gui_buttons_update        (GtkWidget *widget, gpointer data)
 		pstat = rig_data_get_pstat ();
 
 		/* get signal handler ID */
-		handler = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (widget), HANDLER_ID_KEY));
+		handler = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (widget), 
+							      HANDLER_ID_KEY));
 
 		/* block the signal handler */
 		g_signal_handler_block (G_OBJECT (widget), handler);
@@ -346,7 +532,8 @@ rig_gui_buttons_update        (GtkWidget *widget, gpointer data)
 		ptt = rig_data_get_ptt ();
 
 		/* get signal handler ID */
-		handler = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (widget), HANDLER_ID_KEY));
+		handler = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (widget), 
+							      HANDLER_ID_KEY));
 
 		/* block the signal handler */
 		g_signal_handler_block (G_OBJECT (widget), handler);
@@ -359,6 +546,49 @@ rig_gui_buttons_update        (GtkWidget *widget, gpointer data)
 		g_signal_handler_unblock (G_OBJECT (widget), handler);
 
 		break;
+
+		/* ATT selector */
+	case RIG_GUI_ATT_SELECTOR:
+
+		/* get signal handler ID */
+		handler = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (widget), 
+							      HANDLER_ID_KEY));
+			
+		/* block the signal handler */
+		g_signal_handler_block (G_OBJECT (widget), handler);
+
+		/* get current ATT value; remember that -1 => ATT OFF
+		   which is the 0th element in the combo box list.
+		*/
+		attidx = rig_data_get_att_index (rig_data_get_att ()) + 1;
+		gtk_combo_box_set_active (GTK_COMBO_BOX (widget), attidx);
+			
+		/* unblock signal handler */
+		g_signal_handler_unblock (G_OBJECT (widget), handler);
+
+		break;
+
+		/* PREAMP selector */
+	case RIG_GUI_PREAMP_SELECTOR:
+
+		/* get signal handler ID */
+		handler = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (widget), 
+							      HANDLER_ID_KEY));
+			
+		/* block the signal handler */
+		g_signal_handler_block (G_OBJECT (widget), handler);
+
+		/* get current preamp value; remember that -1 => ATT OFF
+		   which is the 0th element in the combo box list.
+		*/
+		attidx = rig_data_get_preamp_index (rig_data_get_preamp ()) + 1;
+		gtk_combo_box_set_active (GTK_COMBO_BOX (widget), attidx);
+			
+		/* unblock signal handler */
+		g_signal_handler_unblock (G_OBJECT (widget), handler);
+
+		break;
+
 
 	default:
 		break;
