@@ -73,10 +73,10 @@ static const struct poptOption grig_options[] =
 	{ "list-rots", 'o', POPT_ARG_NONE, &listrots, 1,
 	  N_("Show a list of configured rotators"), NULL },
 	{ "radio", 'r', POPT_ARG_INT, &rignum, 0,
-	  N_("Use the radio with NUMBER"),
+	  N_("Use the radio with NUMBER (see --list-rigs)"),
 	  N_("NUMBER") },
 	{ "antenna", 'a', POPT_ARG_INT, &rotnum, 0,
-	  N_("Use the rotator with NUMBER"), 
+	  N_("Use the rotator with NUMBER (see --list-rots)"), 
 	  N_("NUMBER") },
 // begin PATCH-996426
 //	{ "run-druid", 'd', POPT_ARG_NONE, &rundruid, 1,
