@@ -40,6 +40,7 @@
 #include "rig-gui-buttons.h"
 #include "rig-gui-smeter.h"
 #include "rig-gui-lcd.h"
+#include "grig-menubar.h"
 
 
 
@@ -55,7 +56,7 @@ GtkWidget *
 rig_gui_create ()
 {
 	GtkWidget *hbox;     /* the main container */
-
+	GtkWidget *vbox;     
 
 	/* create the main container */
 	hbox = gtk_hbox_new (FALSE, 5);
@@ -64,7 +65,12 @@ rig_gui_create ()
 	gtk_box_pack_start (GTK_BOX (hbox), rig_gui_smeter_create (), FALSE, FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (hbox), rig_gui_lcd_create (), FALSE, FALSE, 0);
 
-	return hbox;
+	/* ceate main vertical box */
+	vbox = gtk_vbox_new (FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (vbox), grig_menubar_create (), FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
+
+	return vbox;
 }
 
 
