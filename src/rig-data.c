@@ -45,6 +45,8 @@
  * \note The rig-daemon object is responsible for the correct initialization
  *       of the shared data structures and their contents before they can
  *       be accessed by the GUI.
+ *
+ * \bug Must add rig_data_has_get_xxx and rig_data_has_set_xxx functions.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -331,6 +333,30 @@ int
 rig_data_get_agc     ()
 {
 	return get.agc;
+}
+
+
+/** \brief Get signal strength.
+ *  \return The current value of the signal strength.
+ *
+ * This function returns the current value of the signal strength.
+ */
+int
+rig_data_get_strength ()
+{
+	return get.strength;
+}
+
+
+/** \brief Get availablility of signal strength readback.
+ *  \return 1 if available, otherwise 0.
+ *
+ * This function returns the value of the has_get.strength variable.
+ */
+int
+rig_data_has_get_strength ()
+{
+	return has_get.strength;
 }
 
 

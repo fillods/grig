@@ -127,15 +127,30 @@ void rig_data_set_xit     (shortfreq_t);
 void rig_data_set_agc     (int);
 
 /* get functions */
-powerstat_t      rig_data_get_pstat   (void);
-ptt_t            rig_data_get_ptt     (void);
-vfo_t            rig_data_get_vfo     (void);
-rmode_t          rig_data_get_mode    (void);
-rig_data_pbw_t   rig_data_get_pbwidth (void);
-freq_t           rig_data_get_freq    (int);
-shortfreq_t      rig_data_get_rit     (void);
-shortfreq_t      rig_data_get_xit     (void);
-int              rig_data_get_agc     (void);
+powerstat_t      rig_data_get_pstat    (void);
+ptt_t            rig_data_get_ptt      (void);
+vfo_t            rig_data_get_vfo      (void);
+rmode_t          rig_data_get_mode     (void);
+rig_data_pbw_t   rig_data_get_pbwidth  (void);
+freq_t           rig_data_get_freq     (int);
+shortfreq_t      rig_data_get_rit      (void);
+shortfreq_t      rig_data_get_xit      (void);
+int              rig_data_get_agc      (void);
+int              rig_data_get_strength (void);
+
+/* has_get functions */
+/* int   rig_data_has_get_pstat    (void); */
+/* int   rig_data_has_get_ptt      (void); */
+/* int   rig_data_has_get_vfo      (void); */
+/* int   rig_data_has_get_mode     (void); */
+/* int   rig_data_has_get_pbwidth  (void); */
+/* int   rig_data_has_get_freq     (void); */
+/* int   rig_data_has_get_rit      (void); */
+/* int   rig_data_has_get_xit      (void); */
+/* int   rig_data_has_get_agc      (void); */
+int   rig_data_has_get_strength (void);
+
+/* has_set functions */
 
 /* address acquisition functions */
 grig_settings_t  *rig_data_get_get_addr     (void);
