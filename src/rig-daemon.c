@@ -512,6 +512,13 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 				new->freq1 = FALSE;
 			}
 		}
+		
+		/* if rig doesn't have get_freq, we set the get->freq
+		   manually to make widgets happy
+		*/
+		if (!has_get->freq1) {
+			get->freq1 = set->freq1;
+		}
 
 		break;
 
@@ -645,6 +652,13 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 			}
 
 		}
+		
+		/* if rig doesn't have get_freq, we set the get->freq
+		   manually to make widgets happy
+		*/
+		if (!has_get->freq2) {
+			get->freq2 = set->freq2;
+		}
 
 		break;
 	
@@ -697,6 +711,13 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 				new->rit = FALSE;
 			}	
 
+		}
+
+		/* if rig doesn't have get_rit we set it manually to
+		   make widgets happy
+		*/
+		if (!has_get->rit) {
+			get->rit = set->rit;
 		}
 
 		break;
@@ -752,6 +773,13 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 
 		}
 
+		/* if rig doesn't have get_xit we set it manually to
+		   make widgets happy
+		*/
+		if (!has_get->xit) {
+			get->xit = set->xit;
+		}
+
 		break;
 
 		/* get current VFO */
@@ -801,6 +829,13 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 				/* reset flag */
 				new->vfo = FALSE;
 			}	
+		}
+
+		/* if rig doesn't have get_vfo we set it manually to
+		   make widgets happy.
+		*/
+		if (!has_get->vfo) {
+			get->vfo = set->vfo;
 		}
 
 		break;
@@ -854,6 +889,13 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 			}	
 		}
 
+		/* if rig doesn't have get_pstat we set it manually to
+		   make widgets happy.
+		*/
+		if (!has_get->pstat) {
+			get->pstat = set->pstat;
+		}
+
 		break;
 
 		/* get PTT status */
@@ -903,6 +945,13 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 				/* reset flag */
 				new->ptt = FALSE;
 			}	
+		}
+
+		/* if rig doesn't have get_ptt we set it manually to
+		   make widgets happy.
+		*/
+		if (!has_get->ptt) {
+			get->ptt = set->ptt;
 		}
 
 		break;
@@ -955,6 +1004,14 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 				new->mode = FALSE;
 				new->pbw  = FALSE;
 			}
+		}
+
+		/* if rig doesn't have get_mode we set it manually to
+		   make widgets happy.
+		*/
+		if (!has_get->mode) {
+			get->mode = set->mode;
+			get->pbw  = set->pbw;
 		}
 
 		break;
