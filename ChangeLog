@@ -1,3 +1,9 @@
+2004-12-06;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/rig-gui-info.c:
+	Don't translate strings containing UTF-8 octal codes.
+	
+
 2004-12-05;	Alexandru Csete <csete@users.sourceforge.net>
 
 	* configure.in:
