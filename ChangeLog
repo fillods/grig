@@ -1,3 +1,15 @@
+2005-01-21;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/rig-data.c, src/rig-data.h:
+	Added get functions for tx power, swr and alc.
+
+	* src/rig-gui-smeter.c:
+	Added code to read meter value for tx power, swr and alc.
+
+	* doc/man/grig.1.in:
+	Updated year.
+	
+
 2005-01-20;	Alexandru Csete <csete@users.sourceforge.net>
 
 	* src/rig-data.h:
