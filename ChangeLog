@@ -1,3 +1,90 @@
+2004-12-12;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/rig-daemon.c, src/rig-daemon.h:
+	Added rigconf parameter to rig_daemon_start.
+
+	* src/main.c:
+	Added check for pixmap files to exit cleanly with an error message if
+	installation isicomplete. Changed pixmap paths from PACKAGE_DATA_DIR to
+	PACKAGE_PIXMAPS_DIR.
+
+	* src/grig-about.c:
+	Changed pixmap paths from PACKAGE_DATA_DIR to PACKAGE_PIXMAPS_DIR.
+
+	* src/rig-gui-lcd.c:
+	Changed pixmap paths from PACKAGE_DATA_DIR to PACKAGE_PIXMAPS_DIR.
+
+	* src/rig-gui-smeter.c:
+	Changed pixmap paths from PACKAGE_DATA_DIR to PACKAGE_PIXMAPS_DIR.
+
+	* doc/man/grig.1.in:
+	Added debug level info and a warning that rig must be turned ON before
+	starting grig. Also added description of --set-conf command line
+	option.
+
+
+2004-12-11;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* configure.ac:
+	Added HAMLIB_VERSION define.
+
+	* src/main.c, src/grig-about.c, src/rig-gui-lcd.c:
+	* src/rig-gui-smeter.c:
+	Include config.h
+
+	* src/main.c:
+	Added --set-conf command line option (bug #1082329). Has no effect yet.
+
+
+2004-12-10;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* config.guess, config.sub, configure.in:
+	Removed files.
+
+	* configure.ac:
+	Added file based on gnome-hello template and xlog.
+
+	* .cvsignore:
+	Added file.
+
+	* autogen.sh:
+	Modified according to gnome-hello template. Does not use gnome-autogen
+	though.
+
+	* COPYING:
+	Added file.
+
+	* Makefile.am:
+	Modified according to gnome-hello template.
+
+	* doc/.cvsignore:
+	Added file.
+
+	* doc/man/.cvsignore:
+	Added file.
+
+	* pixmaps/.cvsignore:
+	Added file.
+
+	* po/.cvsignore:
+	Added file.
+
+	* po/Makevars:
+	Removed file.
+
+	* src/.cvsignore:
+	Added file.
+
+	* pixmaps/Makefile.am:
+	Added file.
+
+	* acconfig.h:
+	Removed file.
+
+	* acinclode.m4:
+	Removed file.
+	
+
 2004-12-06;	Alexandru Csete <csete@users.sourceforge.net>
 
 	* src/rig-gui-info.c:
