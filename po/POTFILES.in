@@ -1,3 +1,21 @@
 # List of source files containing translatable strings.
 
+src/grig-about.c
+src/grig-config.c
+src/grig-gtk-workarounds.c
+src/grig-menubar.c
 src/main.c
+src/rig-anomaly.c
+src/rig-daemon-check.c
+src/rig-daemon.c
+src/rig-data.c
+src/rig-gui-buttons.c
+src/rig-gui-ctrl2.c
+src/rig-gui-info.c
+src/rig-gui-lcd.c
+src/rig-gui-levels.c
+src/rig-gui-smeter-conv.c
+src/rig-gui-smeter.c
+src/rig-gui.c
+src/rig-utils.c
+

@@ -109,6 +109,7 @@ doc/man/grig.1
 doc/man/Makefile
 grig.spec
 src/Makefile
+po/Makefile.in
 ])
 
 echo
