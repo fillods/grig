@@ -89,11 +89,6 @@ starting several instances of grig as long as they do not try to control the
 same radio. An exception to this is the RPC\-rig backend in which case
 the rpc rig daemon will act as a server while grig or any other hamlib
 frontends will act as a clients.
-.TP
-Power Status
-Currently, the radio must be turned ON before grig is started, since some radios
-will not talk to remote terminals when powered OFF and Grig will interpret such
-behaviour as error cases.
 
 .SH "AUTHOR"
 Written by Alexandru Csete, OZ9AEC.
