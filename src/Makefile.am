@@ -7,18 +7,30 @@ INCLUDES = \
 
 bin_PROGRAMS = grig
 
+## begin PATCH-996435
+##grig_SOURCES = \
+##	main.c \
+##	grig-about.c grig-about.h \
+##	grig-config.c grig-config.h \
+##	grig-druid.c grig-druid.h \
+##	rig-anomaly.c rig-anomaly.h \
+##	rig-ctrl.c rig-ctrl.h \
+##	rig-daemon.c rig-daemon.h \
+##	rig-daemon-check.c rig-daemon-check.h \
+##	rig-data.c rig-data-h \
+##	grig-menu.c
+## end  PATCH-996435
+
 grig_SOURCES = \
 	main.c \
 	grig-about.c grig-about.h \
 	grig-config.c grig-config.h \
 	grig-druid.c grig-druid.h \
 	rig-anomaly.c rig-anomaly.h \
-	rig-ctrl.c rig-ctrl.h \
 	rig-daemon.c rig-daemon.h \
 	rig-daemon-check.c rig-daemon-check.h \
 	rig-data.c rig-data-h \
 	grig-menu.c
-
 
 grig_LDADD = @PACKAGE_LIBS@ $(INTLLIBS)
 
