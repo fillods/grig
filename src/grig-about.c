@@ -37,6 +37,9 @@
  */
 #include <gtk/gtk.h>
 #include <glib/gi18n.h>
+#ifdef HAVE_CONFIG_H
+#  include <config.h>
+#endif
 #include "grig-about.h"
 
 
@@ -189,8 +192,8 @@ grig_about_logo_create ()
 	GtkWidget *logo;
 	gchar     *name;
 
-	name = g_strconcat (PACKAGE_DATA_DIR, G_DIR_SEPARATOR_S, "pixmaps",
-			    G_DIR_SEPARATOR_S, "grig-logo.png", NULL);
+	name = g_strconcat (PACKAGE_PIXMAPS_DIR, G_DIR_SEPARATOR_S,
+			    "grig-logo.png", NULL);
 
 	logo = gtk_image_new_from_file (name);
 

@@ -46,12 +46,15 @@
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <glib/gi18n.h>
 #include <math.h>
+#ifdef HAVE_CONFIG_H
+#  include <config.h>
+#endif
 #include "rig-data.h"
 #include "rig-gui-smeter-conv.h"
 #include "rig-gui-smeter.h"
 
 
-
+/* uncomment to test smeter dynamics */
 //#define SMETER_TEST 1
 
 /* smeter */
@@ -184,8 +187,8 @@ rig_gui_smeter_create_canvas ()
 			  G_CALLBACK (rig_gui_smeter_expose_cb), NULL);	
 
 	/* create background pixmap and add it to canvas */
-	fname = g_strconcat (PACKAGE_DATA_DIR, G_DIR_SEPARATOR_S, "pixmaps",
-			     G_DIR_SEPARATOR_S, "smeter.png", NULL);
+	fname = g_strconcat (PACKAGE_PIXMAPS_DIR, G_DIR_SEPARATOR_S,
+			     "smeter.png", NULL);
 	smeter.pixbuf = gdk_pixbuf_new_from_file (fname, NULL);
 	g_free (fname);
 

@@ -78,6 +78,9 @@
 #include <glib/gi18n.h>
 #include <stdlib.h>
 #include <math.h>
+#ifdef HAVE_CONFIG_H
+#  include <config.h>
+#endif
 #include <hamlib/rig.h>
 #include "rig-data.h"
 #include "rig-gui-lcd.h"
@@ -235,8 +238,8 @@ rig_gui_lcd_create ()
 \endcode
  * The parameter name is used to specify the files from which the digits should
  * be loaded. If name is NULL, the default pixmaps will be read. Otherwise grig
- * will look for $PACKAGE_DATA_DIR/pixmaps/name_normal.png and
- * $PACKAGE_DATA_DIR/pixmaps/name_small.png
+ * will look for $PACKAGE_PIXMAPS_DIR/name_normal.png and
+ * $PACKAGE_PIXMAPS_DIR/name_small.png
  *
  * \bug No fallback exists if standard pixmap is not where it is supposed to be!
  *
@@ -254,12 +257,12 @@ rig_gui_lcd_load_digits (const gchar *name)
 	
 	/* normal digits */
 	if (name == NULL) {
-		fname = g_strconcat (PACKAGE_DATA_DIR, G_DIR_SEPARATOR_S, "pixmaps",
-				     G_DIR_SEPARATOR_S, "digits_normal.png", NULL);
+		fname = g_strconcat (PACKAGE_PIXMAPS_DIR, G_DIR_SEPARATOR_S,
+				     "digits_normal.png", NULL);
 	}
 	else {
-		fname = g_strconcat (PACKAGE_DATA_DIR, G_DIR_SEPARATOR_S, "pixmaps",
-				     G_DIR_SEPARATOR_S, name, "_normal.png", NULL);
+		fname = g_strconcat (PACKAGE_PIXMAPS_DIR, G_DIR_SEPARATOR_S,
+				     name, "_normal.png", NULL);
 	}
 
 	/* load pixmap */
@@ -294,23 +297,21 @@ rig_gui_lcd_load_digits (const gchar *name)
 	lcd.fg.red   = (guint16) (pixels[(bps/8)*0] * (65535.0 / (pow (2, bps) - 1)));
 	lcd.fg.green = (guint16) (pixels[(bps/8)*1] * (65535.0 / (pow (2, bps) - 1)));
 	lcd.fg.blue  = (guint16) (pixels[(bps/8)*2] * (65535.0 / (pow (2, bps) - 1)));
-//	gdk_colormap_alloc_color (gdk_rgb_get_colormap (), &(lcd.fg), FALSE, TRUE);
 
 	lcd.bg.red   = (guint16) (pixels[(bps/8)*0 + rs] * (65535.0 / (pow (2, bps) - 1)));
 	lcd.bg.green = (guint16) (pixels[(bps/8)*1 + rs] * (65535.0 / (pow (2, bps) - 1)));
 	lcd.bg.blue  = (guint16) (pixels[(bps/8)*2 + rs] * (65535.0 / (pow (2, bps) - 1)));
-//	gdk_colormap_alloc_color (gdk_rgb_get_colormap (), &(lcd.bg), FALSE, TRUE);
 
 	g_object_unref (digits);
 
 	/* small digits */
 	if (name == NULL) {
-		fname = g_strconcat (PACKAGE_DATA_DIR, G_DIR_SEPARATOR_S, "pixmaps",
-				     G_DIR_SEPARATOR_S, "digits_small.png", NULL);
+		fname = g_strconcat (PACKAGE_PIXMAPS_DIR, G_DIR_SEPARATOR_S,
+				     "digits_small.png", NULL);
 	}
 	else {
-		fname = g_strconcat (PACKAGE_DATA_DIR, G_DIR_SEPARATOR_S, "pixmaps",
-				     G_DIR_SEPARATOR_S, name, "_small.png", NULL);
+		fname = g_strconcat (PACKAGE_PIXMAPS_DIR, G_DIR_SEPARATOR_S,
+				     name, "_small.png", NULL);
 	}
 
 	/* load pixmap */
