@@ -113,7 +113,7 @@ static const rig_cmd_t DEF_TX_CYCLE[C_MAX_CYCLES][C_MAX_CMD_PER_CYCLE] = {
 
 
 static gboolean stopdaemon = FALSE;   /*!< Used to signal the daemon thread that it should stop */
-
+static gint     cmd_delay  = 0;       /*!< Delay between two RX commands TX = 3*RX */
 
 /* private function prototypes */
 static void     rig_daemon_post_init (void);
@@ -133,6 +133,7 @@ static void     rig_daemon_exec_cmd  (rig_cmd_t,
  *  \param speed    The serial speed (0 to use default).
  *  \param civaddr  CIV address for ICOM rigs (NULL means no need to set conf).
  *  \param rigconf  Additional config options necessary for some rigs.
+ *  \param cmddel   Delay between two RX commands.
  *  \return 0 if the daemon has been initialized correctly.
  *
  * This function initializes the radio and starts the control daemon. The rignum
@@ -150,7 +151,8 @@ rig_daemon_start       (int          rigid,
 			const gchar *port,
 			int          speed,
 			const gchar *civaddr,
-			const gchar *rigconf)
+			const gchar *rigconf,
+			gint         cmddel)
 {
 
 	gchar  *rigport;
@@ -161,6 +163,17 @@ rig_daemon_start       (int          rigid,
 
 	/* send a debug message */
 	rig_debug (RIG_DEBUG_TRACE, "*** GRIG: %s entered\n", __FUNCTION__);
+
+	/* in order to be sure that we have a sensible command delay
+	   we set it already here
+	*/
+	if (cmddel > 0) {
+		cmd_delay = cmddel;
+	}
+	else {
+		cmd_delay = C_DEF_RX_CMD_DELAY;
+	}
+
 
 	/* check if rig is already initialized */
 	if (myrig != NULL) {
@@ -470,14 +483,13 @@ rig_daemon_cycle     (gpointer data)
 					rig_daemon_exec_cmd (DEF_RX_CYCLE[major][minor],
 							     get, set, new,
 							     has_get, has_set);
-						     
-				}
 /* slow motion in debug mode */
 #ifdef GRIG_DEBUG
-				usleep (5000 * C_RX_CYCLE_DELAY);
+					usleep (5000 * cmd_delay);
 #else
-				usleep (1000 * C_RX_CYCLE_DELAY);
+					usleep (1000 * cmd_delay);
 #endif
+				}
 			}
 			else {
 				/* Execute transmitter cycle */
@@ -488,15 +500,14 @@ rig_daemon_cycle     (gpointer data)
 					rig_daemon_exec_cmd (DEF_TX_CYCLE[major][minor],
 							     get, set, new,
 							     has_get, has_set);
-
-				}
-
 /* slow motion in debug mode */
 #ifdef GRIG_DEBUG
-				usleep (5000 * C_TX_CYCLE_DELAY);
+					usleep (15000 * cmd_delay);
 #else
-				usleep (1000 * C_TX_CYCLE_DELAY);
+					usleep (3000 * cmd_delay);
 #endif
+				}
+
 			}
 
 			/* increment major cycle counter;
@@ -509,15 +520,19 @@ rig_daemon_cycle     (gpointer data)
 		/* otherwise check the power status only */
 		else {
 			rig_daemon_exec_cmd (RIG_CMD_SET_PSTAT, get, set, new, has_get, has_set);
-			rig_daemon_exec_cmd (RIG_CMD_GET_PSTAT, get, set, new, has_get, has_set);
-
 /* slow motion in debug mode */
 #ifdef GRIG_DEBUG
-			usleep (5000 * C_TX_CYCLE_DELAY);
+			usleep (15000 * cmd_delay);
 #else
-			usleep (1000 * C_TX_CYCLE_DELAY);
+			usleep (3000 * cmd_delay);
 #endif
-
+			rig_daemon_exec_cmd (RIG_CMD_GET_PSTAT, get, set, new, has_get, has_set);
+/* slow motion in debug mode */
+#ifdef GRIG_DEBUG
+			usleep (15000 * cmd_delay);
+#else
+			usleep (3000 * cmd_delay);
+#endif
 		}
 
 	}

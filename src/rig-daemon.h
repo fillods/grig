@@ -38,8 +38,7 @@
 #define C_MAX_CMD_PER_CYCLE   6    /*!< Max number of commands executed in one cycle */
 #define C_MAX_CYCLES          6    /*!< Number of cycles */
 
-#define C_RX_CYCLE_DELAY   30   /*!< Delay between two RX cycles in milliseconds */
-#define C_TX_CYCLE_DELAY   300  /*!< Delay between two TX cycles in milliseconds */
+#define C_DEF_RX_CMD_DELAY    10   /*!< Default delay between two RX commands [msec] */
 
 
 #define C_RIG_DAEMON_STOP_TIMEOUT 500000  /*!< Timeout to let the daemon process stop */
@@ -87,7 +86,7 @@ typedef enum {
 
 
 
-int    rig_daemon_start (int, const gchar *, int, const gchar *, const gchar *);
+int    rig_daemon_start (int, const gchar *, int, const gchar *, const gchar *, gint);
 void   rig_daemon_stop  (void);
 gchar *rig_daemon_get_brand (void);
 gchar *rig_daemon_get_model (void);
