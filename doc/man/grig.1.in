@@ -13,7 +13,7 @@ grig \- graphical user interface for the Ham Radio Control Libraries (hamlib)
 .PP 
 Grig is a simple graphical user interface for the Ham Radio Control Libraries. It is intended to be highly generic presenting the user to the same interface regardless of which radio is being controled.
 .PP
-The way grig interacts with hamlib is controled via command line options. Mandatory arguments to long options are mandatory for short options too.
+The way grig interacts with hamlib is controlled via command line options. Mandatory arguments to long options are mandatory for short options too.
 .TP 
 \fB\-m\fR, \fB\-\-model\fR=\fIID\fR
 select radio model number; see \fB\-\-list\fR
@@ -26,6 +26,9 @@ set transfer rate (serial port only)
 .TP 
 \fB\-c\fR, \fB\-\-civ\-addr\fR=\fIID\fR
 set CI\-V address (decimal, ICOM only)
+.TP 
+\fB\-C\fR, \fB\-\-set\-conf\fR=\fIpar=val[,par2=val2]\fR
+set additiional configuration parameters
 .TP 
 \fB\-d\fR, \fB\-\-debug\fR=\fILEVEL\fR
 set hamlib debug level (0..5)
@@ -59,19 +62,38 @@ overridden by the backend. If you omit the radio device (port)
 grig will use \fI/dev/ttyS0\fR or \fIlocalhost\fR if the selected
 radio is RPC\-rig.
 
+.SH "DEBUG LEVELS"
+.br
+0    No debug, keep quiet.
+.br
+1    Serious bug.
+.br
+2    Error case (e.g. protocol, memory allocation).
+.br
+3    Warnings.
+.br
+4    Verbose information.
+.br
+5    Trace.
+
 .SH "LIMITATIONS"
 .TP
-Connection settings
+Connection Settings
 Once you have started grig you can not change the radio settings (model, device,
 speed). You will have to restart the program if you want to change any of these
 settings.
 .TP
-Multiple radios
+Multiple Radios
 Grig can control only one radio at the time. There are, however, no problems in
 starting several instances of grig as long as they do not try to control the
 same radio. An exception to this is the RPC\-rig backend in which case
 the rpc rig daemon will act as a server while grig or any other hamlib
 frontends will act as a clients.
+.TP
+Power Status
+Currently, the radio must be turned ON before grig is started, since some radios
+will not talk to remote terminals when powered OFF and Grig will interpret such
+behaviour as error cases.
 
 .SH "AUTHOR"
 Written by Alexandru Csete, OZ9AEC.
