@@ -1,3 +1,4 @@
+
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /*
     Grig:  Gtk+ user interface for the Hamradio Control Libraries.
@@ -33,7 +34,16 @@
 #define RIG_GUI_BUTTONS_H 1
 
 
-GtkWidget *rig_gui_buttons_create (void);
+/** \brief Minimum delay in msec between widget updates. */
+#define RIG_GUI_BUTTONS_MIN_TVAL 1100
 
+/** \brief Default delay in msec between widget updates. */
+#define RIG_GUI_BUTTONS_DEF_TVAL 1790
+
+/** \brief Maximum delay in msec between widget updates. */
+#define RIG_GUI_BUTTONS_MAX_TVAL 10000
+
+
+GtkWidget *rig_gui_buttons_create (void);
 
 #endif
