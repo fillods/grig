@@ -1,7 +1,21 @@
-2004-11014;	Alexandru Csete <csete@users.sourceforge.net>
+2004-11-15;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* configure.in, Makefile.am:
+	autogen.sh was (again!) behaving stupid again. Removed all output
+	requests for po and m4.
+
+	* src/rig-gui-info-data.h:
+	Added string representation for mode symbolic references.
+
+	* src/rig-gui-info.c:
+	Added tuing step info frame.
+	
+
+2004-11-14;	Alexandru Csete <csete@users.sourceforge.net>
 
 	* src/rig-gui-info.c, src/grig-about.c, src/grig-menubar.c,
-	* src/main.c, src/rig-data.c, src/rig-gui-buttons.c, src/rig-gui-ctrl2.c,
+	* src/main.c, src/rig-data.c, src/rig-gui-buttons.c,
+	* src/rig-gui-ctrl2.c,
 	* src/rig-gui-lcd.c, src/rig-gui-levels.c, src/rig-gui-smeter.c:
 	Replaced support.h with glib/gi18n.h (bug #1042301).
 
