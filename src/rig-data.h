@@ -38,6 +38,8 @@
  * object.
  *
  * \bug packege is incomplete!
+ *
+ * \bug tx meter levels are not ok... need response from hamlib
  */
 
 #ifndef RIG_DATA_H
@@ -86,7 +88,10 @@ typedef struct {
 	/* read only fields */
 	int             strength; /*!< Signal strength. */
 	float           swr;      /*!< SWR. */
+	int             comp;     /*!< Compression. */
 	float           alc;      /*!< ALC. */
+	int             ic;       /*!< IC. */
+	
 	freq_t          fmin;     /*!< Lower frequency limit for current mode. */
 	freq_t          fmax;     /*!< Upper frequency limit for current mode. */
 	shortfreq_t     fstep;    /*!< Smallest freqency step for current mode. */
@@ -115,7 +120,9 @@ typedef struct {
 	/* read only fields */
 	int         strength;
 	int         swr;
+	int         comp;
 	int         alc;
+	int         ic;
 } grig_cmd_avail_t;
 
 
@@ -137,6 +144,7 @@ int  rig_data_get_preamp_data  (int index);
 int  rig_data_get_preamp_index (int data);
 int  rig_data_get_vfos         (void);
 void rig_data_set_vfos         (int);
+
 
 /* set functions */
 void rig_data_set_pstat   (powerstat_t);
