@@ -35,6 +35,10 @@
  *  \brief Radio control daemon.
  *
  * This object manages the connection to the hamradio control libraries.
+ * After initialization of the radio it start a cyclic thread which will
+ * execute some pre-defined commands. Because some manufacturers discourage
+ * agressive polling while in TX mode, the daemon will only acquire very
+ * few things while in this mode.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -49,11 +53,44 @@
 
 
 
-
 RIG *myrig = NULL;  /*!< The rig structure. */
 
-
 extern GConfClient *confclient;  /*!< Shared GConfClient. */
+
+
+/** \brief Matrix defining the default RX cycle.
+ *
+ * More description of the idea.
+ *
+ */
+static const rig_cmd_t DEF_RX_CYCLE[C_MAX_CYCLES][C_MAX_CMD_PER_CYCLE] = {
+	{ RIG_CMD_GET_STRENGTH, RIG_CMD_SET_FREQ_1, RIG_CMD_GET_FREQ_1, RIG_CMD_GET_PSTAT, RIG_CMD_SET_PSTAT },
+	{ RIG_CMD_GET_STRENGTH, RIG_CMD_SET_FREQ_2, RIG_CMD_GET_FREQ_2, RIG_CMD_SET_RIT,   RIG_CMD_GET_RIT   },
+	{ RIG_CMD_GET_STRENGTH, RIG_CMD_SET_FREQ_1, RIG_CMD_GET_FREQ_1, RIG_CMD_SET_RIT,   RIG_CMD_GET_RIT   },
+	{ RIG_CMD_GET_STRENGTH, RIG_CMD_SET_FREQ_2, RIG_CMD_GET_FREQ_2, RIG_CMD_SET_XIT,   RIG_CMD_GET_XIT   },
+	{ RIG_CMD_GET_STRENGTH, RIG_CMD_SET_FREQ_1, RIG_CMD_GET_FREQ_1, RIG_CMD_SET_MODE,  RIG_CMD_GET_MODE  },
+	{ RIG_CMD_GET_STRENGTH, RIG_CMD_SET_VFO,    RIG_CMD_GET_VFO,    RIG_CMD_SET_PTT,   RIG_CMD_GET_PTT   }
+};
+
+
+
+/** \brief MAtrix defining the default TX cycle.
+ *
+ * More description.
+ *
+ * \note Some radios do not like being polled while in TX mode so
+ *       we make TX cycle easy...
+ *
+ */
+static const rig_cmd_t DEF_TX_CYCLE[C_MAX_CYCLES][C_MAX_CMD_PER_CYCLE] = {
+	{ RIG_CMD_SET_PTT, RIG_CMD_NONE, RIG_CMD_NONE, RIG_CMD_NONE, RIG_CMD_NONE },
+	{ RIG_CMD_GET_PTT, RIG_CMD_NONE, RIG_CMD_NONE, RIG_CMD_NONE, RIG_CMD_NONE },
+	{ RIG_CMD_NONE,    RIG_CMD_NONE, RIG_CMD_NONE, RIG_CMD_NONE, RIG_CMD_NONE },
+	{ RIG_CMD_SET_PTT, RIG_CMD_NONE, RIG_CMD_NONE, RIG_CMD_NONE, RIG_CMD_NONE },
+	{ RIG_CMD_GET_PTT, RIG_CMD_NONE, RIG_CMD_NONE, RIG_CMD_NONE, RIG_CMD_NONE },
+	{ RIG_CMD_NONE,    RIG_CMD_NONE, RIG_CMD_NONE, RIG_CMD_NONE, RIG_CMD_NONE }
+};
+
 
 
 /* private function prototypes */
@@ -138,6 +175,10 @@ void
 rig_daemon_stop  ()
 {
 	/* send stop signal to daemon process */
+
+
+	/* wait 100 msec */
+
 
 	/* close radio device */
 	rig_close (myrig);
