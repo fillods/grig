@@ -2,7 +2,10 @@
 	* rig-gui.c, rig-gui.h: Added files.
 	* rig-gui-buttons.c, rig-gui-buttons.h: Added files.
 	* main.c: Added call to rig_gui_create.
-
+	* rig-daemon.c: Added code to manually update 'get' data if
+	rig doesn't support any get functions.
+	* rig-data.c, rig-data.h: Added AGC.
+	
 2004-07-23;	Alexandru Csete <csete@users.sourceforge.net>
 	* main.c, rig-daemon.c: Added patch for bug #996426.
 
