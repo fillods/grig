@@ -81,9 +81,12 @@ typedef struct {
 	int              agc;     /*!< AGC level. */
 
 	/* read only fields */
-	int         strength; /*!< Signal strength. */
-	float       swr;      /*!< SWR. */
-	float       alc;      /*!< ALC. */
+	int             strength; /*!< Signal strength. */
+	float           swr;      /*!< SWR. */
+	float           alc;      /*!< ALC. */
+	freq_t          fmin;     /*!< Lower frequency limit for current mode. */
+	freq_t          fmax;     /*!< Upper frequency limit for current mode. */
+	shortfreq_t     fstep;    /*!< Smallest freqency step for current mode. */
 } grig_settings_t;
 
 
@@ -137,6 +140,9 @@ shortfreq_t      rig_data_get_rit      (void);
 shortfreq_t      rig_data_get_xit      (void);
 int              rig_data_get_agc      (void);
 int              rig_data_get_strength (void);
+freq_t           rig_data_get_fmin     (void);
+freq_t           rig_data_get_fmax     (void);
+shortfreq_t      rig_data_get_fstep    (void);
 
 /* has_get functions */
 /* int   rig_data_has_get_pstat    (void); */

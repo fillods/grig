@@ -46,15 +46,19 @@
  *       of the shared data structures and their contents before they can
  *       be accessed by the GUI.
  *
+ * \note 'set' functions will also modify the 'get' variable to avoid temporary
+ *       flipping to he current value (in case the daemon does not update the
+ *       'get' variable before the GUI reads it again).
+ * 
  * \bug Must add rig_data_has_get_xxx and rig_data_has_set_xxx functions.
+ *
+ * \bug File includes gtk.h but not really needed?
  */
 
-#ifdef HAVE_CONFIG_H
-#  include <config.h>
-#endif
-#include <gnome.h>
+#include <gtk/gtk.h>
 #include <hamlib/rig.h>
 #include "rig-data.h"
+#include "support.h"
 
 
 grig_settings_t  set;      /*!< These values are sent to the radio. */
@@ -75,6 +79,7 @@ void
 rig_data_set_pstat   (powerstat_t pwr)
 {
 	set.pstat = pwr;
+	get.pstat = pwr;
 	new.pstat = 1;
 }
 
@@ -89,6 +94,7 @@ void
 rig_data_set_ptt     (ptt_t ptt)
 {
 	set.ptt = ptt;
+	get.ptt = ptt;
 	new.ptt = 1;
 }
 
@@ -102,6 +108,7 @@ void
 rig_data_set_vfo     (vfo_t vfo)
 {
 	set.vfo = vfo;
+	get.vfo = vfo;
 	new.vfo = 1;
 }
 
@@ -119,6 +126,7 @@ void
 rig_data_set_mode    (rmode_t mode)
 {
 	set.mode = mode;
+	get.mode = mode;
 	new.mode = 1;
 }
 
@@ -136,6 +144,7 @@ void
 rig_data_set_pbwidth (rig_data_pbw_t pbw)
 {
 	set.pbw = pbw;
+	get.pbw = pbw;
 	new.pbw = 1;
 }
 
@@ -154,11 +163,13 @@ rig_data_set_freq    (int num, freq_t freq)
 
 		/* primary frequency */
 	case 1: set.freq1 = freq;
+		get.freq1 = freq;
 		new.freq1 = 1;
 		break;
 
 		/* secondary frequency */
 	case 2: set.freq2 = freq;
+		set.freq2 = freq;
 		new.freq2 = 1;
 		break;
 
@@ -179,6 +190,7 @@ void
 rig_data_set_rit     (shortfreq_t rit)
 {
 	set.rit = rit;
+	get.rit = rit;
 	new.rit = 1;
 }
 
@@ -192,6 +204,7 @@ void
 rig_data_set_xit     (shortfreq_t xit)
 {
 	set.xit = xit;
+	get.xit = xit;
 	new.xit = 1;
 }
 
@@ -205,6 +218,7 @@ void
 rig_data_set_agc     (int agc)
 {
 	set.agc = agc;
+	get.agc = agc;
 	new.agc = 1;
 }
 
@@ -298,6 +312,48 @@ rig_data_get_freq    (int num)
 		break;
 	}
 }
+
+
+/** \brief Get lower freqency limit.
+ *  \return The current lower frequency limit.
+ *
+ * This function returns the lower frequency limit which applies to
+ * the current mode.
+ */
+freq_t
+rig_data_get_fmin     ()
+{
+	return get.fmin;
+}
+
+
+
+/** \brief Get upper freqency limit.
+ *  \return The current upper frequency limit.
+ *
+ * This function returns the upper frequency limit which applies to
+ * the current mode.
+ */
+freq_t
+rig_data_get_fmax     ()
+{
+	return get.fmax;
+}
+
+
+
+/** \brief Get tuning step.
+ *  \return The current tuning step.
+ *
+ * This function returns the tuning step corresponding to the
+ * current mode.
+ */
+shortfreq_t
+rig_data_get_fstep    ()
+{
+	return get.fstep;
+}
+
 
 
 /** \brief Get RIT offset.
