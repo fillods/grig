@@ -148,7 +148,8 @@ rig_daemon_start       (int          rigid,
 			int          speed,
 			const gchar *civaddr,
 			const gchar *rigconf,
-			gint         cmddel)
+			gint         cmddel,
+			gboolean     nothread)
 {
 
 	gchar  *rigport;
@@ -158,7 +159,6 @@ rig_daemon_start       (int          rigid,
 	GError *err = NULL;  /* used when starting daemon thread */
 
 
-	/* send a debug message */
 	rig_debug (RIG_DEBUG_TRACE, "*** GRIG: %s entered\n", __FUNCTION__);
 
 	/* in order to be sure that we have a sensible command delay
@@ -182,14 +182,14 @@ rig_daemon_start       (int          rigid,
 		rigid = 1;
 	}
 
-	/* use default port, if none specified */
+	/* use default port, if none specified; localhost for RPC rig
+	   first serial port otherwise.
+	*/
 	if (port == NULL) {
 
-		/* localhost for RPC rig */
 		if (rigid == 1901) {
 			rigport = g_strdup ("localhost");
 		}
-		/* first serial port otherwise */
 		else {
 			rigport = g_strdup ("/dev/ttyS0");
 		}
@@ -199,16 +199,15 @@ rig_daemon_start       (int          rigid,
 	}
 
 
-	/* send a debug message */
 	rig_debug (RIG_DEBUG_TRACE,
 		   "*** GRIG: %s: Initializing rig (id=%d)\n",
 		   __FUNCTION__, rigid);
 
 	/* initilize rig */
 	myrig = rig_init (rigid);
+
 	if (myrig == NULL) {
 
-		/* send error report */
 		rig_debug (RIG_DEBUG_ERR,
 			   "*** GRIG: %s: Init failed; Hamlib returned NULL!\n", __FUNCTION__);
 
@@ -281,7 +280,6 @@ rig_daemon_start       (int          rigid,
 	}
 #endif
 
-	/* send a debug message */
 	rig_debug (RIG_DEBUG_TRACE,
 		   "*** GRIG: %s: Init successfull; executing post-init\n",
 		   __FUNCTION__);
@@ -289,32 +287,46 @@ rig_daemon_start       (int          rigid,
 	/* get capabilities and settings  */
 	rig_daemon_post_init ();
 
-	/* send a debug message */
 	rig_debug (RIG_DEBUG_TRACE,
 		   "*** GRIG: %s: Starting rig daemon\n",
 		   __FUNCTION__);
 
 #ifndef DISABLE_HW
-	/* start daemon */
-	g_thread_create (rig_daemon_cycle, NULL, FALSE, &err);
 
-	/* check whether any error occurred when starting the daemon
-	   thread; if yes, close rig and return with error code
-	   (assuming that in case of error err->code will be non-zero)
+	/* if nothread flag is TRUE start a usual timeout, otherwise
+	   fork a separate thread.
 	*/
-	if (err != NULL) {
+	if (nothread == TRUE) {
 
-		rig_debug (RIG_DEBUG_ERR,
-			   "*** GRIG: %s: Failed to start daemon process\n",
-			   __FUNCTION__);
-		rig_debug (RIG_DEBUG_ERR,
-			   "*** GRIG: %s: Error %d: %s\n",
-			   __FUNCTION__, err->code, err->message);
+	}
+	else {
 
-		rig_close (myrig);
-		rig_cleanup (myrig);
+		g_thread_create (rig_daemon_cycle, NULL, FALSE, &err);
 
-		return err->code;
+		/* check whether any error occurred when starting the daemon
+		   thread; if yes, close rig and return with error code
+		   (assuming that err->code will be non-zero)
+		*/
+		if (err != NULL) {
+
+			rig_debug (RIG_DEBUG_ERR,
+				   "*** GRIG: %s: Failed to start daemon thread\n",
+				   __FUNCTION__);
+			rig_debug (RIG_DEBUG_ERR,
+				   "*** GRIG: %s: Error %d: %s\n",
+				   __FUNCTION__, err->code, err->message);
+
+			rig_close (myrig);
+			rig_cleanup (myrig);
+
+			return err->code;
+		}
+		else {
+			rig_debug (RIG_DEBUG_VERBOSE,
+				   "*** GRIG: %s: Daemon thread started succeessfully\n",
+				   __FUNCTION__);
+
+		}
 	}
 
 #endif
@@ -373,9 +385,9 @@ rig_daemon_stop  ()
 static void
 rig_daemon_post_init ()
 {
-	grig_settings_t  *get;                     /* pointer to shared data 'get' */
-	grig_cmd_avail_t *has_get;                 /* pointer to shared data 'has_get' */
-	grig_cmd_avail_t *has_set;                 /* pointer to shared data 'has_set' */
+	grig_settings_t  *get;        /* pointer to shared data 'get' */
+	grig_cmd_avail_t *has_get;    /* pointer to shared data 'has_get' */
+	grig_cmd_avail_t *has_set;    /* pointer to shared data 'has_set' */
 
 
 	/* get pointers to shared data */
