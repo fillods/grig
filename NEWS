@@ -1,14 +1,63 @@
-Primary Objectives for this baseline:
+GRIG 0.4.0:
 
-- Continuous readback of rig settings so that rig and GUI can be used
-  in parallel.
+- Ported to Gtk2; requires Gtk+ 2.4 or greater. Removed
+  Gnome and GConf dependencies.
+- Requires Hamlib 1.2.0 or greater.
+- Added continuous readback from radio.
+- Removed rotator support (will be in a separate program).
+- Radio configuration is set via the command line and the
+  first time wizard has been completely removed.
+- Added RIT control.
+- Removed level sliders, will be re-added in the next version.
 
-- Dependence on Gtk+ only (no more GNOME libs or GConf). Currently gtk+-2.4
-  is used.
 
-- GUI should never be influenced by hardware (no freeze nor slow response from
-  GUI)
+GRIG 0.3.0 (never relesed, available from CVS):
 
-- Ability to select any rig supproted by hamlib from the command line, meaning 
-  no more need for explicitly configuring a rig before beeing able to use it.
+- Rotator support with the possibility for AZ, EL or AZ/EL
+  rotators.
+- New rig controls: PTT.
+- Possibility to configure the serial speed (backends can
+  override it though?).
+- Active readback from rig and rotator.
+- Fixed bug which caused the number of radios to be reset to
+  1, if the user re-ran the first time druid (#750024).
 
+
+GRIG 0.2.2:
+
+- Fixed bug which selected the wrong debug level in the
+  menubar (Bug #609332).
+- Fixed bug which caused incorrect handling of unavailable
+  level settings (#621762).
+
+
+GRIG 0.2.1:
+
+- Finished configuration modules.
+- Added wheelmouse support.
+- Fixed bug which prevented correct initialization of
+  Mode, Filter and AGC selectors.
+- Fixed bug which caused wrong initialization of the
+  level sliders.
+- Added temporary command line option to enable frequency
+  readback.
+
+
+GRIG 0.2.0:
+
+- Support for Hamlib 1.1.3 (rotator).
+- Preferences dialog to edit radios and rotators.
+- New user druid to guide first-time users through
+  initial setup.
+- Radio controls have been embedded into a Gtk+ widget and
+  can be reused by other Gtk+/Gnome applications.
+- Command line options to override some default settings.
+
+
+GRIG 0.1.0:
+
+- Initial release.
+- Power button.
+- Mode, filter and AGC selector.
+- Frequency display (change frequency by clicking on a digit).
+- Level settings for AF, RF, NR, Squelch and APF (receiver).
