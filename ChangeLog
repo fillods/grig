@@ -10,6 +10,9 @@
 	* src/rig-daemon.c:
 	Only get/set power status if rig is in power off state.
 
+	* doc/man/grig.1.in:
+	Removed section saying that RIG must be powered ON.
+
 
 2004-12-12;	Alexandru Csete <csete@users.sourceforge.net>
 
