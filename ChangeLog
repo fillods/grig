@@ -1,3 +1,15 @@
+2004-11-09;	Alexandru Csete <csete@users.sourceforge.met>
+
+	* src/rig-gui-info.c:
+	Added offset and level info widgets.
+
+	* src/rig-gui-info-data.h:
+	Added file. Contains some constant data definitions.
+
+	* src/Makefile.am:
+	Added new file.
+
+
 2004-11-05;	Alexandru Csete <csete@users.sourceforge.net>
 
 	* src/rig-gui-ctrl2.c:
@@ -8,12 +20,12 @@
 	Updated.
 	
 	* src/rig-utils.c:
-	Fixed bug which caused the last three modes (ECLSB, ECUSB and FAX) to be
-	discarded as valid modes.
+	Fixed bug which caused the last three modes (ECLSB, ECUSB and FAX) to
+	be discarded as valid modes.
 
 	* src/rig-daemon.c:
-	Fixed bug which caused the pass band to be set to 1Hz each time the mode
-	was changed. Replaced XIT comamnds with VFO comamnds.
+	Fixed bug which caused the pass band to be set to 1Hz each time the
+	mode was changed. Replaced XIT comamnds with VFO comamnds.
 
 	* src/rig-daemon-check.c:
 	Set smeter value to -54dB if comamnd is not available. Added code to
