@@ -44,16 +44,16 @@
  *
  * More about cycles and periods...
  *
+ * \bug rig-daemon.c:221: warning: implicit declaration of function `usleep'
+ *
+ * \bug rig-daemon.c:125: warning: unused variable `buff'
+ *
  */
-
-#ifdef HAVE_CONFIG_H
-#  include <config.h>
-#endif
-#include <gnome.h>
-#include <gconf/gconf.h>
-#include <gconf/gconf-client.h>
+#include <gtk/gtk.h>
 #include <hamlib/rig.h>
+#include <string.h>
 #include "grig-config.h"
+#include "rig-anomaly.h"
 #include "rig-data.h"
 #include "rig-daemon-check.h"
 #include "rig-daemon.h"
@@ -61,8 +61,6 @@
 
 
 RIG *myrig;  /*!< The rig structure. We keep this public so GUI can access the info fields. */
-
-extern GConfClient *confclient;  /*!< Shared GConfClient. */
 
 
 /** \brief Matrix defining the default RX cycle.
@@ -129,7 +127,7 @@ rig_daemon_start (int rignum)
 	gint   speed;
 	gchar *rigport;
 	gint   retcode;
-	grig_settings_t *get;
+
 
 	/* send a debug message */
 	rig_debug (RIG_DEBUG_TRACE, "*** GRIG: %s entered\n", __FUNCTION__);
@@ -139,46 +137,10 @@ rig_daemon_start (int rignum)
 		return 1;
 	}
 
-// begin PATCH-996426
-	/* check if rignum exists; otherwise use dummy backend */
-	buff = g_strdup_printf ("%s/%i", GRIG_CONFIG_RIG_DIR);
-	if (!gconf_client_dir_exists (confclient, buff, NULL)) {
-		/* free buffer */
-		g_free (buff);
+	rigid = rignum;
+	rigport = g_strdup ("/dev/ttyS0");
+	speed = 0;
 
-		/* send a debug message */
-		rig_debug (RIG_DEBUG_TRACE,
-			   "*** GRIG: %s: Config not found; using dummy backend\n",
-			   __FUNCTION__);
-
-		/* initialize values */
-		rigid = 1;
-		rigport = g_strdup ("/dev/ttyS0");
-
-/* 		rigid = 1901; */
-/* 		rigport = g_strdup ("localhost"); */
-
-		speed = 0;
-	}
-	else {
-		/* free buffer */
-		g_free (buff);
-//end PATCH-996426
-	/* get configuration */
-	buff = g_strdup_printf ("%s/%i/ID", GRIG_CONFIG_RIG_DIR, rignum);
-	rigid = gconf_client_get_int (confclient, buff, NULL);
-	g_free (buff);
-
-	buff = g_strdup_printf ("%s/%i/port", GRIG_CONFIG_RIG_DIR, rignum);
-	rigport = gconf_client_get_string (confclient, buff, NULL);
-	g_free (buff);
-	
-	buff = g_strdup_printf ("%s/%i/speed", GRIG_CONFIG_RIG_DIR, rignum);
-	speed = gconf_client_get_int (confclient, buff, NULL);
-	g_free (buff);
-// begin PATCH-996426
-	}
-//end PATCH-996426
 
 	/* send a debug message */
 	rig_debug (RIG_DEBUG_TRACE,
@@ -982,8 +944,47 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 				rig_anomaly_raise (RIG_CMD_GET_MODE);
 			}
 			else {
-				get->mode = mode;
+				int i = 0;           /* iterator */
+				int found_mode = 0;  /* flag to indicate found mode */
+
+		  
 				get->pbw  = pbw;
+
+				/* if mode has changed we need to update frequency limits */
+				if (get->mode != mode) {
+
+					get->mode = mode;
+
+					/* get frequency limits for this mode; we use the rx_range_list
+					   stored in the rig_state structure
+					*/
+					while (!RIG_IS_FRNG_END(myrig->state.rx_range_list[i]) && !found_mode) {
+						
+						/* is this list good for current mode? */
+						if ((mode & myrig->state.rx_range_list[i].modes) == mode) {
+							
+							found_mode = 1;
+							get->fmin = myrig->state.rx_range_list[i].start;
+							get->fmax = myrig->state.rx_range_list[i].end;
+						}
+						else {
+							i++;
+						}
+						
+					}
+
+					/* if we did not find any suitable range there could be a bug
+					   in the backend!
+					*/
+					if (!found_mode) {
+						rig_debug (RIG_DEBUG_BUG,
+							   "*** GRIG: %s: Can not find frequency range for this mode (%d)!\n"\
+							   "Bug in backed?\n", __FUNCTION__, mode);
+					}
+
+					/* get the smallest tuning step */
+					get->fstep = rig_get_resolution (myrig, mode);
+				}
 			}
 		}
 
