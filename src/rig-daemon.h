@@ -71,6 +71,10 @@ typedef enum {
 	RIG_CMD_SET_MODE,      /*!< Command to set the new mode and/or passband width. */
 	RIG_CMD_GET_AGC,       /*!< Command to get the automatic gain control level. */
 	RIG_CMD_SET_AGC,       /*!< Command to set the automatic gain control level. */
+	RIG_CMD_GET_ATT,       /*!< Command to get the attenuator level. */
+	RIG_CMD_SET_ATT,       /*!< Command to set the attenuator level. */
+	RIG_CMD_GET_PREAMP,    /*!< Command to get the pre-amplifier level. */
+	RIG_CMD_SET_PREAMP,    /*!< Command to set the pre-amplifier level. */
 
 	RIG_CMD_GET_STRENGTH,  /*!< Command to get signal strength. */
 	RIG_CMD_GET_PWR,       /*!< ... */
