@@ -182,20 +182,27 @@ rig_gui_lcd_create ()
 	   THIS IS A BUG SINCE WE DON'T DISTINGUISH BETWEEN SET_FREQ
 	   AND SET_RIT/SET_XIT.
 	*/
+#ifndef DISABLE_HW
 	if (rig_data_has_set_freq1 ()) {
+#endif
 		gtk_widget_add_events (lcd.canvas, GDK_BUTTON_PRESS_MASK);
 		g_signal_connect (G_OBJECT (lcd.canvas), "event",
 				  G_CALLBACK (rig_gui_lcd_handle_event), NULL);
+#ifndef DISABLE_HW
 	}
+#endif
 
 	vbox = gtk_vbox_new (FALSE, 0);
 
 	gtk_box_pack_start (GTK_BOX (vbox), lcd.canvas, FALSE, FALSE, 5);
 //	gtk_box_pack_start (GTK_BOX (vbox), hbox,  FALSE, FALSE, 0);
 
-	/* start readback timer but only if service is available */
+	/* start readback timer but only if service is available 
+	   or we are in DISABLE_HW mode
+	*/
+#ifndef DISABLE_HW
 	if (rig_data_has_get_freq1 ()) {
-
+#endif
 		timerid = g_timeout_add (RIG_GUI_LCD_DEF_TVAL,
 					 rig_gui_lcd_timeout_exec,
 					 NULL);
@@ -203,7 +210,9 @@ rig_gui_lcd_create ()
 		/* register timer_stop function at exit */
 		gtk_quit_add (gtk_main_level (), rig_gui_lcd_timeout_stop,
 			      GUINT_TO_POINTER (timerid));
+#ifndef DISABLE_HW
 	}
+#endif
 
 	return vbox;
 }
