@@ -1,3 +1,9 @@
+2005-02-01;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* configure.ac:
+	Define PACKAGE_LOCALE_DIR. Increment version number.
+
+
 2005-01-27;     Alexandru Csete <csete@users.sourceforge.net>
 
 	* pixmaps/Makefile.am:
