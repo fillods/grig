@@ -100,7 +100,7 @@ Bugs related to hamlib should be reported directly to the hamlib developers at
 \fB<hamlib\-developer@lists.sourceforge.net>\fR.
 
 .SH "COPYRIGHT"
-Copyright \(co 2001\-2004 Alexandru Csete.
+Copyright \(co 2001\-2005 Alexandru Csete.
 .br 
 This is free software; see the source for copying conditions.  There is NO
 warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
