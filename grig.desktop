@@ -1,8 +1,0 @@
-[Desktop Entry]
-Name=Grig
-Comment=User interface for the ham radio control libraries
-Exec=/usr/bin/grig
-Icon=/usr/share/grig/pixmaps/grig-logo.png
-Terminal=false
-MultipleArgs=false
-Type=Application
