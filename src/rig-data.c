@@ -194,6 +194,19 @@ rig_data_set_xit     (shortfreq_t xit)
 }
 
 
+/** \brief Set AGC level.
+ *  \param rit The new AGC level.
+ *
+ * This function sets the targeted AGC level to agc.
+ */
+void
+rig_data_set_agc     (int agc)
+{
+	set.agc = agc;
+	new.agc = 1;
+}
+
+
 /** \brief Get power status.
  *  \return The current power status.
  *
@@ -306,6 +319,18 @@ shortfreq_t
 rig_data_get_xit     ()
 {
 	return get.xit;
+}
+
+
+/** \brief Get AGC level.
+ *  \return The current value of the AGC.
+ *
+ * This function returns the current value of the AGC.
+ */
+int
+rig_data_get_agc     ()
+{
+	return get.agc;
 }
 
 

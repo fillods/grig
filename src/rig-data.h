@@ -61,7 +61,8 @@ typedef struct {
 	freq_t      freq2;   /*!< Secondary frequency. */
 	shortfreq_t rit;     /*!< RIT. */
 	shortfreq_t xit;     /*!< XIT. */
-	float       power;    /*!< TX power. */
+	float       power;   /*!< TX power. */
+	int         agc;     /*!< AGC level. */
 
 	/* read only fields */
 	int         strength; /*!< Signal strength. */
@@ -81,6 +82,7 @@ typedef struct {
 	int         rit;
 	int         xit;
 	int         power;
+	int         agc;
 
 	/* read only fields */
 	int         strength;
@@ -89,8 +91,8 @@ typedef struct {
 } grig_cmd_avail_t;
 
 
-#define GRIG_LEVEL_RD (RIG_LEVEL_RFPOWER | RIG_LEVEL_SWR | RIG_LEVEL_ALC | RIG_LEVEL_STRENGTH)
-#define GRIG_LEVEL_WR (RIG_LEVEL_RFPOWER)
+#define GRIG_LEVEL_RD (RIG_LEVEL_RFPOWER | RIG_LEVEL_AGC | RIG_LEVEL_SWR | RIG_LEVEL_ALC | RIG_LEVEL_STRENGTH)
+#define GRIG_LEVEL_WR (RIG_LEVEL_RFPOWER | RIG_LEVEL_AGC)
 
 /* init functions */
 void rig_data_init        (void);
@@ -106,6 +108,7 @@ void rig_data_set_pbwidth (pbwidth_t);
 void rig_data_set_freq    (int, freq_t);
 void rig_data_set_rit     (shortfreq_t);
 void rig_data_set_xit     (shortfreq_t);
+void rig_data_set_agc     (int);
 
 /* get functions */
 powerstat_t rig_data_get_pstat   (void);
@@ -116,6 +119,7 @@ pbwidth_t   rig_data_get_pbwidth (void);
 freq_t      rig_data_get_freq    (int);
 shortfreq_t rig_data_get_rit     (void);
 shortfreq_t rig_data_get_xit     (void);
+int         rig_data_get_agc     (void);
 
 /* address acquisition functions */
 grig_settings_t  *rig_data_get_get_addr     (void);
