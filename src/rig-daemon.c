@@ -33,7 +33,6 @@
 /** \file rig-daemon.c
  *  \ingroup rigd
  *  \brief Radio control interface to hamlib.
- *  \bug This object MUST be decomposed!
  *
  * This object is responsible for interfacing the Hamradio Control Libraries (hamlib).
  *
@@ -90,7 +89,7 @@ static const rig_cmd_t DEF_RX_CYCLE[C_MAX_CYCLES][C_MAX_CMD_PER_CYCLE] = {
 #endif
 
 
-/** \brief MAtrix defining the default TX cycle.
+/** \brief Matrix defining the default TX cycle.
  *
  * More description.
  *
@@ -108,12 +107,15 @@ static const rig_cmd_t DEF_TX_CYCLE[C_MAX_CYCLES][C_MAX_CMD_PER_CYCLE] = {
 };
 
 
-static gboolean stopdaemon = FALSE;   /*!< Used to signal the daemon thread that it should stop */
-static gint     cmd_delay  = 0;       /*!< Delay between two RX commands TX = 3*RX */
+static gboolean stopdaemon   = FALSE;   /*!< Used to signal the daemon thread that it should stop */
+static gint     cmd_delay    = 0;       /*!< Delay between two RX commands TX = 3*RX */
+static gint     timeoutid    = -1;      /*!< The ID of the timeout callback when we don't use threads. */
+static gboolean timeout_busy = FALSE;   /*!< Flag used to avoid to callbacks at the same time. */
 
 /* private function prototypes */
 static void     rig_daemon_post_init (void);
 static gpointer rig_daemon_cycle     (gpointer);
+static gint     rig_daemon_cycle_cb  (gpointer);
 static void     rig_daemon_exec_cmd  (rig_cmd_t,
 				      grig_settings_t  *,
 				      grig_settings_t  *,
@@ -130,6 +132,7 @@ static void     rig_daemon_exec_cmd  (rig_cmd_t,
  *  \param civaddr  CIV address for ICOM rigs (NULL means no need to set conf).
  *  \param rigconf  Additional config options necessary for some rigs.
  *  \param cmddel   Delay between two RX commands.
+ *  \param nothread Whether to use threads (FALSE) or just a timeout callback.
  *  \return 0 if the daemon has been initialized correctly.
  *
  * This function initializes the radio and starts the control daemon. The rignum
@@ -298,6 +301,18 @@ rig_daemon_start       (int          rigid,
 	*/
 	if (nothread == TRUE) {
 
+		/* we start a regular g_timeout;
+		   we use 2 * C_MAX_CYCLES * C_MAX_CMD_PER_CYCLE * cmd_delay
+		   for delay.
+		*/
+		timeoutid = g_timeout_add (2 * C_MAX_CYCLES * C_MAX_CMD_PER_CYCLE * cmd_delay,
+					   rig_daemon_cycle_cb,
+					   NULL);
+
+		rig_debug (RIG_DEBUG_VERBOSE,
+			   "*** GRIG: %s: Daemon timeout started, ID: %d\n",
+			   __FUNCTION__, timeoutid);
+
 	}
 	else {
 
@@ -353,6 +368,13 @@ rig_daemon_stop  ()
 
 	/* send stop signal to daemon process */
 	stopdaemon = TRUE;
+
+	/* if we are running in time-out mode
+	   we can remove the callback directly here
+	*/
+	if (timeoutid != -1) {
+		g_source_remove (timeoutid);
+	}
 
 	/* give the daemon som time to exit */
 	usleep (C_RIG_DAEMON_STOP_TIMEOUT);
@@ -455,7 +477,7 @@ rig_daemon_post_init ()
 
 
 
-/** \brief Radio control daemon main cycle.
+/** \brief Radio control daemon main cycle (threaded version).
  *  \param data Unused.
  *  \return Always NULL.
  *
@@ -571,6 +593,125 @@ rig_daemon_cycle     (gpointer data)
 
 	return NULL;
 }
+
+
+/** \brief Radio control daemon main cycle (callback version).
+ *  \param data Unused.
+ *  \return Always TRUE.
+ *
+ * This function implements the main cycle of the radio control daemon. The executed
+ * commands are defined in the DEF_RX_CYCLE and DEF_TX_CYCLE constant arrays.
+ */
+static gint
+rig_daemon_cycle_cb  (gpointer data)
+{
+
+	grig_settings_t  *get;             /* pointer to shared data 'get' */
+	grig_settings_t  *set;             /* pointer to shared data 'set' */
+	grig_cmd_avail_t *new;             /* pointer to shared data 'new' */
+	grig_cmd_avail_t *has_get;         /* pointer to shared data 'has_get' */
+	grig_cmd_avail_t *has_set;         /* pointer to shared data 'has_set' */
+
+	guint major, minor;                /* major and minor cycle */
+
+	/* check whether the previous callback has terminated.
+	   if not, skip this cycle.
+	*/
+	if (timeout_busy == TRUE) {
+		return TRUE;
+	}
+
+	timeout_busy = TRUE;
+
+	/* get pointers to shared data */
+	get     = rig_data_get_get_addr ();
+	set     = rig_data_get_set_addr ();
+	new     = rig_data_get_new_addr ();
+	has_get = rig_data_get_has_get_addr ();
+	has_set = rig_data_get_has_set_addr ();
+
+	/* initialize major cycle */
+	major = 0;
+
+	/* send a debug message */
+	rig_debug (RIG_DEBUG_TRACE, "*** GRIG: %s started.\n", __FUNCTION__);
+
+
+	/* first we check whether rig is powered ON since some rigs
+	   will not talk to us in power-off tate.
+	   NOTE: code should be safe even if rig does not support
+	   get_powerstat since get->pstat is set to ON if rig
+	   does not have functionality.
+	*/
+	if (get->pstat == RIG_POWER_ON) {
+
+		/* check whether we are in RX or TX mode;
+		   note that the major cycle is not influenced
+		   by any change in RX/TX state
+		*/
+		if (get->ptt == RIG_PTT_OFF) {
+			/* Execute receiver cycle */
+
+			/* loop through the current cycle in the command table */
+			for (minor = 0; minor < C_MAX_CMD_PER_CYCLE; minor++) {
+				
+				rig_daemon_exec_cmd (DEF_RX_CYCLE[major][minor],
+						     get, set, new,
+						     has_get, has_set);
+/* slow motion in debug mode */
+#ifdef GRIG_DEBUG
+				usleep (5000 * cmd_delay);
+#else
+				usleep (1000 * cmd_delay);
+#endif
+			}
+		}
+		else {
+			/* Execute transmitter cycle */
+
+			/* loop through the current cycle in the commad table. */
+			for (minor = 0; minor < C_MAX_CMD_PER_CYCLE; minor++) {
+
+				rig_daemon_exec_cmd (DEF_TX_CYCLE[major][minor],
+						     get, set, new,
+						     has_get, has_set);
+/* slow motion in debug mode */
+#ifdef GRIG_DEBUG
+				usleep (15000 * cmd_delay);
+#else
+				usleep (3000 * cmd_delay);
+#endif
+			}
+
+		}
+
+		/* increment major cycle counter;
+		   reset to zero if it reaches the maximum count
+		*/
+		if (++major == C_MAX_CYCLES)
+			major = 0;
+	}
+
+	/* otherwise check the power status only */
+	else {
+		rig_daemon_exec_cmd (RIG_CMD_SET_PSTAT, get, set, new, has_get, has_set);
+
+/* slow motion in debug mode */
+#ifdef GRIG_DEBUG
+		usleep (15000 * cmd_delay);
+#else
+		usleep (3000 * cmd_delay);
+#endif
+		rig_daemon_exec_cmd (RIG_CMD_GET_PSTAT, get, set, new, has_get, has_set);
+	}
+
+
+	timeout_busy = FALSE;
+
+
+	return TRUE;
+}
+
 
 
 
