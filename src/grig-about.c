@@ -2,7 +2,7 @@
 /*
     Grig:  Gtk+ user interface for the Hamradio Control Libraries.
 
-    Copyright (C)  2001-2004  Alexandru Csete.
+    Copyright (C)  2001-2005  Alexandru Csete.
 
     Authors: Alexandru Csete <csete@users.sourceforge.net>
 
@@ -113,7 +113,7 @@ grig_about_about_create ()
 	gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 10);
 
 	/* copyright info */
-	label = gtk_label_new (_("Copyright 2001-2004 Alexandru Csete, OZ9AEC"));
+	label = gtk_label_new (_("Copyright 2001-2005 Alexandru Csete, OZ9AEC"));
 	gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 5);
 
 	/* info */
