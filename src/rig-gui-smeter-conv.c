@@ -72,23 +72,10 @@
 
 
 /** \brief Coefficient for converting [0.0;1.0] to deg (linear). */
-#define RIG_VALF_TO_DEG_A  0.0
+#define RIG_VALF_TO_DEG_A  88.7818 
 
 /** \brief Offset for converting [0.0;1.0] to deg (linear). */
-#define RIG_VALF_TO_DEG_B  0.0
-
-
-/** \brief 3. order coefficient for converting [0.0;1.0] to deg (polynomial). */
-#define RIG_VALF_TO_DEG_POLY_A   0.0
-
-/** \brief 2. order coefficient for converting [0.0;1.0] to deg (polynomial). */
-#define RIG_VALF_TO_DEG_POLY_B   0.0
-
-/** \brief 1. order coefficient for converting [0.0;1.0] to deg (polynomial). */
-#define RIG_VALF_TO_DEG_POLY_C   0.0
-
-/** \brief Offset for converting [0.0;1.0] to deg (polynomial). */
-#define RIG_VALF_TO_DEG_POLY_D   0.0
+#define RIG_VALF_TO_DEG_B  44.8182
 
 
 
@@ -202,7 +189,7 @@ convert_db_to_angle    (gint db, db_to_angle_mode_t mode)
 /** \brief Convert val.f type [0.0;1.0] to needle angle.
  *  \param valf  The floating point value as received from hamlib.
  *  \param mode The mode specifying whether data from linear
- *               or polynomial fit should be used.
+ *               or polynomial fit should be used (not used!).
  *  \return The needle angle in dgrees.
  *
  * This function converts a floating point number within the range [0.0;1.0],
@@ -210,35 +197,39 @@ convert_db_to_angle    (gint db, db_to_angle_mode_t mode)
  * to the needle angle. Values outside the valid range will be truncated to
  * the corresponding limit.
  * \verbatim
-         S    fp   deg
-         S0        45.00
-         S1        48.85
-         S2        54.64
-         S3        60.21
-         S4        65.96
-         S5        72.03
-         S6        80.36
-         S7        86.36
-         S8        95.00
-         S9       103.95
-        +10       113.71
-        +20       122.31
-        +30       133.48
+         fp     deg
+         0.0    45.0
+         0.1    54.0
+	 0.2    62.0
+	 0.3    71.4
+         0.4    80.3
+	 0.5    89.0
+	 0.6    98.4
+	 0.7   107.0
+	 0.8   115.9
+	 0.9   124.9
+         1.0   133.4
      \endverbatim
  * The linear fit to this data results in:
  * \verbatim
 
+         a  = 88.7818   +/- 0.2615       (0.2945%)
+         b  = 44.8182   +/- 0.1547       (0.3451%)
+
+    correlation matrix of the fit parameters:
+
+               a      b      
+         a   1.000 
+         b  -0.845  1.000 
+
 
    \endverbatim
- * while 3. order polynomial fit gives:
- * \verbatim
-     f(x) = a*x**3 + b*x**2 + c*x + d
 
-
-   \endverbatim
+   \note Since this scale is linear, it makes no sense to use the
+         3. order polynomial fit.
  */
 gfloat
-convert_valf_to_angle    (gfloat valf, db_to_angle_mode_t mode)
+convert_valf_to_angle    (gfloat valf)
 {
 
 	/* ensure that input is within range */
@@ -251,20 +242,7 @@ convert_valf_to_angle    (gfloat valf, db_to_angle_mode_t mode)
 
 
 	/* calculate angle according to selected mode */
-	if (mode == DB_TO_ANGLE_MODE_LINEAR) {
-		return (gfloat) (RIG_VALF_TO_DEG_A*valf + RIG_VALF_TO_DEG_B);
-	}
-
-	else if (mode == DB_TO_ANGLE_MODE_POLY) {
-		return (gfloat) (RIG_VALF_TO_DEG_POLY_A*valf*valf*valf +
-				 RIG_VALF_TO_DEG_POLY_B*valf*valf      +
-				 RIG_VALF_TO_DEG_POLY_C*valf           +
-				 RIG_VALF_TO_DEG_POLY_D);
-	}
-
-	else {
-		return 0.0;
-	}
+	return (gfloat) (RIG_VALF_TO_DEG_A*valf + RIG_VALF_TO_DEG_B);
 }
 
 

@@ -45,8 +45,8 @@ typedef struct {
 } coordinate_t;
 
 
-/** \brief Enumeration for specifying the conversion mode (linear or polynomial fit)
- *         when converting from dB to angle.
+/** \brief Enumeration for specifying the conversion mode (linear or polynomial
+ *         fit) when converting from dB to angle.
  */
 typedef enum {
 	DB_TO_ANGLE_MODE_LINEAR = 0,   /*!< Use data from linear fit */
@@ -59,7 +59,7 @@ typedef enum {
 gfloat  convert_db_to_angle    (gint db, db_to_angle_mode_t mode);
 
 /* conversion of 0.0 ... 1.0 float to angle */
-gfloat  convert_valf_to_angle  (gfloat valf, db_to_angle_mode_t mode);
+gfloat  convert_valf_to_angle  (gfloat valf);
 
 /* conversion of angle to rectangular coordinate set */
 void    convert_angle_to_rect  (gfloat angle, coordinate_t *coor);
