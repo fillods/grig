@@ -1710,3 +1710,19 @@ rig_daemon_get_model ()
 
 	return text;
 }
+
+
+/** \brief Get command delay.
+ *  \return The current command delay in msec.
+ *
+ * This function returns the current command delay
+ * in milliseconds. This allows the GUI to have a rough idea
+ * about what delay to use in the readback timeout functions.
+ */
+gint
+rig_daemon_get_delay ()
+{
+	return cmd_delay;
+}
+
+
