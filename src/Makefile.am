@@ -31,6 +31,7 @@ grig_SOURCES = \
 	rig-daemon-check.c rig-daemon-check.h \
 	rig-data.c rig-data-h \
 	rig-gui.c rig-gui.h \
+	rig-gui-buttons.c rig-gui-buttons.h \
 	grig-menu.c
 
 grig_LDADD = @PACKAGE_LIBS@ $(INTLLIBS)
