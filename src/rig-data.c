@@ -815,8 +815,8 @@ rig_data_has_get_swr      ()
 int
 rig_data_has_get_alc      ()
 {
-	return has_get.alc
-		}
+	return has_get.alc;
+}
 
 
 
