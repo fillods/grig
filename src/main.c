@@ -37,9 +37,11 @@
  *
  * \bug What do we do if we don't have getopt.h?
  *
- * \bug Debug level is not read from hamlib.
+ * \bug Debug level is not read from hamlib. Original debug level is
+ *      overwritten if used on rpcrig.
  */
 #include <stdlib.h>
+#include <signal.h>
 #include <gtk/gtk.h>
 #include <glib/gi18n.h>
 #include <hamlib/rig.h>
@@ -108,7 +110,7 @@ static void        grig_show_help      (void);
 static void        grig_show_version   (void);
 static gint        grig_list_add       (const struct rig_caps *, void *);
 static gint        grig_list_compare   (gconstpointer, gconstpointer);
-
+static void        grig_sig_handler    (int sig);
 
 
 /** \bief Main program execution entry.
@@ -292,13 +294,13 @@ main (int argc, char *argv[])
 
 /** \brief Create and initialize main application window.
  *  \param rignum The index of the radio wich is controled by the app
- *  \return The new GnomeApp widget or NULL if the specified rig number
- *          is invalid
+ *  \return A new GtkWindow widget.
  *
- * This function creates and initializes a new application widget, adds
- * menubar and statusbar, etc...
+ * This function creates and initializes a new GtkWindow which can be used
+ * by the main application to pack the rig controls in.
  *
- * \bug Add more text
+ * \note This function creates no contents; that part is done by the
+ *       rig_gui.c package.
  */
 static GtkWidget *
 grig_app_create       (gint rignum)
@@ -310,9 +312,8 @@ grig_app_create       (gint rignum)
 	gchar     *icon;
 
 
-	/* fixme: add rig_data_get_brand() and model () */
-	brand = g_strdup ("Hamlib");
-	model = g_strdup ("Dummy");
+	brand = rig_daemon_get_brand ();
+	model = rig_daemon_get_model ();
 
 	/* construct title */
 	title = g_strdup_printf (_("GRIG: %s %s"), brand, model);
@@ -337,10 +338,32 @@ grig_app_create       (gint rignum)
 	g_signal_connect (G_OBJECT (app), "destroy",
 			  G_CALLBACK (grig_app_destroy), NULL);
 
+	/* register UNIX signals as well so that we 
+	   have a chance to clean up hamlib.
+	*/
+	signal (SIGTERM, (void *) grig_sig_handler);
+	signal (SIGINT,  (void *) grig_sig_handler);
+	signal (SIGABRT, (void *) grig_sig_handler);
 
 	return app;
 }
 
+
+/** \brief Handler terminate signals.
+ *  \param sig The signal that has been received.
+ *
+ * This function is used to handle termination signals received by the program.
+ * The currently caught signals are SIGTERM, SIGINT and SIGABRT. When one of these
+ * signals is received, the function sends an error message to hamlib and tries
+ * to make a clean exit.
+ */
+static void grig_sig_handler (int sig)
+{
+	rig_debug (RIG_DEBUG_ERR, "*** GRIG: Received signal: %d\n", sig);
+	rig_debug (RIG_DEBUG_ERR, "*** GRIG: Trying clean exit...\n");
+
+	gtk_widget_destroy (grigapp);
+}
 
 
 /** \brief Handle delete events.
