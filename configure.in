@@ -77,8 +77,16 @@ PKG_CHECK_MODULES(HAMLIB, hamlib, [
 dnl various developer/devloper options
 dnl diable HW interaction; usefull to access RIG caps without
 dnl having rig; default=no
-AC_ARG_ENABLE(hardware, [  --disable-hardware     disable hardware IO],disable_hadware=yes,disable_hadware=no)
+AC_ARG_ENABLE(hardware, [  --disable-hardware      disable hardware IO],disable_hadware=yes,disable_hadware=no)
 if test "$disable_hadware" = yes ; then
+	AC_DEFINE(DISABLE_HW, 1, [Define if hardware is disabled.])
+fi
+
+dnl compiler flags to enable generating coverage report
+dnl using gcov
+AC_ARG_ENABLE(coverage, [  --enable-coverage       enable coverge reports],enable_coerage=yes,enable_coverage=no)
+if test "$enable_coverage" = yes ; then
+        CFLAGS="$CFLAGS -fprofile-arcs -ftest-coverage";
 	AC_DEFINE(DISABLE_HW, 1, [Define if hardware is disabled.])
 fi
 
@@ -97,7 +105,9 @@ GTK_V=`pkg-config --modversion gtk+-2.0`
 
 AC_OUTPUT([
 Makefile
-grig.1
+doc/Makefile
+doc/man/grig.1
+doc/man/Makefile
 grig.spec
 src/Makefile
 ])
@@ -112,5 +122,6 @@ echo Gthread version.... : $GTHR_V
 echo Gdk version........ : $GDK_V
 echo Gtk+ version....... : $GTK_V
 echo Disable hardware... : $disable_hadware
+echo Enable coverage.... : $enable_coverage
 echo
 
