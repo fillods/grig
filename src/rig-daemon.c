@@ -73,7 +73,7 @@ extern GConfClient *confclient;  /*!< Shared GConfClient. */
 static const rig_cmd_t DEF_RX_CYCLE[C_MAX_CYCLES][C_MAX_CMD_PER_CYCLE] = {
 	{ RIG_CMD_GET_STRENGTH, RIG_CMD_SET_FREQ_1, RIG_CMD_GET_FREQ_1, RIG_CMD_GET_PSTAT, RIG_CMD_SET_PSTAT },
 	{ RIG_CMD_GET_STRENGTH, RIG_CMD_SET_FREQ_2, RIG_CMD_GET_FREQ_2, RIG_CMD_SET_RIT,   RIG_CMD_GET_RIT   },
-	{ RIG_CMD_GET_STRENGTH, RIG_CMD_SET_FREQ_1, RIG_CMD_GET_FREQ_1, RIG_CMD_SET_RIT,   RIG_CMD_GET_RIT   },
+	{ RIG_CMD_GET_STRENGTH, RIG_CMD_SET_FREQ_1, RIG_CMD_GET_FREQ_1, RIG_CMD_SET_AGC,   RIG_CMD_GET_AGC   },
 	{ RIG_CMD_GET_STRENGTH, RIG_CMD_SET_FREQ_2, RIG_CMD_GET_FREQ_2, RIG_CMD_SET_XIT,   RIG_CMD_GET_XIT   },
 	{ RIG_CMD_GET_STRENGTH, RIG_CMD_SET_FREQ_1, RIG_CMD_GET_FREQ_1, RIG_CMD_SET_MODE,  RIG_CMD_GET_MODE  },
 	{ RIG_CMD_GET_STRENGTH, RIG_CMD_SET_VFO,    RIG_CMD_GET_VFO,    RIG_CMD_SET_PTT,   RIG_CMD_GET_PTT   }
@@ -303,7 +303,7 @@ rig_daemon_post_init ()
 
 	/* debug info about detected has-get caps */
 	rig_debug (RIG_DEBUG_TRACE,
-		   "*** GRIG: %s: GET bits: %d%d%d%d%d%d%d%d%d%d%d%d%d\n",
+		   "*** GRIG: %s: GET bits: %d%d%d%d%d%d%d%d%d%d%d%d%d%d\n",
 		   __FUNCTION__,
 		   has_get->pstat,
 		   has_get->ptt,
@@ -314,6 +314,7 @@ rig_daemon_post_init ()
 		   has_get->freq2,
 		   has_get->rit,
 		   has_get->xit,
+		   has_get->agc,
 		   has_get->power,
 		   has_get->strength,
 		   has_get->swr,
@@ -321,7 +322,7 @@ rig_daemon_post_init ()
 
 	/* debug info about detected has-set caps */
 	rig_debug (RIG_DEBUG_TRACE,
-		   "*** GRIG: %s: SET bits: %d%d%d%d%d%d%d%d%d%dXXX\n",
+		   "*** GRIG: %s: SET bits: %d%d%d%d%d%d%d%d%d%d%dXXX\n",
 		   __FUNCTION__,
 		   has_set->pstat,
 		   has_set->ptt,
@@ -332,6 +333,7 @@ rig_daemon_post_init ()
 		   has_set->freq2,
 		   has_set->rit,
 		   has_set->xit,
+		   has_set->agc,
 		   has_set->power
 /* not settable
 		   has_get->strength,
@@ -1015,6 +1017,67 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 		}
 
 		break;
+
+		/* get AGC level */
+	case RIG_CMD_GET_AGC:
+
+		/* check whether command is available */
+		if (has_get->agc) {
+			value_t val;
+
+			/* try to execute command */
+			retcode = rig_get_level (myrig, RIG_VFO_CURR, RIG_LEVEL_AGC, &val);
+
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				rig_debug (RIG_DEBUG_ERR,
+					   "*** GRIG: %s: Failed to execute RIG_CMD_GET_AGC\n",
+					   __FUNCTION__);
+
+				rig_anomaly_raise (RIG_CMD_GET_AGC);
+			}
+			else {
+				get->agc = val.i;
+			}
+		}
+
+		break;
+
+		/* set AGC level */
+	case RIG_CMD_SET_AGC:
+
+		/* check whether command is available */
+		if (has_set->agc && new->agc) {
+			value_t val;
+
+			val.i = set->agc;
+
+			/* try to execute command */
+			retcode = rig_set_level (myrig, RIG_VFO_CURR, RIG_LEVEL_AGC, val);
+
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				rig_debug (RIG_DEBUG_ERR,
+					   "*** GRIG: %s: Failed to execute RIG_CMD_SET_AGC\n",
+					   __FUNCTION__);
+
+				rig_anomaly_raise (RIG_CMD_SET_AGC);
+			}
+			else {
+
+				/* reset flag */
+				new->agc = FALSE;
+			}	
+		}
+
+		/* if rig doesn't have get_ptt we set it manually to
+		   make widgets happy.
+		*/
+		if (!has_get->agc) {
+			get->agc = set->agc;
+		}
+		break;
+
 
 		/* get signal strength, S-meter */
 	case RIG_CMD_GET_STRENGTH:

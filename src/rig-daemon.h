@@ -69,6 +69,8 @@ typedef enum {
 	RIG_CMD_SET_PTT,       /*!< Command to set the current PTT status. */
 	RIG_CMD_GET_MODE,      /*!< Command to get the current mode and passband width. */
 	RIG_CMD_SET_MODE,      /*!< Command to set the new mode and/or passband width. */
+	RIG_CMD_GET_AGC,       /*!< Command to get the automatic gain control level. */
+	RIG_CMD_SET_AGC,       /*!< Command to set the automatic gain control level. */
 
 	RIG_CMD_GET_STRENGTH,  /*!< Command to get signal strength. */
 	RIG_CMD_GET_PWR,       /*!< ... */
