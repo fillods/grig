@@ -71,34 +71,32 @@ typedef enum rig_data_pbw_e {
  * holds the actual settings obtained from the rig.
  */ 
 typedef struct {
-	powerstat_t      pstat;   /*!< Power status (ON/OFF). */
-	ptt_t            ptt;     /*!< PTT status (ON/OFF). */
-	vfo_t            vfo;     /*!< VFO. */
-	rmode_t          mode;    /*!< Mode. */
-	rig_data_pbw_t   pbw;     /*!< Passband width. */
-	freq_t           freq1;   /*!< Primary (working) frequency. */
-	freq_t           freq2;   /*!< Secondary frequency. */
-	shortfreq_t      rit;     /*!< RIT. */
-	shortfreq_t      xit;     /*!< XIT. */
-	float            power;   /*!< TX power. */
-	int              agc;     /*!< AGC level. */
-	int              att;     /*!< Attenuator. */
-	int              preamp;  /*!< Pre-amplifier. */
+	powerstat_t      pstat;    /*!< Power status (ON/OFF). */
+	ptt_t            ptt;      /*!< PTT status (ON/OFF). */
+	vfo_t            vfo;      /*!< VFO. */
+	rmode_t          mode;     /*!< Mode. */
+	rig_data_pbw_t   pbw;      /*!< Passband width. */
+	freq_t           freq1;    /*!< Primary (working) frequency. */
+	freq_t           freq2;    /*!< Secondary frequency. */
+	shortfreq_t      rit;      /*!< RIT. */
+	shortfreq_t      xit;      /*!< XIT. */
+	float            power;    /*!< TX power. */
+	int              agc;      /*!< AGC level. */
+	int              att;      /*!< Attenuator. */
+	int              preamp;   /*!< Pre-amplifier. */
 
 	/* read only fields */
-	int             strength; /*!< Signal strength. */
-	float           swr;      /*!< SWR. */
-	int             comp;     /*!< Compression. */
-	float           alc;      /*!< ALC. */
-	int             ic;       /*!< IC. */
+	int             strength;  /*!< Signal strength. */
+	float           swr;       /*!< SWR. */
+	float           alc;       /*!< ALC. */
 	
-	freq_t          fmin;     /*!< Lower frequency limit for current mode. */
-	freq_t          fmax;     /*!< Upper frequency limit for current mode. */
-	shortfreq_t     fstep;    /*!< Smallest freqency step for current mode. */
-	shortfreq_t     ritmax;   /*!< Absolute max RIT. */
-	shortfreq_t     ritstep;  /*!< Smallest RIT step. */
-	shortfreq_t     xitmax;   /*!< Absolute max XIT. */
-	shortfreq_t     xitstep;  /*!< Smallest XIT step. */
+	freq_t          fmin;      /*!< Lower frequency limit for current mode. */
+	freq_t          fmax;      /*!< Upper frequency limit for current mode. */
+	shortfreq_t     fstep;     /*!< Smallest freqency step for current mode. */
+	shortfreq_t     ritmax;    /*!< Absolute max RIT. */
+	shortfreq_t     ritstep;   /*!< Smallest RIT step. */
+	shortfreq_t     xitmax;    /*!< Absolute max XIT. */
+	shortfreq_t     xitstep;   /*!< Smallest XIT step. */
 } grig_settings_t;
 
 
@@ -120,9 +118,7 @@ typedef struct {
 	/* read only fields */
 	int         strength;
 	int         swr;
-	int         comp;
 	int         alc;
-	int         ic;
 } grig_cmd_avail_t;
 
 
