@@ -1,3 +1,10 @@
+2005-02-09;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/rig-daemon.c:
+	Added error handling when creation of daemon process
+	is not successful.
+
+	
 2005-02-02;	Alexandru Csete <csete@users.sourceforge.net>
 
 	* src/rig-daemon.h, src/rig-daemon.c:
