@@ -57,7 +57,9 @@ static gint rignum      = -1;    /*!< Flag indicating which radio to use. */
 static gint rotnum      = -1;    /*!< Flag indicating which rotator to use. */
 static gint listrigs    =  0;    /*!< Flag indicating that configured radios should be listed. */ 
 static gint listrots    =  0;    /*!< Flag indicating that configured rotators should be listed. */
-static gint rundruid    =  0;    /*!< Flag indicating that execution of first time druid is requested. */
+// begin PATCH-996426
+//static gint rundruid    =  0;    /*!< Flag indicating that execution of first time druid is requested. */
+// end PATCH-996426
 
 
 /* Static structure defining command line arguments for
@@ -75,14 +77,18 @@ static const struct poptOption grig_options[] =
 	{ "antenna", 'a', POPT_ARG_INT, &rotnum, 0,
 	  N_("Use the rotator with NUMBER"), 
 	  N_("NUMBER") },
-	{ "run-druid", 'd', POPT_ARG_NONE, &rundruid, 1,
-	  N_("Run first-time configuration druid"), NULL },
+// begin PATCH-996426
+//	{ "run-druid", 'd', POPT_ARG_NONE, &rundruid, 1,
+//	  N_("Run first-time configuration druid"), NULL },
+// end PATCH-996426
 	{ NULL, '\0', 0, NULL, 0 }
 };
 
 
 /* private function prototypes */
-static int         grig_check_config   (void);
+// begin PATCH-996426
+//static int         grig_check_config   (void);
+// end PATCH-996426
 static void        grig_list_rigs_rots (void);
 static GtkWidget  *grig_app_create     (gint);
 static gint        grig_app_delete     (GtkWidget *, GdkEvent *, gpointer);
@@ -135,20 +141,22 @@ main (int argc, char *argv[])
 	}
 
 
+// begin PATCH-996426 
 	/* Check whether first time druid needs to be executed.
 	   This is the case if rundruid = 1 (cmd line option) or
 	   the grig_check_config() function returns 1.
 	*/
-	rundruid = rundruid && grig_check_config ();
-	if (rundruid) {
+//	rundruid = rundruid && grig_check_config ();
+//	if (rundruid) {
 
 		/* run druid and check result */
-		if (grig_druid_run ()) {
+//		if (grig_druid_run ()) {
 
 			/* something bad happened */
 
-		}
-	}
+//		}
+//	}
+// end PATCH-996426 
 
 	/* check whether user has requested a specific radio,
 	   if not, get the default.
@@ -156,6 +164,7 @@ main (int argc, char *argv[])
 	if (rignum == -1) {
 		rignum = gconf_client_get_int (confclient, GRIG_CONFIG_RIG_DEF_KEY, NULL);
 	}
+
 
 	/* we set hamlib debug level to TRACE while we fire up the daemon; it will be
 	   reset when we create the menubar
@@ -206,46 +215,47 @@ main (int argc, char *argv[])
  * \note The user can explicitly request the execution of the first time
  *       druid using a command line argument.
  */
-static int
-grig_check_config ()
-{
-	gboolean rigok = FALSE;    /* flag indicating result of rig check */
-	gboolean rotok = FALSE;    /* flag indicating result of rotator check */
-	gint     def   = -1;       /* default rig or rotator */
-	gint     number = 0;       /* number of rigs/rots */
-	gchar   *buff;             /* striing buffer */
-
-
+// begin PATCH-996426
+//static int
+//grig_check_config ()
+//{
+//	gboolean rigok = FALSE;    /* flag indicating result of rig check */
+//	gboolean rotok = FALSE;    /* flag indicating result of rotator check */
+//	gint     def   = -1;       /* default rig or rotator */
+//	gint     number = 0;       /* number of rigs/rots */
+//	gchar   *buff;             /* striing buffer */
+//
+//
 	/* check rig config */
-	def = gconf_client_get_int (confclient, GRIG_CONFIG_RIG_DEF_KEY, NULL);
+//	def = gconf_client_get_int (confclient, GRIG_CONFIG_RIG_DEF_KEY, NULL);
 
-	buff = g_strdup_printf ("%s/%i", GRIG_CONFIG_RIG_DIR, def);
-	rigok = gconf_client_dir_exists (confclient, buff, NULL);
-	g_free (buff);
+//	buff = g_strdup_printf ("%s/%i", GRIG_CONFIG_RIG_DIR, def);
+//	rigok = gconf_client_dir_exists (confclient, buff, NULL);
+//	g_free (buff);
 
 	/* check that number of rigs > 0 */
-	number = gconf_client_get_int (confclient, GRIG_CONFIG_RIG_NUM_KEY, NULL);
+//	number = gconf_client_get_int (confclient, GRIG_CONFIG_RIG_NUM_KEY, NULL);
 	
-	rigok = (rigok && number);
+//	rigok = (rigok && number);
 
-	def = -1;
-	number = 0;
+//	def = -1;
+//	number = 0;
 
 	/* check rotator config */
-	def = gconf_client_get_int (confclient, GRIG_CONFIG_ROT_DEF_KEY, NULL);
+//	def = gconf_client_get_int (confclient, GRIG_CONFIG_ROT_DEF_KEY, NULL);
 
-	buff = g_strdup_printf ("%s/%i", GRIG_CONFIG_ROT_DIR, def);
-	rotok = gconf_client_dir_exists (confclient, buff, NULL);
-	g_free (buff);
+//	buff = g_strdup_printf ("%s/%i", GRIG_CONFIG_ROT_DIR, def);
+//	rotok = gconf_client_dir_exists (confclient, buff, NULL);
+//	g_free (buff);
 
 	/* check that number of rots > 0 */
-	number = gconf_client_get_int (confclient, GRIG_CONFIG_ROT_NUM_KEY, NULL);
+//	number = gconf_client_get_int (confclient, GRIG_CONFIG_ROT_NUM_KEY, NULL);
 
-	rotok = (rotok && number);
+//	rotok = (rotok && number);
 
 
-	return (rigok && rotok);
-}
+//	return (rigok && rotok);
+//}
 
 
 /** \brief List rigs and/or rotators.
@@ -276,52 +286,62 @@ grig_list_rigs_rots ()
 		/* get number of rigs */
 		number = gconf_client_get_int (confclient, GRIG_CONFIG_RIG_NUM_KEY, NULL);
 
-		/* get default rig */
-		def = gconf_client_get_int (confclient, GRIG_CONFIG_RIG_DEF_KEY, NULL);
+		/* if number is 0 no rigs are configured */
+		if (number ==0) {
+			g_print ("\n\n");
+			g_print (_("   No radios have been configured.\n"));
+			g_print (_("   Grig will use dummy backend.\n"));
+		}
+		else {
 
-		g_print ("\n\n List of configured radios:\n\n");
-		g_print ("  #   Brand         Model         Port            Speed      Def\n");
+			/* get default rig */
+			def = gconf_client_get_int (confclient, GRIG_CONFIG_RIG_DEF_KEY, NULL);
+			
+			g_print ("\n\n");
+			g_print (_(" List of configured radios:\n\n"));
+			g_print (_("  #   Brand         Model         Port            Speed      Def\n"));
 		
-		/* loop over aal rigs */
-		for (i = 0; i < number; i++) {
+			/* loop over aal rigs */
+			for (i = 0; i < number; i++) {
 
-			/* get Brand */
-			buff = g_strdup_printf ("%s/%i/Brand", GRIG_CONFIG_RIG_DIR, i);
-			brand = gconf_client_get_string (confclient, buff, NULL);
-			g_free (buff);
+				/* get Brand */
+				buff = g_strdup_printf ("%s/%i/Brand", GRIG_CONFIG_RIG_DIR, i);
+				brand = gconf_client_get_string (confclient, buff, NULL);
+				g_free (buff);
+				
+				/* get model */
+				buff = g_strdup_printf ("%s/%i/Model", GRIG_CONFIG_RIG_DIR, i);
+				model = gconf_client_get_string (confclient, buff, NULL);
+				g_free (buff);
+				
+				/* get port */
+				buff = g_strdup_printf ("%s/%i/port", GRIG_CONFIG_RIG_DIR, i);
+				port = gconf_client_get_string (confclient, buff, NULL);
+				g_free (buff);
+				
+				/* get speed */
+				buff = g_strdup_printf ("%s/%i/speed", GRIG_CONFIG_RIG_DIR, i);
+				speed = gconf_client_get_int (confclient, buff, NULL);
+				g_free (buff);
+				
+				/* get type */
+				buff = g_strdup_printf ("%s/%i/type", GRIG_CONFIG_RIG_DIR, i);
+				type = gconf_client_get_int (confclient, buff, NULL);
+				g_free (buff);
+				
+				if (speed != 0) {
+					printf ("%3d   %-13s %-13s %-15s %-10d %s\n",
+						i, brand, model, port, speed, (i==def) ? " * " : "");
+				}
+				else {
+					printf ("%3d   %-13s %-13s %-15s %-10s %s\n",
+						i, brand, model, port, "DEF", (i==def) ? " * " : "");
+				}
 
-			/* get model */
-			buff = g_strdup_printf ("%s/%i/Model", GRIG_CONFIG_RIG_DIR, i);
-			model = gconf_client_get_string (confclient, buff, NULL);
-			g_free (buff);
-
-			/* get port */
-			buff = g_strdup_printf ("%s/%i/port", GRIG_CONFIG_RIG_DIR, i);
-			port = gconf_client_get_string (confclient, buff, NULL);
-			g_free (buff);
-
-			/* get speed */
-			buff = g_strdup_printf ("%s/%i/speed", GRIG_CONFIG_RIG_DIR, i);
-			speed = gconf_client_get_int (confclient, buff, NULL);
-			g_free (buff);
-
-			/* get type */
-			buff = g_strdup_printf ("%s/%i/type", GRIG_CONFIG_RIG_DIR, i);
-			type = gconf_client_get_int (confclient, buff, NULL);
-			g_free (buff);
-
-			if (speed != 0) {
-				printf ("%3d   %-13s %-13s %-15s %-10d %s\n",
-					i, brand, model, port, speed, (i==def) ? " * " : "");
+				g_free (brand);
+				g_free (model);
+				g_free (port);
 			}
-			else {
-				printf ("%3d   %-13s %-13s %-15s %-10s %s\n",
-					i, brand, model, port, "DEF", (i==def) ? " * " : "");
-			}
-
-			g_free (brand);
-			g_free (model);
-			g_free (port);
 		}
 
 	}
@@ -330,47 +350,57 @@ grig_list_rigs_rots ()
 		/* get number of rots */
 		number = gconf_client_get_int (confclient, GRIG_CONFIG_ROT_NUM_KEY, NULL);
 
-		/* get default rot */
-		def = gconf_client_get_int (confclient, GRIG_CONFIG_ROT_DEF_KEY, NULL);
+		/* if number is 0 no rotators are configured */
+		if (number ==0) {
+			g_print ("\n\n");
+			g_print (_("   No rotators have been configured.\n"));
+			g_print (_("   Grig will use dummy backend.\n"));
+		}
+		else {
 
-		g_print ("\n\n List of configured rotators:\n\n");
-		g_print ("  #   Brand         Model         Type    Port            Speed      Def\n");
+			/* get default rot */
+			def = gconf_client_get_int (confclient, GRIG_CONFIG_ROT_DEF_KEY, NULL);
+
+			g_print ("\n\n");
+			g_print (_(" List of configured rotators:\n\n"));
+			g_print (_("  #   Brand         Model         Type    Port            Speed      Def\n"));
 		
-		/* loop over all rots */
-		for (i = 0; i < number; i++) {
+			/* loop over all rots */
+			for (i = 0; i < number; i++) {
 
-			/* get Brand */
-			buff = g_strdup_printf ("%s/%i/Brand", GRIG_CONFIG_ROT_DIR, i);
-			brand = gconf_client_get_string (confclient, buff, NULL);
-			g_free (buff);
+				/* get Brand */
+				buff = g_strdup_printf ("%s/%i/Brand", GRIG_CONFIG_ROT_DIR, i);
+				brand = gconf_client_get_string (confclient, buff, NULL);
+				g_free (buff);
 
-			/* get model */
-			buff = g_strdup_printf ("%s/%i/Model", GRIG_CONFIG_ROT_DIR, i);
-			model = gconf_client_get_string (confclient, buff, NULL);
-			g_free (buff);
+				/* get model */
+				buff = g_strdup_printf ("%s/%i/Model", GRIG_CONFIG_ROT_DIR, i);
+				model = gconf_client_get_string (confclient, buff, NULL);
+				g_free (buff);
 
-			/* get port */
-			buff = g_strdup_printf ("%s/%i/port", GRIG_CONFIG_ROT_DIR, i);
-			port = gconf_client_get_string (confclient, buff, NULL);
-			g_free (buff);
+				/* get port */
+				buff = g_strdup_printf ("%s/%i/port", GRIG_CONFIG_ROT_DIR, i);
+				port = gconf_client_get_string (confclient, buff, NULL);
+				g_free (buff);
 
-			/* get speed */
-			buff = g_strdup_printf ("%s/%i/speed", GRIG_CONFIG_ROT_DIR, i);
-			speed = gconf_client_get_int (confclient, buff, NULL);
-			g_free (buff);
+				/* get speed */
+				buff = g_strdup_printf ("%s/%i/speed", GRIG_CONFIG_ROT_DIR, i);
+				speed = gconf_client_get_int (confclient, buff, NULL);
+				g_free (buff);
+				
+				if (speed != 0) {
+					printf ("%3d   %-13s %-13s %-7s %-15s %-10d %s\n",
+						i, brand, model, types[type], port, speed, (i==def) ? " * " : "");
+				}
+				else {
+					printf ("%3d   %-13s %-13s %-7s %-15s %-10s %s\n",
+						i, brand, model, types[type], port, "DEF", (i==def) ? " * " : "");
+				}
 
-			if (speed != 0) {
-				printf ("%3d   %-13s %-13s %-7s %-15s %-10d %s\n",
-					i, brand, model, types[type], port, speed, (i==def) ? " * " : "");
+				g_free (brand);
+				g_free (model);
+				g_free (port);
 			}
-			else {
-				printf ("%3d   %-13s %-13s %-7s %-15s %-10s %s\n",
-					i, brand, model, types[type], port, "DEF", (i==def) ? " * " : "");
-			}
-
-			g_free (brand);
-			g_free (model);
-			g_free (port);
 		}
 
 	}
@@ -402,6 +432,22 @@ grig_app_create       (gint rignum)
 	/* just a last sanity check to make sure we have a rig */
 	g_return_val_if_fail (rignum >= 0, NULL);
 
+
+// begin PATCH-996426
+	/* check whether we have a configuration at rignum; otherwise we will
+	   just use the dummy backend.
+	*/
+	buff = g_strdup_printf ("%s/%i", GRIG_CONFIG_RIG_DIR, rignum);
+
+	if (!gconf_client_dir_exists (confclient, buff, NULL)) {
+		g_free (buff);
+
+		brand = g_strdup ("Hamlib");
+		model = g_strdup ("Dummy");
+	}
+	else {
+		g_free (buff);
+// end PATCH-996426
 	/* get rig brand */
 	buff = g_strdup_printf ("%s/%i/Brand", GRIG_CONFIG_RIG_DIR, rignum);
 	brand = gconf_client_get_string (confclient, buff, NULL);
@@ -412,8 +458,12 @@ grig_app_create       (gint rignum)
 	model = gconf_client_get_string (confclient, buff, NULL);
 	g_free (buff);
 
+// begin PATCH-996426
+	}
+// end PATCH-996426
+
 	/* construct title */
-	title = g_strdup_printf ("grig %s: %s %s", VERSION, brand, model);
+	title = g_strdup_printf (_("Gnome RIG %s: %s %s)", VERSION, brand, model);
 
 	/* create application */
 	app = gnome_app_new (PACKAGE, title);

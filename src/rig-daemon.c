@@ -139,7 +139,27 @@ rig_daemon_start (int rignum)
 		return 1;
 	}
 
+// begin PATCH-996426
+	/* check if rignum exists; otherwise use dummy backend */
+	buff = g_strdup_printf ("%s/%i", GRIG_CONFIG_RIG_DIR);
+	if (!gconf_client_dir_exists (confclient, buff, NULL)) {
+		/* free buffer */
+		g_free (buff);
 
+		/* send a debug message */
+		rig_debug (RIG_DEBUG_TRACE,
+			   "*** GRIG: %s: Config not found; using dummy backend\n",
+			   __FUNCTION__);
+
+		/* initialize values */
+		rigid = 1;
+		rigport = g_strdup ("/dev/ttyS0");
+		speed = 0;
+	}
+	else {
+		/* free buffer */
+		g_free (buff);
+//end PATCH-996426
 	/* get configuration */
 	buff = g_strdup_printf ("%s/%i/ID", GRIG_CONFIG_RIG_DIR, rignum);
 	rigid = gconf_client_get_int (confclient, buff, NULL);
@@ -152,7 +172,9 @@ rig_daemon_start (int rignum)
 	buff = g_strdup_printf ("%s/%i/speed", GRIG_CONFIG_RIG_DIR, rignum);
 	speed = gconf_client_get_int (confclient, buff, NULL);
 	g_free (buff);
-	
+// begin PATCH-996426
+	}
+//end PATCH-996426
 
 	/* send a debug message */
 	rig_debug (RIG_DEBUG_TRACE,
