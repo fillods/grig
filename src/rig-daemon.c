@@ -405,7 +405,8 @@ rig_daemon_post_init ()
 /* not settable
 		   has_get->strength,
 		   has_get->swr,
-		   has_get->alc*/
+		   has_get->alc
+*/
 		);
 
 }
@@ -447,39 +448,68 @@ rig_daemon_cycle     (gpointer data)
 	/* loop forever until reception of STOP signal */
 	while (stopdaemon == FALSE) {
 
-		/* check whether we are in RX or TX mode;
-		   note that the major cycle is not influenced
-		   by any change in RX/TX state
+		/* first we check whether rig is powered ON since some rigs
+		   will not talk to us in power-off tate.
+		   NOTE: code should be safe even if rig does not support
+		         get_powerstat since get->pstat is set to ON if rig
+			 does not have functionality.
 		*/
-		if (get->ptt == RIG_PTT_OFF) {
-			/* Execute receiver cycle */
+		if (get->pstat == RIG_POWER_ON) {
 
-			/* loop through the current cycle in the command table */
-			for (minor = 0; minor < C_MAX_CMD_PER_CYCLE; minor++) {
 
-				rig_daemon_exec_cmd (DEF_RX_CYCLE[major][minor],
-						     get, set, new,
-						     has_get, has_set);
+			/* check whether we are in RX or TX mode;
+			   note that the major cycle is not influenced
+			   by any change in RX/TX state
+			*/
+			if (get->ptt == RIG_PTT_OFF) {
+				/* Execute receiver cycle */
+
+				/* loop through the current cycle in the command table */
+				for (minor = 0; minor < C_MAX_CMD_PER_CYCLE; minor++) {
+
+					rig_daemon_exec_cmd (DEF_RX_CYCLE[major][minor],
+							     get, set, new,
+							     has_get, has_set);
 						     
-			}
+				}
 /* slow motion in debug mode */
 #ifdef GRIG_DEBUG
-			usleep (5000 * C_RX_CYCLE_DELAY);
+				usleep (5000 * C_RX_CYCLE_DELAY);
 #else
-			usleep (1000 * C_RX_CYCLE_DELAY);
+				usleep (1000 * C_RX_CYCLE_DELAY);
 #endif
-		}
-		else {
-			/* Execute transmitter cycle */
-
-			/* loop through the current cycle in the commad table. */
-			for (minor = 0; minor < C_MAX_CMD_PER_CYCLE; minor++) {
-
-				rig_daemon_exec_cmd (DEF_TX_CYCLE[major][minor],
-						     get, set, new,
-						     has_get, has_set);
-
 			}
+			else {
+				/* Execute transmitter cycle */
+
+				/* loop through the current cycle in the commad table. */
+				for (minor = 0; minor < C_MAX_CMD_PER_CYCLE; minor++) {
+
+					rig_daemon_exec_cmd (DEF_TX_CYCLE[major][minor],
+							     get, set, new,
+							     has_get, has_set);
+
+				}
+
+/* slow motion in debug mode */
+#ifdef GRIG_DEBUG
+				usleep (5000 * C_TX_CYCLE_DELAY);
+#else
+				usleep (1000 * C_TX_CYCLE_DELAY);
+#endif
+			}
+
+			/* increment major cycle counter;
+			   reset to zero if it reaches the maximum count
+			*/
+			if (++major == C_MAX_CYCLES)
+				major = 0;
+		}
+
+		/* otherwise check the power status only */
+		else {
+			rig_daemon_exec_cmd (RIG_CMD_SET_PSTAT, get, set, new, has_get, has_set);
+			rig_daemon_exec_cmd (RIG_CMD_GET_PSTAT, get, set, new, has_get, has_set);
 
 /* slow motion in debug mode */
 #ifdef GRIG_DEBUG
@@ -487,13 +517,8 @@ rig_daemon_cycle     (gpointer data)
 #else
 			usleep (1000 * C_TX_CYCLE_DELAY);
 #endif
-		}
 
-		/* increment major cycle counter;
-		   reset to zero if it reaches the maximum count
-		*/
-		if (++major == C_MAX_CYCLES)
-			major = 0;
+		}
 
 	}
 
