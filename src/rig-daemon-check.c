@@ -390,6 +390,8 @@ rig_daemon_check_xit      (RIG               *myrig,
 }
 
 
+
+
 /** \brief Check mode and passband width availabilities.
  *  \param rig The radio handle.
  *  \param get Pointer to shared data 'get'.
@@ -476,6 +478,7 @@ rig_daemon_check_level     (RIG               *myrig,
 	has_get->strength = (haslevel && RIG_LEVEL_STRENGTH);
 	has_get->swr      = (haslevel && RIG_LEVEL_SWR);
 	has_get->alc      = (haslevel && RIG_LEVEL_ALC);
+	has_get->agc      = (haslevel && RIG_LEVEL_AGC);
 
 	/* read values */
 	if (has_get->power) {
@@ -539,10 +542,27 @@ rig_daemon_check_level     (RIG               *myrig,
 		}
 	}
 
+	if (has_get->agc) {
+		retcode = rig_get_level (myrig, RIG_VFO_CURR, RIG_LEVEL_AGC, &val);
+		if (retcode == RIG_OK) {
+			get->agc = val.i;
+		}
+		else {
+			/* send an error report */
+			rig_debug (RIG_DEBUG_ERR, "*** GRIG: %s: Could not get AGC",
+				   __FUNCTION__);
+			
+			/* disable command */
+			has_get->agc = FALSE;
+			
+		}
+	}
+
+
 	/* get available write levels
 	 */
 	haslevel = rig_has_set_level (myrig, GRIG_LEVEL_WR);
 
 	has_set->power = (haslevel && RIG_LEVEL_RFPOWER);
-
+	has_set->agc   = (haslevel && RIG_LEVEL_AGC);
 }
