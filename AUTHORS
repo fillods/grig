@@ -1,5 +1,7 @@
 Grig is designed and developed by Alexandru Csete, OZ9AEC.
 
-Joop Stakenborg, PG4I, provides debian packages under debian/testing. He has also done a lots of testing and fixed some bugs.
+Joop Stakenborg, PG4I, provides debian packages under debian/testing. He has
+also done a lots of testing and fixed some bugs.
 
-Pierre-Philippe Coupard, F8EJF, should be credited for the s-meter pixmap which has been taken from his very nice CWirc program.
+Pierre-Philippe Coupard, F8EJF, should be credited for the s-meter pixmap which
+has been taken from his very nice CWirc program.
