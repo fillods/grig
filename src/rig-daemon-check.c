@@ -56,7 +56,12 @@
  * This functions checks the availability of the power status
  * function by trying to read it and then trying to set it to
  * the read value. If the read command is unsuccessful the
- * write comman is executed with RIG_POWER_OFF parameter.
+ * write command is not executed since we don't know what to
+ * set it to.
+ *
+ * \note Since bug #1082325 this is the only setting which is tested
+ *       for real. All other setting availabilities are just obtained
+ *       from the rig caps structure.
  */
 void
 rig_daemon_check_pwrstat         (RIG              *myrig,
@@ -75,16 +80,16 @@ rig_daemon_check_pwrstat         (RIG              *myrig,
 	if (retcode == RIG_OK) {
 		has_get->pstat = TRUE;
 		get->pstat = pwr;
+
+		/* try to set power status */
+		retcode = rig_set_powerstat (myrig, get->pstat);
+		has_set->pstat = (retcode == RIG_OK) ? TRUE : FALSE;
 	}
 	else {
 		has_get->pstat = FALSE;
-		get->pstat = RIG_POWER_OFF;
+		get->pstat = RIG_POWER_ON;
+		has_set->pstat = FALSE;
 	}
-
-	/* try to set power status */
-	retcode = rig_set_powerstat (myrig, get->pstat);
-	has_set->pstat = (retcode == RIG_OK) ? TRUE : FALSE;
-
 }
 
 
