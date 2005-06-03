@@ -2,7 +2,7 @@ AC_INIT(src/main.c)
 
 AM_CONFIG_HEADER(config.h)
 
-AM_INIT_AUTOMAKE(grig, 0.4.2)
+AM_INIT_AUTOMAKE(grig, 0.4.3)
 
 AM_MAINTAINER_MODE
 AC_PROG_INTLTOOL([0.21])
@@ -14,7 +14,7 @@ AC_ISC_POSIX
 AC_HEADER_STDC
 AM_PROG_LIBTOOL
 
-AC_CHECK_HEADERS([sys/time.h unistd.h getopt.h])
+AC_CHECK_HEADERS([sys/time.h getopt.h])
 
 if test "${ac_cv_c_compiler_gnu}" = "yes"; then
   CFLAGS="${CFLAGS} -Wall"
