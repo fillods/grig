@@ -46,7 +46,6 @@
  */
 #include <gtk/gtk.h>
 #include <hamlib/rig.h>
-#include <unistd.h>
 #include <string.h>
 #include "grig-config.h"
 #include "rig-anomaly.h"
@@ -378,7 +377,7 @@ rig_daemon_stop  ()
 	}
 
 	/* give the daemon som time to exit */
-	usleep (C_RIG_DAEMON_STOP_TIMEOUT);
+	g_usleep (C_RIG_DAEMON_STOP_TIMEOUT);
 
 	/* send a debug message */
 	rig_debug (RIG_DEBUG_TRACE,
@@ -537,9 +536,9 @@ rig_daemon_cycle     (gpointer data)
 							     has_get, has_set);
 /* slow motion in debug mode */
 #ifdef GRIG_DEBUG
-					usleep (5000 * cmd_delay);
+					g_usleep (5000 * cmd_delay);
 #else
-					usleep (1000 * cmd_delay);
+					g_usleep (1000 * cmd_delay);
 #endif
 				}
 			}
@@ -554,9 +553,9 @@ rig_daemon_cycle     (gpointer data)
 							     has_get, has_set);
 /* slow motion in debug mode */
 #ifdef GRIG_DEBUG
-					usleep (15000 * cmd_delay);
+					g_usleep (15000 * cmd_delay);
 #else
-					usleep (3000 * cmd_delay);
+					g_usleep (3000 * cmd_delay);
 #endif
 				}
 
@@ -574,16 +573,16 @@ rig_daemon_cycle     (gpointer data)
 			rig_daemon_exec_cmd (RIG_CMD_SET_PSTAT, get, set, new, has_get, has_set);
 /* slow motion in debug mode */
 #ifdef GRIG_DEBUG
-			usleep (15000 * cmd_delay);
+			g_usleep (15000 * cmd_delay);
 #else
-			usleep (3000 * cmd_delay);
+			g_usleep (3000 * cmd_delay);
 #endif
 			rig_daemon_exec_cmd (RIG_CMD_GET_PSTAT, get, set, new, has_get, has_set);
 /* slow motion in debug mode */
 #ifdef GRIG_DEBUG
-			usleep (15000 * cmd_delay);
+			g_usleep (15000 * cmd_delay);
 #else
-			usleep (3000 * cmd_delay);
+			g_usleep (3000 * cmd_delay);
 #endif
 		}
 
@@ -661,9 +660,9 @@ rig_daemon_cycle_cb  (gpointer data)
 							     has_get, has_set);
 /* slow motion in debug mode */
 #ifdef GRIG_DEBUG
-					usleep (5000 * cmd_delay);
+					g_usleep (5000 * cmd_delay);
 #else
-					usleep (1000 * cmd_delay);
+					g_usleep (1000 * cmd_delay);
 #endif
 				}
 			}
@@ -681,9 +680,9 @@ rig_daemon_cycle_cb  (gpointer data)
 							     has_get, has_set);
 /* slow motion in debug mode */
 #ifdef GRIG_DEBUG
-					usleep (10000 * cmd_delay);
+					g_usleep (10000 * cmd_delay);
 #else
-					usleep (2000 * cmd_delay);
+					g_usleep (2000 * cmd_delay);
 #endif
 				}
 			}
@@ -697,9 +696,9 @@ rig_daemon_cycle_cb  (gpointer data)
 
 /* slow motion in debug mode */
 #ifdef GRIG_DEBUG
-		usleep (15000 * cmd_delay);
+		g_usleep (15000 * cmd_delay);
 #else
-		usleep (3000 * cmd_delay);
+		g_usleep (3000 * cmd_delay);
 #endif
 		rig_daemon_exec_cmd (RIG_CMD_GET_PSTAT, get, set, new, has_get, has_set);
 	}
