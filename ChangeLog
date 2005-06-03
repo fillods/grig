@@ -1,3 +1,12 @@
+2005-06-03;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/rig-daemon.c:
+	Use g_usleep instead of usleep to make code more portable.
+
+	* configure.ac:
+	Increment micro version and remove check for unistd.h
+	
+
 2005-02-12;	Alexandru Csete <csete@users.sourceforge.net>
 
 	* src/rig-daemon.c:
