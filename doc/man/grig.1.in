@@ -36,7 +36,7 @@ set hamlib debug level (0..5)
 \fB\-D\fR, \fB\-\-delay\fR=\fIVALUE\fR
 set delay between commands in msec (see below)
 .TP
-\fB\-D\fR, \fB\-\-nothread\fR
+\fB\-n\fR, \fB\-\-nothread\fR
 use timeout calls instead of thread (see below)
 .TP 
 \fB\-l\fR, \fB\-\-list\fR
