@@ -61,14 +61,45 @@ RIG *myrig;  /*!< The rig structure. We keep this public so GUI can access the i
 //#define GRIG_DEBUG 1
 
 #ifdef GRIG_DEBUG
-/** \brief Matrix defining the default RX cycle in debug mode */
-static const rig_cmd_t DEF_RX_CYCLE[C_MAX_CYCLES][C_MAX_CMD_PER_CYCLE] = {
-	{ RIG_CMD_SET_AGC, RIG_CMD_GET_AGC, RIG_CMD_NONE, RIG_CMD_NONE, RIG_CMD_NONE, RIG_CMD_NONE },
-	{ RIG_CMD_NONE,    RIG_CMD_NONE,    RIG_CMD_NONE, RIG_CMD_NONE, RIG_CMD_NONE, RIG_CMD_NONE },
-	{ RIG_CMD_NONE,    RIG_CMD_NONE,    RIG_CMD_NONE, RIG_CMD_NONE, RIG_CMD_NONE, RIG_CMD_NONE },
-	{ RIG_CMD_NONE,    RIG_CMD_NONE,    RIG_CMD_NONE, RIG_CMD_NONE, RIG_CMD_NONE, RIG_CMD_NONE },
-	{ RIG_CMD_NONE,    RIG_CMD_NONE,    RIG_CMD_NONE, RIG_CMD_NONE, RIG_CMD_NONE, RIG_CMD_NONE },
-	{ RIG_CMD_NONE,    RIG_CMD_NONE,    RIG_CMD_NONE, RIG_CMD_NONE, RIG_CMD_NONE, RIG_CMD_NONE }
+
+
+static const rig_cmd_t DEF_RX_CYCLE[C_MAX_CMD_PER_CYCLE] = {
+	RIG_CMD_SET_AGC,
+	RIG_CMD_GET_AGC,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE
 };
 
 #else
@@ -78,14 +109,45 @@ static const rig_cmd_t DEF_RX_CYCLE[C_MAX_CYCLES][C_MAX_CMD_PER_CYCLE] = {
  * More description of the idea.
  *
  */
-static const rig_cmd_t DEF_RX_CYCLE[C_MAX_CYCLES][C_MAX_CMD_PER_CYCLE] = {
-	{ RIG_CMD_GET_STRENGTH, RIG_CMD_SET_FREQ_1, RIG_CMD_GET_FREQ_1, RIG_CMD_SET_PSTAT, RIG_CMD_GET_PSTAT, RIG_CMD_NONE },
-	{ RIG_CMD_GET_STRENGTH, RIG_CMD_SET_ATT,    RIG_CMD_GET_ATT,    RIG_CMD_SET_RIT,   RIG_CMD_GET_RIT,   RIG_CMD_NONE },
-	{ RIG_CMD_GET_STRENGTH, RIG_CMD_SET_FREQ_1, RIG_CMD_GET_FREQ_1, RIG_CMD_SET_AGC,   RIG_CMD_GET_AGC,   RIG_CMD_NONE },
-	{ RIG_CMD_GET_STRENGTH, RIG_CMD_SET_PREAMP, RIG_CMD_GET_PREAMP, RIG_CMD_SET_VFO,   RIG_CMD_GET_VFO,   RIG_CMD_NONE },
-	{ RIG_CMD_GET_STRENGTH, RIG_CMD_SET_FREQ_1, RIG_CMD_GET_FREQ_1, RIG_CMD_SET_MODE,  RIG_CMD_GET_MODE,  RIG_CMD_NONE },
-	{ RIG_CMD_GET_STRENGTH, RIG_CMD_SET_VFO,    RIG_CMD_GET_VFO,    RIG_CMD_SET_PTT,   RIG_CMD_GET_PTT,   RIG_CMD_NONE }
+static const rig_cmd_t DEF_RX_CYCLE[C_MAX_CMD_PER_CYCLE] = {
+	RIG_CMD_GET_STRENGTH,
+	RIG_CMD_SET_FREQ_1,
+	RIG_CMD_GET_FREQ_1,
+	RIG_CMD_SET_PSTAT,
+	RIG_CMD_GET_PSTAT,
+	RIG_CMD_NONE,
+	RIG_CMD_GET_STRENGTH,
+	RIG_CMD_SET_ATT,
+	RIG_CMD_GET_ATT,
+	RIG_CMD_SET_RIT,
+	RIG_CMD_GET_RIT,
+	RIG_CMD_NONE,
+	RIG_CMD_GET_STRENGTH,
+	RIG_CMD_SET_FREQ_1,
+	RIG_CMD_GET_FREQ_1,
+	RIG_CMD_SET_AGC,
+	RIG_CMD_GET_AGC,
+	RIG_CMD_NONE,
+	RIG_CMD_GET_STRENGTH,
+	RIG_CMD_SET_PREAMP,
+	RIG_CMD_GET_PREAMP,
+	RIG_CMD_SET_VFO,
+	RIG_CMD_GET_VFO,
+	RIG_CMD_NONE,
+	RIG_CMD_GET_STRENGTH,
+	RIG_CMD_SET_FREQ_1,
+	RIG_CMD_GET_FREQ_1,
+	RIG_CMD_SET_MODE,
+	RIG_CMD_GET_MODE,
+	RIG_CMD_NONE,
+	RIG_CMD_GET_STRENGTH,
+	RIG_CMD_SET_VFO,
+	RIG_CMD_GET_VFO,
+	RIG_CMD_SET_PTT,
+	RIG_CMD_GET_PTT,
+	RIG_CMD_NONE
 };
+
 #endif
 
 
@@ -97,20 +159,53 @@ static const rig_cmd_t DEF_RX_CYCLE[C_MAX_CYCLES][C_MAX_CMD_PER_CYCLE] = {
  *       we make TX cycle easy...
  *
  */
-static const rig_cmd_t DEF_TX_CYCLE[C_MAX_CYCLES][C_MAX_CMD_PER_CYCLE] = {
-	{ RIG_CMD_SET_PTT,   RIG_CMD_NONE, RIG_CMD_GET_POWER, RIG_CMD_GET_SWR, RIG_CMD_GET_ALC, RIG_CMD_NONE },
-	{ RIG_CMD_GET_PTT,   RIG_CMD_NONE, RIG_CMD_GET_POWER, RIG_CMD_GET_SWR, RIG_CMD_GET_ALC, RIG_CMD_NONE },
-	{ RIG_CMD_SET_POWER, RIG_CMD_NONE, RIG_CMD_GET_POWER, RIG_CMD_GET_SWR, RIG_CMD_GET_ALC, RIG_CMD_NONE },
-	{ RIG_CMD_SET_PTT,   RIG_CMD_NONE, RIG_CMD_GET_POWER, RIG_CMD_GET_SWR, RIG_CMD_GET_ALC, RIG_CMD_NONE },
-	{ RIG_CMD_GET_PTT,   RIG_CMD_NONE, RIG_CMD_GET_POWER, RIG_CMD_GET_SWR, RIG_CMD_GET_ALC, RIG_CMD_NONE },
-	{ RIG_CMD_SET_POWER, RIG_CMD_NONE, RIG_CMD_GET_POWER, RIG_CMD_GET_SWR, RIG_CMD_GET_ALC, RIG_CMD_NONE }
+static const rig_cmd_t DEF_TX_CYCLE[C_MAX_CMD_PER_CYCLE] = {
+	RIG_CMD_SET_PTT,
+	RIG_CMD_NONE,
+	RIG_CMD_GET_POWER,
+	RIG_CMD_GET_SWR,
+	RIG_CMD_GET_ALC,
+	RIG_CMD_NONE,
+	RIG_CMD_GET_PTT,
+	RIG_CMD_NONE,
+	RIG_CMD_GET_POWER,
+	RIG_CMD_GET_SWR,
+	RIG_CMD_GET_ALC,
+	RIG_CMD_NONE,
+	RIG_CMD_SET_POWER,
+	RIG_CMD_NONE,
+	RIG_CMD_GET_POWER,
+	RIG_CMD_GET_SWR,
+	RIG_CMD_GET_ALC,
+	RIG_CMD_NONE,
+	RIG_CMD_SET_PTT,
+	RIG_CMD_NONE,
+	RIG_CMD_GET_POWER,
+	RIG_CMD_GET_SWR,
+	RIG_CMD_GET_ALC,
+	RIG_CMD_NONE,
+	RIG_CMD_GET_PTT,
+	RIG_CMD_NONE,
+	RIG_CMD_GET_POWER,
+	RIG_CMD_GET_SWR,
+	RIG_CMD_GET_ALC,
+	RIG_CMD_NONE,
+	RIG_CMD_SET_POWER,
+	RIG_CMD_NONE,
+	RIG_CMD_GET_POWER,
+	RIG_CMD_GET_SWR,
+	RIG_CMD_GET_ALC,
+	RIG_CMD_NONE
 };
 
 
+
 static gboolean stopdaemon   = FALSE;   /*!< Used to signal the daemon thread that it should stop */
+static gboolean daemonclear  = FALSE;   /*!< Used to signal back when daemon is finished */
 static gint     cmd_delay    = 0;       /*!< Delay between two RX commands TX = 3*RX */
 static gint     timeoutid    = -1;      /*!< The ID of the timeout callback when we don't use threads. */
 static gboolean timeout_busy = FALSE;   /*!< Flag used to avoid to callbacks at the same time. */
+static gboolean suspended    = FALSE;   /*!< Flag indicating whether the daemon is susended or not. */
 
 /* private function prototypes */
 static void     rig_daemon_post_init (void);
@@ -359,6 +454,8 @@ rig_daemon_start       (int          rigid,
 void
 rig_daemon_stop  ()
 {
+	guint i = 0;
+
 
 	/* send a debug message */
 	rig_debug (RIG_DEBUG_TRACE,
@@ -366,18 +463,33 @@ rig_daemon_stop  ()
 		   __FUNCTION__);
 
 
-	/* send stop signal to daemon process */
-	stopdaemon = TRUE;
-
 	/* if we are running in time-out mode
-	   we can remove the callback directly here
+	   we can remove the callback directly here;
+	   otherwise, send stop signal to daemon and
+	   wait until 'daemonclear' flag is TRUE or
+	   we time out (in case of time out we also send
+	   and error message
 	*/
 	if (timeoutid != -1) {
 		g_source_remove (timeoutid);
 	}
+	else {
+		stopdaemon = TRUE;
 
-	/* give the daemon som time to exit */
-	g_usleep (C_RIG_DAEMON_STOP_TIMEOUT);
+		/* wait until flag is clear or we time out */
+		while ((daemonclear == FALSE) &&
+		       (i*C_RIG_DAEMON_STOP_SLEEP_TIME < C_RIG_DAEMON_STOP_TIMEOUT)) {
+
+			i++;
+			g_usleep (C_RIG_DAEMON_STOP_SLEEP_TIME * 1000);
+		}
+
+		/* print an error message if the flag has not been cleared */
+		if (daemonclear == FALSE) {
+			g_print ("\n\nCRITICAL: Daemon process has not been shut down properly. "\
+				 "You may have a zombie hanging around :-(\n\n");
+		}
+	}
 
 	/* send a debug message */
 	rig_debug (RIG_DEBUG_TRACE,
@@ -493,7 +605,7 @@ rig_daemon_cycle     (gpointer data)
 	grig_cmd_avail_t *has_get;         /* pointer to shared data 'has_get' */
 	grig_cmd_avail_t *has_set;         /* pointer to shared data 'has_set' */
 
-	guint major, minor;                /* major and minor cycle */
+	guint step;    /* step counter */
 
 
 	/* get pointers to shared data */
@@ -503,9 +615,7 @@ rig_daemon_cycle     (gpointer data)
 	has_get = rig_data_get_has_get_addr ();
 	has_set = rig_data_get_has_set_addr ();
 
-	/* initialize major cycle */
-	major = 0;
-
+	
 	/* send a debug message */
 	rig_debug (RIG_DEBUG_TRACE, "*** GRIG: %s started.\n", __FUNCTION__);
 
@@ -520,76 +630,84 @@ rig_daemon_cycle     (gpointer data)
 		*/
 		if (get->pstat == RIG_POWER_ON) {
 
-
-			/* check whether we are in RX or TX mode;
-			   note that the major cycle is not influenced
-			   by any change in RX/TX state
+			/* execute one cylce; note that the switch between the
+			   RX and TX tables can happen within a cycle :-)
 			*/
-			if (get->ptt == RIG_PTT_OFF) {
-				/* Execute receiver cycle */
+			for (step = 0; step < C_MAX_CMD_PER_CYCLE; step++) {
+				
+				/* only execute commands if the daemon is not
+				   suspended.
+				*/
+				if (!suspended) {
 
-				/* loop through the current cycle in the command table */
-				for (minor = 0; minor < C_MAX_CMD_PER_CYCLE; minor++) {
+					/* check whether we are in RX or TX mode; */
+					if (get->ptt == RIG_PTT_OFF) {
 
-					rig_daemon_exec_cmd (DEF_RX_CYCLE[major][minor],
-							     get, set, new,
-							     has_get, has_set);
+						/* Execute a receiver command */
+						rig_daemon_exec_cmd (DEF_RX_CYCLE[step],
+								     get,
+								     set,
+								     new,
+								     has_get,
+								     has_set);
 /* slow motion in debug mode */
 #ifdef GRIG_DEBUG
-					g_usleep (5000 * cmd_delay);
+						g_usleep (5000 * cmd_delay);
 #else
-					g_usleep (1000 * cmd_delay);
+						g_usleep (1000 * cmd_delay);
 #endif
-				}
-			}
-			else {
-				/* Execute transmitter cycle */
+					}
+					else {
 
-				/* loop through the current cycle in the commad table. */
-				for (minor = 0; minor < C_MAX_CMD_PER_CYCLE; minor++) {
-
-					rig_daemon_exec_cmd (DEF_TX_CYCLE[major][minor],
-							     get, set, new,
-							     has_get, has_set);
+						/* Execute transmitter command */
+						rig_daemon_exec_cmd (DEF_TX_CYCLE[step],
+								     get,
+								     set,
+								     new,
+								     has_get,
+								     has_set);
 /* slow motion in debug mode */
 #ifdef GRIG_DEBUG
-					g_usleep (15000 * cmd_delay);
+						g_usleep (15000 * cmd_delay);
 #else
-					g_usleep (3000 * cmd_delay);
+						g_usleep (3000 * cmd_delay);
 #endif
+					}
 				}
 
 			}
 
-			/* increment major cycle counter;
-			   reset to zero if it reaches the maximum count
-			*/
-			if (++major == C_MAX_CYCLES)
-				major = 0;
 		}
 
-		/* otherwise check the power status only */
+		/* otherwise check the power status, but only if daemon is not suspended */
 		else {
-			rig_daemon_exec_cmd (RIG_CMD_SET_PSTAT, get, set, new, has_get, has_set);
+			if (!suspended) {
+				rig_daemon_exec_cmd (RIG_CMD_SET_PSTAT, get, set, new, has_get, has_set);
+/* slow motion in debug mode */
+#ifdef GRIG_DEBUG
+				g_usleep (15000 * cmd_delay);
+#else
+				g_usleep (3000 * cmd_delay);
+#endif
+				rig_daemon_exec_cmd (RIG_CMD_GET_PSTAT, get, set, new, has_get, has_set);
+			}
+
 /* slow motion in debug mode */
 #ifdef GRIG_DEBUG
 			g_usleep (15000 * cmd_delay);
 #else
 			g_usleep (3000 * cmd_delay);
 #endif
-			rig_daemon_exec_cmd (RIG_CMD_GET_PSTAT, get, set, new, has_get, has_set);
-/* slow motion in debug mode */
-#ifdef GRIG_DEBUG
-			g_usleep (15000 * cmd_delay);
-#else
-			g_usleep (3000 * cmd_delay);
-#endif
+
 		}
 
 	}
 
 	/* send a debug message */
 	rig_debug (RIG_DEBUG_TRACE, "*** GRIG: %s stopped\n", __FUNCTION__);
+
+	/* set clear flag to indicate that daemon terminated */
+	daemonclear = TRUE;
 
 	return NULL;
 }
@@ -612,7 +730,7 @@ rig_daemon_cycle_cb  (gpointer data)
 	grig_cmd_avail_t *has_get;         /* pointer to shared data 'has_get' */
 	grig_cmd_avail_t *has_set;         /* pointer to shared data 'has_set' */
 
-	guint major, minor;                /* major and minor cycle */
+	guint step;        /* step counter */
 
 	/* check whether the previous callback has terminated.
 	   if not, skip this cycle.
@@ -636,58 +754,50 @@ rig_daemon_cycle_cb  (gpointer data)
 
 
 	/* first we check whether rig is powered ON since some rigs
-	   will not talk to us in power-off tate.
+	   will not talk to us in power-off state.
 	   NOTE: code should be safe even if rig does not support
 	   get_powerstat since get->pstat is set to ON if rig
 	   does not have functionality.
 	*/
 	if (get->pstat == RIG_POWER_ON) {
 
-		/* check whether we are in RX or TX mode;
-		   note that the major cycle is not influenced
-		   by any change in RX/TX state
-		*/
-		if (get->ptt == RIG_PTT_OFF) {
-			/* Execute receiver cycle */
+		for (step = 0; step < C_MAX_CMD_PER_CYCLE; step++) {
 
-			for (major = 0; major < C_MAX_CYCLES; major++) {
-			
-				/* loop through the current cycle in the command table */
-				for (minor = 0; minor < C_MAX_CMD_PER_CYCLE; minor++) {
+			/* check whether we are in RX or TX mode; */
+			if (get->ptt == RIG_PTT_OFF) {
+
+				/* Execute receiver command */
+				rig_daemon_exec_cmd (DEF_RX_CYCLE[step],
+						     get,
+						     set,
+						     new,
+						     has_get,
+						     has_set);
+/* slow motion in debug mode */
+#ifdef GRIG_DEBUG
+				g_usleep (5000 * cmd_delay);
+#else
+				g_usleep (1000 * cmd_delay);
+#endif
+			}
+			else {
 				
-					rig_daemon_exec_cmd (DEF_RX_CYCLE[major][minor],
-							     get, set, new,
-							     has_get, has_set);
+				/* Execute transmitter command */
+				rig_daemon_exec_cmd (DEF_TX_CYCLE[step],
+						     get,
+						     set,
+						     new,
+						     has_get,
+						     has_set);
 /* slow motion in debug mode */
 #ifdef GRIG_DEBUG
-					g_usleep (5000 * cmd_delay);
+				g_usleep (10000 * cmd_delay);
 #else
-					g_usleep (1000 * cmd_delay);
+				g_usleep (2000 * cmd_delay);
 #endif
-				}
 			}
 		}
-		else {
-			/* Execute transmitter cycle */
 
-			for (major = 0; major < C_MAX_CYCLES; major++) {
-
-				/* loop through the current cycle in the commad table. */
-				for (minor = 0; minor < C_MAX_CMD_PER_CYCLE; minor++) {
-
-					rig_daemon_exec_cmd (DEF_TX_CYCLE[major][minor],
-							     get, set, new,
-							     has_get, has_set);
-/* slow motion in debug mode */
-#ifdef GRIG_DEBUG
-					g_usleep (10000 * cmd_delay);
-#else
-					g_usleep (2000 * cmd_delay);
-#endif
-				}
-			}
-
-		}
 	}
 
 	/* otherwise check the power status only */
@@ -1723,3 +1833,29 @@ rig_daemon_get_delay ()
 }
 
 
+/** \brief Suspend daemon.
+ *  \param spnd Flag indicating whether to suspend or re-enable the daemon.
+ *
+ * This function can be used to suspend the daemon without shutting it down.
+ * TRUE means suspend the daemon while FALSE means re-enable execution.
+ * When in suspended mode, the daemon will keep on executing it's cycles,
+ * but no commands will be sent to hamlib, as long as the daemon is suspended. 
+ */
+void
+rig_daemon_set_suspend (gboolean spnd)
+{
+	suspended = spnd;
+}
+
+
+/** \brief Check suspended status of daemon.
+ *  \return TRUE if the daemon is suspended, FALSE otherwise.
+ *
+ * This function can be used to check whether the daemon is currently suspended
+ * or not.
+ */
+gboolean
+rig_daemon_get_suspend (void)
+{
+	return suspended;
+}
