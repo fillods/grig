@@ -1,3 +1,24 @@
+2005-06-15;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/rig-daemon.c, src/rig-daemon.h:
+	Changed shut-down procedure to wait until daemon process
+	actually finishes. There is, however, still a timeout of
+	10 seconds, in case something goes wrong. Change command
+	table to flat arrays. This also allows faster reaction 
+	when PTT is toggled. Added the possibility to suspend
+	command execution without shutting down the daemon.
+
+	* doc/man/grig.1.in:
+	Corrected wrong command line argument for no-thread option.
+
+	* configure.ac:
+	Increment version number to 0.5.cvs
+	Require Gtk+ 2.6
+
+	* NEWS:
+	Added some news for 0.5
+
+
 2005-06-03;	Alexandru Csete <csete@users.sourceforge.net>
 
 	* src/rig-daemon.c:

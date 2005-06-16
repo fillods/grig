@@ -1,3 +1,25 @@
+GRIG 0.5.0:
+
+- Requires Gtk+ 2.6 and Hamlib 1.x
+- Added VFO and SPLIT controls.
+- Added receiver and transmitter level controls.
+- Show Hamlib and Grig debug messages in a window instead of
+  stdout (console).
+- Modified shut-down procedure to wait until daemon actually
+  finishes instead of using a fixed length timeout.
+- Optimisation of the daemon process allowing faster reaction
+  when PTT is toggled.
+- Added the possibility to suspend rig command execution without
+  shutting down the daemon. The statusbar contains a small
+  indicator showing this status.
+- Corrected various mistakes in the manual page.
+
+
+GRIG 0.4.3:
+
+- Changed usleep to g_usleep to make code more portable.
+
+
 GRIG 0.4.2:
 
 - Added command line option to specify a delay between the
