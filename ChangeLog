@@ -1,3 +1,16 @@
+2005-06-16;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* doc/man/grig.1.in:
+	Corrected one more error.
+
+	* src/rig-daemon.c:
+	Corrected a spelling error.
+
+	* src/grig-about.c:
+	Experimented with new GtkAboutDialog. Will stick with the
+	old one for a while.
+
+
 2005-06-15;	Alexandru Csete <csete@users.sourceforge.net>
 
 	* src/rig-daemon.c, src/rig-daemon.h:
