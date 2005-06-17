@@ -433,7 +433,7 @@ rig_daemon_start       (int          rigid,
 		}
 		else {
 			rig_debug (RIG_DEBUG_VERBOSE,
-				   "*** GRIG: %s: Daemon thread started succeessfully\n",
+				   "*** GRIG: %s: Daemon thread started\n",
 				   __FUNCTION__);
 
 		}
