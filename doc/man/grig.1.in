@@ -90,7 +90,7 @@ achieve an almost real-time remote control experience. This strategy has turned 
 to cause problems with some radios, probably because these radios acknowledge the
 reception of a command before executing them, whereby the next command will be sent
 before the previous one has terminated. To avoid any possible buffer overflow
-in these situations, one can try to experiment with the -D or --debug command line
+in these situations, one can try to experiment with the -D or --delay command line
 argument, which will put the specified delay in between each executed command. The
 default value is 10 milliseconds and the smallest possible value is 1 millisecond
 (if one specifies 0 millisecond on the command line, the default value will be used).
