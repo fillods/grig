@@ -60,6 +60,7 @@ static GtkWidget *grig_about_logo_create    (void);
 void
 grig_about_run ()
 {
+
 	GtkWidget *dialog;
 	GtkWidget *notebook;
 
@@ -77,7 +78,7 @@ grig_about_run ()
 /* 	gtk_notebook_append_page (GTK_NOTEBOOK (notebook), grig_about_credits_create (),  */
 /* 				  gtk_label_new (_("Credits"))); */
 /* 	gtk_notebook_append_page (GTK_NOTEBOOK (notebook), grig_about_sysinfo_create (),  */
-/* 				  gtk_label_new (_("Sysinfo"))); */
+/* 				  gtk_label_new (_("System Info"))); */
 
 
 	/* Add the logo and notebook; show everything we've added to the dialog. */
@@ -85,6 +86,7 @@ grig_about_run ()
 			    grig_about_logo_create (), FALSE, FALSE, 10);
 	gtk_box_pack_end   (GTK_BOX (GTK_DIALOG (dialog)->vbox), notebook, FALSE, FALSE, 5);
 	gtk_widget_show_all (dialog);
+
 }
 
 
