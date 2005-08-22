@@ -751,6 +751,30 @@ rig_data_has_get_xit ()
 }
 
 
+/** \brief Get availablility of RIT.
+ *  \return 1 if available, otherwise 0.
+ *
+ * This function returns the value of the has_set.rit variable.
+ */
+int
+rig_data_has_set_rit ()
+{
+	return has_set.rit;
+}
+
+
+
+/** \brief Get availablility of XIT.
+ *  \return 1 if available, otherwise 0.
+ *
+ * This function returns the value of the has_set.xit variable.
+ */
+int
+rig_data_has_set_xit ()
+{
+	return has_set.xit;
+}
+
 
 /** \brief Get availablility of AGC.
  *  \return 1 if available, otherwise 0.

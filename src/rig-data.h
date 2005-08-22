@@ -211,6 +211,8 @@ int   rig_data_has_set_pstat    (void);
 int   rig_data_has_set_ptt      (void);
 int   rig_data_has_set_freq1     (void);
 int   rig_data_has_set_freq2     (void);
+int   rig_data_has_set_rit      (void);
+int   rig_data_has_set_xit      (void);
 int   rig_data_has_set_att      (void);
 int   rig_data_has_set_preamp   (void);
 
