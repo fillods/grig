@@ -504,7 +504,8 @@ rig_gui_lcd_handle_event     (GtkWidget *widget,
 			deltar = pow (10, power);
 
 			if (deltar < rig_data_get_ritstep ()) {
-				return TRUE;
+//				return TRUE;
+				deltar = rig_data_get_ritstep ();
 			}
 
 			/* check which mouse button */
@@ -588,7 +589,8 @@ rig_gui_lcd_handle_event     (GtkWidget *widget,
 			deltaf = pow (10, power);
 
 			if (deltaf < rig_data_get_fstep ()) {
-				return TRUE;
+//				return TRUE;
+				deltaf = rig_data_get_fstep ();
 			}
 
 			/* check which mouse button */
@@ -678,7 +680,8 @@ rig_gui_lcd_handle_event     (GtkWidget *widget,
 			deltar = pow (10, power);
 
 			if (deltar < rig_data_get_ritstep ()) {
-				return TRUE;
+//				return TRUE;
+				deltar = rig_data_get_ritstep ();
 			}
 
 			/* check which mouse button */
@@ -737,7 +740,8 @@ rig_gui_lcd_handle_event     (GtkWidget *widget,
 			deltaf = pow (10, power);
 
 			if (deltaf < rig_data_get_fstep ()) {
-				return TRUE;
+//				return TRUE;
+				deltaf = rig_data_get_fstep ();
 			}
 
 			/* check which mouse button */
@@ -1244,7 +1248,7 @@ rig_gui_lcd_timeout_exec  (gpointer data)
 	}
 
 	/* update RIT/XIT if applicable */
-	if (rig_data_has_get_rit ()) {
+	if (rig_data_has_get_rit () || rig_data_has_set_rit ()) {
 
 		lcd.rit = rig_data_get_rit ();
 		rig_gui_lcd_set_rit_digits (lcd.rit);
