@@ -83,7 +83,6 @@ rig_gui_info_run ()
 			    rig_gui_info_create_frontend_frame (),
 			    FALSE, FALSE, 0);
 
-
 	vbox2 = gtk_vbox_new (FALSE, 5);
 
 	gtk_box_pack_start (GTK_BOX (vbox2), 
@@ -737,6 +736,9 @@ rig_gui_info_create_tunstep_frame  ()
 	/* for each available tuning ste */
 	for (i = 0; i < TSLSTSIZ; i++) {
 
+		gboolean firsthit = TRUE;   /* indicates whether found mode is the first one
+					       for the current tuning step. */
+
 		/* if tuning step is zero stop
 		   (note that the RIG_IS_TS_END macro seem to be
 		   buggy, at least when used on the dummy backend
@@ -767,15 +769,16 @@ rig_gui_info_create_tunstep_frame  ()
 				if (myrig->caps->tuning_steps[i].modes & (1 << j)) {
 
 					/* append mode string to text buffer;
-					   note that the first mode (j=0) requires
+					   note that the first mode requires
 					   special attention, since text is empty.
 					*/
-					if (j > 0) {
+					if (!firsthit) {
 						buffer = g_strdup_printf ("%s %s", text, MODE_STR[j]);
 						g_free (text);
 					}
 					else {
 						buffer = g_strdup_printf ("%s", MODE_STR[j]);
+						firsthit = FALSE;
 					}
 					text = g_strdup (buffer);
 					g_free (buffer);
@@ -792,6 +795,8 @@ rig_gui_info_create_tunstep_frame  ()
 					  GTK_EXPAND | GTK_FILL,
 					  5, 0);
 		}
+
+
 	}
 
 	/* scrolled window and frame */ 
@@ -881,6 +886,7 @@ rig_gui_info_create_frontend_frame ()
 			  GTK_EXPAND | GTK_FILL,
 			  5, 0);
 
+	text = g_strdup ("");
 	/* loop over all available attenuator values and concatenate them into a label */
 	for (i = 0; i < MAXDBLSTSIZ; i++) {
 
