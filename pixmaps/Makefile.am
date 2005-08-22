@@ -1,6 +1,6 @@
 ## grig_pixmapsdir = $(datadir)/grig/pixmaps
 
-grig_pixmapsdir = $(DESTDIR)$(pkgdatadir)/pixmaps
+grig_pixmapsdir = $(pkgdatadir)/pixmaps
 
 grig_pixmaps_DATA = \
 	digits_normal.png    \

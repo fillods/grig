@@ -46,10 +46,13 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root)
 %doc ChangeLog
 /usr/bin/grig
-@PACKAGE_DATA_DIR@/pixmaps/*.png
+/usr/share/grig/pixmaps/*.png
 /usr/share/man/man1/grig.1.gz
 
 
 %changelog
+* Tue Aug 16 2005 Alexandru Csete
+- Fix erroneous pixmap directories.
+
 * Thu Oct 21 2004 Alexandru Csete
-- Initial spec file
+- Initial spec file.
