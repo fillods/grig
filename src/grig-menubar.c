@@ -37,6 +37,7 @@
 #include "grig-config.h"
 #include "grig-menubar.h"
 #include "rig-gui-info.h"
+#include "rig-gui-message-window.h"
 
 
 
@@ -55,15 +56,24 @@ static void  grig_menu_config          (GtkWidget *, gpointer);
 static GtkActionEntry entries[] = {
 	{ "FileMenu", NULL, N_("_Radio") },
 	{ "SettingsMenu", NULL, N_("_Settings") },
+	{ "ToolsMenu", NULL, N_("_Tools") },
 	{ "HelpMenu", NULL, N_("_Help") },
 
+	/* FileMenu */
 	{ "Info", GTK_STOCK_DND, N_("_Info"), "<control>I", N_("Show info about radio"), G_CALLBACK (rig_gui_info_run) },
 	{ "Stop", GTK_STOCK_STOP, N_("St_op daemon"), NULL, N_("Stop the Grig daemon"), NULL },
-	{ "Start", GTK_STOCK_EXECUTE, N_("St_art daemon"), NULL, N_("Start the Grig daemon"), NULL},
+	{ "Start", GTK_STOCK_EXECUTE, N_("St_art daemon"), NULL, N_("Start the Grig daemon"), NULL },
+	{ "Save", GTK_STOCK_SAVE, N_("_Save State"), "<control>S", N_("Save the state of the rig to a file"), NULL },
+	{ "Load", GTK_STOCK_OPEN, N_("_Load State"), "<control>O", N_("Load the state of the rig from a file"), NULL },
 	{ "Exit", GTK_STOCK_QUIT, N_("E_xit"), "<control>Q", N_("Exit the program"), G_CALLBACK (grig_menu_app_exit) },
 
-	{ "Debug", NULL, N_("_Debug Level"), NULL, N_("Set Hamlib debug level"), NULL},
+	/* SettingsMenu */
+	{ "Debug", NULL, N_("_Debug Level"), NULL, N_("Set Hamlib debug level"), NULL },
 
+	/* ToolsMenu */
+	{ "MsgWin", NULL, N_("Message _Window"), NULL, N_("Show window with debug messages"), G_CALLBACK (rig_gui_message_window_show) },
+
+	/* HelpMenu */
 	{ "About", GTK_STOCK_DIALOG_INFO, N_("_About"), NULL, N_("Shouw about dialog"), G_CALLBACK (grig_about_run) },
 };
 
@@ -89,6 +99,9 @@ static const char *menu_desc =
 /*"       <menuitem action='Start'/>"
 "       <menuitem action='Stop'/>"
 "       <separator/>"*/
+"       <menuitem action='Save'/>"
+"       <menuitem action='Load'/>"
+"       <separator/>"
 "       <menuitem action='Exit'/>"
 "    </menu>"
 "    <menu action='SettingsMenu'>"
@@ -101,6 +114,9 @@ static const char *menu_desc =
 "          <menuitem action='Verbose'/>"
 "          <menuitem action='Trace'/>"
 "       </menu>"
+"    </menu>"
+"    <menu action='ToolsMenu'>"
+"       <menuitem action='MsgWin'/>"
 "    </menu>"
 "    <menu action='HelpMenu'>"
 "       <menuitem action='About'/>"
