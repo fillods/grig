@@ -245,18 +245,24 @@ rig_daemon_check_rit      (RIG               *myrig,
 			get->rit = sfreq;
 		}
 		else {
-			get->rit = 0;
+			get->rit = s_kHz(0.00);
 		}
 	}
 	else {
-		get->rit = 0;
+		get->rit = s_kHz(0.00);
 	}
 
-	if (has_get->rit && has_set->rit) {
+	if (has_get->rit || has_set->rit) {
 		/* get RIT range and tuning step */
 		get->ritmax = myrig->caps->max_rit;
 		get->ritstep = s_Hz(10);
+
 	}
+	else {
+		get->ritmax = s_kHz(0.00);
+		get->ritstep = s_Hz(0);
+	}
+		
 }
 
 
@@ -295,17 +301,21 @@ rig_daemon_check_xit      (RIG               *myrig,
 			get->xit = sfreq;
 		}
 		else {
-			get->xit = 0;
+			get->xit = s_kHz(0.00);
 		}
 	}
 	else {
-		get->xit = 0;
+		get->xit = s_kHz(0.00);
 	}
 
-	if (has_get->xit && has_set->xit) {
+	if (has_get->xit || has_set->xit) {
 		/* get XIT range and tuning step */
 		get->xitmax = myrig->caps->max_xit;
 		get->xitstep = s_Hz(10);
+	}
+	else {
+		get->xitmax = s_kHz(0.00);
+		get->xitstep = s_Hz(0);
 	}
 }
 
@@ -427,13 +437,13 @@ rig_daemon_check_level     (RIG               *myrig,
 	haslevel = rig_has_get_level (myrig, GRIG_LEVEL_RD);
 
 	/* unmask bits */
-	has_get->power    = (haslevel && RIG_LEVEL_RFPOWER);
-	has_get->strength = (haslevel && RIG_LEVEL_STRENGTH);
-	has_get->swr      = (haslevel && RIG_LEVEL_SWR);
-	has_get->alc      = (haslevel && RIG_LEVEL_ALC);
-	has_get->agc      = (haslevel && RIG_LEVEL_AGC);
-	has_get->att      = (haslevel && RIG_LEVEL_ATT);
-	has_get->preamp   = (haslevel && RIG_LEVEL_PREAMP);
+	has_get->power    = ((haslevel & RIG_LEVEL_RFPOWER) ? 1 : 0);
+	has_get->strength = ((haslevel & RIG_LEVEL_STRENGTH) ? 1 : 0);
+	has_get->swr      = ((haslevel & RIG_LEVEL_SWR) ? 1 : 0);
+	has_get->alc      = ((haslevel & RIG_LEVEL_ALC) ? 1 : 0);
+	has_get->agc      = ((haslevel & RIG_LEVEL_AGC) ? 1 : 0);
+	has_get->att      = ((haslevel & RIG_LEVEL_ATT) ? 1 : 0);
+	has_get->preamp   = ((haslevel & RIG_LEVEL_PREAMP) ? 1 : 0);
 
 	/* read values */
 	if (has_get->power) {
@@ -537,10 +547,10 @@ rig_daemon_check_level     (RIG               *myrig,
 	   (like we did with the get levels) since we might
 	   not have any good values to send
 	*/
-	has_set->power  = (haslevel && RIG_LEVEL_RFPOWER);
-	has_set->agc    = (haslevel && RIG_LEVEL_AGC);
-	has_set->att    = (haslevel && RIG_LEVEL_ATT);
-	has_set->preamp = (haslevel && RIG_LEVEL_PREAMP);
+	has_set->power  = ((haslevel & RIG_LEVEL_RFPOWER) ? 1 : 0);
+	has_set->agc    = ((haslevel & RIG_LEVEL_AGC) ? 1 : 0);
+	has_set->att    = ((haslevel & RIG_LEVEL_ATT) ? 1 : 0);
+	has_set->preamp = ((haslevel & RIG_LEVEL_PREAMP) ? 1 : 0);
 
 	/* initialise preamp and att arrays in rig-data */
 	if (has_get->att || has_set->att) {
@@ -552,6 +562,7 @@ rig_daemon_check_level     (RIG               *myrig,
 		}
 		
 	}
+		
 
 	if (has_get->preamp || has_set->preamp) {
 		int i = 0;
@@ -561,4 +572,6 @@ rig_daemon_check_level     (RIG               *myrig,
 			i++;
 		}
 	}
+
+	/* FIXME: AGC ARRAY? */
 }
