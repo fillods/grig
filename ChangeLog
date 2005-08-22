@@ -1,3 +1,65 @@
+2005-08-21;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/rig-daemon-check.c:
+	Fixed very nasty bug in checking the availability of level
+	set/get functions (bug #1266068).
+	Improved RIT and XIT checking code.
+
+	* src/rig-gui-info.c:
+	Fixed a bug which caused incorrect handling of empty ATT and
+	PREAMP arrays. In worse cases the program caused memory
+	corruption (bug #1266071).
+	Fixed a bug which caused a crash while reading the tuning
+	step lists (bug #1266071).
+
+	* src/rig-data.c, src/rig-data.h:
+	Added has_set_rit and has_set_xit.
+
+	* src/rig-gui-lcd.c:
+	Display initial RIT value even if only set_it is available.
+	
+	* NEWS:
+	Updated.
+
+2005-08-16;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* grig.spec.in:
+	Fix erroneous pixmap drectories.
+	
+
+2005-08-10;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/rig-gui-smeter.h:
+	Adjusted DEF_TVAL and DEF_FALLOFF based on tests using a
+	FT-817ND. The meter behaves quite the same using both 4800,
+	9600 and 38400 baud. It would, however, improve the real-time
+	feeling if the raise time would be different (lower) than the
+	fall-off time.
+
+
+2005-07-25;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/rig-daemon, src/rig-daemon.h, src/main.c:
+	Disable POWER and PTT buttons by default. Use command line
+	options to enable them at run-time.
+
+	* doc/man/grig.1.in:
+	Added description of the new command line switches.
+	
+
+2005-06-21;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/rig-gui-message-window.c, src/rig-gui-message-window.h:
+	Added files.
+
+	* src/grig-menubar.c:
+	Added menu entry for message window. Also added menu items for
+	saving and loading the rig state.
+
+	* src/Makfile.am:
+	Added message window files.
+
+
 2005-06-16;	Alexandru Csete <csete@users.sourceforge.net>
 
 	* doc/man/grig.1.in:

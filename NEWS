@@ -7,12 +7,19 @@ GRIG 0.5.0:
   stdout (console).
 - Modified shut-down procedure to wait until daemon actually
   finishes instead of using a fixed length timeout.
+- Disable POWER and PTT buttons by default (can be enabled via the
+  command line).
 - Optimisation of the daemon process allowing faster reaction
   when PTT is toggled.
 - Added the possibility to suspend rig command execution without
-  shutting down the daemon. The statusbar contains a small
-  indicator showing this status.
+  shutting down the daemon, ie. without closing connection to the
+  rig. The statusbar contains a small indicator showing the status.
+- Fixed erroneous detection of set/get level availability (bug #1266068).
+- Fixed incorrect handling of empty ATT, PREAMP and tuning step lists
+  in the Radio Info window (bug #1266071).
+- Optimised S-meter dynamics.
 - Corrected various mistakes in the manual page.
+- Various minor improvements to the user interface.
 
 
 GRIG 0.4.3:
