@@ -87,7 +87,10 @@ typedef enum {
 
 
 
-int       rig_daemon_start       (int, const gchar *, int, const gchar *, const gchar *, gint, gboolean);
+int       rig_daemon_start       (int, const gchar *,
+				  int, const gchar *,
+				  const gchar *, gint,
+				  gboolean, gboolean, gboolean);
 void      rig_daemon_stop        (void);
 void      rig_daemon_set_suspend (gboolean);
 gboolean  rig_daemon_get_suspend (void);

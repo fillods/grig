@@ -75,12 +75,15 @@ static gboolean listrigs  = FALSE;   /*!< List supported radios and exit. */
 gint     debug     = RIG_DEBUG_NONE; /*!< Hamlib debug level. Note: not static since menubar.c needs access. */
 static gint     delay     = 0;       /*!< Command delay. */
 static gboolean nothread  = FALSE;   /*!< Don't use threads, just a regular gtk-timeout. */
+static gboolean pstat     = FALSE;   /*!< Enable power status button. */
+static gboolean ptt       = FALSE;   /*!< Enable PTT button. */
 static gboolean version   = FALSE;   /*!< Show version and exit. */
 static gboolean help      = FALSE;   /*!< Show help and exit. */
 
 
+/* group those which take no arg */
 /** \brief Short options. */
-#define SHORT_OPTIONS "m:r:s:c:C:d:D:nlhv"  /* group those which take no arg */
+#define SHORT_OPTIONS "m:r:s:c:C:d:D:nlpPhv"  
 
 /** \brief Table of command line options. */
 static struct option long_options[] =
@@ -94,6 +97,8 @@ static struct option long_options[] =
 	{"delay",        1, 0, 'D'},
 	{"nothread",     0, 0, 'n'},
 	{"list",         0, 0, 'l'},
+        {"enable-ptt",   0, 0, 'p'},
+	{"enable-pwr",   0, 0, 'P'},
 	{"help",         0, 0, 'h'},
 	{"version",      0, 0, 'v'},
 	{NULL, 0, 0, 0}
@@ -275,6 +280,16 @@ main (int argc, char *argv[])
 			nothread = TRUE;
 			break;
 
+			/* enable PTT button */
+		case 'p':
+			ptt = TRUE;
+			break;
+
+			/* enable POWER button */
+		case 'P':
+			pstat = TRUE;
+			break;
+
 			/* show help */
 		case 'h':
 			help = TRUE;
@@ -317,8 +332,20 @@ main (int argc, char *argv[])
 	*/
 	rig_set_debug (RIG_DEBUG_TRACE);
 
-	/* launch rig daemon */
-	if (rig_daemon_start (rignum, rigfile, rigspeed, civaddr, rigconf, delay, nothread)) {
+	/* launch rig daemon and pass the relevant
+	   command line options
+	*/
+	if (rig_daemon_start (rignum,
+			      rigfile,
+			      rigspeed,
+			      civaddr,
+			      rigconf,
+			      delay,
+			      nothread,
+			      ptt,
+			      pstat))
+	{
+
 		return 1;
 	}
 
@@ -405,13 +432,13 @@ grig_app_create       (gint rignum)
 }
 
 
-/** \brief Handler terminate signals.
+/** \brief Handle terminate signals.
  *  \param sig The signal that has been received.
  *
  * This function is used to handle termination signals received by the program.
- * The currently caught signals are SIGTERM, SIGINT and SIGABRT. When one of these
- * signals is received, the function sends an error message to hamlib and tries
- * to make a clean exit.
+ * The currently caught signals are SIGTERM, SIGINT and SIGABRT. When one of
+ * these signals is received, the function sends an error message to hamlib and
+ * tries to make a clean exit.
  */
 static void grig_sig_handler (int sig)
 {
@@ -503,6 +530,10 @@ grig_show_help      ()
 		   "start daemon without using threads\n"));
 	g_print (_("  -l, --list                  "\
 		   "list supported radios and exit\n"));
+	g_print (_("  -p, --enable-ptt            "\
+		   "enable PTT button\n"));
+	g_print (_("  -P, --enable-pwr            "\
+		   "enable POWER button\n"));
 	g_print (_("  -h, --help                  "\
 		   "show this help message and exit\n"));
 	g_print (_("  -v, --version               "\

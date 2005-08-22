@@ -34,7 +34,8 @@
  *  \ingroup rigd
  *  \brief Radio control interface to hamlib.
  *
- * This object is responsible for interfacing the Hamradio Control Libraries (hamlib).
+ * This object is responsible for interfacing the Hamradio Control Libraries
+ * (hamlib).
  *
  * After initialization of the radio it starts a cyclic thread which will
  * execute some pre-defined commands. Because some manufacturers discourage
@@ -208,7 +209,7 @@ static gboolean timeout_busy = FALSE;   /*!< Flag used to avoid to callbacks at 
 static gboolean suspended    = FALSE;   /*!< Flag indicating whether the daemon is susended or not. */
 
 /* private function prototypes */
-static void     rig_daemon_post_init (void);
+static void     rig_daemon_post_init (gboolean, gboolean);
 static gpointer rig_daemon_cycle     (gpointer);
 static gint     rig_daemon_cycle_cb  (gpointer);
 static void     rig_daemon_exec_cmd  (rig_cmd_t,
@@ -247,7 +248,9 @@ rig_daemon_start       (int          rigid,
 			const gchar *civaddr,
 			const gchar *rigconf,
 			gint         cmddel,
-			gboolean     nothread)
+			gboolean     nothread,
+			gboolean     ptt,
+			gboolean     pstat)
 {
 
 	gchar  *rigport;
@@ -383,7 +386,7 @@ rig_daemon_start       (int          rigid,
 		   __FUNCTION__);
 
 	/* get capabilities and settings  */
-	rig_daemon_post_init ();
+	rig_daemon_post_init (ptt, pstat);
 
 	rig_debug (RIG_DEBUG_TRACE,
 		   "*** GRIG: %s: Starting rig daemon\n",
@@ -509,6 +512,8 @@ rig_daemon_stop  ()
 
 
 /** \brief Execute post initialization tasks.
+ *  \param ptt Flag indicating whether to enable PTT.
+ *  \param pstat Flag indicting whether to enable POWER.
  *
  * This function executes some tasks after initialization of the radio
  * hardware. These include testing the radio capabilities and obtaining
@@ -517,22 +522,42 @@ rig_daemon_stop  ()
  *
  */
 static void
-rig_daemon_post_init ()
+rig_daemon_post_init (gboolean ptt, gboolean pstat)
 {
 	grig_settings_t  *get;        /* pointer to shared data 'get' */
+	grig_settings_t  *set;        /* pointer to shared data 'set' */
 	grig_cmd_avail_t *has_get;    /* pointer to shared data 'has_get' */
 	grig_cmd_avail_t *has_set;    /* pointer to shared data 'has_set' */
 
 
 	/* get pointers to shared data */
 	get     = rig_data_get_get_addr ();
+	set     = rig_data_get_set_addr ();
 	has_get = rig_data_get_has_get_addr ();
 	has_set = rig_data_get_has_set_addr ();
 
 
 	/* check command availabilities */
-	rig_daemon_check_pwrstat (myrig, get, has_get, has_set);
-	rig_daemon_check_ptt     (myrig, get, has_get, has_set);
+	if (pstat == TRUE) {
+		rig_daemon_check_pwrstat (myrig, get, has_get, has_set);
+	}
+	else {
+		has_get->pstat = FALSE;
+		has_set->pstat = FALSE;
+		get->pstat = RIG_POWER_ON;
+		set->pstat = RIG_POWER_ON;
+	}
+
+	if (ptt == TRUE) {
+		rig_daemon_check_ptt     (myrig, get, has_get, has_set);
+	}
+	else {
+		has_get->ptt = FALSE;
+		has_set->ptt = FALSE;
+		get->ptt = RIG_PTT_OFF;
+		set->ptt = RIG_PTT_OFF;
+	}
+
 	rig_daemon_check_vfo     (myrig, get, has_get, has_set);
 	rig_daemon_check_freq    (myrig, get, has_get, has_set);
 	rig_daemon_check_rit     (myrig, get, has_get, has_set);
