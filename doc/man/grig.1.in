@@ -42,6 +42,12 @@ use timeout calls instead of thread (see below)
 \fB\-l\fR, \fB\-\-list\fR
 list supported radios and exit
 .TP 
+\fB\-p\fR, \fB\-\-enable-ptt\fR
+enable ptt control
+.TP 
+\fB\-P\fR, \fB\-\-enable-pwr\fR
+enable power status control
+.TP 
 \fB\-h\fR, \fB\-\-help\fR
 show a brief help message and exit
 .TP 
@@ -119,8 +125,13 @@ frontends will act as a clients.
 Power OFF State
 On some radios, grig does not cope very well with the power off state. It is yet
 not known whether this is a bug in the hamlib backend or in grig and we will
-definitely appreciate your input.
-
+definitely appreciate your input. By default, the power status control is disabled
+and must explicitly be enabled using the -P or --enable-pwr command line switch.
+.TP
+PTT Control
+Similar to the power state, the PTT has caused strange behaviour on some radios.
+Consequently, it has been disabled by default but can be enabled using the -p or
+--enable-ptt command line aguments.
 
 .SH "AUTHOR"
 Written by Alexandru Csete, OZ9AEC.
