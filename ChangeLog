@@ -1,3 +1,27 @@
+2005-08-25;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/rig-daemon.c:
+	Fixed bug which caused grig to show WIDE instead of NORMAL
+	passband width in those cases where the rig does not have any
+	particular WIDE passband and the rig_passband_wide function
+	returns 0, which also happens to be the value of the RIG_PASSBAND_NORMAL
+	macro.
+
+	* src/rig-daemon-check.c:
+	Power button should now really work as claimed :o)
+	
+
+2005-08-22;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/rig-daemon.c:
+	Suspend all but RIG_CMD_SET_PSTAT command while the rig is in
+	power OFF state.
+
+	* doc/man/grig.1.in:
+	Added a few sentences concerning the new handling of the
+	power OFF state.
+	
+
 2005-08-21;	Alexandru Csete <csete@users.sourceforge.net>
 
 	* src/rig-daemon-check.c:

@@ -704,17 +704,28 @@ rig_daemon_cycle     (gpointer data)
 
 		}
 
-		/* otherwise check the power status, but only if daemon is not suspended */
+		/* otherwise check the power status, but only if daemon
+		   is not suspended */
 		else {
 			if (!suspended) {
-				rig_daemon_exec_cmd (RIG_CMD_SET_PSTAT, get, set, new, has_get, has_set);
+				rig_daemon_exec_cmd (RIG_CMD_SET_PSTAT,
+						     get, set, new,
+						     has_get, has_set);
 /* slow motion in debug mode */
-#ifdef GRIG_DEBUG
-				g_usleep (15000 * cmd_delay);
-#else
-				g_usleep (3000 * cmd_delay);
-#endif
-				rig_daemon_exec_cmd (RIG_CMD_GET_PSTAT, get, set, new, has_get, has_set);
+
+/* If the rig has been powered OFF, we only execute set_pstat in order
+   to be compatible with as many rigs as possible. Even like this, there
+   is no guarantee that the rig will react to a wake-up command.
+*/
+
+/* #ifdef GRIG_DEBUG */
+/* 				g_usleep (15000 * cmd_delay); */
+/* #else */
+/* 				g_usleep (3000 * cmd_delay); */
+/* #endif */
+/* 				rig_daemon_exec_cmd (RIG_CMD_GET_PSTAT, */
+/* 						     get, set, new, */
+/* 						     has_get, has_set); */
 			}
 
 /* slow motion in debug mode */
@@ -1366,11 +1377,18 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 				int i = 0;           /* iterator */
 				int found_mode = 0;  /* flag to indicate found mode */
 
-				/* convert and store the new passband width */
-				if (pbw == rig_passband_wide (myrig, mode)) {
+				/* convert and store the new passband width;
+				   note: RIG_PASSBAND_NORMAL = 0, which is also
+				   the value returned by rig_passband_wide and
+				   rig_passband_narrow if these passbands are not
+				   defined in the backend.
+				*/
+				if ((pbw == rig_passband_wide (myrig, mode)) &&
+				    (pbw > 0)) {
 					get->pbw = RIG_DATA_PB_WIDE;
 				}
-				else if (pbw == rig_passband_narrow (myrig, mode)) {
+				else if ((pbw == rig_passband_narrow (myrig, mode)) &&
+					 (pbw > 0)) {
 					get->pbw  = RIG_DATA_PB_NARROW;
 				}
 				else {

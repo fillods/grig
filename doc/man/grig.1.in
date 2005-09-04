@@ -99,7 +99,8 @@ before the previous one has terminated. To avoid any possible buffer overflow
 in these situations, one can try to experiment with the -D or --delay command line
 argument, which will put the specified delay in between each executed command. The
 default value is 10 milliseconds and the smallest possible value is 1 millisecond
-(if one specifies 0 millisecond on the command line, the default value will be used).
+(if one specifies 0 millisecond on the command line, the default value will be
+ used).
 If you find a value which is better for your radio than the default value, please
 let us know about it.
 .TP
@@ -125,8 +126,16 @@ frontends will act as a clients.
 Power OFF State
 On some radios, grig does not cope very well with the power off state. It is yet
 not known whether this is a bug in the hamlib backend or in grig and we will
-definitely appreciate your input. By default, the power status control is disabled
-and must explicitly be enabled using the -P or --enable-pwr command line switch.
+definitely appreciate your input.
+The situation gets even more complicated due to the fact that different radios
+behave in a different ways when they are powered OFF; some of them will continue to
+respond to remote commands, while others will not. Even the same radio, like the
+FT-817, can behave differently depending on whether it is powered from internal
+batteries or external power supply.
+Grig tries to handle this mess by suspending all rig commands while in power OFF
+state. Only the power ON command will be sent to the rig.
+By default, the power status control is disabled and must explicitly be enabled
+using the -P or --enable-pwr command line switch.
 .TP
 PTT Control
 Similar to the power state, the PTT has caused strange behaviour on some radios.

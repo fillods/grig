@@ -62,6 +62,10 @@
  * \note Since bug #1082325 this is the only setting which is tested
  *       for real. All other setting availabilities are just obtained
  *       from the rig caps structure.
+ *
+ * \note See bug XXXXX there are rig, where one can only set the power
+ *       status and not read. The current implementationshould be safe
+ *       so we just check the claiimed availability.
  */
 void
 rig_daemon_check_pwrstat         (RIG              *myrig,
@@ -70,26 +74,10 @@ rig_daemon_check_pwrstat         (RIG              *myrig,
 				  grig_cmd_avail_t *has_set)
 {
 
-	int               retcode;                 /* hamlib execution code */
-	powerstat_t       pwr = RIG_POWER_OFF;     /* power status */
+	has_get->pstat = (myrig->caps->get_powerstat != NULL) ? TRUE : FALSE;
+	has_set->pstat = (myrig->caps->set_powerstat != NULL) ? TRUE : FALSE;
+	get->pstat = RIG_POWER_ON;
 
-	/* get power status; we are very paranoid and accept only
-	   RIG_OK as good status.
-	*/
-	retcode = rig_get_powerstat (myrig, &pwr);
-	if (retcode == RIG_OK) {
-		has_get->pstat = TRUE;
-		get->pstat = pwr;
-
-		/* try to set power status */
-		retcode = rig_set_powerstat (myrig, get->pstat);
-		has_set->pstat = (retcode == RIG_OK) ? TRUE : FALSE;
-	}
-	else {
-		has_get->pstat = FALSE;
-		get->pstat = RIG_POWER_ON;
-		has_set->pstat = FALSE;
-	}
 }
 
 
