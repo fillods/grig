@@ -1,25 +1,33 @@
 GRIG 0.5.0:
 
-- Requires Gtk+ 2.6 and Hamlib 1.x
-- Added VFO and SPLIT controls.
-- Added receiver and transmitter level controls.
-- Show Hamlib and Grig debug messages in a window instead of
-  stdout (console).
+- Requires Gtk+ 2.6 and Hamlib 1.2.5
+x Added VFO and SPLIT controls.
+x Added receiver and transmitter level controls.
+x Show Hamlib and Grig debug messages in a message window
+  instead of stdout (console). The message window shows the
+  debug messages in a tree sorted by severity or in a plain
+  text view where the messages come in chronological order.
+x Save and restore rig state.
 - Modified shut-down procedure to wait until daemon actually
   finishes instead of using a fixed length timeout.
-- Disable POWER and PTT buttons by default (can be enabled via the
-  command line).
+- Disable POWER and PTT buttons by default (can be enabled
+  via the command line).
 - Optimisation of the daemon process allowing faster reaction
   when PTT is toggled.
-- Added the possibility to suspend rig command execution without
-  shutting down the daemon, ie. without closing connection to the
-  rig. The statusbar contains a small indicator showing the status.
-- Fixed erroneous detection of set/get level availability (bug #1266068).
-- Fixed incorrect handling of empty ATT, PREAMP and tuning step lists
-  in the Radio Info window (bug #1266071).
-- Fixed a bug, which caused grig to display WIDE instead of NORMAL passband
-  when the rig has no wide passband.
+x Added the possibility to suspend rig command execution
+  without shutting down the daemon, ie. without closing
+  connection to the rig. The statusbar contains a small
+  indicator showing the status.
+- The mode selector combo only shows modes, which are supported
+  by the rig.
+- Fixed erroneous detection of set/get level availability
+  (bug #1266068).
+- Fixed incorrect handling of empty ATT, PREAMP and tuning
+  step lists in the Radio Info window (bug #1266071).
+- Fixed a bug, which caused grig to display WIDE instead of
+  NORMAL passband when the rig has no wide passband.
 - Optimised S-meter dynamics.
+- Better detection of frequency ranges and resolutions.
 - Corrected various mistakes in the manual page.
 - Various minor improvements to the user interface.
 
