@@ -1,3 +1,21 @@
+2005-09-06;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/rig-daemon.c, src/rig-daemon-check.c:
+	Added additional check in rig_daemon_check_mode to ensure that
+	the correct frequency range for the current mode is selected and
+	not just the first one found. Also, get the frequency resolution
+	for the current mode. Also store the list of all modes in rig-data.
+
+	* src/rig-data.c, src/rig-data.h:
+	Added bitfield of all supported modes including a get_ function.
+
+	* src/rig-gui-ctrl2.c:
+	Only show supported modes in the mode selector combo.
+
+	* NEWS:
+	Updated.
+	
+
 2005-08-25;	Alexandru Csete <csete@users.sourceforge.net>
 
 	* src/rig-daemon.c:
