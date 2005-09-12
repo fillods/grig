@@ -1131,3 +1131,11 @@ rig_data_get_has_get_addr ()
 	return &has_get;
 }
 
+
+
+/** \brief Get the modes bitfield */
+int
+rig_data_get_all_modes    ()
+{
+	return get.allmodes;
+}

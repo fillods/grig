@@ -138,7 +138,7 @@ rig_daemon_check_vfo     (RIG               *myrig,
 	else {
 		rig_debug (RIG_DEBUG_BUG,
 			   "*** GRIG: %s: Can not find VFO list for this "\
-			   "backend! Bug in backed?\n", __FUNCTION__);
+			   "backend! Bug in backend?\n", __FUNCTION__);
 	}
 
 	/* try to get current VFO */
@@ -320,7 +320,10 @@ rig_daemon_check_xit      (RIG               *myrig,
  * settings. These are checked together because this is the way hamlib
  * manages them.
  *
- * \bug get tuningstep not implemented?
+ * This function also checks for the frequency range and resolution for
+ * the current mode and also builds the global list of available modes.
+ *
+ * \bug much of the freq. range code is similar to ode in the RIG_CMD_GET_MODE code
  */
 void
 rig_daemon_check_mode     (RIG               *myrig,
@@ -358,15 +361,37 @@ rig_daemon_check_mode     (RIG               *myrig,
 			get->pbw  = RIG_DATA_PB_NORMAL;
 		}
 		
-		/* initialize the frequency range and tuning step */
-		while (!RIG_IS_FRNG_END(myrig->state.rx_range_list[i]) && !found_mode) {
-						
-			/* is this list good for current mode? */
-			if ((mode & myrig->state.rx_range_list[i].modes) == mode) {
-							
+		/* initialize the frequency range and tuning step
+		   note: we loop through *all* ranges so that we can create
+		   a list of supported modes as well
+		*/
+		while (!RIG_IS_FRNG_END(myrig->state.rx_range_list[i])) {
+					       
+			/* store modes */
+			get->allmodes |= myrig->state.rx_range_list[i].modes;
+
+			/* if we have not yet found a mode      AND
+			   this list is good for current mode   AND
+			   the current frequency is within this range
+			*/
+			if (!found_mode &&
+			    ((mode & myrig->state.rx_range_list[i].modes) == mode) &&
+			    (get->freq1 >= myrig->state.rx_range_list[i].start)    &&
+			    (get->freq1 <= myrig->state.rx_range_list[i].end)) {
+					
 				found_mode = 1;
 				get->fmin = myrig->state.rx_range_list[i].start;
 				get->fmax = myrig->state.rx_range_list[i].end;
+				
+				rig_debug (RIG_DEBUG_VERBOSE,
+					   "*** GRIG: Found frequency range for mode %d\n",
+					   mode);
+				rig_debug (RIG_DEBUG_VERBOSE,
+					   "*** GRIG: %.0f...(%.0f)...%.0f kHz\n",
+					   get->fmin / 1.0e3,
+					   get->freq1 / 1.0e3,
+					   get->fmax / 1.0e3);
+
 			}
 			else {
 				i++;
@@ -380,8 +405,12 @@ rig_daemon_check_mode     (RIG               *myrig,
 		if (!found_mode) {
 			rig_debug (RIG_DEBUG_BUG,
 				   "*** GRIG: %s: Can not find frequency range for this "\
-				   "mode (%d)! Bug in backed?\n", __FUNCTION__, mode);
+				   "mode (%d)! Bug in backend?\n", __FUNCTION__, mode);
 		}
+
+		/* get the smallest tuning step */
+		get->fstep = rig_get_resolution (myrig, mode);
+
 	}
 
 	else {

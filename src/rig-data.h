@@ -89,7 +89,8 @@ typedef struct {
 	int             strength;  /*!< Signal strength. */
 	float           swr;       /*!< SWR. */
 	float           alc;       /*!< ALC. */
-	
+
+	/* more or less constant values */
 	freq_t          fmin;      /*!< Lower frequency limit for current mode. */
 	freq_t          fmax;      /*!< Upper frequency limit for current mode. */
 	shortfreq_t     fstep;     /*!< Smallest freqency step for current mode. */
@@ -97,6 +98,7 @@ typedef struct {
 	shortfreq_t     ritstep;   /*!< Smallest RIT step. */
 	shortfreq_t     xitmax;    /*!< Absolute max XIT. */
 	shortfreq_t     xitstep;   /*!< Smallest XIT step. */
+	int             allmodes;  /*!< Bit field of all supported modes. */
 } grig_settings_t;
 
 
@@ -140,6 +142,7 @@ int  rig_data_get_preamp_data  (int index);
 int  rig_data_get_preamp_index (int data);
 int  rig_data_get_vfos         (void);
 void rig_data_set_vfos         (int);
+int  rig_data_get_all_modes    (void);
 
 
 /* set functions */

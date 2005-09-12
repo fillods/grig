@@ -1400,22 +1400,39 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 
 					get->mode = mode;
 
+					/* FIXME: VY SIMILAR CODE IS PRESENT IN RIG_DAEMON_CHECK_MODE */
+
 					/* get frequency limits for this mode; we use the rx_range_list
 					   stored in the rig_state structure
 					*/
 					while (!RIG_IS_FRNG_END(myrig->state.rx_range_list[i]) && !found_mode) {
 						
-						/* is this list good for current mode? */
-						if ((mode & myrig->state.rx_range_list[i].modes) == mode) {
-							
+						/* is this list good for current mode?
+						   is the current frequency within this range?
+						*/
+						if (((mode & myrig->state.rx_range_list[i].modes) == mode) &&
+						    (get->freq1 >= myrig->state.rx_range_list[i].start)    &&
+						    (get->freq1 <= myrig->state.rx_range_list[i].end)) {
+					
 							found_mode = 1;
 							get->fmin = myrig->state.rx_range_list[i].start;
 							get->fmax = myrig->state.rx_range_list[i].end;
+				
+							rig_debug (RIG_DEBUG_VERBOSE,
+								   "*** GRIG: Found frequency range for mode %d\n",
+								   mode);
+							rig_debug (RIG_DEBUG_VERBOSE,
+								   "*** GRIG: %.0f...(%.0f)...%.0f kHz\n",
+								   get->fmin / 1.0e3,
+								   get->freq1 / 1.0e3,
+								   get->fmax / 1.0e3);
+
 						}
 						else {
 							i++;
 						}
 						
+
 					}
 
 					/* if we did not find any suitable range there could be a bug
@@ -1424,7 +1441,7 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 					if (!found_mode) {
 						rig_debug (RIG_DEBUG_BUG,
 							   "*** GRIG: %s: Can not find frequency range for this mode (%d)!\n"\
-							   "Bug in backed?\n", __FUNCTION__, mode);
+							   "Bug in backend?\n", __FUNCTION__, mode);
 					}
 
 					/* get the smallest tuning step */

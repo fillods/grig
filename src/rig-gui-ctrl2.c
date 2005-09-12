@@ -64,6 +64,64 @@ typedef enum rig_gui_ctrl2_e {
 #define HANDLER_ID_KEY  "SIG"
 
 
+/** \brief Table to convert mode index to combo box index
+ *
+ * The hamlib modes can be converted to a linear index using the
+ * rig_utils_mode_to_index function. That index can be used in this
+ * table to find the actual index in the mode selection combo box.
+ * The reason that these two indices are not the same is, that grig
+ * only shows the modes, which are supported by the rig.
+ *
+ * \note -1 means that the mode is not supported by the rig and thus
+ *       not present in the combo box.
+ *
+ * \note RIG_MODE_NONE is not present, thus the first entry is RIG_MODE_AM.
+ */
+gint midx2cidx[16] = {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
+
+
+/** \brief Table to convert mode index to string */
+const gchar *midx2str[16] = {
+	N_("AM"),
+	N_("CW"),
+	N_("USB"),
+	N_("LSB"),
+	N_("RTTY"),
+	N_("FM Narrow"),
+	N_("FM Wide"),
+	N_("CW Rev"),
+	N_("RTTY Rev"),
+	N_("AM Synch"),
+	N_("Pkt (LSB)"),
+	N_("Pkt (USB)"),
+	N_("Pkt (FM)"),
+	N_("ECUSB"),
+	N_("ECLSB"),
+	N_("FAX")
+};
+
+
+/** \brief Table to convert combo box index to hamlib mode. */
+gint cidx2mode[16] = {
+	RIG_MODE_NONE,
+	RIG_MODE_NONE,
+	RIG_MODE_NONE,
+	RIG_MODE_NONE,
+	RIG_MODE_NONE,
+	RIG_MODE_NONE,
+	RIG_MODE_NONE,
+	RIG_MODE_NONE,
+	RIG_MODE_NONE,
+	RIG_MODE_NONE,
+	RIG_MODE_NONE,
+	RIG_MODE_NONE,
+	RIG_MODE_NONE,
+	RIG_MODE_NONE,
+	RIG_MODE_NONE,
+	RIG_MODE_NONE
+};
+
+
 /* private function prototypes */
 static GtkWidget *rig_gui_ctrl2_create_agc_selector    (void);
 static GtkWidget *rig_gui_ctrl2_create_mode_selector   (void);
@@ -211,7 +269,7 @@ rig_gui_ctrl2_create_agc_selector    ()
  *        mode  = 1 << index
  *
  * These conversions are done using dedicated functions in the
- * rig-utils component.
+ * rig-utils package.
  *
  * \bug Grig does not implement the RIG_MODE_NONE mode.
  */
@@ -220,32 +278,35 @@ rig_gui_ctrl2_create_mode_selector   ()
 {
 	GtkWidget   *combo;
 	gint         sigid;
-	
+	gint         index = 0;
+	gint         i,mode;
 
 	/* create and initialize widget */
 	combo = gtk_combo_box_new_text ();
 
-	/* FIXME: Hamlib does also have RIG_MODE_NONE */
-	gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("AM"));
-	gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("CW"));
-	gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("USB"));
-	gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("LSB"));
-	gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("RTTY"));
-	gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("FM Narrow"));
-	gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("FM Wide"));
-	gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("CW Rev"));
-	gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("RTTY Rev"));
-	gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("AM Synch"));
-	gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("Packet (LSB)"));
-	gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("Packet (USB)"));
-	gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("Packet (FM)"));
-	gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("ECUSB"));
-	gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("ECLSB"));
-	gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("FAX"));
+	/* loop over all modes */
+	for (i = 0; i < 16; i++) {
+		
+		mode = 1 << i;
+
+		/* if this mode is supported, add entry to combo box,
+		   store indices and increment combo box index
+		*/
+		if (rig_data_get_all_modes () & mode) {
+
+			gtk_combo_box_append_text (GTK_COMBO_BOX (combo),
+						   midx2str[i]);
+
+			midx2cidx[i] = index;
+			cidx2mode[index] = mode;
+			index++;
+		}
+	}
+	
 
 	/* set current mode */
 	gtk_combo_box_set_active (GTK_COMBO_BOX (combo),
-				  rig_utils_mode_to_index (rig_data_get_mode ()));
+				  midx2cidx[rig_utils_mode_to_index (rig_data_get_mode ())]);
 
 	/* add tooltips when widget is realized */
 	g_signal_connect (combo, "realize",
@@ -400,7 +461,7 @@ rig_gui_ctrl2_mode_cb   (GtkWidget *widget, gpointer data)
 	index = gtk_combo_box_get_active (GTK_COMBO_BOX (widget));
 
 	/* convert it and send to rig-data */
-	rig_data_set_mode (rig_utils_index_to_mode (index));
+	rig_data_set_mode (cidx2mode[index]);
 
 
 }
@@ -561,7 +622,7 @@ rig_gui_ctrl2_update        (GtkWidget *widget, gpointer data)
 
 		/* set current mode */
 		gtk_combo_box_set_active (GTK_COMBO_BOX (widget),
-					  rig_utils_mode_to_index (rig_data_get_mode ()));
+					  midx2cidx[rig_utils_mode_to_index (rig_data_get_mode ())]);
 		
 		/* unblock signal handler */
 		g_signal_handler_unblock (G_OBJECT (widget), handler);
