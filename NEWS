@@ -3,6 +3,7 @@ GRIG 0.5.0:
 - Requires Gtk+ 2.6 and Hamlib 1.2.5
 x Added VFO and SPLIT controls.
 x Added receiver and transmitter level controls.
+- Special rig functions: LOCK
 x Show Hamlib and Grig debug messages in a message window
   instead of stdout (console). The message window shows the
   debug messages in a tree sorted by severity or in a plain

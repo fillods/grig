@@ -1,3 +1,31 @@
+2005-09-22	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/rig-gui-info-data.h:
+	Added RIG_FUNC_STR and RIG_OP arrays.
+
+	* src/rig-gui-info.c:
+	Added RIG_FUNC and VFO_OP settings.
+	
+
+
+2005-09-21;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/rig-gui-buttons,
+	* src/rig-data,
+	* src/rig-daemon,
+	Added support for RIG_FUNC_LOCK.
+
+	* src/rig-daemon-check:
+	Added generic checks for rig_set_func and rig_get_func
+	availabilities.
+	
+
+2005-09-20;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/rig-gui-message-window:
+	Added prototype for debug callback function.
+	
+
 2005-09-06;	Alexandru Csete <csete@users.sourceforge.net>
 
 	* src/rig-daemon.c, src/rig-daemon-check.c:
