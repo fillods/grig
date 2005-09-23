@@ -54,6 +54,8 @@ static GtkWidget *rig_gui_info_create_level_frame    (void);
 static GtkWidget *rig_gui_info_create_if_frame       (void);
 static GtkWidget *rig_gui_info_create_tunstep_frame  (void);
 static GtkWidget *rig_gui_info_create_frontend_frame (void);
+static GtkWidget *rig_gui_info_create_func_frame     (void);
+static GtkWidget *rig_gui_info_create_vfo_ops_frame  (void);
 
 
 /** \brief Create info dialog.
@@ -68,35 +70,45 @@ rig_gui_info_run ()
 	GtkWidget *hbox;
 	GtkWidget *vbox1;
 	GtkWidget *vbox2;
+	GtkWidget *vbox3;
+	GtkWidget *vbox4;
 
 	vbox1 = gtk_vbox_new (FALSE, 5);
-
 	gtk_box_pack_start (GTK_BOX (vbox1), 
 			    rig_gui_info_create_if_frame (),
 			    FALSE, FALSE, 0);
-
 	gtk_box_pack_start (GTK_BOX (vbox1), 
 			    rig_gui_info_create_offset_frame (),
 			    FALSE, FALSE, 0);
-
 	gtk_box_pack_start (GTK_BOX (vbox1), 
 			    rig_gui_info_create_frontend_frame (),
 			    FALSE, FALSE, 0);
 
 	vbox2 = gtk_vbox_new (FALSE, 5);
-
-	gtk_box_pack_start (GTK_BOX (vbox2), 
-			    rig_gui_info_create_tunstep_frame (),
-			    FALSE, FALSE, 5);
-
 	gtk_box_pack_start (GTK_BOX (vbox2),
 			    rig_gui_info_create_level_frame (),
 			    TRUE, TRUE, 0);
 
+	vbox3 = gtk_vbox_new (FALSE, 5);
+	gtk_box_pack_start (GTK_BOX (vbox3), 
+			    rig_gui_info_create_func_frame (),
+			    TRUE, TRUE, 0);
+
+	vbox4 = gtk_vbox_new (FALSE, 5);
+	gtk_box_pack_start (GTK_BOX (vbox4), 
+			    rig_gui_info_create_tunstep_frame (),
+			    FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (vbox4), 
+			    rig_gui_info_create_vfo_ops_frame (),
+			    TRUE, TRUE, 0);
+
+	/* main horisontal box */
 	hbox = gtk_hbox_new (TRUE, 15);
 
 	gtk_box_pack_start (GTK_BOX (hbox), vbox1, FALSE, FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (hbox), vbox2, TRUE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX (hbox), vbox3, TRUE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX (hbox), vbox4, TRUE, TRUE, 0);
 
 
 	/* create dialog and add hbox */
@@ -709,8 +721,8 @@ rig_gui_info_create_tunstep_frame  ()
 	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
 	gtk_table_attach (GTK_TABLE (table), label,
 			  0, 1, 0, 1,
-			  GTK_EXPAND | GTK_FILL,
-			  GTK_EXPAND | GTK_FILL,
+			  GTK_SHRINK,
+			  GTK_SHRINK,
 			  5, 0);
 
 
@@ -718,8 +730,8 @@ rig_gui_info_create_tunstep_frame  ()
 	gtk_label_set_markup (GTK_LABEL (label), _("<b>MODES</b>"));
 	gtk_table_attach (GTK_TABLE (table), label,
 			  1, 2, 0, 1,
-			  GTK_EXPAND | GTK_FILL,
-			  GTK_EXPAND | GTK_FILL,
+			  GTK_SHRINK,
+			  GTK_SHRINK,
 			  5, 0);
 
 	/* pseudo code:
@@ -932,3 +944,187 @@ rig_gui_info_create_frontend_frame ()
 }
 
 
+
+/** \brief Create frame containing functions info.
+ *  \return Frame containing the widgets.
+ *
+ * This function creates the widget used to display the set and get
+ * special function availabilities. The various functions are listed in a vertical
+ * table and for each of them a label indicates
+ * whether the function is available or not (actualy one label for read and
+ * one for write).
+ *
+ *             READ    WRITE
+ *
+ *   FUNC 1     X        X
+ *   FUNC 2     X
+ *
+ */
+static GtkWidget *
+rig_gui_info_create_func_frame    ()
+{
+	GtkWidget *swin;
+	GtkWidget *table;
+	GtkWidget *label;
+	setting_t  funcs_rd;
+	setting_t  funcs_wr;
+	guint      i;
+
+
+	table = gtk_table_new (30, 3, FALSE);
+
+	label = gtk_label_new (NULL);
+	gtk_label_set_markup (GTK_LABEL (label), _("<b>FUNCTION</b>"));
+	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+	gtk_table_attach (GTK_TABLE (table), label,
+			  0, 1, 0, 1,
+			  GTK_EXPAND | GTK_FILL,
+			  GTK_EXPAND | GTK_FILL,
+			  5, 0);
+
+
+	label = gtk_label_new (NULL);
+	gtk_label_set_markup (GTK_LABEL (label), _("<b>READ</b>"));
+	gtk_table_attach (GTK_TABLE (table), label,
+			  1, 2, 0, 1,
+			  GTK_EXPAND | GTK_FILL,
+			  GTK_EXPAND | GTK_FILL,
+			  5, 0);
+
+	label = gtk_label_new (NULL);
+	gtk_label_set_markup (GTK_LABEL (label), _("<b>WRITE</b>"));
+	gtk_table_attach (GTK_TABLE (table), label,
+			  2, 3, 0, 1,
+			  GTK_EXPAND | GTK_FILL,
+			  GTK_EXPAND | GTK_FILL,
+			  5, 0);
+
+
+	/* get levels */
+	funcs_rd = rig_has_get_func (myrig, 0xFFFFFFFF);
+	funcs_wr = rig_has_set_func (myrig, 0xFFFFFFFF);
+	
+	/* loop over all levels; unfortunately there is no nice way to avoid
+	   the empty values but, since there are not so many of them, it is all
+	   right...
+	*/
+	for (i = 0; i < 31; i++) {
+
+		/* add RIG_FUNC_STR[i] to the row i+1 */
+		label = gtk_label_new (RIG_FUNC_STR[i]);
+		gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+		gtk_table_attach (GTK_TABLE (table), label,
+				  0, 1, i+1, i+2,
+				  GTK_EXPAND | GTK_FILL,
+				  GTK_EXPAND | GTK_FILL,
+				  5, 0);
+		
+		/* add READ label to row i+1 */
+		label = gtk_label_new (_("-"));
+		gtk_table_attach_defaults (GTK_TABLE (table), label,
+					   1, 2, i+1, i+2);
+
+		if (funcs_rd & (1 << i)) {
+			gtk_label_set_text (GTK_LABEL (label), _("X"));
+		}
+
+		/* add WRITE label to row i+1 */
+		label = gtk_label_new (_("-"));
+		gtk_table_attach_defaults (GTK_TABLE (table), label,
+					   2, 3, i+1, i+2);
+
+		if (funcs_wr & (1 << i)) {
+			gtk_label_set_text (GTK_LABEL (label), _("X"));
+		}
+
+	}
+
+	/* scrolled window and frame */ 
+	swin = gtk_scrolled_window_new (NULL,NULL);
+	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (swin),
+					GTK_POLICY_NEVER,
+					GTK_POLICY_ALWAYS);
+	gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (swin), table);
+		
+
+	return swin;
+}
+
+
+/** \brief Create frame containing VFO ops info.
+ *  \return Frame containing the widgets.
+ *
+ */
+static GtkWidget *
+rig_gui_info_create_vfo_ops_frame    ()
+{
+	GtkWidget *swin;
+	GtkWidget *table;
+	GtkWidget *label;
+	setting_t  vfo_ops;
+	guint      i;
+
+
+	table = gtk_table_new (14, 2, FALSE);
+
+	label = gtk_label_new (NULL);
+	gtk_label_set_markup (GTK_LABEL (label), _("<b>VFO OP</b>"));
+	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+	gtk_table_attach (GTK_TABLE (table), label,
+			  0, 1, 0, 1,
+			  GTK_EXPAND | GTK_FILL,
+			  GTK_EXPAND | GTK_FILL,
+			  5, 0);
+
+
+	label = gtk_label_new (NULL);
+	gtk_label_set_markup (GTK_LABEL (label), _("<b>SET</b>"));
+	gtk_table_attach (GTK_TABLE (table), label,
+			  1, 2, 0, 1,
+			  GTK_EXPAND | GTK_FILL,
+			  GTK_EXPAND | GTK_FILL,
+			  5, 0);
+
+
+
+	/* get vfo ops */
+	vfo_ops = myrig->caps->vfo_ops & 0xFFFFFFFF;
+
+	
+	/* loop over all levels; unfortunately there is no nice way to avoid
+	   the empty values but, since there are not so many of them, it is all
+	   right...
+	*/
+	for (i = 0; i < 13; i++) {
+
+		/* add RIG_FUNC_STR[i] to the row i+1 */
+		label = gtk_label_new (RIG_OP_STR[i]);
+		gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+		gtk_table_attach (GTK_TABLE (table), label,
+				  0, 1, i+1, i+2,
+				  GTK_EXPAND | GTK_FILL,
+				  GTK_EXPAND | GTK_FILL,
+				  5, 0);
+		
+		/* add READ label to row i+1 */
+		label = gtk_label_new (_("-"));
+		gtk_table_attach_defaults (GTK_TABLE (table), label,
+					   1, 2, i+1, i+2);
+
+		if (vfo_ops & (1 << i)) {
+			gtk_label_set_text (GTK_LABEL (label), _("X"));
+		}
+
+
+	}
+
+	/* scrolled window and frame */ 
+	swin = gtk_scrolled_window_new (NULL,NULL);
+	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (swin),
+					GTK_POLICY_NEVER,
+					GTK_POLICY_ALWAYS);
+	gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (swin), table);
+		
+
+	return swin;
+}

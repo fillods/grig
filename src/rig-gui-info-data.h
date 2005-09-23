@@ -74,6 +74,40 @@ const gchar *RIG_LEVEL_STR[] = {
 	N_("STRENGTH")
 };
 
+/** \brief string representations for RIG_FUNC symbolic references. */
+const gchar *RIG_FUNC_STR[] = {
+	N_("FAST AGC"),
+	N_("NB"),
+	N_("COMPR"),
+	N_("VOX"),
+	N_("TONE"),
+	N_("CTCSS"),
+	N_("SEMI BK"),
+	N_("FULL BK"),
+	N_("ANF"),
+	N_("NR"),
+	N_("AIP"),
+	N_("APF"),
+	N_("MON"),
+	N_("MAN NOTCH"),
+	N_("RNF"),
+	N_("AUTO RO"),
+	N_("LOCK"),
+	N_("MUTE"),
+	N_("VOICE SCAN"),
+	N_("REV TRX"),
+	N_("SQL"),
+	N_("ABM"),
+	N_("BEAT CANC"),
+	N_("MAN BC"),
+	N_("N/A"),
+	N_("AFC"),
+	N_("SATMODE"),
+	N_("SCOPE"),
+	N_("RESUME"),
+	N_("TBURST"),
+	N_("TUNER")
+};
 
 /** \brief String representations for PTT_TYPE_T symbolic references. */
 const gchar *PTT_TYPE_STR[] = {
@@ -151,6 +185,24 @@ const gchar *MODE_STR[] = {
 	N_("ECSSUSB"),
 	N_("ECSSLSB"),
 	N_("FAX")
+};
+
+
+/** \brief String representation for VFO ops. */
+const gchar *RIG_OP_STR[] = {
+	N_("COPY A=B"),
+	N_("XCHG A/B"),
+	N_("VFO->MEM"),
+	N_("MEM->VFO"),
+	N_("MEMCLEAR"),
+	N_("UP"),
+	N_("DOWN"),
+	N_("BAND UP"),
+	N_("BAND DOWN"),
+	N_("LEFT"),
+	N_("RIGHT"),
+	N_("TUNE"),
+	N_("TOGGLE")
 };
 
 #endif
