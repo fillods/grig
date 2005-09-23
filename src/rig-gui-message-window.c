@@ -35,7 +35,11 @@
 
 static gboolean visible     = FALSE;   /* Is message window visible? */
 static gboolean initialised = FALSE;   /* Is module initialised? */
-
+static guint32  bugs        = 0;       /* Number of bug messages */    
+static guint32  errors      = 0;       /* Number of error messages */
+static guint32  warnings    = 0;       /* Number of warning messages */
+static guint32  verboses    = 0;       /* Number of verbose messages */
+static guint32  traces      = 0;       /* Number of trace messages */
 
 
 /* Initialise message window.
@@ -105,4 +109,25 @@ rig_gui_message_window_hide  ()
 		g_print ("Hide window\n");
 		visible = FALSE;
 	}
+}
+
+
+
+/** \brief Debug handler callback
+ *  \param debug_level The debug level.
+ *  \param user_data Unused.
+ *  \param fmt Format string (see printf).
+ *  \returns Always RIG_OK.
+ *
+ *  This function should be passed to hamlib as the debug handler using
+ *  the rig_set_debug_callback API function.
+ */
+int
+rig_gui_message_window_add_cb   (enum rig_debug_level_e debug_level,
+				 rig_ptr_t user_data,
+				 const char *fmt,
+				 ...)
+{
+
+	return 0;
 }

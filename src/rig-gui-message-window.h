@@ -32,9 +32,16 @@
 #ifndef RIG_GUI_MESSAGE_WINDOW_H
 #define RIG_GUI_MESSAGE_WINDOW_H 1
 
+#include <hamlib/rig.h>
+
 void rig_gui_message_window_init  (void);
 void rig_gui_message_window_clean (void);
 void rig_gui_message_window_show  (void);
 void rig_gui_message_window_hide  (void);
+
+int  rig_gui_message_window_add_cb   (enum rig_debug_level_e debug_level,
+				      rig_ptr_t user_data,
+				      const char *fmt,
+				      ...);
 
 #endif
