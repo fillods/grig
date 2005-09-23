@@ -116,13 +116,13 @@ static const rig_cmd_t DEF_RX_CYCLE[C_MAX_CMD_PER_CYCLE] = {
 	RIG_CMD_GET_FREQ_1,
 	RIG_CMD_SET_PSTAT,
 	RIG_CMD_GET_PSTAT,
-	RIG_CMD_NONE,
+	RIG_CMD_SET_LOCK,
 	RIG_CMD_GET_STRENGTH,
 	RIG_CMD_SET_ATT,
 	RIG_CMD_GET_ATT,
 	RIG_CMD_SET_RIT,
 	RIG_CMD_GET_RIT,
-	RIG_CMD_NONE,
+	RIG_CMD_GET_LOCK,
 	RIG_CMD_GET_STRENGTH,
 	RIG_CMD_SET_FREQ_1,
 	RIG_CMD_GET_FREQ_1,
@@ -166,7 +166,7 @@ static const rig_cmd_t DEF_TX_CYCLE[C_MAX_CMD_PER_CYCLE] = {
 	RIG_CMD_GET_POWER,
 	RIG_CMD_GET_SWR,
 	RIG_CMD_GET_ALC,
-	RIG_CMD_NONE,
+	RIG_CMD_SET_LOCK,
 	RIG_CMD_GET_PTT,
 	RIG_CMD_NONE,
 	RIG_CMD_GET_POWER,
@@ -564,6 +564,7 @@ rig_daemon_post_init (gboolean ptt, gboolean pstat)
 	rig_daemon_check_xit     (myrig, get, has_get, has_set);
 	rig_daemon_check_mode    (myrig, get, has_get, has_set);
 	rig_daemon_check_level   (myrig, get, has_get, has_set);
+	rig_daemon_check_func    (myrig, get, has_get, has_set);
 
 	/* debug info about detected has-get caps */
 	rig_debug (RIG_DEBUG_TRACE,
@@ -585,6 +586,8 @@ rig_daemon_post_init (gboolean ptt, gboolean pstat)
 		   has_get->strength,
 		   has_get->swr,
 		   has_get->alc);
+
+	/** FIXME: FUNC **/
 
 	/* debug info about detected has-set caps */
 	rig_debug (RIG_DEBUG_TRACE,
@@ -1822,6 +1825,55 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 		}
 
 		break;
+
+		/* set LOCK status */
+	case RIG_CMD_SET_LOCK:
+
+		if (has_set->lock && new->lock) {
+			retcode = rig_set_func (myrig,
+						RIG_VFO_CURR,
+						RIG_FUNC_LOCK,
+						set->lock);
+
+			if (retcode != RIG_OK) {
+				rig_debug (RIG_DEBUG_ERR,
+					   "*** GRIG: %s: Failed to execute RIG_CMD_SET_LOCK\n",
+					   __FUNCTION__);
+
+				rig_anomaly_raise (RIG_CMD_SET_LOCK);
+			}
+			
+			get->lock = set->lock;
+			new->lock = 0;
+
+		}
+		break;
+
+		/* get LOCK status */
+	case RIG_CMD_GET_LOCK:
+
+		/* check whether command is available */
+		if (has_get->lock) {
+			int lock;
+
+			/* try to execute command */
+			retcode = rig_get_func (myrig, RIG_VFO_CURR, RIG_FUNC_LOCK, &lock);
+
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				rig_debug (RIG_DEBUG_ERR,
+					   "*** GRIG: %s: Failed to execute RIG_CMD_GET_LOCK\n",
+					   __FUNCTION__);
+
+				rig_anomaly_raise (RIG_CMD_GET_LOCK);
+			}
+			else {
+				get->lock = lock;
+			}
+		}
+
+		break;
+
 
 		/* bug in grig! */
 	default:

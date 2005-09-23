@@ -48,6 +48,7 @@
 typedef enum rig_gui_buttons_e {
 	RIG_GUI_POWER_BUTTON = 1,   /*!< The Power button */
 	RIG_GUI_PTT_BUTTON,         /*!< The PTT button */
+	RIG_GUI_LOCK_BUTTON,        /*!< Lock dial function */
 	RIG_GUI_ATT_SELECTOR,       /*!< Attenuator selector. */
 	RIG_GUI_PREAMP_SELECTOR     /*!< Preamp selector. */
 } rig_gui_buttons_t;
@@ -64,11 +65,13 @@ typedef enum rig_gui_buttons_e {
 /* private function prototypes */
 static GtkWidget *rig_gui_buttons_create_power_button    (void);
 static GtkWidget *rig_gui_buttons_create_ptt_button      (void);
+static GtkWidget *rig_gui_buttons_create_lock_button     (void);
 static GtkWidget *rig_gui_buttons_create_att_selector    (void);
 static GtkWidget *rig_gui_buttons_create_preamp_selector (void);
 
 static void rig_gui_buttons_power_cb    (GtkWidget *, gpointer);
 static void rig_gui_buttons_ptt_cb      (GtkWidget *, gpointer);
+static void rig_gui_buttons_lock_cb     (GtkWidget *, gpointer);
 static void rig_gui_buttons_att_cb      (GtkWidget *, gpointer);
 static void rig_gui_buttons_preamp_cb   (GtkWidget *, gpointer);
 
@@ -98,6 +101,9 @@ rig_gui_buttons_create ()
 			    FALSE, FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (vbox),
 			    rig_gui_buttons_create_ptt_button (),
+			    FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (vbox),
+			    rig_gui_buttons_create_lock_button (),
 			    FALSE, FALSE, 0);
 
 	gtk_box_pack_end   (GTK_BOX (vbox),
@@ -218,6 +224,55 @@ rig_gui_buttons_create_ptt_button    ()
 	g_object_set_data (G_OBJECT (button),
 			     WIDGET_ID_KEY,
 			     GUINT_TO_POINTER (RIG_GUI_PTT_BUTTON));
+
+	return button;
+}
+
+
+/** \brief Create LOCK button.
+ *  \return The lock button widget.
+ *
+ * This function creates the widget which is used to control the
+ * dial LOCK ON/OFF.
+ */
+static GtkWidget *
+rig_gui_buttons_create_lock_button    ()
+{
+	GtkWidget   *button;
+	GtkTooltips *tips;
+	int          status;
+	gint         sigid;
+	
+	/* create button widget */
+	button = gtk_toggle_button_new_with_label (_("Lock"));
+	tips = gtk_tooltips_new ();
+	gtk_tooltips_set_tip (tips, button,
+			      _("Lock tuning dial"),
+			      _("Lock the main tuning dial on the radio panel"));
+
+	/* set correct state */
+	status = rig_data_get_lock ();
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button), 
+				      status ? TRUE : FALSE);
+
+	if (!rig_data_has_set_lock ()) {
+		gtk_widget_set_sensitive (button, FALSE);
+	}
+
+	/* connect "toggle" signal */
+	sigid = g_signal_connect (G_OBJECT (button), "toggled",
+				  G_CALLBACK (rig_gui_buttons_lock_cb),
+				  NULL);
+
+	/* set handler ID */
+	g_object_set_data (G_OBJECT (button),
+			   HANDLER_ID_KEY,
+			   GINT_TO_POINTER (sigid));
+
+	/* set widget ID */
+	g_object_set_data (G_OBJECT (button),
+			     WIDGET_ID_KEY,
+			     GUINT_TO_POINTER (RIG_GUI_LOCK_BUTTON));
 
 	return button;
 }
@@ -386,6 +441,27 @@ rig_gui_buttons_ptt_cb   (GtkWidget *widget, gpointer data)
 	}
 	else {
 		rig_data_set_ptt (RIG_PTT_OFF);
+	}
+
+}
+
+
+/** \brief Set LOCK status.
+ *  \param widget The widget which received the signal.
+ *  \param data   User data, always NULL.
+ *
+ * This function is called when the user clicks on the 'LOCK' button.
+ * It check the status of the button and sets the LOCK status accordingly.
+ */
+static void
+rig_gui_buttons_lock_cb   (GtkWidget *widget, gpointer data)
+{
+
+	if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget))) {
+		rig_data_set_lock (1);
+	}
+	else {
+		rig_data_set_lock (0);
 	}
 
 }

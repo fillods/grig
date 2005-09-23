@@ -1058,6 +1058,38 @@ rig_data_get_xitstep    ()
 
 
 
+/***   LOCK  ***/
+int
+rig_data_has_set_lock ()
+{
+	return has_set.lock;
+}
+
+
+int
+rig_data_has_get_lock ()
+{
+	return has_get.lock;
+}
+
+
+void
+rig_data_set_lock     (int lock)
+{
+	set.lock = lock;
+	new.lock = 1;
+}
+
+
+int
+rig_data_get_lock     ()
+{
+	return get.lock;
+}
+
+
+
+
 /** \brief Get address of 'get' variable.
  *  \return A pointer to the shared data.
  *
@@ -1139,3 +1171,5 @@ rig_data_get_all_modes    ()
 {
 	return get.allmodes;
 }
+
+

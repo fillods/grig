@@ -82,6 +82,9 @@ typedef enum {
 	RIG_CMD_GET_SWR,       /*!< Command to get SWR level. */
 	RIG_CMD_GET_ALC,       /*!< Command to get ALC level. */
 
+	RIG_CMD_GET_LOCK,      /*!< Command to get LOCK status. */
+	RIG_CMD_SET_LOCK,      /*!< Command to set LOCK status. */
+
 	RIG_CMD_NUMBER         /*!< Number of available commands. */
 } rig_cmd_t;
 

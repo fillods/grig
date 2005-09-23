@@ -73,6 +73,7 @@ typedef enum rig_data_pbw_e {
 typedef struct {
 	powerstat_t      pstat;    /*!< Power status (ON/OFF). */
 	ptt_t            ptt;      /*!< PTT status (ON/OFF). */
+	int              lock;     /*!< Dial lock rig_set_func */
 	vfo_t            vfo;      /*!< VFO. */
 	rmode_t          mode;     /*!< Mode. */
 	rig_data_pbw_t   pbw;      /*!< Passband width. */
@@ -105,6 +106,7 @@ typedef struct {
 typedef struct {
 	int         pstat;
 	int         ptt;
+	int         lock;
 	int         vfo;
 	int         mode;
 	int         pbw;
@@ -128,6 +130,10 @@ typedef struct {
 		       RIG_LEVEL_STRENGTH | RIG_LEVEL_ATT | RIG_LEVEL_PREAMP)
 #define GRIG_LEVEL_WR (RIG_LEVEL_RFPOWER | RIG_LEVEL_AGC | RIG_LEVEL_ATT | RIG_LEVEL_PREAMP)
 
+#define GRIG_FUNC_RD (RIG_FUNC_LOCK)
+#define GRIG_FUNC_WR (RIG_FUNC_LOCK)
+
+
 /* init functions */
 void rig_data_init        (void);
 void rig_data_free        (void);
@@ -144,6 +150,8 @@ int  rig_data_get_vfos         (void);
 void rig_data_set_vfos         (int);
 int  rig_data_get_all_modes    (void);
 
+
+/* FIXME: group functions accoring to functionality */
 
 /* set functions */
 void rig_data_set_pstat   (powerstat_t);
@@ -218,6 +226,13 @@ int   rig_data_has_set_rit      (void);
 int   rig_data_has_set_xit      (void);
 int   rig_data_has_set_att      (void);
 int   rig_data_has_set_preamp   (void);
+
+
+/* LOCK */
+int  rig_data_has_set_lock (void);
+int  rig_data_has_get_lock (void);
+void rig_data_set_lock     (int lock);
+int  rig_data_get_lock     (void);
 
 
 /* address acquisition functions */
