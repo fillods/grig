@@ -42,5 +42,6 @@ void rig_daemon_check_rit     (RIG *, grig_settings_t *, grig_cmd_avail_t *, gri
 void rig_daemon_check_xit     (RIG *, grig_settings_t *, grig_cmd_avail_t *, grig_cmd_avail_t *);
 void rig_daemon_check_mode    (RIG *, grig_settings_t *, grig_cmd_avail_t *, grig_cmd_avail_t *);
 void rig_daemon_check_level   (RIG *, grig_settings_t *, grig_cmd_avail_t *, grig_cmd_avail_t *);
+void rig_daemon_check_func    (RIG *, grig_settings_t *, grig_cmd_avail_t *, grig_cmd_avail_t *);
 
 #endif

@@ -592,3 +592,60 @@ rig_daemon_check_level     (RIG               *myrig,
 
 	/* FIXME: AGC ARRAY? */
 }
+
+
+
+/** \brief Check FUNC setting and reading availabilities.
+ *  \param rig The radio handle.
+ *  \param get Pointer to shared data 'get'.
+ *  \param has_get Pointer to shared data 'has_get'.
+ *  \param has_set Pointer to shared data 'has_set'.
+ *
+ * This function tests the availability of various special functions,
+ * which are available through the rig_setfunc and rig_get_func API calls.
+ * Only the functions supported by grig are tested.
+ */
+void
+rig_daemon_check_func     (RIG               *myrig,
+			   grig_settings_t   *get,
+			   grig_cmd_avail_t  *has_get,
+			   grig_cmd_avail_t  *has_set)
+
+{
+	int               retcode;                 /* Hamlib status code */
+	setting_t         hasfunc;                 /* available func settings */
+	int               val;                     /* generic value */
+
+
+	/* get available read funcs
+	 */
+	hasfunc = rig_has_get_func (myrig, GRIG_FUNC_RD);
+
+	/* unmask bits */
+	has_get->lock    = ((hasfunc & RIG_FUNC_LOCK) ? 1 : 0);
+
+	/* read values */
+	if (has_get->lock) {
+		retcode = rig_get_func (myrig, RIG_VFO_CURR, RIG_FUNC_LOCK, &val);
+		if (retcode == RIG_OK) {
+			get->lock = val;
+		}
+		else {
+			/* send an error report */
+			rig_debug (RIG_DEBUG_ERR,
+				   "*** GRIG: %s: Could not get LOCK status\n",
+				   __FUNCTION__);
+		}
+	}
+
+
+	/* get available write funcs */
+	hasfunc = rig_has_set_func (myrig, GRIG_FUNC_WR);
+
+	/* we don't perform explicit testing of set functions
+	   (like we did with the get levels) since we might
+	   not have any good values to send
+	*/
+	has_set->lock  = ((hasfunc & RIG_FUNC_LOCK) ? 1 : 0);
+
+}
