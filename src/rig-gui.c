@@ -42,6 +42,7 @@
 #include "rig-gui-smeter.h"
 #include "rig-gui-lcd.h"
 #include "rig-gui-levels.h"
+#include "rig-gui-vfo.h"
 #include "grig-menubar.h"
 
 
@@ -57,7 +58,8 @@ GtkWidget *
 rig_gui_create ()
 {
 	GtkWidget *hbox;     /* the main container */
-	GtkWidget *vbox;     
+	GtkWidget *vbox;
+	GtkWidget *lcdbox;
 
 	/* create the main container */
 	hbox = gtk_hbox_new (FALSE, 5);
@@ -66,7 +68,15 @@ rig_gui_create ()
 			    FALSE, FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (hbox), rig_gui_smeter_create (),
 			    FALSE, FALSE, 0);
-	gtk_box_pack_start (GTK_BOX (hbox), rig_gui_lcd_create (),
+
+	lcdbox = gtk_vbox_new (FALSE, 5);
+	gtk_box_pack_start (GTK_BOX (lcdbox), rig_gui_lcd_create (),
+			    FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (lcdbox), rig_gui_vfo_create (),
+			    FALSE, FALSE, 0);
+
+
+	gtk_box_pack_start (GTK_BOX (hbox), lcdbox,
 			    FALSE, FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (hbox), rig_gui_ctrl2_create (),
 			    FALSE, FALSE, 0);

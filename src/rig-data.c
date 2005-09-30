@@ -274,18 +274,6 @@ rig_data_set_ptt     (ptt_t ptt)
 }
 
 
-/** \brief Set VFO.
- *  \param vfo The new VFO.
- *
- * This function sets the targeted VFO, ie. active VFO to vfo.
- */
-void
-rig_data_set_vfo     (vfo_t vfo)
-{
-	set.vfo = vfo;
-	get.vfo = vfo;
-	new.vfo = 1;
-}
 
 
 
@@ -469,16 +457,34 @@ rig_data_get_ptt     ()
 }
 
 
-/** \brief Get current VFO.
- *  \return The currently selected VFO.
- *
- * This function returns the currently selected VFO.
- */
+/* SET and GET VFO */
 vfo_t
 rig_data_get_vfo     ()
 {
 	return get.vfo;
 }
+
+void
+rig_data_set_vfo     (vfo_t vfo)
+{
+	set.vfo = vfo;
+	get.vfo = vfo;
+	new.vfo = 1;
+}
+
+int
+rig_data_has_get_vfo  ()
+{
+	return has_get.vfo;
+}
+
+
+int
+rig_data_has_set_vfo  ()
+{
+	return has_set.vfo;
+}
+
 
 
 /** \brief Get current mode.
@@ -1085,6 +1091,22 @@ int
 rig_data_get_lock     ()
 {
 	return get.lock;
+}
+
+
+/* VFO TOGGLE */
+int
+rig_data_has_vfo_op_toggle ()
+{
+	return has_set.vfo_op_toggle;
+}
+
+
+void
+rig_data_vfo_op_toggle     ()
+{
+	set.vfo_op_toggle = 1;
+	new.vfo_op_toggle = 1;
 }
 
 

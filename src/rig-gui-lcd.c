@@ -139,9 +139,7 @@ static gint           rig_gui_lcd_timeout_stop     (gpointer);
 
 static void           ritval_to_bytearr            (gchar *, shortfreq_t);
 
-static GtkWidget     *rig_gui_create_vfo_selector  (void);
-static void           rig_gui_lcd_vfo_cb           (GtkWidget *, gpointer);
-
+static void           rig_gui_lcd_update_vfo       (void);
 
 /** \brief Create LCD display widget.
  *  \return The LCD display widget.
@@ -152,8 +150,7 @@ static void           rig_gui_lcd_vfo_cb           (GtkWidget *, gpointer);
 GtkWidget *
 rig_gui_lcd_create ()
 {
-	GtkWidget *vbox,*hbox;
-	GtkWidget *vfosel;      /* vfo selector */
+	GtkWidget *vbox;
 	guint      timerid;
 	guint      i;
 
@@ -1239,6 +1236,7 @@ rig_gui_lcd_set_rit_digits   (shortfreq_t freq)
 static gint 
 rig_gui_lcd_timeout_exec  (gpointer data)
 {
+	static guint vfoupd;
 		
 	/* update frequency if applicable */
 	if (rig_data_has_get_freq1 ()) {
@@ -1252,6 +1250,15 @@ rig_gui_lcd_timeout_exec  (gpointer data)
 
 		lcd.rit = rig_data_get_rit ();
 		rig_gui_lcd_set_rit_digits (lcd.rit);
+	}
+
+	/* VFO updated every second cycle */
+	if (vfoupd) {
+		rig_gui_lcd_update_vfo ();
+		vfoupd = 0;
+	}
+	else {
+		vfoupd += 1;
 	}
 
 	return TRUE;
@@ -1323,8 +1330,58 @@ rig_gui_lcd_draw_text        ()
 			 lcd.digits[11].y + lcd.dsh - h,
 			 layout);
 
+	rig_gui_lcd_update_vfo ();
+
+	/* set text: RIT */
+	pango_layout_set_text (layout, _("RIT"), -1);
+
+	/* calculate coordinates;
+	   PanoLayoutSize is in 1000th of pixel?
+	*/
+	pango_layout_get_size (layout, &w, &h);
+	w /= 1000; h /= 1000;
+
+	/* draw text; RIT */
+	gdk_draw_layout (lcd.canvas->window,
+			 lcd.gc1,
+			 lcd.digits[10].x,
+			 lcd.digits[0].y - h,
+			 layout);
+
+
+	/* free PangoLayout */
+	g_object_unref (G_OBJECT (layout));
+}
+
+
+static void
+rig_gui_lcd_update_vfo ()
+{
+	PangoContext *context;
+	PangoLayout  *layout;
+	gint          w,h;
+	vfo_t         vfo;
+
+	/* is drawing area ready? */
+	if (!lcd.exposed)
+		return;
+
+	/* if the VFO is the same as the displayed one, don't do anything */
+	vfo = rig_data_get_vfo ();
+	if (vfo == lcd.vfo)
+		return;
+
+	lcd.vfo = vfo; 
+
 	/* set text: VFO */
-	switch (rig_data_get_vfo ()) {
+	/* get the PangoContext of the widget */
+	context = gtk_widget_get_pango_context (lcd.canvas);
+
+	/* create a new PangoLayout */
+	layout  = pango_layout_new (context);
+
+
+	switch (vfo) {
 
 	case RIG_VFO_A:
 		pango_layout_set_text (layout, _("VFO A"), -1);
@@ -1351,41 +1408,33 @@ rig_gui_lcd_draw_text        ()
 		break;
 	}
 
+
 	/* calculate coordinates;
 	   PanoLayoutSize is in 1000th of pixel?
 	*/
 	pango_layout_get_size (layout, &w, &h);
 	w /= 1000; h /= 1000;
 
-	/* draw text; frequency */
+	/* clear the area */
+	gdk_draw_rectangle (GDK_DRAWABLE (lcd.canvas->window),
+			    lcd.gc2,
+			    TRUE,
+			    lcd.digits[4].x,
+			    lcd.digits[0].y - h,
+			    2*w,
+			    h);
+
+
+	/* draw text */
 	gdk_draw_layout (lcd.canvas->window,
 			 lcd.gc1,
 			 lcd.digits[4].x,
 			 lcd.digits[0].y - h,
 			 layout);
 
-
-	/* set text: RIT */
-	pango_layout_set_text (layout, _("RIT"), -1);
-
-	/* calculate coordinates;
-	   PanoLayoutSize is in 1000th of pixel?
-	*/
-	pango_layout_get_size (layout, &w, &h);
-	w /= 1000; h /= 1000;
-
-	/* draw text; frequency */
-	gdk_draw_layout (lcd.canvas->window,
-			 lcd.gc1,
-			 lcd.digits[10].x,
-			 lcd.digits[0].y - h,
-			 layout);
-
-
 	/* free PangoLayout */
 	g_object_unref (G_OBJECT (layout));
 }
-
 
 /** \brief Convert RIT value to byte array.
  *  \param array The array to store the result in.
@@ -1424,62 +1473,4 @@ ritval_to_bytearr (gchar *array, shortfreq_t freq)
 	}
 }
 
-
-
-/** \brief Create VFO selector widget.
- *  \returns A combo box containg the available VFOs.
- *
- * This function creates and initialises the VFO selector combo box.
- * The list in the combo box is populated with data from the VFO list
- * available via rig_data_get_vfos.
- *
- * \bug must make a custom tree-model to store numeric value for each entry...
- */
-static GtkWidget *
-rig_gui_create_vfo_selector  ()
-{
-	GtkWidget *combo;
-	gint       vfos;
-
-	/* get list of VFOs */
-	vfos = rig_data_get_vfos ();
-
-	/* create and initialize widget */
-	combo = gtk_combo_box_new_text ();
-
-	if (vfos & RIG_VFO_A) {
-		gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("VFO A"));
-	}
-	if (vfos & RIG_VFO_B) {
-		gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("VFO B"));
-	}
-	if (vfos & RIG_VFO_C) {
-		gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("VFO C"));
-	}
-	if (vfos & RIG_VFO_MAIN) {
-		gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("Main"));
-	}
-	if (vfos & RIG_VFO_SUB) {
-		gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("Sub"));
-	}
-
-
-
-	/* add tooltips when widget is realized */
-	g_signal_connect (combo, "realize",
-			  G_CALLBACK (grig_set_combo_tooltips),
-			  _("Select active VFO"));
-
-
-	return combo;
-
-}
-
-
-
-static void
-rig_gui_lcd_vfo_cb           (GtkWidget *widget, gpointer data)
-{
-
-}
 

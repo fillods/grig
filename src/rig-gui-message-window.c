@@ -42,6 +42,7 @@ static guint32  verboses    = 0;       /* Number of verbose messages */
 static guint32  traces      = 0;       /* Number of trace messages */
 
 
+
 /* Initialise message window.
  *
  * This function creates the message window and allocates all the internal

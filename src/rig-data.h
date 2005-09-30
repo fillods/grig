@@ -91,6 +91,9 @@ typedef struct {
 	float           swr;       /*!< SWR. */
 	float           alc;       /*!< ALC. */
 
+	/* write only fields */
+	int             vfo_op_toggle;  /*!< Toggle VFO */
+
 	/* more or less constant values */
 	freq_t          fmin;      /*!< Lower frequency limit for current mode. */
 	freq_t          fmax;      /*!< Upper frequency limit for current mode. */
@@ -118,6 +121,7 @@ typedef struct {
 	int         agc;
 	int         att;
 	int         preamp;
+	int         vfo_op_toggle;
 
 	/* read only fields */
 	int         strength;
@@ -132,6 +136,8 @@ typedef struct {
 
 #define GRIG_FUNC_RD (RIG_FUNC_LOCK)
 #define GRIG_FUNC_WR (RIG_FUNC_LOCK)
+
+#define GRIG_VFO_OP  (RIG_OP_TOGGLE)
 
 
 /* init functions */
@@ -156,7 +162,6 @@ int  rig_data_get_all_modes    (void);
 /* set functions */
 void rig_data_set_pstat   (powerstat_t);
 void rig_data_set_ptt     (ptt_t);
-void rig_data_set_vfo     (vfo_t);
 void rig_data_set_mode    (rmode_t);
 void rig_data_set_pbwidth (rig_data_pbw_t);
 void rig_data_set_freq    (int, freq_t);
@@ -174,7 +179,6 @@ void rig_data_set_power   (float);
 /* get functions */
 powerstat_t      rig_data_get_pstat    (void);
 ptt_t            rig_data_get_ptt      (void);
-vfo_t            rig_data_get_vfo      (void);
 rmode_t          rig_data_get_mode     (void);
 rig_data_pbw_t   rig_data_get_pbwidth  (void);
 freq_t           rig_data_get_freq     (int);
@@ -201,7 +205,6 @@ shortfreq_t      rig_data_get_xitstep  (void);
 /* has_get functions */
 int   rig_data_has_get_pstat    (void);
 int   rig_data_has_get_ptt      (void);
-/* int   rig_data_has_get_vfo      (void); */
 /* int   rig_data_has_get_mode     (void); */
 /* int   rig_data_has_get_pbwidth  (void); */
 int   rig_data_has_get_freq1     (void);
@@ -220,8 +223,8 @@ int   rig_data_has_get_alc      (void);
 /* has_set functions */
 int   rig_data_has_set_pstat    (void);
 int   rig_data_has_set_ptt      (void);
-int   rig_data_has_set_freq1     (void);
-int   rig_data_has_set_freq2     (void);
+int   rig_data_has_set_freq1    (void);
+int   rig_data_has_set_freq2    (void);
 int   rig_data_has_set_rit      (void);
 int   rig_data_has_set_xit      (void);
 int   rig_data_has_set_att      (void);
@@ -234,6 +237,15 @@ int  rig_data_has_get_lock (void);
 void rig_data_set_lock     (int lock);
 int  rig_data_get_lock     (void);
 
+/* VFO TOGGLE */
+int  rig_data_has_vfo_op_toggle (void);
+void rig_data_vfo_op_toggle     (void);
+
+/* SET and GET VFO */
+int   rig_data_has_get_vfo  (void);
+int   rig_data_has_set_vfo  (void);
+vfo_t rig_data_get_vfo      (void);
+void  rig_data_set_vfo      (vfo_t);
 
 /* address acquisition functions */
 grig_settings_t  *rig_data_get_get_addr     (void);

@@ -85,6 +85,8 @@ typedef enum {
 	RIG_CMD_GET_LOCK,      /*!< Command to get LOCK status. */
 	RIG_CMD_SET_LOCK,      /*!< Command to set LOCK status. */
 
+	RIG_CMD_VFO_TOGGLE,    /*!< Executes RIG_OP_TOGGLE. */
+
 	RIG_CMD_NUMBER         /*!< Number of available commands. */
 } rig_cmd_t;
 

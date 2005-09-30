@@ -27,10 +27,11 @@ grig_SOURCES = \
 	rig-gui-ctrl2.c rig-gui-ctrl2.h \
 	rig-gui-info.c rig-gui-info.h rig-gui-info-data.h \
 	rig-gui-lcd.c rig-gui-lcd.h \
-	rig-gui-levels.c rig-gui-levels.h \
+	rig-gui-levels.c rig-gui-leves.h \
 	rig-gui-message-window.c rig-gui-message-window.h \
 	rig-gui-smeter.c rig-gui-smeter.h \
 	rig-gui-smeter-conv.c rig-gui-smeter-conv.h \
+	rig-gui-vfo.c rig-gui-vfo.h \
 	rig-utils.c rig-utils.h
 
 grig_LDADD = @PACKAGE_LIBS@

@@ -128,7 +128,7 @@ static const rig_cmd_t DEF_RX_CYCLE[C_MAX_CMD_PER_CYCLE] = {
 	RIG_CMD_GET_FREQ_1,
 	RIG_CMD_SET_AGC,
 	RIG_CMD_GET_AGC,
-	RIG_CMD_NONE,
+	RIG_CMD_VFO_TOGGLE,
 	RIG_CMD_GET_STRENGTH,
 	RIG_CMD_SET_PREAMP,
 	RIG_CMD_GET_PREAMP,
@@ -146,7 +146,7 @@ static const rig_cmd_t DEF_RX_CYCLE[C_MAX_CMD_PER_CYCLE] = {
 	RIG_CMD_GET_VFO,
 	RIG_CMD_SET_PTT,
 	RIG_CMD_GET_PTT,
-	RIG_CMD_NONE
+	RIG_CMD_VFO_TOGGLE
 };
 
 #endif
@@ -1874,6 +1874,26 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 
 		break;
 
+		/* execute RIG_OP_TOGGLE */
+	case RIG_CMD_VFO_TOGGLE:
+
+		if (has_set->vfo_op_toggle && new->vfo_op_toggle) {
+
+			retcode = rig_vfo_op (myrig, RIG_VFO_CURR, RIG_OP_TOGGLE);
+
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				rig_debug (RIG_DEBUG_ERR,
+					   "*** GRIG: %s: Failed to execute RIG_CMD_VFI_TOGGLE\n",
+					   __FUNCTION__);
+
+				rig_anomaly_raise (RIG_CMD_GET_LOCK);
+			}
+
+			new->vfo_op_toggle = 0;
+		}
+
+		break;
 
 		/* bug in grig! */
 	default:

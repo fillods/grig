@@ -130,6 +130,7 @@ rig_daemon_check_vfo     (RIG               *myrig,
 	/* check whether we can get/set VFO */
 	has_get->vfo = (myrig->caps->get_vfo != NULL) ? TRUE : FALSE;
 	has_set->vfo = (myrig->caps->set_vfo != NULL) ? TRUE : FALSE;
+	has_set->vfo_op_toggle = (myrig->caps->vfo_ops & RIG_OP_TOGGLE) ? TRUE : FALSE;
 
 	/* store available VFOs */
 	if ((has_get->vfo || has_set->vfo) && (myrig->state.vfo_list != 0)) {
