@@ -1,4 +1,28 @@
-2005-09-22	Alexandru Csete <csete@users.sourceforge.net>
+2005-09-29;	Alexandru Csete <csete@users.sourceforge.net>
+	
+	* src/rig-gui-lcd.c:
+	Added readback of VFO.
+
+	* src/rig-daemon.h, src/rig-daemon.c:
+	Added support for RIG_CMD_VFO_TOGGLE, ie. RIG_OP_TOGGLE.
+
+
+2005-09-28;	Alexandru Csete <csete@users.sourceforge.net>
+	
+	* src/rig-gui-vfo.c, src/rig-gui-vfo.h:
+	Added files containing VFO controls.
+
+	* src/rig-gui.c:
+	Use rig-gui-vfo.
+
+	* src/rig-data.c, src/rig-data.h:
+	Added support for RIG_OP_TOGGLE.
+
+	* src/Makefile.am:
+	Added rig-gui-vfo to build list.
+
+
+2005-09-22;	Alexandru Csete <csete@users.sourceforge.net>
 
 	* src/rig-gui-info-data.h:
 	Added RIG_FUNC_STR and RIG_OP arrays.
