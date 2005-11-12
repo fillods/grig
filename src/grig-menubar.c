@@ -56,6 +56,7 @@ static void  grig_menu_config          (GtkWidget *, gpointer);
 static GtkActionEntry entries[] = {
 	{ "FileMenu", NULL, N_("_Radio") },
 	{ "SettingsMenu", NULL, N_("_Settings") },
+	{ "ViewMenu", NULL, N_("_View") },
 	{ "ToolsMenu", NULL, N_("_Tools") },
 	{ "HelpMenu", NULL, N_("_Help") },
 
@@ -69,6 +70,13 @@ static GtkActionEntry entries[] = {
 
 	/* SettingsMenu */
 	{ "Debug", NULL, N_("_Debug Level"), NULL, N_("Set Hamlib debug level"), NULL },
+
+	/* ViewMenu */
+	{ "LevelsRX", NULL, N_("_RX Level Controls"), NULL, N_("Show receiver level controls"), NULL },
+	{ "LevelsTX", NULL, N_("_TX Level Controls"), NULL, N_("Show transmitter level controls"), NULL },
+	{ "CW", NULL, N_("_CW Controls"), NULL, N_("Show CW related controls"), NULL },
+	{ "BandMap", NULL, N_("Band Map"), NULL, N_("Show the band map"), NULL },
+	{ "Spectrum", NULL, N_("Spectrum Scope"), NULL, N_("Show the spectrum scope"), NULL },
 
 	/* ToolsMenu */
 	{ "MsgWin", NULL, N_("Message _Window"), NULL, N_("Show window with debug messages"), G_CALLBACK (rig_gui_message_window_show) },
@@ -114,6 +122,14 @@ static const char *menu_desc =
 "          <menuitem action='Verbose'/>"
 "          <menuitem action='Trace'/>"
 "       </menu>"
+"    </menu>"
+"    <menu action='ViewMenu'>"
+"       <menuitem action='LevelsRX'/>"
+"       <menuitem action='LevelsTX'/>"
+"       <menuitem action='CW'/>"
+"       <separator/>"
+"       <menuitem action='BandMap'/>"
+"       <menuitem action='Spectrum'/>"
 "    </menu>"
 "    <menu action='ToolsMenu'>"
 "       <menuitem action='MsgWin'/>"

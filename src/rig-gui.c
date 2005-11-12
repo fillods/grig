@@ -73,7 +73,7 @@ rig_gui_create ()
 	gtk_box_pack_start (GTK_BOX (lcdbox), rig_gui_lcd_create (),
 			    FALSE, FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (lcdbox), rig_gui_vfo_create (),
-			    FALSE, FALSE, 0);
+			    FALSE, TRUE, 0);
 
 
 	gtk_box_pack_start (GTK_BOX (hbox), lcdbox,
@@ -86,8 +86,8 @@ rig_gui_create ()
 	gtk_box_pack_start (GTK_BOX (vbox), grig_menubar_create (),
 			    FALSE, FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
-	gtk_box_pack_start (GTK_BOX (vbox), rig_gui_levels_create (),
-			    FALSE, FALSE, 5);
+/* 	gtk_box_pack_start (GTK_BOX (vbox), rig_gui_levels_create (), */
+/* 			    FALSE, FALSE, 5); */
 
 	return vbox;
 }

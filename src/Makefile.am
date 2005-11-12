@@ -14,6 +14,7 @@ bin_PROGRAMS = grig
 
 grig_SOURCES = \
 	main.c \
+	compat.c compat.h \
 	grig-about.c grig-about.h \
 	grig-config.c grig-config.h \
 	grig-gtk-workarounds.c grig-gtk-workarounds.h \

@@ -1,3 +1,40 @@
+2005-11-11;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/rig-gui-vfo.c:
+	Added split button. Rearranged button layout.
+
+	* src/rig-data.h, src/rig-data.c:
+	Added support for SPLIT ON/OFF. Currently passes RIG_VFO_RX and RIG_VFO_TX
+	as parameters to hamlib.
+
+	* src/rig-daemon.c, src/rig-daemon.h:
+	Added RIG_CMD_SET_SPLIT and RIG_CMD_GET_SPLIT.
+
+	* src/rig-daemon-check.c:
+	Check for set_split_vfo and get_split_vfo.
+
+
+
+2005-11-10;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/rig-gui.c:
+	Don't include level controls in main window. They will be in separate
+	windows.
+
+	* src/grig-menubar.c:
+	Added View menu. No actions yet.
+
+	* src/rig-data.c, src/rig-data.h,
+	* src/rig-daemon.c, rc/rig-daemon.h, src/rig-daemon-check.c:
+	Added support for VFO COPY and EXCHANGE.
+	
+	
+2005-11-08;	Alexandru Csete <csete@users.sourceforge.net>
+	
+	* src/compat.c, src/compat.h:
+	Added files containing utilities for data directory retrieval.
+	
+
 2005-09-29;	Alexandru Csete <csete@users.sourceforge.net>
 	
 	* src/rig-gui-lcd.c:

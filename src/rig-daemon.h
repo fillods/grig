@@ -35,7 +35,7 @@
 
 
 
-#define C_MAX_CMD_PER_CYCLE   36    /*!< Max number of commands executed in one cycle */
+#define C_MAX_CMD_PER_CYCLE   40   /*!< Max number of commands executed in one cycle */
 #define C_MAX_CYCLES          6    /*!< Number of cycles */
 
 #define C_DEF_RX_CMD_DELAY    10   /*!< Default delay between two RX commands [msec] */
@@ -75,6 +75,8 @@ typedef enum {
 	RIG_CMD_SET_ATT,       /*!< Command to set the attenuator level. */
 	RIG_CMD_GET_PREAMP,    /*!< Command to get the pre-amplifier level. */
 	RIG_CMD_SET_PREAMP,    /*!< Command to set the pre-amplifier level. */
+	RIG_CMD_SET_SPLIT,     /*!< Command to set split mode ON/OFF. */
+	RIG_CMD_GET_SPLIT,     /*!< Command to retrieve the current status of split. */
 
 	RIG_CMD_GET_STRENGTH,  /*!< Command to get signal strength. */
 	RIG_CMD_SET_POWER,     /*!< Command to set TX power. */
@@ -86,6 +88,8 @@ typedef enum {
 	RIG_CMD_SET_LOCK,      /*!< Command to set LOCK status. */
 
 	RIG_CMD_VFO_TOGGLE,    /*!< Executes RIG_OP_TOGGLE. */
+	RIG_CMD_VFO_COPY,      /*!< Executes RIG_OP_CPY. */
+	RIG_CMD_VFO_XCHG,      /*!< Executes RIG_OP_XCHG. */
 
 	RIG_CMD_NUMBER         /*!< Number of available commands. */
 } rig_cmd_t;

@@ -85,6 +85,7 @@ typedef struct {
 	int              agc;      /*!< AGC level. */
 	int              att;      /*!< Attenuator. */
 	int              preamp;   /*!< Pre-amplifier. */
+	split_t          split;    /*!< Spit ON/OFF. */
 
 	/* read only fields */
 	int             strength;  /*!< Signal strength. */
@@ -93,6 +94,8 @@ typedef struct {
 
 	/* write only fields */
 	int             vfo_op_toggle;  /*!< Toggle VFO */
+	int             vfo_op_copy;    /*!< Copy VFO */
+	int             vfo_op_xchg;    /*!< Exchange VFO */
 
 	/* more or less constant values */
 	freq_t          fmin;      /*!< Lower frequency limit for current mode. */
@@ -121,7 +124,10 @@ typedef struct {
 	int         agc;
 	int         att;
 	int         preamp;
+	int         split;
 	int         vfo_op_toggle;
+	int         vfo_op_copy;
+	int         vfo_op_xchg;
 
 	/* read only fields */
 	int         strength;
@@ -137,7 +143,7 @@ typedef struct {
 #define GRIG_FUNC_RD (RIG_FUNC_LOCK)
 #define GRIG_FUNC_WR (RIG_FUNC_LOCK)
 
-#define GRIG_VFO_OP  (RIG_OP_TOGGLE)
+#define GRIG_VFO_OP  (RIG_OP_TOGGLE | RIG_OP_CPY | RIG_OP_XCHG)
 
 
 /* init functions */
@@ -171,6 +177,7 @@ void rig_data_set_agc     (int);
 void rig_data_set_att     (int);
 void rig_data_set_preamp  (int);
 void rig_data_set_power   (float);
+void rig_data_set_split   (int);
 
 
 #define rig_data_set_freq1(x) (rig_data_set_freq(1,x))
@@ -200,6 +207,7 @@ shortfreq_t      rig_data_get_ritstep  (void);
 shortfreq_t      rig_data_get_xitmin   (void);
 shortfreq_t      rig_data_get_xitmax   (void);
 shortfreq_t      rig_data_get_xitstep  (void);
+int              rig_data_get_split    (void);
 
 
 /* has_get functions */
@@ -218,6 +226,7 @@ int   rig_data_has_get_strength (void);
 int   rig_data_has_get_power    (void);
 int   rig_data_has_get_swr      (void);
 int   rig_data_has_get_alc      (void);
+int   rig_data_has_get_split    (void);
 
 
 /* has_set functions */
@@ -229,6 +238,7 @@ int   rig_data_has_set_rit      (void);
 int   rig_data_has_set_xit      (void);
 int   rig_data_has_set_att      (void);
 int   rig_data_has_set_preamp   (void);
+int   rig_data_has_set_split    (void);
 
 
 /* LOCK */
@@ -240,6 +250,14 @@ int  rig_data_get_lock     (void);
 /* VFO TOGGLE */
 int  rig_data_has_vfo_op_toggle (void);
 void rig_data_vfo_op_toggle     (void);
+
+/* VFO COPY */
+int  rig_data_has_vfo_op_copy (void);
+void rig_data_vfo_op_copy     (void);
+
+/* VFO COPY */
+int  rig_data_has_vfo_op_xchg (void);
+void rig_data_vfo_op_xchg     (void);
 
 /* SET and GET VFO */
 int   rig_data_has_get_vfo  (void);

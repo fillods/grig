@@ -1110,6 +1110,68 @@ rig_data_vfo_op_toggle     ()
 }
 
 
+/* VFO COPY */
+int
+rig_data_has_vfo_op_copy ()
+{
+	return has_set.vfo_op_copy;
+}
+
+
+void
+rig_data_vfo_op_copy     ()
+{
+	set.vfo_op_copy = 1;
+	new.vfo_op_copy = 1;
+}
+
+
+/* VFO EXCHANGE */
+int
+rig_data_has_vfo_op_xchg ()
+{
+	return has_set.vfo_op_xchg;
+}
+
+
+void
+rig_data_vfo_op_xchg     ()
+{
+	set.vfo_op_xchg = 1;
+	new.vfo_op_xchg = 1;
+}
+
+
+/* set SPLIT ON/OFF */
+int
+rig_data_has_set_split ()
+{
+	return has_set.split;
+}
+
+int
+rig_data_has_get_split ()
+{
+	return has_get.split;
+}
+
+void
+rig_data_set_split (int split)
+{
+	if (split)
+		set.split = RIG_SPLIT_ON;
+	else
+		set.split = RIG_SPLIT_OFF;
+
+	new.split = TRUE;
+}
+
+int
+rig_data_get_split ()
+{
+	return (get.split == RIG_SPLIT_ON ? 1 : 0);
+}
+
 
 
 /** \brief Get address of 'get' variable.

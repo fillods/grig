@@ -65,8 +65,11 @@ RIG *myrig;  /*!< The rig structure. We keep this public so GUI can access the i
 
 
 static const rig_cmd_t DEF_RX_CYCLE[C_MAX_CMD_PER_CYCLE] = {
-	RIG_CMD_SET_AGC,
-	RIG_CMD_GET_AGC,
+	RIG_CMD_VFO_TOGGLE,
+	RIG_CMD_VFO_COPY,
+	RIG_CMD_VFO_XCHG,
+	RIG_CMD_SET_SPLIT,
+	RIG_CMD_GET_SPLIT,
 	RIG_CMD_NONE,
 	RIG_CMD_NONE,
 	RIG_CMD_NONE,
@@ -100,7 +103,7 @@ static const rig_cmd_t DEF_RX_CYCLE[C_MAX_CMD_PER_CYCLE] = {
 	RIG_CMD_NONE,
 	RIG_CMD_NONE,
 	RIG_CMD_NONE,
-	RIG_CMD_NONE
+	RIG_CMD_NONE,
 };
 
 #else
@@ -129,24 +132,28 @@ static const rig_cmd_t DEF_RX_CYCLE[C_MAX_CMD_PER_CYCLE] = {
 	RIG_CMD_SET_AGC,
 	RIG_CMD_GET_AGC,
 	RIG_CMD_VFO_TOGGLE,
+	RIG_CMD_VFO_COPY,
+	RIG_CMD_VFO_XCHG,
 	RIG_CMD_GET_STRENGTH,
 	RIG_CMD_SET_PREAMP,
 	RIG_CMD_GET_PREAMP,
 	RIG_CMD_SET_VFO,
 	RIG_CMD_GET_VFO,
-	RIG_CMD_NONE,
+	RIG_CMD_SET_SPLIT,
+	RIG_CMD_GET_SPLIT,
 	RIG_CMD_GET_STRENGTH,
 	RIG_CMD_SET_FREQ_1,
 	RIG_CMD_GET_FREQ_1,
 	RIG_CMD_SET_MODE,
 	RIG_CMD_GET_MODE,
-	RIG_CMD_NONE,
 	RIG_CMD_GET_STRENGTH,
 	RIG_CMD_SET_VFO,
 	RIG_CMD_GET_VFO,
 	RIG_CMD_SET_PTT,
 	RIG_CMD_GET_PTT,
-	RIG_CMD_VFO_TOGGLE
+	RIG_CMD_VFO_TOGGLE,
+	RIG_CMD_VFO_COPY,
+	RIG_CMD_VFO_XCHG
 };
 
 #endif
@@ -166,6 +173,7 @@ static const rig_cmd_t DEF_TX_CYCLE[C_MAX_CMD_PER_CYCLE] = {
 	RIG_CMD_GET_POWER,
 	RIG_CMD_GET_SWR,
 	RIG_CMD_GET_ALC,
+	RIG_CMD_NONE,
 	RIG_CMD_SET_LOCK,
 	RIG_CMD_GET_PTT,
 	RIG_CMD_NONE,
@@ -193,10 +201,13 @@ static const rig_cmd_t DEF_TX_CYCLE[C_MAX_CMD_PER_CYCLE] = {
 	RIG_CMD_NONE,
 	RIG_CMD_SET_POWER,
 	RIG_CMD_NONE,
+	RIG_CMD_NONE,
 	RIG_CMD_GET_POWER,
 	RIG_CMD_GET_SWR,
 	RIG_CMD_GET_ALC,
-	RIG_CMD_NONE
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
 };
 
 
@@ -1884,16 +1895,98 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 			/* raise anomaly if execution did not succeed */
 			if (retcode != RIG_OK) {
 				rig_debug (RIG_DEBUG_ERR,
-					   "*** GRIG: %s: Failed to execute RIG_CMD_VFI_TOGGLE\n",
+					   "*** GRIG: %s: Failed to execute RIG_CMD_VFO_TOGGLE\n",
 					   __FUNCTION__);
 
-				rig_anomaly_raise (RIG_CMD_GET_LOCK);
+				rig_anomaly_raise (RIG_CMD_VFO_TOGGLE);
 			}
 
 			new->vfo_op_toggle = 0;
 		}
 
 		break;
+
+		/* execute RIG_OP_COPY */
+	case RIG_CMD_VFO_COPY:
+
+		if (has_set->vfo_op_copy && new->vfo_op_copy) {
+
+			retcode = rig_vfo_op (myrig, RIG_VFO_CURR, RIG_OP_CPY);
+
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				rig_debug (RIG_DEBUG_ERR,
+					   "*** GRIG: %s: Failed to execute RIG_CMD_VFO_COPY\n",
+					   __FUNCTION__);
+
+				rig_anomaly_raise (RIG_CMD_VFO_COPY);
+			}
+
+			new->vfo_op_copy = 0;
+		}
+
+		break;
+
+		/* execute RIG_OP_XCHG */
+	case RIG_CMD_VFO_XCHG:
+
+		if (has_set->vfo_op_xchg && new->vfo_op_xchg) {
+
+			retcode = rig_vfo_op (myrig, RIG_VFO_CURR, RIG_OP_XCHG);
+
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				rig_debug (RIG_DEBUG_ERR,
+					   "*** GRIG: %s: Failed to execute RIG_CMD_VFO_XCHG\n",
+					   __FUNCTION__);
+
+				rig_anomaly_raise (RIG_CMD_VFO_XCHG);
+			}
+
+			new->vfo_op_xchg = 0;
+		}
+
+		break;
+
+		/* set split on or off */
+	case RIG_CMD_SET_SPLIT:
+		if (has_set->split && new->split) {
+
+			retcode = rig_set_split_vfo (myrig, RIG_VFO_RX, set->split, RIG_VFO_TX);
+
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				rig_debug (RIG_DEBUG_ERR,
+					   "*** GRIG: %s: Failed to execute RIG_CMD_SET_SPLIT\n",
+					   __FUNCTION__);
+
+				rig_anomaly_raise (RIG_CMD_SET_SPLIT);
+			}
+
+			new->split = 0;
+		}
+
+		break;
+
+	case RIG_CMD_GET_SPLIT:
+		if (has_get->split) {
+
+			retcode = rig_get_split (myrig, RIG_VFO_RX, &get->split);
+
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				rig_debug (RIG_DEBUG_ERR,
+					   "*** GRIG: %s: Failed to execute RIG_CMD_GET_SPLIT\n",
+					   __FUNCTION__);
+
+				rig_anomaly_raise (RIG_CMD_GET_SPLIT);
+			}
+
+
+		}
+
+		break;
+
 
 		/* bug in grig! */
 	default:

@@ -1,7 +1,7 @@
 GRIG 0.5.0:
 
 - Requires Gtk+ 2.6 and Hamlib 1.2.5
-x Added VFO and SPLIT controls.
+- Added VFO and SPLIT controls.
 x Added receiver and transmitter level controls.
 - Special rig functions: LOCK
 x Show Hamlib and Grig debug messages in a message window
@@ -31,6 +31,7 @@ x Added the possibility to suspend rig command execution
 - Better detection of frequency ranges and resolutions.
 - Corrected various mistakes in the manual page.
 - Various minor improvements to the user interface.
+- Several minor changes to support wintendo builds.
 
 
 GRIG 0.4.3:

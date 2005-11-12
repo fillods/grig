@@ -33,46 +33,4 @@
 #define GRIG_CONFIG_H 1
 
 
-/** \brief Main configuration directory. */
-#define GRIG_CONFIG_DIR "/apps/grig"
-
-
-/** \brief Radio config directory. */
-#define GRIG_CONFIG_RIG_DIR GRIG_CONFIG_DIR "/radios"
-
-
-/** \brief Rotator config directory. */
-#define GRIG_CONFIG_ROT_DIR GRIG_CONFIG_DIR "/rotators"
-
-
-/** \brief Hamlib configuration directory. */
-#define GRIG_CONFIG_HAMLIB_DIR GRIG_CONFIG_DIR "/hamlib"
-
-
-/** \brief Locations configuration directory. */
-#define GRIG_CONFIG_LOC_DIR GRIG_CONFIG_DIR "/locations"
-
-
-/** \brief GConf key for default radio. */
-#define GRIG_CONFIG_RIG_DEF_KEY GRIG_CONFIG_RIG_DIR "/default"
-
-
-/** \brief GConf key for number of radios. */
-#define GRIG_CONFIG_RIG_NUM_KEY GRIG_CONFIG_RIG_DIR "/number"
-
-
-/** \brief GConf key for default rotator. */
-#define GRIG_CONFIG_ROT_DEF_KEY GRIG_CONFIG_ROT_DIR "/default"
-
-
-/** \brief GConf key for number of rotators. */
-#define GRIG_CONFIG_ROT_NUM_KEY GRIG_CONFIG_ROT_DIR "/number"
-
-
-/** \brief GConf dir for hamlib settings. */
-#define GRIG_CONFIG_HAMLIB_DIR GRIG_CONFIG_DIR "/hamlib"
-
-/** \brief Gconf key for hamlib debug level. */
-#define GRIG_CONFIG_DEBUG_KEY GRIG_CONFIG_HAMLIB_DIR "/debug" 
-
 #endif
