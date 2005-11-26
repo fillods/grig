@@ -69,20 +69,23 @@ static GtkActionEntry entries[] = {
 	{ "Exit", GTK_STOCK_QUIT, N_("E_xit"), "<control>Q", N_("Exit the program"), G_CALLBACK (grig_menu_app_exit) },
 
 	/* SettingsMenu */
-	{ "Debug", NULL, N_("_Debug Level"), NULL, N_("Set Hamlib debug level"), NULL },
+	{ "Debug", GTK_STOCK_HARDDISK, N_("_Debug Level"), NULL, N_("Set Hamlib debug level"), NULL },
 
 	/* ViewMenu */
 	{ "LevelsRX", NULL, N_("_RX Level Controls"), NULL, N_("Show receiver level controls"), NULL },
 	{ "LevelsTX", NULL, N_("_TX Level Controls"), NULL, N_("Show transmitter level controls"), NULL },
 	{ "CW", NULL, N_("_CW Controls"), NULL, N_("Show CW related controls"), NULL },
-	{ "BandMap", NULL, N_("Band Map"), NULL, N_("Show the band map"), NULL },
-	{ "Spectrum", NULL, N_("Spectrum Scope"), NULL, N_("Show the spectrum scope"), NULL },
+	{ "Tones", NULL, N_("_DCS/CTCSS"), NULL, N_("Show DCS and CTCSS controls"), NULL },
+	{ "Func", GTK_STOCK_DIALOG_INFO, N_("_Special Functions"), NULL, N_("Radio specific functions"), NULL },
+	{ "BandMap", GTK_STOCK_INDEX, N_("_Band Map"), NULL, N_("Show the band map"), NULL },
+	{ "Spectrum", GTK_STOCK_JUMP_TO, N_("S_pectrum Scope"), NULL, N_("Show the spectrum scope"), NULL },
 
 	/* ToolsMenu */
-	{ "MsgWin", NULL, N_("Message _Window"), NULL, N_("Show window with debug messages"), G_CALLBACK (rig_gui_message_window_show) },
+	{ "Mem", NULL, N_("_SW Memory"), NULL, N_("Software Memory Mamager"), NULL },
+	{ "MsgWin", GTK_STOCK_JUSTIFY_LEFT, N_("Message _Window"), NULL, N_("Show window with debug messages"), G_CALLBACK (rig_gui_message_window_show) },
 
 	/* HelpMenu */
-	{ "About", GTK_STOCK_DIALOG_INFO, N_("_About"), NULL, N_("Shouw about dialog"), G_CALLBACK (grig_about_run) },
+	{ "About", GTK_STOCK_ABOUT, N_("_About Grig"), NULL, N_("Shouw about dialog"), G_CALLBACK (grig_about_run) },
 };
 
 
@@ -128,10 +131,14 @@ static const char *menu_desc =
 "       <menuitem action='LevelsTX'/>"
 "       <menuitem action='CW'/>"
 "       <separator/>"
+"       <menuitem action='Tones'/>"
+"       <menuitem action='Func'/>"
+"       <separator/>"
 "       <menuitem action='BandMap'/>"
 "       <menuitem action='Spectrum'/>"
 "    </menu>"
 "    <menu action='ToolsMenu'>"
+"       <menuitem action='Mem'/>"
 "       <menuitem action='MsgWin'/>"
 "    </menu>"
 "    <menu action='HelpMenu'>"

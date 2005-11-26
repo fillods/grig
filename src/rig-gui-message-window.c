@@ -29,18 +29,65 @@
 	  Boston, MA  02111-1307
 	  USA
 */
+#include <time.h>
 #include <gtk/gtk.h>
+#include <glib/gi18n.h>
+#include <hamlib/rig.h>
 #include "rig-gui-message-window.h"
+
+
+/* define message level type for convenience */
+typedef enum rig_debug_level_e level_t;
+
+
+/* data structure to hold one message */
+typedef struct {
+	time_t    time;     /* time stamp */
+	level_t   level;    /* debug level */
+	gchar    *message;  /* the message itself */
+} message_t;
+
+
+/* Easy access to column titles */
+const gchar *MSG_LIST_COL_TITLE[MSG_LIST_COL_NUMBER] = {
+	N_("Time"),
+	N_("Level"),
+	N_("Message")
+};
+
+
+const gfloat MSG_LIST_COL_TITLE_ALIGN[MSG_LIST_COL_NUMBER] = {
+	0.5, 0.5, 0.0
+};
+
 
 
 static gboolean visible     = FALSE;   /* Is message window visible? */
 static gboolean initialised = FALSE;   /* Is module initialised? */
+
+/* counters */
 static guint32  bugs        = 0;       /* Number of bug messages */    
 static guint32  errors      = 0;       /* Number of error messages */
 static guint32  warnings    = 0;       /* Number of warning messages */
 static guint32  verboses    = 0;       /* Number of verbose messages */
 static guint32  traces      = 0;       /* Number of trace messages */
 
+
+/* summary labels; they need to be accessible at runtime */
+static GtkWidget *buglabel,*errlabel,*warnlabel,*verblabel,*tracelabel,*sumlabel;
+
+
+/* The message window itself */
+static GtkWidget *window;
+
+static gint message_window_delete   (GtkWidget *, GdkEvent *, gpointer);
+static void message_window_destroy  (GtkWidget *, gpointer);
+static void message_window_response (GtkWidget *, gint, gpointer);
+
+/* message list and tree widget functions */
+static GtkWidget    *create_message_list    (void);
+static GtkTreeModel *create_list_model      (void);
+static GtkWidget    *create_message_summary (void);
 
 
 /* Initialise message window.
@@ -52,13 +99,52 @@ static guint32  traces      = 0;       /* Number of trace messages */
 void
 rig_gui_message_window_init  ()
 {
+	GtkWidget *hbox;
+
 	if (!initialised) {
 
 		/* do some init stuff */
 
+
+		hbox = gtk_hbox_new (FALSE, 10);
+		gtk_box_pack_start_defaults (GTK_BOX (hbox),
+					     create_message_list ());
+
+		gtk_box_pack_start (GTK_BOX (hbox),
+				    create_message_summary (),
+				    FALSE, TRUE, 0);
+
+		/* create dialog window; we use "fake" stock responses to catch user
+		   button clicks (save_as and pause)
+		*/
+		window = gtk_dialog_new_with_buttons (_("Grig Message Window"),
+						      NULL,
+						      GTK_DIALOG_DESTROY_WITH_PARENT,
+						      GTK_STOCK_MEDIA_PAUSE,
+						      GTK_RESPONSE_YES,  /* cheating */
+						      GTK_STOCK_SAVE_AS,
+						      GTK_RESPONSE_NO,   /* cheating */
+						      GTK_STOCK_CLOSE,
+						      GTK_RESPONSE_CLOSE,
+						      NULL);
+
+		gtk_container_add (GTK_CONTAINER (GTK_DIALOG(window)->vbox), hbox);
+
+		/* connect response signal */
+		g_signal_connect (G_OBJECT (window), "response",
+				  G_CALLBACK (message_window_response),
+				  NULL);
+
+		/* connect delete and destroy signals */
+		g_signal_connect (G_OBJECT (window), "delete_event",
+				  G_CALLBACK (gtk_widget_hide_on_delete), NULL);    
+		g_signal_connect (G_OBJECT (window), "destroy",
+				  G_CALLBACK (message_window_destroy), NULL);
+
+
 		initialised = TRUE;
 	}
-}
+};
 
 
 /* Clean up message window.
@@ -94,11 +180,13 @@ rig_gui_message_window_show ()
 	if (!initialised)
 		rig_gui_message_window_init ();
 
-	if (!visible) {
-		g_print ("Show window\n");
+//	if (!visible) {
+//		g_print ("Show window\n");
+
+		gtk_widget_show_all (window);
 
 		visible = TRUE;
-	}
+//	}
 
 }
 
@@ -107,7 +195,7 @@ void
 rig_gui_message_window_hide  ()
 {
 	if (visible) {
-		g_print ("Hide window\n");
+		gtk_widget_hide_all (window);
 		visible = FALSE;
 	}
 }
@@ -130,5 +218,244 @@ rig_gui_message_window_add_cb   (enum rig_debug_level_e debug_level,
 				 ...)
 {
 
-	return 0;
+	return RIG_OK;
 }
+
+
+
+
+/*** FIXME: does not seem to be necessary */
+static gint
+message_window_delete      (GtkWidget *widget,
+			    GdkEvent  *event,
+			    gpointer   data)
+{
+
+	gtk_widget_hide_all (widget);
+	visible = FALSE;
+
+	/* return TRUE to indicate that message window should not be destroyed */
+	return TRUE;
+}
+
+
+/* callback function called when the dialog window is destroyed */
+static void
+message_window_destroy    (GtkWidget *widget,
+			   gpointer   data)
+{
+	/* clean up memory */
+	/* GSList, ... */
+
+	visible = FALSE;
+	initialised = FALSE;
+}
+
+
+/* callback function called when a dialog button is clicked */
+static void
+message_window_response (GtkWidget *widget,
+			 gint       response,
+			 gpointer   data)
+{
+	switch (response) {
+
+		/* close button */
+	case GTK_RESPONSE_CLOSE:
+		gtk_widget_hide_all (widget);
+		visible = FALSE;
+		break;
+
+		/* PAUSE button */
+	case GTK_RESPONSE_YES:
+		g_print ("PAUSE\n");
+		break;
+
+		/* SAVE AS button */
+	case GTK_RESPONSE_NO:
+		g_print ("SAVE AS\n");
+		break;
+
+	default:
+		break;
+	}
+}
+
+
+/* Create list view */
+static GtkWidget *
+create_message_list    ()
+{
+	/* high level treev iew widget */
+	GtkWidget *treeview;
+
+	/* scrolled window containing the tree view */
+	GtkWidget *swin;
+
+	/* cell renderer used to create a column */
+	GtkCellRenderer   *renderer;
+
+	/* place holder for a tree view column */
+	GtkTreeViewColumn *column;
+
+	/* the tree view model */
+	GtkTreeModel      *model;
+
+
+	guint i;
+
+
+
+	treeview = gtk_tree_view_new ();
+
+	for (i = 0; i < MSG_LIST_COL_NUMBER; i++) {
+
+		renderer = gtk_cell_renderer_text_new ();
+		column = gtk_tree_view_column_new_with_attributes (MSG_LIST_COL_TITLE[i],
+								   renderer,
+								   "text", i,
+								   NULL);
+		gtk_tree_view_insert_column (GTK_TREE_VIEW (treeview),
+					     column,
+					     -1);
+
+		/* only aligns the headers? */
+		gtk_tree_view_column_set_alignment (column, MSG_LIST_COL_TITLE_ALIGN[i]);
+
+	}
+
+	/* create tree view model and finalise tree view */
+	model = create_list_model ();
+	gtk_tree_view_set_model (GTK_TREE_VIEW (treeview), model);
+	g_object_unref (model);
+
+
+	/* treeview is packed into a scroleld window */
+	swin = gtk_scrolled_window_new (NULL, NULL);
+	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (swin),
+					GTK_POLICY_AUTOMATIC,
+					GTK_POLICY_AUTOMATIC);
+	gtk_container_add (GTK_CONTAINER (swin), treeview);
+
+	return swin;
+}
+
+
+/* create tree view model; we actually create a GtkListStore because we are
+   only interested in a flat list. A GtkListStore can be cast to a GtkTreeModel
+   without any problems.
+*/
+static GtkTreeModel *
+create_list_model ()
+{
+	GtkListStore *liststore;
+
+	liststore = gtk_list_store_new (MSG_LIST_COL_NUMBER,
+					G_TYPE_STRING,
+					G_TYPE_STRING,
+					G_TYPE_STRING);
+
+	/*** Fill existing data into the list here ***/
+
+	return GTK_TREE_MODEL (liststore);
+}
+
+
+
+/* create summary */
+static GtkWidget *
+create_message_summary ()
+{
+	GtkWidget *table;   /* table containing everything */
+	GtkWidget *frame;   /* surrounding frame */
+	GtkWidget *label;   /* dummy label */
+
+	/* create labels */
+	buglabel = gtk_label_new ("0");
+	gtk_misc_set_alignment (GTK_MISC (buglabel), 1.0, 0.5);
+
+	errlabel = gtk_label_new ("0");
+	gtk_misc_set_alignment (GTK_MISC (errlabel), 1.0, 0.5);
+
+	warnlabel = gtk_label_new ("0");
+	gtk_misc_set_alignment (GTK_MISC (warnlabel), 1.0, 0.5);
+
+	verblabel = gtk_label_new ("0");
+	gtk_misc_set_alignment (GTK_MISC (verblabel), 1.0, 0.5);
+
+	tracelabel = gtk_label_new ("0");
+	gtk_misc_set_alignment (GTK_MISC (tracelabel), 1.0, 0.5);
+
+	sumlabel = gtk_label_new (NULL);
+	gtk_label_set_use_markup (GTK_LABEL (sumlabel), TRUE);
+	gtk_label_set_markup (GTK_LABEL (sumlabel), "<b>0</b>");
+	gtk_misc_set_alignment (GTK_MISC (sumlabel), 1.0, 0.5);
+
+	/* create table and add widgets */
+	table = gtk_table_new (7, 2, TRUE);
+	gtk_table_set_col_spacings (GTK_TABLE (table), 5);
+	gtk_container_set_border_width (GTK_CONTAINER (table), 10);
+
+	label = gtk_label_new (_("Bugs"));
+	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+	gtk_table_attach_defaults (GTK_TABLE (table),
+				   label,
+				   0, 1, 0, 1);
+
+	label = gtk_label_new (_("Errors"));
+	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+	gtk_table_attach_defaults (GTK_TABLE (table),
+				   label,
+				   0, 1, 1, 2);
+
+	label = gtk_label_new (_("Warning"));
+	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+	gtk_table_attach_defaults (GTK_TABLE (table),
+				   label,
+				   0, 1, 2, 3);
+
+	label = gtk_label_new (_("Verbose"));
+	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+	gtk_table_attach_defaults (GTK_TABLE (table),
+				   label,
+				   0, 1, 3, 4);
+
+	label = gtk_label_new (_("Trace"));
+	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+	gtk_table_attach_defaults (GTK_TABLE (table),
+				   label,
+				   0, 1, 4, 5);
+
+	gtk_table_attach_defaults (GTK_TABLE (table),
+				   gtk_hseparator_new (),
+				   0, 2, 5, 6);
+
+	label = gtk_label_new (NULL);
+	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+	gtk_label_set_use_markup (GTK_LABEL (label), TRUE);
+	gtk_label_set_markup (GTK_LABEL (label), _("<b>Total</b>"));
+	gtk_table_attach_defaults (GTK_TABLE (table),
+				   label,
+				   0, 1, 6, 7);
+
+	gtk_table_attach_defaults (GTK_TABLE (table), buglabel,
+				   1, 2, 0, 1);
+	gtk_table_attach_defaults (GTK_TABLE (table), errlabel,
+				   1, 2, 1, 2);
+	gtk_table_attach_defaults (GTK_TABLE (table), warnlabel,
+				   1, 2, 2, 3);
+	gtk_table_attach_defaults (GTK_TABLE (table), verblabel,
+				   1, 2, 3, 4);
+	gtk_table_attach_defaults (GTK_TABLE (table), tracelabel,
+				   1, 2, 4, 5);
+	gtk_table_attach_defaults (GTK_TABLE (table), sumlabel,
+				   1, 2, 6, 7);
+
+	/* frame around the table */
+	frame = gtk_frame_new (_(" Summary "));
+	gtk_frame_set_label_align (GTK_FRAME (frame), 0.5, 0.5);
+	gtk_container_add (GTK_CONTAINER (frame), table);
+
+	return frame;
+}
+

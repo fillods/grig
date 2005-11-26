@@ -1,3 +1,34 @@
+2005-11-25;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/rig-gui-message-window.c:
+	Added code to create list view. Need some minor mods to allow access
+	to GtkListStore.
+	
+
+
+2005-11-23;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/rig-gui-message-window.c:
+	Create message window skeleton.
+
+
+2005-11-22;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/rig-gui-message_window.c:
+	Added code to show and hide window.
+
+
+2005-11-14;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/grig-menubar.c:
+	Added RIG_FUNC and software memory menu entries.
+	Use stock pixmaps where apropriate.
+
+	* src/rig-gui.c:
+	Change lcd box spacing for better layout.
+
+
+	
 2005-11-11;	Alexandru Csete <csete@users.sourceforge.net>
 
 	* src/rig-gui-vfo.c:
