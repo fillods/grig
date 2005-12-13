@@ -29,6 +29,7 @@
 	  Boston, MA  02111-1307
 	  USA
 */
+#include <stdarg.h>
 #include <time.h>
 #include <gtk/gtk.h>
 #include <glib/gi18n.h>
@@ -60,6 +61,15 @@ const gfloat MSG_LIST_COL_TITLE_ALIGN[MSG_LIST_COL_NUMBER] = {
 	0.5, 0.5, 0.0
 };
 
+
+const gchar *DEBUG_STR[6] = {
+	N_("NONE"),
+	N_("BUG"),
+	N_("ERROR"),
+	N_("WARNING"),
+	N_("INFO"),
+	N_("DEBUG")
+};
 
 
 static gboolean visible     = FALSE;   /* Is message window visible? */
@@ -217,6 +227,20 @@ rig_gui_message_window_add_cb   (enum rig_debug_level_e debug_level,
 				 const char *fmt,
 				 ...)
 {
+       	va_list  ap;
+	gchar   *str;
+
+	va_start(ap, fmt);
+
+	vfprintf (stderr, fmt, ap);
+
+/* 	str = g_strdup_vprintf (fmt, ap); */
+
+/* 	g_print ("%s: %s\n", DEBUG_STR[debug_level], str); */
+
+/* 	g_free (str); */
+
+	va_end (ap);
 
 	return RIG_OK;
 }

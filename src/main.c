@@ -53,6 +53,7 @@
 #endif
 #include "grig-config.h"
 #include "rig-gui.h"
+#include "rig-gui-message-window.h"
 #include "rig-daemon.h"
 #include "rig-data.h"
 
@@ -332,6 +333,10 @@ main (int argc, char *argv[])
 	*/
 	rig_set_debug (RIG_DEBUG_TRACE);
 
+	/* initialise message window and register message logger */
+	rig_gui_message_window_init ();
+	rig_set_debug_callback ( (int (*)(enum rig_debug_level_e, rig_ptr_t, const char *, va_list))  rig_gui_message_window_add_cb, NULL);
+
 	/* launch rig daemon and pass the relevant
 	   command line options
 	*/
@@ -496,6 +501,9 @@ grig_app_destroy    (GtkWidget *widget,
 	/* GUI timers are stopped automatically */
 
 	/* stop timeouts */
+
+	/* stop logger */
+      	rig_gui_message_window_clean ();
 
 	/* exit Gtk+ */
 	gtk_main_quit ();
