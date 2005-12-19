@@ -1,3 +1,14 @@
+2005-12-19;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/menubar.c:
+	Moved message window to View menu, band map and spectrum to tools menu.
+
+	* src/rig-gui-message-window.c:
+	Changed debug callback not to use va_list but expect a simple char * 
+	- proposition to modify hamlib interface sent to hamlib-developer.
+	Added code to update message statistics.
+	
+
 2005-11-25;	Alexandru Csete <csete@users.sourceforge.net>
 
 	* src/rig-gui-message-window.c:
