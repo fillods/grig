@@ -224,24 +224,11 @@ rig_gui_message_window_hide  ()
 int
 rig_gui_message_window_add_cb   (enum rig_debug_level_e debug_level,
 				 rig_ptr_t user_data,
-				 const char *fmt,
-				 ...)
+				 const char *msg)
 {
-       	va_list  ap;
-	gchar   *str;
 
-	va_start(ap, fmt);
-
-	vfprintf (stderr, fmt, ap);
-
-/* 	str = g_strdup_vprintf (fmt, ap); */
-
-/* 	g_print ("%s: %s\n", DEBUG_STR[debug_level], str); */
-
-/* 	g_free (str); */
-
-	va_end (ap);
-
+	g_print (msg);
+	
 	return RIG_OK;
 }
 
