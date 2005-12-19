@@ -226,8 +226,62 @@ rig_gui_message_window_add_cb   (enum rig_debug_level_e debug_level,
 				 rig_ptr_t user_data,
 				 const char *msg)
 {
+	guint  total;
+	gchar *str;
 
 	g_print (msg);
+
+
+	switch (debug_level) {
+
+		/* internal bugs */
+	case RIG_DEBUG_BUG:
+		bugs++;
+		str = g_strdup_printf ("%d", bugs);
+		gtk_label_set_text (GTK_LABEL (buglabel), str);
+		g_free (str);
+		break;
+
+		/* runtime error */
+	case RIG_DEBUG_ERR:
+		errors++;
+		str = g_strdup_printf ("%d", errors);
+		gtk_label_set_text (GTK_LABEL (errlabel), str);
+		g_free (str);
+		break;
+
+		/* warning */
+	case RIG_DEBUG_WARN:
+		warnings++;
+		str = g_strdup_printf ("%d", warnings);
+		gtk_label_set_text (GTK_LABEL (warnlabel), str);
+		g_free (str);
+		break;
+
+		/* verbose info */
+	case RIG_DEBUG_VERBOSE:
+		verboses++;
+		str = g_strdup_printf ("%d", verboses);
+		gtk_label_set_text (GTK_LABEL (verblabel), str);
+		g_free (str);
+		break;
+
+		/* trace */
+	case RIG_DEBUG_TRACE:
+		traces++;
+		str = g_strdup_printf ("%d", traces);
+		gtk_label_set_text (GTK_LABEL (tracelabel), str);
+		g_free (str);
+		break;
+
+	default:
+
+	}
+
+	total = bugs+errors+warnings+verboses+traces;
+	str = g_strdup_printf ("<b>%d</b>", total);
+	gtk_label_set_markup (GTK_LABEL (sumlabel), str);
+	g_free (str);
 	
 	return RIG_OK;
 }
