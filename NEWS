@@ -14,6 +14,10 @@ x Show Hamlib and Grig debug messages in a message window
   debug messages in a tree sorted by severity or in a plain
   text view where the messages come in chronological order.
 x Save and restore rig state.
+x Allow changing working frequency while in TX mode.
+x Fixed bug which caused the frequency display to oscillate
+  between the current working frequency and some previously
+  used frequency.
 - Modified shut-down procedure to wait until daemon actually
   finishes instead of using a fixed length timeout.
 - Disable POWER and PTT buttons by default (can be enabled

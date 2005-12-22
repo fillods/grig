@@ -1,3 +1,12 @@
+2005-12-22;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/rig-daemon.c:
+	Added RIG_CMD_SET_FREQ_1 and RIG_CMD_GET_FREQ_1 to the default TX
+	cycle to allow change of frequency while the TX is on. On the FT-817,
+	however, it seems that I can not control frequency in TX mode. Bug
+	report opened #1388342.
+
+
 2005-12-19;	Alexandru Csete <csete@users.sourceforge.net>
 
 	* src/menubar.c:
