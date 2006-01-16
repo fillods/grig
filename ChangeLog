@@ -1,3 +1,11 @@
+2006-01-16;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/rig-gui-message-window, src/main.c:
+	Changed back to original hamlib implementation of debug message
+	handler. As Stephane pointed out, it was wrong use of the va_list
+	which caused the misbehaviour.
+
+
 2005-12-22;	Alexandru Csete <csete@users.sourceforge.net>
 
 	* src/rig-daemon.c:
