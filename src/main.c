@@ -335,7 +335,7 @@ main (int argc, char *argv[])
 
 	/* initialise message window and register message logger */
 	rig_gui_message_window_init ();
-	rig_set_debug_callback ( (int (*)(enum rig_debug_level_e, rig_ptr_t, const char *))  rig_gui_message_window_add_cb, NULL);
+	rig_set_debug_callback (rig_gui_message_window_add_cb, NULL);
 
 	/* launch rig daemon and pass the relevant
 	   command line options
