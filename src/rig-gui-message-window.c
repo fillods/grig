@@ -33,12 +33,21 @@
 #include <time.h>
 #include <gtk/gtk.h>
 #include <glib/gi18n.h>
+#include <glib/gprintf.h>
 #include <hamlib/rig.h>
 #include "rig-gui-message-window.h"
 
 
 /* define message level type for convenience */
 typedef enum rig_debug_level_e level_t;
+
+/* columns in the message list */
+typedef enum {
+	MSG_LIST_COL_TIME = 0,
+	MSG_LIST_COL_LEVEL,
+	MSG_LIST_COL_MSG,
+	MSG_LIST_COL_NUMBER
+} msg_list_col_t;
 
 
 /* data structure to hold one message */
@@ -67,8 +76,8 @@ const gchar *DEBUG_STR[6] = {
 	N_("BUG"),
 	N_("ERROR"),
 	N_("WARNING"),
-	N_("INFO"),
-	N_("DEBUG")
+	N_("DEBUG"),
+	N_("TRACE")
 };
 
 
@@ -89,6 +98,11 @@ static GtkWidget *buglabel,*errlabel,*warnlabel,*verblabel,*tracelabel,*sumlabel
 
 /* The message window itself */
 static GtkWidget *window;
+
+
+/* the tree view model */
+GtkTreeModel      *model;
+
 
 static gint message_window_delete   (GtkWidget *, GdkEvent *, gpointer);
 static void message_window_destroy  (GtkWidget *, gpointer);
@@ -227,62 +241,99 @@ rig_gui_message_window_add_cb   (enum rig_debug_level_e debug_level,
 				 const char *fmt,
 				 va_list  ap)
 {
-	guint  total;
-	gchar *str;
+	guint        total;     /* totalt number of messages */
+	gchar       *str;       /* string to show message count */
+	gchar       *msg;       /* formatted debug message */
+	gchar      **msgv;      /* debug message line by line */
+	guint        numlines;  /* the number of lines in the message */
+	guint        i;
+	GtkTreeIter  item;      /* new item added to the list store */
 
 
-	vfprintf (stderr, fmt, ap);
+	/* create character string and split it in case
+	   it is a multi-line message */
+	msg = g_strdup_vprintf (fmt, ap);
 
-	switch (debug_level) {
+	/* remove trailing \n */
+	g_strchomp (msg);
 
-		/* internal bugs */
-	case RIG_DEBUG_BUG:
-		bugs++;
-		str = g_strdup_printf ("%d", bugs);
-		gtk_label_set_text (GTK_LABEL (buglabel), str);
-		g_free (str);
-		break;
+	/* split the message in case it is a multiline message */
+	msgv = g_strsplit_set (msg, "\n", 0);
+	numlines = g_strv_length (msgv);
 
-		/* runtime error */
-	case RIG_DEBUG_ERR:
-		errors++;
-		str = g_strdup_printf ("%d", errors);
-		gtk_label_set_text (GTK_LABEL (errlabel), str);
-		g_free (str);
-		break;
+	g_printf ("%d: %s\n", debug_level, msg);
+	g_free (msg);
 
-		/* warning */
-	case RIG_DEBUG_WARN:
-		warnings++;
-		str = g_strdup_printf ("%d", warnings);
-		gtk_label_set_text (GTK_LABEL (warnlabel), str);
-		g_free (str);
-		break;
+	/* get the time */
 
-		/* verbose info */
-	case RIG_DEBUG_VERBOSE:
-		verboses++;
-		str = g_strdup_printf ("%d", verboses);
-		gtk_label_set_text (GTK_LABEL (verblabel), str);
-		g_free (str);
-		break;
+	/* for each line in msgv, add the line to the list
+	   and update the counters
+	*/
+	for (i = 0; i < numlines; i++) {
 
-		/* trace */
-	case RIG_DEBUG_TRACE:
-		traces++;
-		str = g_strdup_printf ("%d", traces);
-		gtk_label_set_text (GTK_LABEL (tracelabel), str);
-		g_free (str);
-		break;
+		gtk_list_store_append (GTK_LIST_STORE (model), &item);
+		gtk_list_store_set (GTK_LIST_STORE (model), &item,
+				    MSG_LIST_COL_TIME, "00:00:00",
+				    MSG_LIST_COL_LEVEL, DEBUG_STR[debug_level],
+				    MSG_LIST_COL_MSG, msgv[i],
+				    -1);
 
-	default:
+
+		switch (debug_level) {
+
+			/* internal bugs */
+		case RIG_DEBUG_BUG:
+			bugs++;
+			str = g_strdup_printf ("%d", bugs);
+			gtk_label_set_text (GTK_LABEL (buglabel), str);
+			g_free (str);
+			break;
+
+			/* runtime error */
+		case RIG_DEBUG_ERR:
+			errors++;
+			str = g_strdup_printf ("%d", errors);
+			gtk_label_set_text (GTK_LABEL (errlabel), str);
+			g_free (str);
+			break;
+
+			/* warning */
+		case RIG_DEBUG_WARN:
+			warnings++;
+			str = g_strdup_printf ("%d", warnings);
+			gtk_label_set_text (GTK_LABEL (warnlabel), str);
+			g_free (str);
+			break;
+
+			/* verbose info */
+		case RIG_DEBUG_VERBOSE:
+			verboses++;
+			str = g_strdup_printf ("%d", verboses);
+			gtk_label_set_text (GTK_LABEL (verblabel), str);
+			g_free (str);
+			break;
+
+			/* trace */
+		case RIG_DEBUG_TRACE:
+			traces++;
+			str = g_strdup_printf ("%d", traces);
+			gtk_label_set_text (GTK_LABEL (tracelabel), str);
+			g_free (str);
+			break;
+
+		default:
+			break;
+		}
 
 	}
 
+	/* the sum does not have to be updated for each line */
 	total = bugs+errors+warnings+verboses+traces;
 	str = g_strdup_printf ("<b>%d</b>", total);
 	gtk_label_set_markup (GTK_LABEL (sumlabel), str);
 	g_free (str);
+
+	g_strfreev (msgv);
 	
 	return RIG_OK;
 }
@@ -300,7 +351,8 @@ message_window_delete      (GtkWidget *widget,
 	gtk_widget_hide_all (widget);
 	visible = FALSE;
 
-	/* return TRUE to indicate that message window should not be destroyed */
+	/* return TRUE to indicate that message window
+	   should not be destroyed */
 	return TRUE;
 }
 
@@ -363,9 +415,6 @@ create_message_list    ()
 
 	/* place holder for a tree view column */
 	GtkTreeViewColumn *column;
-
-	/* the tree view model */
-	GtkTreeModel      *model;
 
 
 	guint i;

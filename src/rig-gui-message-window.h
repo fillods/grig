@@ -35,13 +35,6 @@
 #include <hamlib/rig.h>
 
 
-typedef enum {
-	MSG_LIST_COL_TIME = 0,
-	MSG_LIST_COL_LEVEL,
-	MSG_LIST_COL_MSG,
-	MSG_LIST_COL_NUMBER
-} msg_list_col_t;
-
 
 
 void rig_gui_message_window_init  (void);
