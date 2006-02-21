@@ -1,3 +1,11 @@
+2006-02-21;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/rig-gui-message-window:
+	Moved column definition from header to source file. Add debug
+	messages to the the message list. Works all right but need a lot
+	of optimisation.
+	
+
 2006-01-16;	Alexandru Csete <csete@users.sourceforge.net>
 
 	* src/rig-gui-message-window, src/main.c:
