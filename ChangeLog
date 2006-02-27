@@ -2,8 +2,19 @@
 
 	* src/Makefile.am:
 	Added new files to list.
-	
 
+	* configure.ac:
+	Require hamlib 1.2.5
+
+	* src/grig-debug.c, src-grig-debug.h:
+	Implemented logging source but there is no code to explicitly
+	save to log file. The messages are printed to stderr, so the
+	log can be saved that way.
+
+	* src/main.c:
+	Use new grig-debug infrastructure.
+	
+	
 2006-02-24;	Alexandru Csete <csete@users.sourceforge.net>
 
 	* src/grig-debug.c, src-grig-debug.h:

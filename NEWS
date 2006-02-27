@@ -1,4 +1,4 @@
-GRIG 0.5.0:
+GRIG 0.5.0 (x means not finished):
 
 - Requires Gtk+ 2.6 and Hamlib 1.2.5
 - Added VFO and SPLIT controls.
