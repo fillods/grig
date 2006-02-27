@@ -35,12 +35,26 @@
 #include <glib.h>
 
 
-void grig_debug_init  (gchar *filename);
-void grig_debug_close (void);
-int  grig_debug_cb    (enum rig_debug_level_e debug_level,
-                       rig_ptr_t user_data,
-                       const char *fmt,
-                       va_list ap);
+#define GRIG_DEBUG_SEPARATOR "\t"
+
+/** \brief Debug message sources. */
+typedef enum {
+	MSG_SRC_NONE   = 0,     /*!< No source, unknown source. */
+	MSG_SRC_HAMLIB = 1,     /*!< Debug message comes from hamlib */
+	MSG_SRC_GRIG   = 2      /*!< Debug message comes from grig itself */
+} debug_msg_src_t;
+
+
+
+void grig_debug_init           (gchar *filename);
+void grig_debug_close          (void);
+int  grig_debug_hamlib_cb      (enum rig_debug_level_e debug_level,
+				rig_ptr_t user_data,
+				const char *fmt,
+			        va_list ap);
+
+int  grig_debug_local        (enum rig_debug_level_e debug_level,
+			      const gchar *msg);
 
 gchar *grig_debug_get_log_file (void);
 

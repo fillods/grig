@@ -39,6 +39,8 @@
  */
 #include <glib.h>
 #include <glib/gi18n.h>
+#include <time.h>
+#include <sys/time.h>
 #include <hamlib/rig.h>
 #ifdef HAVE_CONFIG_H
 #  include <config.h>
@@ -46,8 +48,19 @@
 #include "grig-debug.h"
 
 
+
+
 static gchar      *logfname = NULL;
 static GIOChannel *logfile  = NULL;
+
+
+const gchar *SRC_TO_STR[] = {N_("NONE"), N_("HAMLIB"), N_("GRIG")};
+
+
+static void manage_debug_message (debug_msg_src_t source,
+				  enum rig_debug_level_e debug_level,
+				  const gchar *message);
+
 
 
 /** \brief Initialise debug handler
@@ -68,7 +81,7 @@ grig_debug_init  (gchar *filename)
         }
 
         /* set debug handler */
-        rig_set_debug_callback (grig_debug_cb, NULL);
+        rig_set_debug_callback (grig_debug_hamlib_cb, NULL);
         
         /* send debug message to indicate readiness of debug handler */
         msg = g_strdup_printf (_("GRIG:%s: Debug handler initialised.\n"),
@@ -101,18 +114,19 @@ grig_debug_close ()
 }
 
 
+
+/** \brief Manage hamlib debug messages */
 int
-grig_debug_cb    (enum rig_debug_level_e debug_level,
-                  rig_ptr_t user_data,
-                  const char *fmt,
-                  va_list ap)
+grig_debug_hamlib_cb    (enum rig_debug_level_e debug_level,
+			 rig_ptr_t user_data,
+			 const char *fmt,
+			 va_list ap)
 {
 
 	gchar          *msg;       /* formatted debug message */
 	gchar         **msgv;      /* debug message line by line */
 	guint           numlines;  /* the number of lines in the message */
 	guint           i;
-        GTimeVal        curtime;   /* current time (same as struct timeval) */
 
 
 	/* create character string and split it in case
@@ -126,17 +140,14 @@ grig_debug_cb    (enum rig_debug_level_e debug_level,
 	msgv = g_strsplit_set (msg, "\n", 0);
 	numlines = g_strv_length (msgv);
 
-	g_print ("%d: %s\n", debug_level, msg);
 	g_free (msg);
 
-
-	/* get the time */
-        g_get_current_time (&curtime);
-
-	/* for each line in msgv, print the line to stderr
-           and save into logfile.
+	/* for each line in msgv, call the real debug handler
+	   which will print the debug message and save it to
+	   a logfile
 	*/
 	for (i = 0; i < numlines; i++) {
+		manage_debug_message (MSG_SRC_HAMLIB, debug_level, msgv[i]);
 	}
 
 
@@ -145,6 +156,43 @@ grig_debug_cb    (enum rig_debug_level_e debug_level,
 	return RIG_OK;
 
 }
+
+int
+grig_debug_local        (enum rig_debug_level_e debug_level,
+			 const gchar *msg)
+{
+	gchar   **msgv;      /* debug message line by line */
+	gchar    *locmsg;
+	guint     numlines;  /* the number of lines in the message */
+	guint     i;
+
+
+	locmsg = g_strdup (msg);
+
+	/* remove trailing \n */
+	g_strchomp (locmsg);
+
+	/* split the message in case it is a multiline message */
+	msgv = g_strsplit_set (locmsg, "\n", 0);
+	numlines = g_strv_length (msgv);
+
+	g_free (locmsg);
+
+	/* for each line in msgv, call the real debug handler
+	   which will print the debug message and save it to
+	   a logfile
+	*/
+	for (i = 0; i < numlines; i++) {
+		manage_debug_message (MSG_SRC_GRIG, debug_level, msgv[i]);
+	}
+
+
+	g_strfreev (msgv);
+	
+	return RIG_OK;
+
+}
+
 
 
 /** \brief Get the name of the current log file.
@@ -164,4 +212,45 @@ grig_debug_get_log_file ()
         else {
                 return NULL;
         }
+}
+
+
+
+
+/***** FIXME: portability issues because of time? */
+/***** FIXME: size management sucks */
+static void
+manage_debug_message (debug_msg_src_t source,
+		      enum rig_debug_level_e debug_level,
+		      const gchar *message)
+{
+	gchar msg_time[50];
+	guint size;
+	struct timeval tval;
+	struct timezone tzone;
+	time_t t;
+	gint x;
+
+
+	/* get the time */
+	x = gettimeofday (&tval, &tzone);
+	t = (time_t ) tval.tv_sec;
+	size = strftime (msg_time, 48, "%Y/%m/%d %H:%M:%S", localtime (&t));
+	if (size < 49) {
+		msg_time[size] = '\0';
+	}
+	else {
+		msg_time[49] = '\0';
+	}
+
+	g_fprintf (stderr,
+		   "%s%s%s%s%d%s%s\n",
+		   msg_time,
+		   GRIG_DEBUG_SEPARATOR,
+		   SRC_TO_STR[source],
+		   GRIG_DEBUG_SEPARATOR,
+		   debug_level,
+		   GRIG_DEBUG_SEPARATOR,
+		   message);
+
 }
