@@ -2,7 +2,7 @@
 /*
     Grig:  Gtk+ user interface for the Hamradio Control Libraries.
 
-    Copyright (C)  2001-2005  Alexandru Csete.
+    Copyright (C)  2001-2006  Alexandru Csete.
 
     Authors: Alexandru Csete <csete@users.sourceforge.net>
 
@@ -53,6 +53,7 @@
 #endif
 #include "grig-config.h"
 #include "rig-gui.h"
+#include "grig-debug.h"
 #include "rig-gui-message-window.h"
 #include "rig-daemon.h"
 #include "rig-data.h"
@@ -90,7 +91,7 @@ static gboolean help      = FALSE;   /*!< Show help and exit. */
 static struct option long_options[] =
 {
 	{"model",        1, 0, 'm'},
-	{"rig-file",     1, 0, 'r'},
+	{"rig-device",   1, 0, 'r'},
 	{"speed",        1, 0, 's'},
 	{"civaddr",      1, 0, 'c'},
 	{"set-conf",     1, 0, 'C'},
@@ -333,9 +334,8 @@ main (int argc, char *argv[])
 	*/
 	rig_set_debug (RIG_DEBUG_TRACE);
 
-	/* initialise message window and register message logger */
-	rig_gui_message_window_init ();
-	rig_set_debug_callback (rig_gui_message_window_add_cb, NULL);
+	/* initialise debug handler */
+	grig_debug_init ();
 
 	/* launch rig daemon and pass the relevant
 	   command line options
@@ -502,8 +502,8 @@ grig_app_destroy    (GtkWidget *widget,
 
 	/* stop timeouts */
 
-	/* stop logger */
-      	rig_gui_message_window_clean ();
+	/* shut down debug handler */
+      	grig_debug_close ();
 
 	/* exit Gtk+ */
 	gtk_main_quit ();
@@ -522,7 +522,7 @@ grig_show_help      ()
 	g_print (_("Usage: grig [OPTION]...\n\n"));
 	g_print (_("  -m, --model=ID              "\
 		   "select radio model number; see --list\n"));
-	g_print (_("  -r, --rig-file=DEVICE       "\
+	g_print (_("  -r, --rig-device=DEVICE     "\
 		   "set device of the radio, eg. /dev/ttyS0\n"));
 	g_print (_("  -s, --speed=BAUD            "\
 		   "set transfer rate (serial port only)\n"));
@@ -557,7 +557,7 @@ grig_show_help      ()
 	g_print ("\n\n");
 	g_print (_("or if you prefer the long options:"));
 	g_print ("\n\n");
-	g_print ("     grig --model=116 --rig-file=/dev/ttyS0 "\
+	g_print ("     grig --model=116 --rig-device=/dev/ttyS0 "\
 		 "--speed=4800 --debug=3");
 	g_print ("\n\n");
 	g_print (_("It is usually enough to specify the model "\

@@ -18,7 +18,7 @@ The way grig interacts with hamlib is controlled via command line options. Manda
 \fB\-m\fR, \fB\-\-model\fR=\fIID\fR
 select radio model number; see \fB\-\-list\fR
 .TP 
-\fB\-r\fR, \fB\-\-rig\-file\fR=\fIDEVICE\fR
+\fB\-r\fR, \fB\-\-rig\-device\fR=\fIDEVICE\fR
 set device of the radio, eg. /dev/ttyS0
 .TP 
 \fB\-s\fR, \fB\-\-speed\fR=\fIBAUD\fR
@@ -62,7 +62,7 @@ using 4800 baud and debug level set to warning:
 .PP 
 or if you prefer the long options:
 .PP 
-     grig \-\-model=116 \-\-rig\-file=/dev/ttyS0 \-\-speed=4800 \-\-debug=3
+     grig \-\-model=116 \-\-rig\-device=/dev/ttyS0 \-\-speed=4800 \-\-debug=3
 .PP 
 It is usually enough to specify the model ID and the DEVICE.
 .PP 
@@ -152,7 +152,7 @@ Bugs related to hamlib should be reported directly to the hamlib developers at
 \fB<hamlib\-developer@lists.sourceforge.net>\fR.
 
 .SH "COPYRIGHT"
-Copyright \(co 2001\-2005 Alexandru Csete.
+Copyright \(co 2001\-2006 Alexandru Csete.
 .br 
 This is free software; see the source for copying conditions.  There is NO
 warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
