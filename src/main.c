@@ -447,8 +447,15 @@ grig_app_create       (gint rignum)
  */
 static void grig_sig_handler (int sig)
 {
-	rig_debug (RIG_DEBUG_ERR, "*** GRIG: Received signal: %d\n", sig);
-	rig_debug (RIG_DEBUG_ERR, "*** GRIG: Trying clean exit...\n");
+	gchar *msg;
+
+	msg = g_strdup_printf (_("Received signal %d\n"\
+				 "Trying clean exit..."),
+			       sig);
+
+	grig_debug_local (RIG_DEBUG_ERR, msg);
+
+	g_free (msg);
 
 	gtk_widget_destroy (grigapp);
 }
