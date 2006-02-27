@@ -78,7 +78,7 @@ dnl packagesrcdir=`cd $srcdir && pwd`
 dnl AC_DEFINE_UNQUOTED(PACKAGE_SOURCE_DIR, "${packagesrcdir}")
 
 dnl Check hamlib
-hamlib_modules="hamlib >= 1.2.0"
+hamlib_modules="hamlib >= 1.2.5"
 PKG_CHECK_MODULES(HAMLIB, [$hamlib_modules], [
   CFLAGS="$CFLAGS $HAMLIB_CFLAGS";
   LIBS="$LIBS $HAMLIB_LIBS";
