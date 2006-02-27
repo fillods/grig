@@ -335,7 +335,7 @@ main (int argc, char *argv[])
 	rig_set_debug (RIG_DEBUG_TRACE);
 
 	/* initialise debug handler */
-	grig_debug_init ();
+	grig_debug_init (NULL);
 
 	/* launch rig daemon and pass the relevant
 	   command line options

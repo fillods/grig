@@ -1,3 +1,9 @@
+2006-02-27;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/Makefile.am:
+	Added new files to list.
+	
+
 2006-02-24;	Alexandru Csete <csete@users.sourceforge.net>
 
 	* src/grig-debug.c, src-grig-debug.h:

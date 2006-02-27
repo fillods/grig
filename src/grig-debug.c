@@ -38,6 +38,7 @@
  * name.
  */
 #include <glib.h>
+#include <glib/gi18n.h>
 #include <hamlib/rig.h>
 #ifdef HAVE_CONFIG_H
 #  include <config.h>
@@ -45,7 +46,8 @@
 #include "grig-debug.h"
 
 
-GIOChannel *logfile;
+static gchar      *logfname = NULL;
+static GIOChannel *logfile  = NULL;
 
 
 /** \brief Initialise debug handler
@@ -110,7 +112,6 @@ grig_debug_cb    (enum rig_debug_level_e debug_level,
 	gchar         **msgv;      /* debug message line by line */
 	guint           numlines;  /* the number of lines in the message */
 	guint           i;
-	GtkTreeIter     item;      /* new item added to the list store */
         GTimeVal        curtime;   /* current time (same as struct timeval) */
 
 
@@ -125,7 +126,7 @@ grig_debug_cb    (enum rig_debug_level_e debug_level,
 	msgv = g_strsplit_set (msg, "\n", 0);
 	numlines = g_strv_length (msgv);
 
-	g_printf ("%d: %s\n", debug_level, msg);
+	g_print ("%d: %s\n", debug_level, msg);
 	g_free (msg);
 
 
