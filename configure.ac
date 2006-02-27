@@ -84,7 +84,7 @@ PKG_CHECK_MODULES(HAMLIB, [$hamlib_modules], [
   LIBS="$LIBS $HAMLIB_LIBS";
 dnl  AC_DEFINE(WANT_HAMLIB, 1)
 ], [
-  AC_MSG_ERROR([Hamradio control libraries not found...])
+  AC_MSG_ERROR([Hamradio control libraries 1.2.5 or later not found...])
 ])
 
 
