@@ -17,6 +17,7 @@ grig_SOURCES = \
 	compat.c compat.h \
 	grig-about.c grig-about.h \
 	grig-config.c grig-config.h \
+	grig-debug.c grig-debug.h \
 	grig-gtk-workarounds.c grig-gtk-workarounds.h \
 	grig-menubar.c grig-menubar.h \
 	rig-anomaly.c rig-anomaly.h \
