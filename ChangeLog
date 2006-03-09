@@ -6,7 +6,7 @@
 	* configure.ac:
 	Require hamlib 1.2.5
 
-	* src/grig-debug.c, src-grig-debug.h:
+	* src/grig-debug.c, src/grig-debug.h:
 	Implemented logging source but there is no code to explicitly
 	save to log file. The messages are printed to stderr, so the
 	log can be saved that way.
@@ -17,7 +17,7 @@
 	
 2006-02-24;	Alexandru Csete <csete@users.sourceforge.net>
 
-	* src/grig-debug.c, src-grig-debug.h:
+	* src/grig-debug.c, src/grig-debug.h:
 	Added files contianing new debug handler. The new debug handler
 	will format the debug messages coming from hamlib, print them
 	on stderr and, if requested, save them to a log file. The log
@@ -36,7 +36,7 @@
 
 	* src/rig-gui-message-window:
 	Moved column definition from header to source file. Add debug
-	messages to the the message list. Works all right but need a lot
+	messages to the the message list. Works all right but needs a lot
 	of optimisation.
 	
 
