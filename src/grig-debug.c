@@ -39,6 +39,7 @@
  */
 #include <glib.h>
 #include <glib/gi18n.h>
+#include <glib/gprintf.h>
 #include <time.h>
 #include <sys/time.h>
 #include <hamlib/rig.h>
@@ -51,7 +52,7 @@
 
 
 static gchar      *logfname = NULL;
-static GIOChannel *logfile  = NULL;
+/*static GIOChannel *logfile  = NULL;*/
 
 
 const gchar *SRC_TO_STR[] = {N_("NONE"), N_("HAMLIB"), N_("GRIG")};
@@ -73,8 +74,6 @@ static void manage_debug_message (debug_msg_src_t source,
 void
 grig_debug_init  (gchar *filename)
 {
-        gchar *msg;
-
 
         if (filename != NULL) {
                 /*** FIXME: open file for write/append ***/
@@ -84,10 +83,10 @@ grig_debug_init  (gchar *filename)
         rig_set_debug_callback (grig_debug_hamlib_cb, NULL);
         
         /* send debug message to indicate readiness of debug handler */
-        msg = g_strdup_printf (_("GRIG:%s: Debug handler initialised.\n"),
-                               __FUNCTION__);
-        rig_debug (RIG_DEBUG_VERBOSE, msg);
-        g_free (msg);
+        grig_debug_local (RIG_DEBUG_VERBOSE,
+			  _("%s: Debug handler initialised."),
+			  __FUNCTION__);
+
 }
 
 
@@ -99,13 +98,11 @@ grig_debug_init  (gchar *filename)
 void
 grig_debug_close ()
 {
-        gchar *msg;
 
         /* send a final debug message */
-        msg = g_strdup_printf (_("GRIG:%s: Shutting down debug handler.\n"),
-                               __FUNCTION__);
-        rig_debug (RIG_DEBUG_VERBOSE, msg);
-        g_free (msg);
+        grig_debug_local (RIG_DEBUG_VERBOSE,
+			  _("%s: Shutting down debug handler."),
+			  __FUNCTION__);
 
         /* remove debug handler */
         rig_set_debug_callback (NULL, NULL);
@@ -157,26 +154,35 @@ grig_debug_hamlib_cb    (enum rig_debug_level_e debug_level,
 
 }
 
+
+/** \brief Manage GRIG debug messages. */
 int
-grig_debug_local        (enum rig_debug_level_e debug_level,
-			 const gchar *msg)
+grig_debug_local    (enum rig_debug_level_e debug_level,
+		     const char *fmt,
+		     ...)
 {
-	gchar   **msgv;      /* debug message line by line */
-	gchar    *locmsg;
-	guint     numlines;  /* the number of lines in the message */
-	guint     i;
+
+	gchar      *msg;       /* formatted debug message */
+	gchar     **msgv;      /* debug message line by line */
+	guint       numlines;  /* the number of lines in the message */
+	guint       i;
+	va_list     ap;
 
 
-	locmsg = g_strdup (msg);
+	va_start (ap, fmt);
+
+	/* create character string and split it in case
+	   it is a multi-line message */
+	msg = g_strdup_vprintf (fmt, ap);
 
 	/* remove trailing \n */
-	g_strchomp (locmsg);
+	g_strchomp (msg);
 
 	/* split the message in case it is a multiline message */
-	msgv = g_strsplit_set (locmsg, "\n", 0);
+	msgv = g_strsplit_set (msg, "\n", 0);
 	numlines = g_strv_length (msgv);
 
-	g_free (locmsg);
+	g_free (msg);
 
 	/* for each line in msgv, call the real debug handler
 	   which will print the debug message and save it to
@@ -186,6 +192,7 @@ grig_debug_local        (enum rig_debug_level_e debug_level,
 		manage_debug_message (MSG_SRC_GRIG, debug_level, msgv[i]);
 	}
 
+	va_end(ap);
 
 	g_strfreev (msgv);
 	

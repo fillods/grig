@@ -35,6 +35,7 @@
 #include "rig-data.h"
 #include "rig-utils.h"
 #include "grig-gtk-workarounds.h"
+#include "grig-debug.h"
 #include "rig-gui-vfo.h"
 
 
@@ -180,17 +181,17 @@ rig_gui_vfo_toggle_cb (GtkWidget *widget, gpointer data)
 
                 /* it's a bug, because button should be disabled */
                 else {
-                        rig_debug (RIG_DEBUG_BUG,
-                                   "*** GRIG: %s: VFO_TOGGLE button should have been disabled "\
-                                   "(neither A/B nor MAIN/SUB)\n", __FUNCTION__);
+                        grig_debug_local (RIG_DEBUG_BUG,
+					  "%s: VFO_TOGGLE button should have been disabled "\
+					  "(neither A/B nor MAIN/SUB)\n", __FUNCTION__);
                 }
 	}
 
         /* it's a bug, because button should be disabled */
         else {
-		rig_debug (RIG_DEBUG_BUG,
-			   "*** GRIG: %s: VFO_TOGGLE button should have been disabled "\
-			   "(no way to toggle)\n", __FUNCTION__);
+		grig_debug_local (RIG_DEBUG_BUG,
+				  "%s: VFO_TOGGLE button should have been disabled "\
+				  "(no way to toggle)\n", __FUNCTION__);
         }
 
 }
@@ -258,17 +259,17 @@ rig_gui_vfo_eq_cb (GtkWidget *widget, gpointer data)
 	else if (rig_data_has_set_vfo () &&
                  rig_data_has_get_vfo ()) {
 
-		rig_debug (RIG_DEBUG_BUG,
-			   "*** GRIG: %s: VFO COPY without RIG_OP_COPY not imlemented\n",
-			   __FUNCTION__);
+		grig_debug_local (RIG_DEBUG_BUG,
+				  "%s: VFO COPY without RIG_OP_COPY not imlemented\n",
+				  __FUNCTION__);
 
 	}
 
         /* it's a bug, because button should be disabled */
         else {
-		rig_debug (RIG_DEBUG_BUG,
-			   "*** GRIG: %s: VFO_EQ button should have been disabled "\
-			   "(no way to equalise)\n", __FUNCTION__);
+		grig_debug_local (RIG_DEBUG_BUG,
+				  "%s: VFO_EQ button should have been disabled "\
+				  "(no way to equalise)\n", __FUNCTION__);
         }
 
 }
@@ -337,17 +338,17 @@ rig_gui_vfo_xchg_cb (GtkWidget *widget, gpointer data)
 	else if (rig_data_has_set_vfo () &&
                  rig_data_has_get_vfo ()) {
 
-		rig_debug (RIG_DEBUG_BUG,
-			   "*** GRIG: %s: VFO XCHG without RIG_OP_XCHG not imlemented\n",
-			   __FUNCTION__);
+		grig_debug_local (RIG_DEBUG_BUG,
+				  "%s: VFO XCHG without RIG_OP_XCHG not imlemented\n",
+				  __FUNCTION__);
 
 	}
 
         /* it's a bug, because button should be disabled */
         else {
-		rig_debug (RIG_DEBUG_BUG,
-			   "*** GRIG: %s: VFO_XCHG button should have been disabled "\
-			   "(no way to exchange)\n", __FUNCTION__);
+		grig_debug_local (RIG_DEBUG_BUG,
+				  "%s: VFO_XCHG button should have been disabled "\
+				  "(no way to exchange)\n", __FUNCTION__);
         }
 
 }

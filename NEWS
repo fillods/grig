@@ -1,33 +1,38 @@
-GRIG 0.5.0 (x means not finished):
+FUTURE:
 
-- Requires Gtk+ 2.6 and Hamlib 1.2.5
-- Added VFO and SPLIT controls.
 x Added receiver and transmitter level controls.
 x Added CW controls.
 x Software Memory Manager.
 x Software Scan.
 x Band Map.
 x DCS and CTCSS controls.
-- Special rig functions: LOCK, ...
-x Show Hamlib and Grig debug messages in a message window
-  instead of stdout (console). The message window shows the
-  debug messages in a tree sorted by severity or in a plain
-  text view where the messages come in chronological order.
 x Save and restore rig state.
 x Allow changing working frequency while in TX mode.
 x Fixed bug which caused the frequency display to oscillate
   between the current working frequency and some previously
   used frequency.
-- Modified shut-down procedure to wait until daemon actually
+x Added the possibility to suspend rig command execution
+  without shutting down the daemon, ie. without closing
+  connection to the rig. The statusbar contains a small
+  indicator showing the status.
+
+
+
+GRIG 0.5.0:
+
+- Requires Gtk+ 2.6 and Hamlib 1.2.5
+- Added VFO and SPLIT controls.
+- Special rig functions: LOCK, ...
+- Use own debug handler for both hamlib and grig messages
+  and format debug messages so that become easier to analyse.
+- New debug message window, which can be used to analyse
+  previously saved debug messages.
+- Modified shutdown procedure to wait until daemon actually
   finishes instead of using a fixed length timeout.
 - Disable POWER and PTT buttons by default (can be enabled
   via the command line).
 - Optimisation of the daemon process allowing faster reaction
   when PTT is toggled.
-x Added the possibility to suspend rig command execution
-  without shutting down the daemon, ie. without closing
-  connection to the rig. The statusbar contains a small
-  indicator showing the status.
 - The mode selector combo only shows modes, which are supported
   by the rig.
 - Fixed erroneous detection of set/get level availability

@@ -40,8 +40,10 @@
  * \bug File includes gtk.h but not really needed?
  */
 #include <gtk/gtk.h>
+#include <glib/gi18n.h>
 #include <hamlib/rig.h>
 #include "rig-data.h"
+#include "grig-debug.h"
 #include "rig-daemon-check.h"
 
 
@@ -150,9 +152,10 @@ rig_daemon_check_vfo     (RIG               *myrig,
 		rig_data_set_vfos (myrig->state.vfo_list);
 	}
 	else {
-		rig_debug (RIG_DEBUG_BUG,
-			   "*** GRIG: %s: Can not find VFO list for this "\
-			   "backend! Bug in backend?\n", __FUNCTION__);
+		grig_debug_local (RIG_DEBUG_BUG,
+				  _("%s: Can not find VFO list for this "\
+				    "backend! Bug in backend?"),
+				  __FUNCTION__);
 	}
 
 	/* try to get current VFO */
@@ -397,14 +400,15 @@ rig_daemon_check_mode     (RIG               *myrig,
 				get->fmin = myrig->state.rx_range_list[i].start;
 				get->fmax = myrig->state.rx_range_list[i].end;
 				
-				rig_debug (RIG_DEBUG_VERBOSE,
-					   "*** GRIG: Found frequency range for mode %d\n",
-					   mode);
-				rig_debug (RIG_DEBUG_VERBOSE,
-					   "*** GRIG: %.0f...(%.0f)...%.0f kHz\n",
-					   get->fmin / 1.0e3,
-					   get->freq1 / 1.0e3,
-					   get->fmax / 1.0e3);
+				grig_debug_local (RIG_DEBUG_VERBOSE,
+						  _("%s: Found frequency range for mode %d"),
+						  __FUNCTION__, mode);
+				grig_debug_local (RIG_DEBUG_VERBOSE,
+						  _("%s: %.0f...(%.0f)...%.0f kHz"),
+						  __FUNCTION__,
+						  get->fmin / 1.0e3,
+						  get->freq1 / 1.0e3,
+						  get->fmax / 1.0e3);
 
 			}
 			else {
@@ -417,9 +421,10 @@ rig_daemon_check_mode     (RIG               *myrig,
 		   in the backend!
 		*/
 		if (!found_mode) {
-			rig_debug (RIG_DEBUG_BUG,
-				   "*** GRIG: %s: Can not find frequency range for this "\
-				   "mode (%d)! Bug in backend?\n", __FUNCTION__, mode);
+			grig_debug_local (RIG_DEBUG_BUG,
+					  _("%s: Can not find frequency range for this "\
+					    "mode (%d)! Bug in backend?"),
+					  __FUNCTION__, mode);
 		}
 
 		/* get the smallest tuning step */
@@ -484,9 +489,9 @@ rig_daemon_check_level     (RIG               *myrig,
 		}
 		else {
 			/* send an error report */
-			rig_debug (RIG_DEBUG_ERR,
-				   "*** GRIG: %s: Could not get RF power\n",
-				   __FUNCTION__);
+			grig_debug_local (RIG_DEBUG_ERR,
+					  _("%s: Could not get RF power"),
+					  __FUNCTION__);
 		}
 	}
 
@@ -497,9 +502,9 @@ rig_daemon_check_level     (RIG               *myrig,
 		}
 		else {
 			/* send an error report */
-			rig_debug (RIG_DEBUG_ERR,
-				   "*** GRIG: %s: Could not get signal strength\n",
-				   __FUNCTION__);
+			grig_debug_local (RIG_DEBUG_ERR,
+					  _("%s: Could not get signal strength"),
+					  __FUNCTION__);
 
 			get->strength = -54;
 		}
@@ -512,9 +517,9 @@ rig_daemon_check_level     (RIG               *myrig,
 		}
 		else {
 			/* send an error report */
-			rig_debug (RIG_DEBUG_ERR,
-				   "*** GRIG: %s: Could not get SWR\n",
-				   __FUNCTION__);
+			grig_debug_local (RIG_DEBUG_ERR,
+					  _("%s: Could not get SWR"),
+					  __FUNCTION__);
 		}
 	}
 
@@ -525,9 +530,9 @@ rig_daemon_check_level     (RIG               *myrig,
 		}
 		else {
 			/* send an error report */
-			rig_debug (RIG_DEBUG_ERR,
-				   "*** GRIG: %s: Could not get ALC\n",
-				   __FUNCTION__);
+			grig_debug_local (RIG_DEBUG_ERR,
+					  _("%s: Could not get ALC"),
+					  __FUNCTION__);
 		}
 	}
 
@@ -538,9 +543,9 @@ rig_daemon_check_level     (RIG               *myrig,
 		}
 		else {
 			/* send an error report */
-			rig_debug (RIG_DEBUG_ERR,
-				   "*** GRIG: %s: Could not get AGC\n",
-				   __FUNCTION__);
+			grig_debug_local (RIG_DEBUG_ERR,
+					  _("%s: Could not get AGC"),
+					  __FUNCTION__);
 		}
 	}
 
@@ -551,9 +556,9 @@ rig_daemon_check_level     (RIG               *myrig,
 		}
 		else {
 			/* send an error report */
-			rig_debug (RIG_DEBUG_ERR,
-				   "*** GRIG: %s: Could not get ATT\n",
-				   __FUNCTION__);
+			grig_debug_local (RIG_DEBUG_ERR,
+					  _("%s: Could not get ATT"),
+					  __FUNCTION__);
 		}
 	}
 
@@ -564,9 +569,9 @@ rig_daemon_check_level     (RIG               *myrig,
 		}
 		else {
 			/* send an error report */
-			rig_debug (RIG_DEBUG_ERR,
-				   "*** GRIG: %s: Could not get PREAMP\n",
-				   __FUNCTION__);
+			grig_debug_local (RIG_DEBUG_ERR,
+					  _("%s: Could not get PREAMP"),
+					  __FUNCTION__);
 		}
 	}
 
@@ -646,9 +651,9 @@ rig_daemon_check_func     (RIG               *myrig,
 		}
 		else {
 			/* send an error report */
-			rig_debug (RIG_DEBUG_ERR,
-				   "*** GRIG: %s: Could not get LOCK status\n",
-				   __FUNCTION__);
+			grig_debug_local (RIG_DEBUG_ERR,
+					  _("%s: Could not get LOCK status"),
+					  __FUNCTION__);
 		}
 	}
 

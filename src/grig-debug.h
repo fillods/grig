@@ -35,7 +35,7 @@
 #include <glib.h>
 
 
-#define GRIG_DEBUG_SEPARATOR "\t"
+#define GRIG_DEBUG_SEPARATOR ";;"
 
 /** \brief Debug message sources. */
 typedef enum {
@@ -53,8 +53,9 @@ int  grig_debug_hamlib_cb      (enum rig_debug_level_e debug_level,
 				const char *fmt,
 			        va_list ap);
 
-int  grig_debug_local        (enum rig_debug_level_e debug_level,
-			      const gchar *msg);
+int  grig_debug_local      (enum rig_debug_level_e debug_level,
+			    const char *fmt,
+			    ...);
 
 gchar *grig_debug_get_log_file (void);
 

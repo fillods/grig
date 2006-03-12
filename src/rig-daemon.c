@@ -46,9 +46,11 @@
  *
  */
 #include <gtk/gtk.h>
+#include <glib/gi18n.h>
 #include <hamlib/rig.h>
 #include <string.h>
 #include "grig-config.h"
+#include "grig-debug.h"
 #include "rig-anomaly.h"
 #include "rig-data.h"
 #include "rig-gui-smeter.h"
@@ -271,7 +273,9 @@ rig_daemon_start       (int          rigid,
 	GError *err = NULL;  /* used when starting daemon thread */
 
 
-	rig_debug (RIG_DEBUG_TRACE, "*** GRIG: %s entered\n", __FUNCTION__);
+	grig_debug_local (RIG_DEBUG_TRACE,
+			  _("%s entered"),
+			  __FUNCTION__);
 
 	/* in order to be sure that we have a sensible command delay
 	   we set it already here
@@ -311,17 +315,18 @@ rig_daemon_start       (int          rigid,
 	}
 
 
-	rig_debug (RIG_DEBUG_TRACE,
-		   "*** GRIG: %s: Initializing rig (id=%d)\n",
-		   __FUNCTION__, rigid);
+	grig_debug_local (RIG_DEBUG_TRACE,
+			  _("%s: Initializing rig (id=%d)"),
+			  __FUNCTION__, rigid);
 
 	/* initilize rig */
 	myrig = rig_init (rigid);
 
 	if (myrig == NULL) {
 
-		rig_debug (RIG_DEBUG_ERR,
-			   "*** GRIG: %s: Init failed; Hamlib returned NULL!\n", __FUNCTION__);
+		grig_debug_local (RIG_DEBUG_ERR,
+				  _("%s: Init failed; Hamlib returned NULL!"),
+				  __FUNCTION__);
 
 		return 1;
 	}
@@ -352,19 +357,23 @@ rig_daemon_start       (int          rigid,
 
 			confent = g_strsplit (confvec[i], "=", 2);
 
-			rig_debug (RIG_DEBUG_VERBOSE,
-				   "*** GRIG: %s: Setting conf param (%s,%s)...",
-				   __FUNCTION__, confent[0], confent[1]);
+			grig_debug_local (RIG_DEBUG_VERBOSE,
+					  _("%s: Setting conf param (%s,%s)..."),
+					  __FUNCTION__, confent[0], confent[1]);
 
 			retcode = rig_set_conf (myrig,
 						rig_token_lookup (myrig, confent[0]),
 						confent[1]);
 
 			if (retcode == RIG_OK) {
-				rig_debug (RIG_DEBUG_VERBOSE, "OK\n");
+				grig_debug_local (RIG_DEBUG_VERBOSE,
+						  _("%s: Set conf OK"),
+						  __FUNCTION__);
 			}
 			else {
-				rig_debug (RIG_DEBUG_VERBOSE, "Failed (%d)\n", retcode);
+				grig_debug_local (RIG_DEBUG_VERBOSE,
+						  _("%s: Set conf failed (%d)"),
+						  __FUNCTION__, retcode);
 			}
 					   
 			i++;
@@ -382,26 +391,26 @@ rig_daemon_start       (int          rigid,
 	if (retcode != RIG_OK) {
 
 		/* send error report */
-		rig_debug (RIG_DEBUG_ERR,
-			   "*** GRIG: %s: Failed to open rig port %s (permissions?)\n",
-			   __FUNCTION__,
-			   myrig->state.rigport.pathname);
+		grig_debug_local (RIG_DEBUG_ERR,
+				  _("%s: Failed to open rig port %s (permissions?)"),
+				  __FUNCTION__,
+				  myrig->state.rigport.pathname);
 
 		rig_cleanup (myrig);
 		return 1;
 	}
 #endif
 
-	rig_debug (RIG_DEBUG_TRACE,
-		   "*** GRIG: %s: Init successfull; executing post-init\n",
-		   __FUNCTION__);
+	grig_debug_local (RIG_DEBUG_TRACE,
+			  _("%s: Init successfull, executing post-init"),
+			  __FUNCTION__);
 
 	/* get capabilities and settings  */
 	rig_daemon_post_init (ptt, pstat);
 
-	rig_debug (RIG_DEBUG_TRACE,
-		   "*** GRIG: %s: Starting rig daemon\n",
-		   __FUNCTION__);
+	grig_debug_local (RIG_DEBUG_TRACE,
+			  _("%s: Starting rig daemon"),
+			  __FUNCTION__);
 
 #ifndef DISABLE_HW
 
@@ -418,9 +427,9 @@ rig_daemon_start       (int          rigid,
 					   rig_daemon_cycle_cb,
 					   NULL);
 
-		rig_debug (RIG_DEBUG_VERBOSE,
-			   "*** GRIG: %s: Daemon timeout started, ID: %d\n",
-			   __FUNCTION__, timeoutid);
+		grig_debug_local (RIG_DEBUG_VERBOSE,
+				  _("%s: Daemon timeout started, ID: %d"),
+				  __FUNCTION__, timeoutid);
 
 	}
 	else {
@@ -433,12 +442,12 @@ rig_daemon_start       (int          rigid,
 		*/
 		if (err != NULL) {
 
-			rig_debug (RIG_DEBUG_ERR,
-				   "*** GRIG: %s: Failed to start daemon thread\n",
-				   __FUNCTION__);
-			rig_debug (RIG_DEBUG_ERR,
-				   "*** GRIG: %s: Error %d: %s\n",
-				   __FUNCTION__, err->code, err->message);
+			grig_debug_local (RIG_DEBUG_ERR,
+					  _("%s: Failed to start daemon thread"),
+					  __FUNCTION__);
+			grig_debug_local (RIG_DEBUG_ERR,
+					  _("%s: Error %d: %s"),
+					    __FUNCTION__, err->code, err->message);
 
 			rig_close (myrig);
 			rig_cleanup (myrig);
@@ -446,9 +455,9 @@ rig_daemon_start       (int          rigid,
 			return err->code;
 		}
 		else {
-			rig_debug (RIG_DEBUG_VERBOSE,
-				   "*** GRIG: %s: Daemon thread started\n",
-				   __FUNCTION__);
+			grig_debug_local (RIG_DEBUG_VERBOSE,
+					  _("%s: Daemon thread started"),
+					  __FUNCTION__);
 
 		}
 	}
@@ -472,9 +481,9 @@ rig_daemon_stop  ()
 
 
 	/* send a debug message */
-	rig_debug (RIG_DEBUG_TRACE,
-		   "*** GRIG: %s: Sending stop signal to rig daemon\n",
-		   __FUNCTION__);
+	grig_debug_local (RIG_DEBUG_TRACE,
+			  _("%s: Sending stop signal to rig daemon"),
+			  __FUNCTION__);
 
 
 	/* if we are running in time-out mode
@@ -506,9 +515,9 @@ rig_daemon_stop  ()
 	}
 
 	/* send a debug message */
-	rig_debug (RIG_DEBUG_TRACE,
-		   "*** GRIG: %s: Cleaning up rig\n",
-		   __FUNCTION__);
+	grig_debug_local (RIG_DEBUG_TRACE,
+			  _("%s: Cleaning up rig"),
+			  __FUNCTION__);
 
 #ifndef DISABLE_HW
 	/* close radio device */
@@ -578,45 +587,45 @@ rig_daemon_post_init (gboolean ptt, gboolean pstat)
 	rig_daemon_check_func    (myrig, get, has_get, has_set);
 
 	/* debug info about detected has-get caps */
-	rig_debug (RIG_DEBUG_TRACE,
-		   "*** GRIG: %s: GET bits: %d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d\n",
-		   __FUNCTION__,
-		   has_get->pstat,
-		   has_get->ptt,
-		   has_get->att,
-		   has_get->preamp,
-		   has_get->vfo,
-		   has_get->mode,
-		   has_get->pbw,
-		   has_get->freq1,
-		   has_get->freq2,
-		   has_get->rit,
-		   has_get->xit,
-		   has_get->agc,
-		   has_get->power,
-		   has_get->strength,
-		   has_get->swr,
-		   has_get->alc);
+	grig_debug_local (RIG_DEBUG_TRACE,
+			  _("%s: GET bits: %d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d"),
+			  __FUNCTION__,
+			  has_get->pstat,
+			  has_get->ptt,
+			  has_get->att,
+			  has_get->preamp,
+			  has_get->vfo,
+			  has_get->mode,
+			  has_get->pbw,
+			  has_get->freq1,
+			  has_get->freq2,
+			  has_get->rit,
+			  has_get->xit,
+			  has_get->agc,
+			  has_get->power,
+			  has_get->strength,
+			  has_get->swr,
+			  has_get->alc);
 
-	/** FIXME: FUNC **/
+	/*** FIXME: FUNC **/
 
 	/* debug info about detected has-set caps */
-	rig_debug (RIG_DEBUG_TRACE,
-		   "*** GRIG: %s: SET bits: %d%d%d%d%d%d%d%d%d%d%d%d%dXXX\n",
-		   __FUNCTION__,
-		   has_set->pstat,
-		   has_set->ptt,
-		   has_set->att,
-		   has_set->preamp,
-		   has_set->vfo,
-		   has_set->mode,
-		   has_set->pbw,
-		   has_set->freq1,
-		   has_set->freq2,
-		   has_set->rit,
-		   has_set->xit,
-		   has_set->agc,
-		   has_set->power
+	grig_debug_local (RIG_DEBUG_TRACE,
+			  _("%s: SET bits: %d%d%d%d%d%d%d%d%d%d%d%d%dXXX"),
+			  __FUNCTION__,
+			  has_set->pstat,
+			  has_set->ptt,
+			  has_set->att,
+			  has_set->preamp,
+			  has_set->vfo,
+			  has_set->mode,
+			  has_set->pbw,
+			  has_set->freq1,
+			  has_set->freq2,
+			  has_set->rit,
+			  has_set->xit,
+			  has_set->agc,
+			  has_set->power
 /* not settable
 		   has_get->strength,
 		   has_get->swr,
@@ -656,7 +665,7 @@ rig_daemon_cycle     (gpointer data)
 
 	
 	/* send a debug message */
-	rig_debug (RIG_DEBUG_TRACE, "*** GRIG: %s started.\n", __FUNCTION__);
+	grig_debug_local (RIG_DEBUG_TRACE, _("%s started."), __FUNCTION__);
 
 	/* loop forever until reception of STOP signal */
 	while (stopdaemon == FALSE) {
@@ -754,7 +763,7 @@ rig_daemon_cycle     (gpointer data)
 	}
 
 	/* send a debug message */
-	rig_debug (RIG_DEBUG_TRACE, "*** GRIG: %s stopped\n", __FUNCTION__);
+	grig_debug_local (RIG_DEBUG_TRACE, _("%s stopped"), __FUNCTION__);
 
 	/* set clear flag to indicate that daemon terminated */
 	daemonclear = TRUE;
@@ -800,7 +809,7 @@ rig_daemon_cycle_cb  (gpointer data)
 
 
 	/* send a debug message */
-	rig_debug (RIG_DEBUG_TRACE, "*** GRIG: %s called.\n", __FUNCTION__);
+	grig_debug_local (RIG_DEBUG_TRACE, _("%s called."), __FUNCTION__);
 
 
 	/* first we check whether rig is powered ON since some rigs
@@ -921,9 +930,9 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 
 			/* raise anomaly if execution did not succeed */
 			if (retcode != RIG_OK) {
-				rig_debug (RIG_DEBUG_ERR,
-					   "*** GRIG: %s: Failed to execute RIG_CMD_GET_FREQ_1\n",
-					   __FUNCTION__);
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_GET_FREQ_1"),
+						  __FUNCTION__);
 
 				rig_anomaly_raise (RIG_CMD_GET_FREQ_1);
 			}
@@ -946,9 +955,9 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 
 			/* raise anomaly if execution did not succeed */
 			if (retcode != RIG_OK) {
-				rig_debug (RIG_DEBUG_ERR,
-					   "*** GRIG: %s: Failed to execute RIG_CMD_SET_FREQ_1\n",
-					   __FUNCTION__);
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_SET_FREQ_1"),
+						  __FUNCTION__);
 
 				rig_anomaly_raise (RIG_CMD_SET_FREQ_1);
 			}
@@ -1003,9 +1012,9 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 			default:
 
 				/* send an error report */
-				rig_debug (RIG_DEBUG_ERR,
-					   "*** GRIG: %s: I can't figure out available VFOs (got %d)\n",
-					   __FUNCTION__, get->vfo);
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: I can't figure out available VFOs (got %d)"),
+						  __FUNCTION__, get->vfo);
 
 				vfo = RIG_VFO_NONE;
 				break;
@@ -1016,9 +1025,9 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 
 			/* raise anomaly if execution did not succeed */
 			if (retcode != RIG_OK) {
-				rig_debug (RIG_DEBUG_ERR,
-					   "*** GRIG: %s: Failed to execute RIG_CMD_GET_FREQ_2\n",
-					   __FUNCTION__);
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_GET_FREQ_2"),
+						  __FUNCTION__);
 
 				rig_anomaly_raise (RIG_CMD_GET_FREQ_2);
 			}
@@ -1069,9 +1078,9 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 			default:
 
 				/* send an error report */
-				rig_debug (RIG_DEBUG_ERR,
-					   "*** GRIG: %s: I can't figure out available VFOs (got %d)\n",
-					   __FUNCTION__, get->vfo);
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: I can't figure out available VFOs (got %d)"),
+						    __FUNCTION__, get->vfo);
 
 				vfo = RIG_VFO_NONE;
 				break;
@@ -1082,9 +1091,9 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 
 			/* raise anomaly if execution did not succeed */
 			if (retcode != RIG_OK) {
-				rig_debug (RIG_DEBUG_ERR,
-					   "*** GRIG: %s: Failed to execute RIG_CMD_SET_FREQ_2\n",
-					   __FUNCTION__);
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_SET_FREQ_2"),
+						  __FUNCTION__);
 
 				rig_anomaly_raise (RIG_CMD_SET_FREQ_2);
 			}
@@ -1111,9 +1120,9 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 
 			/* raise anomaly if execution did not succeed */
 			if (retcode != RIG_OK) {
-				rig_debug (RIG_DEBUG_ERR,
-					   "*** GRIG: %s: Failed to execute RIG_CMD_GET_RIT\n",
-					   __FUNCTION__);
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_GET_RIT"),
+						  __FUNCTION__);
 
 				rig_anomaly_raise (RIG_CMD_GET_RIT);
 			}
@@ -1137,9 +1146,9 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 
 			/* raise anomaly if execution did not succeed */
 			if (retcode != RIG_OK) {
-				rig_debug (RIG_DEBUG_ERR,
-					   "*** GRIG: %s: Failed to execute RIG_CMD_SET_RIT\n",
-					   __FUNCTION__);
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_SET_RIT"),
+						  __FUNCTION__);
 
 				rig_anomaly_raise (RIG_CMD_SET_RIT);
 			}
@@ -1166,9 +1175,9 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 
 			/* raise anomaly if execution did not succeed */
 			if (retcode != RIG_OK) {
-				rig_debug (RIG_DEBUG_ERR,
-					   "*** GRIG: %s: Failed to execute RIG_CMD_GET_XIT\n",
-					   __FUNCTION__);
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_GET_XIT"),
+						  __FUNCTION__);
 
 				rig_anomaly_raise (RIG_CMD_GET_XIT);
 			}
@@ -1192,9 +1201,9 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 
 			/* raise anomaly if execution did not succeed */
 			if (retcode != RIG_OK) {
-				rig_debug (RIG_DEBUG_ERR,
-					   "*** GRIG: %s: Failed to execute RIG_CMD_SET_XIT\n",
-					   __FUNCTION__);
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_SET_XIT"),
+						  __FUNCTION__);
 
 				rig_anomaly_raise (RIG_CMD_SET_XIT);
 			}
@@ -1221,9 +1230,9 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 
 			/* raise anomaly if execution did not succeed */
 			if (retcode != RIG_OK) {
-				rig_debug (RIG_DEBUG_ERR,
-					   "*** GRIG: %s: Failed to execute RIG_CMD_GET_VFO\n",
-					   __FUNCTION__);
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_GET_VFO"),
+						  __FUNCTION__);
 
 				rig_anomaly_raise (RIG_CMD_GET_VFO);
 			}
@@ -1246,9 +1255,9 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 
 			/* raise anomaly if execution did not succeed */
 			if (retcode != RIG_OK) {
-				rig_debug (RIG_DEBUG_ERR,
-					   "*** GRIG: %s: Failed to execute RIG_CMD_SET_VFO\n",
-					   __FUNCTION__);
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_SET_VFO"),
+						  __FUNCTION__);
 
 				rig_anomaly_raise (RIG_CMD_SET_VFO);
 			}
@@ -1274,9 +1283,9 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 
 			/* raise anomaly if execution did not succeed */
 			if (retcode != RIG_OK) {
-				rig_debug (RIG_DEBUG_ERR,
-					   "*** GRIG: %s: Failed to execute RIG_CMD_GET_PSTAT\n",
-					   __FUNCTION__);
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_GET_PSTAT"),
+						  __FUNCTION__);
 
 				rig_anomaly_raise (RIG_CMD_GET_PSTAT);
 			}
@@ -1299,9 +1308,9 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 
 			/* raise anomaly if execution did not succeed */
 			if (retcode != RIG_OK) {
-				rig_debug (RIG_DEBUG_ERR,
-					   "*** GRIG: %s: Failed to execute RIG_CMD_SET_PSTAT\n",
-					   __FUNCTION__);
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_SET_PSTAT"),
+						  __FUNCTION__);
 
 				rig_anomaly_raise (RIG_CMD_SET_PSTAT);
 			}
@@ -1327,9 +1336,9 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 
 			/* raise anomaly if execution did not succeed */
 			if (retcode != RIG_OK) {
-				rig_debug (RIG_DEBUG_ERR,
-					   "*** GRIG: %s: Failed to execute RIG_CMD_GET_PTT\n",
-					   __FUNCTION__);
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_GET_PTT"),
+						  __FUNCTION__);
 
 				rig_anomaly_raise (RIG_CMD_GET_PTT);
 			}
@@ -1352,9 +1361,9 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 
 			/* raise anomaly if execution did not succeed */
 			if (retcode != RIG_OK) {
-				rig_debug (RIG_DEBUG_ERR,
-					   "*** GRIG: %s: Failed to execute RIG_CMD_SET_PTT\n",
-					   __FUNCTION__);
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_SET_PTT"),
+						  __FUNCTION__);
 
 				rig_anomaly_raise (RIG_CMD_SET_PTT);
 			}
@@ -1381,9 +1390,9 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 
 			/* raise anomaly if execution did not succeed */
 			if (retcode != RIG_OK) {
-				rig_debug (RIG_DEBUG_ERR,
-					   "*** GRIG: %s: Failed to execute RIG_CMD_GET_MODE\n",
-					   __FUNCTION__);
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_GET_MODE"),
+						  __FUNCTION__);
 
 				rig_anomaly_raise (RIG_CMD_GET_MODE);
 			}
@@ -1432,14 +1441,15 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 							get->fmin = myrig->state.rx_range_list[i].start;
 							get->fmax = myrig->state.rx_range_list[i].end;
 				
-							rig_debug (RIG_DEBUG_VERBOSE,
-								   "*** GRIG: Found frequency range for mode %d\n",
-								   mode);
-							rig_debug (RIG_DEBUG_VERBOSE,
-								   "*** GRIG: %.0f...(%.0f)...%.0f kHz\n",
-								   get->fmin / 1.0e3,
-								   get->freq1 / 1.0e3,
-								   get->fmax / 1.0e3);
+							grig_debug_local (RIG_DEBUG_VERBOSE,
+									  _("%s: Found frequency range for mode %d"),
+									  __FUNCTION__, mode);
+							grig_debug_local (RIG_DEBUG_VERBOSE,
+									  _("%s: %.0f...(%.0f)...%.0f kHz"),
+									  __FUNCTION__,
+									  get->fmin / 1.0e3,
+									  get->freq1 / 1.0e3,
+									  get->fmax / 1.0e3);
 
 						}
 						else {
@@ -1453,9 +1463,10 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 					   in the backend!
 					*/
 					if (!found_mode) {
-						rig_debug (RIG_DEBUG_BUG,
-							   "*** GRIG: %s: Can not find frequency range for this mode (%d)!\n"\
-							   "Bug in backend?\n", __FUNCTION__, mode);
+						grig_debug_local (RIG_DEBUG_BUG,
+								  _("%s: Can not find frequency range for this mode (%d)!"\
+								    "Bug in backend?"),
+								  __FUNCTION__, mode);
 					}
 
 					/* get the smallest tuning step */
@@ -1523,9 +1534,9 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 
 			/* raise anomaly if execution did not succeed */
 			if (retcode != RIG_OK) {
-				rig_debug (RIG_DEBUG_ERR,
-					   "*** GRIG: %s: Failed to execute RIG_CMD_SET_MODE\n",
-					   __FUNCTION__);
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_SET_MODE"),
+						  __FUNCTION__);
 
 				rig_anomaly_raise (RIG_CMD_SET_MODE);
 			}
@@ -1555,9 +1566,9 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 
 			/* raise anomaly if execution did not succeed */
 			if (retcode != RIG_OK) {
-				rig_debug (RIG_DEBUG_ERR,
-					   "*** GRIG: %s: Failed to execute RIG_CMD_GET_AGC\n",
-					   __FUNCTION__);
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_GET_AGC"),
+						  __FUNCTION__);
 
 				rig_anomaly_raise (RIG_CMD_GET_AGC);
 			}
@@ -1583,9 +1594,9 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 
 			/* raise anomaly if execution did not succeed */
 			if (retcode != RIG_OK) {
-				rig_debug (RIG_DEBUG_ERR,
-					   "*** GRIG: %s: Failed to execute RIG_CMD_SET_AGC\n",
-					   __FUNCTION__);
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_SET_AGC"),
+						  __FUNCTION__);
 
 				rig_anomaly_raise (RIG_CMD_SET_AGC);
 			}
@@ -1610,9 +1621,9 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 
 			/* raise anomaly if execution did not succeed */
 			if (retcode != RIG_OK) {
-				rig_debug (RIG_DEBUG_ERR,
-					   "*** GRIG: %s: Failed to execute RIG_CMD_GET_ATT\n",
-					   __FUNCTION__);
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_GET_ATT"),
+						  __FUNCTION__);
 
 				rig_anomaly_raise (RIG_CMD_GET_ATT);
 			}
@@ -1638,9 +1649,9 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 
 			/* raise anomaly if execution did not succeed */
 			if (retcode != RIG_OK) {
-				rig_debug (RIG_DEBUG_ERR,
-					   "*** GRIG: %s: Failed to execute RIG_CMD_SET_ATT\n",
-					   __FUNCTION__);
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_SET_ATT"),
+						  __FUNCTION__);
 
 				rig_anomaly_raise (RIG_CMD_SET_ATT);
 			}
@@ -1665,9 +1676,9 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 
 			/* raise anomaly if execution did not succeed */
 			if (retcode != RIG_OK) {
-				rig_debug (RIG_DEBUG_ERR,
-					   "*** GRIG: %s: Failed to execute RIG_CMD_GET_PREAMP\n",
-					   __FUNCTION__);
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_GET_PREAMP"),
+						  __FUNCTION__);
 
 				rig_anomaly_raise (RIG_CMD_GET_PREAMP);
 			}
@@ -1693,9 +1704,9 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 
 			/* raise anomaly if execution did not succeed */
 			if (retcode != RIG_OK) {
-				rig_debug (RIG_DEBUG_ERR,
-					   "*** GRIG: %s: Failed to execute RIG_CMD_SET_PREAMP\n",
-					   __FUNCTION__);
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_SET_PREAMP"),
+						  __FUNCTION__);
 
 				rig_anomaly_raise (RIG_CMD_SET_PREAMP);
 			}
@@ -1720,9 +1731,9 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 
 			/* raise anomaly if execution did not succeed */
 			if (retcode != RIG_OK) {
-				rig_debug (RIG_DEBUG_ERR,
-					   "*** GRIG: %s: Failed to execute RIG_CMD_GET_STRENGTH\n",
-					   __FUNCTION__);
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_GET_STRENGTH"),
+						  __FUNCTION__);
 
 				rig_anomaly_raise (RIG_CMD_GET_STRENGTH);
 			}
@@ -1747,9 +1758,9 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 
 			/* raise anomaly if execution did not succeed */
 			if (retcode != RIG_OK) {
-				rig_debug (RIG_DEBUG_ERR,
-					   "*** GRIG: %s: Failed to execute RIG_CMD_SET_POWER\n",
-					   __FUNCTION__);
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_SET_POWER"),
+						  __FUNCTION__);
 
 				rig_anomaly_raise (RIG_CMD_SET_POWER);
 			}
@@ -1774,9 +1785,9 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 
 			/* raise anomaly if execution did not succeed */
 			if (retcode != RIG_OK) {
-				rig_debug (RIG_DEBUG_ERR,
-					   "*** GRIG: %s: Failed to execute RIG_CMD_GET_POWER\n",
-					   __FUNCTION__);
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_GET_POWER"),
+						  __FUNCTION__);
 
 				rig_anomaly_raise (RIG_CMD_GET_POWER);
 			}
@@ -1799,9 +1810,9 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 
 			/* raise anomaly if execution did not succeed */
 			if (retcode != RIG_OK) {
-				rig_debug (RIG_DEBUG_ERR,
-					   "*** GRIG: %s: Failed to execute RIG_CMD_GET_SWR\n",
-					   __FUNCTION__);
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_GET_SWR"),
+						  __FUNCTION__);
 
 				rig_anomaly_raise (RIG_CMD_GET_SWR);
 			}
@@ -1824,9 +1835,9 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 
 			/* raise anomaly if execution did not succeed */
 			if (retcode != RIG_OK) {
-				rig_debug (RIG_DEBUG_ERR,
-					   "*** GRIG: %s: Failed to execute RIG_CMD_GET_ALC\n",
-					   __FUNCTION__);
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_GET_ALC"),
+						  __FUNCTION__);
 
 				rig_anomaly_raise (RIG_CMD_GET_ALC);
 			}
@@ -1847,9 +1858,9 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 						set->lock);
 
 			if (retcode != RIG_OK) {
-				rig_debug (RIG_DEBUG_ERR,
-					   "*** GRIG: %s: Failed to execute RIG_CMD_SET_LOCK\n",
-					   __FUNCTION__);
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_SET_LOCK"),
+						  __FUNCTION__);
 
 				rig_anomaly_raise (RIG_CMD_SET_LOCK);
 			}
@@ -1872,9 +1883,9 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 
 			/* raise anomaly if execution did not succeed */
 			if (retcode != RIG_OK) {
-				rig_debug (RIG_DEBUG_ERR,
-					   "*** GRIG: %s: Failed to execute RIG_CMD_GET_LOCK\n",
-					   __FUNCTION__);
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_GET_LOCK"),
+						  __FUNCTION__);
 
 				rig_anomaly_raise (RIG_CMD_GET_LOCK);
 			}
@@ -1894,9 +1905,9 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 
 			/* raise anomaly if execution did not succeed */
 			if (retcode != RIG_OK) {
-				rig_debug (RIG_DEBUG_ERR,
-					   "*** GRIG: %s: Failed to execute RIG_CMD_VFO_TOGGLE\n",
-					   __FUNCTION__);
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_VFO_TOGGLE"),
+						  __FUNCTION__);
 
 				rig_anomaly_raise (RIG_CMD_VFO_TOGGLE);
 			}
@@ -1915,9 +1926,9 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 
 			/* raise anomaly if execution did not succeed */
 			if (retcode != RIG_OK) {
-				rig_debug (RIG_DEBUG_ERR,
-					   "*** GRIG: %s: Failed to execute RIG_CMD_VFO_COPY\n",
-					   __FUNCTION__);
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_VFO_COPY"),
+						  __FUNCTION__);
 
 				rig_anomaly_raise (RIG_CMD_VFO_COPY);
 			}
@@ -1936,9 +1947,9 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 
 			/* raise anomaly if execution did not succeed */
 			if (retcode != RIG_OK) {
-				rig_debug (RIG_DEBUG_ERR,
-					   "*** GRIG: %s: Failed to execute RIG_CMD_VFO_XCHG\n",
-					   __FUNCTION__);
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_VFO_XCHG"),
+						  __FUNCTION__);
 
 				rig_anomaly_raise (RIG_CMD_VFO_XCHG);
 			}
@@ -1956,9 +1967,9 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 
 			/* raise anomaly if execution did not succeed */
 			if (retcode != RIG_OK) {
-				rig_debug (RIG_DEBUG_ERR,
-					   "*** GRIG: %s: Failed to execute RIG_CMD_SET_SPLIT\n",
-					   __FUNCTION__);
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_SET_SPLIT"),
+						  __FUNCTION__);
 
 				rig_anomaly_raise (RIG_CMD_SET_SPLIT);
 			}
@@ -1975,9 +1986,9 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 
 			/* raise anomaly if execution did not succeed */
 			if (retcode != RIG_OK) {
-				rig_debug (RIG_DEBUG_ERR,
-					   "*** GRIG: %s: Failed to execute RIG_CMD_GET_SPLIT\n",
-					   __FUNCTION__);
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_GET_SPLIT"),
+						  __FUNCTION__);
 
 				rig_anomaly_raise (RIG_CMD_GET_SPLIT);
 			}
@@ -1990,9 +2001,9 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 
 		/* bug in grig! */
 	default:
-		rig_debug (RIG_DEBUG_BUG,
-			   "*** GRIG: %s: Unknown command %d (grig bug)\n",
-			   __FUNCTION__, cmd);
+		grig_debug_local (RIG_DEBUG_BUG,
+				  _("%s: Unknown command %d (grig bug)"),
+				  __FUNCTION__, cmd);
 		break;
 
 	}

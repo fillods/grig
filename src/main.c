@@ -91,7 +91,7 @@ static gboolean help      = FALSE;   /*!< Show help and exit. */
 static struct option long_options[] =
 {
 	{"model",        1, 0, 'm'},
-	{"rig-device",   1, 0, 'r'},
+	{"rig-file",     1, 0, 'r'},
 	{"speed",        1, 0, 's'},
 	{"civaddr",      1, 0, 'c'},
 	{"set-conf",     1, 0, 'C'},
@@ -447,15 +447,11 @@ grig_app_create       (gint rignum)
  */
 static void grig_sig_handler (int sig)
 {
-	gchar *msg;
 
-	msg = g_strdup_printf (_("Received signal %d\n"\
-				 "Trying clean exit..."),
-			       sig);
-
-	grig_debug_local (RIG_DEBUG_ERR, msg);
-
-	g_free (msg);
+	grig_debug_local (RIG_DEBUG_ERR,
+			  _("Received signal %d\n"\
+			    "Trying clean exit..."),
+			  sig);
 
 	gtk_widget_destroy (grigapp);
 }
@@ -529,7 +525,7 @@ grig_show_help      ()
 	g_print (_("Usage: grig [OPTION]...\n\n"));
 	g_print (_("  -m, --model=ID              "\
 		   "select radio model number; see --list\n"));
-	g_print (_("  -r, --rig-device=DEVICE     "\
+	g_print (_("  -r, --rig-file=DEVICE       "\
 		   "set device of the radio, eg. /dev/ttyS0\n"));
 	g_print (_("  -s, --speed=BAUD            "\
 		   "set transfer rate (serial port only)\n"));
@@ -564,7 +560,7 @@ grig_show_help      ()
 	g_print ("\n\n");
 	g_print (_("or if you prefer the long options:"));
 	g_print ("\n\n");
-	g_print ("     grig --model=116 --rig-device=/dev/ttyS0 "\
+	g_print ("     grig --model=116 --rig-file=/dev/ttyS0 "\
 		 "--speed=4800 --debug=3");
 	g_print ("\n\n");
 	g_print (_("It is usually enough to specify the model "\
@@ -603,7 +599,7 @@ grig_show_version   ()
 	g_print (_("Graphical User Interface for the "\
 		   "Hamradio Control Libraries."));
 	g_print ("\n\n");
-	g_print (_("Copyright (C)  2001-2005  Alexandru Csete."));
+	g_print (_("Copyright (C)  2001-2006  Alexandru Csete."));
 	g_print ("\n");
 	g_print (_("This is free software; see the source for "\
 		   "copying conditions. "));

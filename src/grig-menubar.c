@@ -49,7 +49,6 @@ extern gint         debug;      /* defined in main.c */
 /* private function prototypes */
 static void  grig_menu_app_exit        (GtkWidget *, gpointer);
 static void  grig_menu_set_debug_level (GtkRadioAction *, gpointer);
-static void  grig_menu_config          (GtkWidget *, gpointer);
 
 
 /** \brief Regular menu items. */
@@ -110,9 +109,9 @@ static const char *menu_desc =
 /*"       <menuitem action='Start'/>"
 "       <menuitem action='Stop'/>"
 "       <separator/>"*/
-"       <menuitem action='Save'/>"
-"       <menuitem action='Load'/>"
-"       <separator/>"
+/* "       <menuitem action='Save'/>" */
+/* "       <menuitem action='Load'/>" */
+/* "       <separator/>" */
 "       <menuitem action='Exit'/>"
 "    </menu>"
 "    <menu action='SettingsMenu'>"
@@ -127,20 +126,20 @@ static const char *menu_desc =
 "       </menu>"
 "    </menu>"
 "    <menu action='ViewMenu'>"
-"       <menuitem action='LevelsRX'/>"
-"       <menuitem action='LevelsTX'/>"
-"       <menuitem action='CW'/>"
-"       <separator/>"
-"       <menuitem action='Tones'/>"
-"       <menuitem action='Func'/>"
-"       <separator/>"
+/* "       <menuitem action='LevelsRX'/>" */
+/* "       <menuitem action='LevelsTX'/>" */
+/* "       <menuitem action='CW'/>" */
+/* "       <separator/>" */
+/* "       <menuitem action='Tones'/>" */
+/* "       <menuitem action='Func'/>" */
+/* "       <separator/>" */
 "       <menuitem action='MsgWin'/>"
 "    </menu>"
-"    <menu action='ToolsMenu'>"
-"       <menuitem action='Mem'/>"
-"       <menuitem action='BandMap'/>"
-"       <menuitem action='Spectrum'/>"
-"    </menu>"
+/* "    <menu action='ToolsMenu'>" */
+/* "       <menuitem action='Mem'/>" */
+/* "       <menuitem action='BandMap'/>" */
+/* "       <menuitem action='Spectrum'/>" */
+/* "    </menu>" */
 "    <menu action='HelpMenu'>"
 "       <menuitem action='About'/>"
 "    </menu>"
@@ -226,21 +225,6 @@ static void
 grig_menu_set_debug_level (GtkRadioAction *action, gpointer data)
 {
 	rig_set_debug (gtk_radio_action_get_current_value (action));
-}
-
-
-/** \brief Run configuration component.
- *  \param widget The menu item that received the signal.
- *  \param data   User data (NULL).
- *
- * This function is called when the user selects the configuration
- * menu item in the menu bar. It executes the grig configuration
- * component.
- */
-static void
-grig_menu_config (GtkWidget *widget, gpointer data)
-{
-//	grig_config_run ();
 }
 
 

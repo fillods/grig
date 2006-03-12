@@ -1,3 +1,38 @@
+2006-03-12;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/rig-gui-message-window.c:
+	Implemented clear message list signal. Added message source to
+	summary. Tested using in near-real-time by piping messages to file
+	and at the same time monitoring with tail and reading into message
+	list. Uncertain whether this would work in wintendo.
+
+	* src/grig-menubar.c:
+	Removed unused config function. Disabled menu items that have not been
+	implemented.
+
+	* src/main.c, doc/man/grig.1.in:
+	Changed --rig-device back to --rig-file. It's best to keep compatibility
+	with rigctl as much as possible.
+
+
+2006-03-11;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/grig-debug:
+	Include <glib/gprintf.h> to avoid compiler warning. Changes separator
+	to ";;". Changed grig_debug_local to use variable argument list in order
+	to save code throughout grig.
+
+	* src/rig-gui-vfo.c:
+	Modified to use grig debug handler instead of the one from Hamlib.
+
+	* src/rig-daemon.c, src/rig-daemon-check.c:
+	Modfied to use grig debug handler and use i18n for strings.
+
+	* src/rig-gui-message-window.c:
+	Implemented reading debug messages from log files. Still to do is
+	"Clean" and some visual fixups.
+
+
 2006-02-27;	Alexandru Csete <csete@users.sourceforge.net>
 
 	* src/Makefile.am:
@@ -7,9 +42,9 @@
 	Require hamlib 1.2.5
 
 	* src/grig-debug.c, src/grig-debug.h:
-	Implemented logging source but there is no code to explicitly
-	save to log file. The messages are printed to stderr, so the
-	log can be saved that way.
+	Implemented logging source but there is no code to explicitly save to
+	log file. The messages are printed to stderr, so the log can be saved
+	that way.
 
 	* src/main.c:
 	Use new grig-debug infrastructure.
@@ -18,26 +53,24 @@
 2006-02-24;	Alexandru Csete <csete@users.sourceforge.net>
 
 	* src/grig-debug.c, src/grig-debug.h:
-	Added files contianing new debug handler. The new debug handler
-	will format the debug messages coming from hamlib, print them
-	on stderr and, if requested, save them to a log file. The log
-	file must be specified on the command line.
-	
+	Added files containing new debug handler. The new debug handler	will
+	format the debug messages coming from hamlib, print them on stderr and,
+	if requested, save them to a log file. The log file must be specified
+	on the command line.
+
 
 2006-02-23;	Alexandru Csete <csete@users.sourceforge.net>
 
 	* src/main.c, doc/man/grig.1.in:
-	Changed --rig-file to --rig-device. We keep the former for
-	compatibility reasons but issue a warning message to tell
-	the user about this.
+	Changed --rig-file to --rig-device. We keep the former for compatibility
+	reasons but issue a warning message to tell the user about this.
 
 
 2006-02-21;	Alexandru Csete <csete@users.sourceforge.net>
 
 	* src/rig-gui-message-window:
-	Moved column definition from header to source file. Add debug
-	messages to the the message list. Works all right but needs a lot
-	of optimisation.
+	Moved column definition from header to source file. Add debug messages
+	to the the message list. Works all right but needs a lot of optimisation.
 	
 
 2006-01-16;	Alexandru Csete <csete@users.sourceforge.net>
