@@ -87,6 +87,17 @@ radio is RPC\-rig.
 4    Verbose information.
 .br
 5    Trace.
+.PP
+Grig has its own debug message handler, which will manage messages from hamlib too.
+The messages are printed to STDERR by default but they can be redirected to a file.
+In bash shell you would write something like:
+.PP
+     grig [options] 2> grig.log
+.PP
+You can then use the Message Window in the View menu to view these messages. The
+debug messages printed by grig a formatted in a structured way with each line
+containing both time, source and level of the message. Each field is separated
+with ;; so you can also import the log file into a spread sheet for further analysis.
 
 .SH "KNOWN BUGS AND LIMITATIONS"
 .TP
