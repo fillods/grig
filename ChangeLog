@@ -1,3 +1,12 @@
+2006-03-16;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* COPYING:
+	Updated the address of FSF.
+
+	* src/*.c, src/*.h:
+	Update year and replace FSF address with website.
+
+
 2006-03-12;	Alexandru Csete <csete@users.sourceforge.net>
 
 	* src/rig-gui-message-window.c:

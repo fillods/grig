@@ -8,10 +8,10 @@ x Band Map.
 x DCS and CTCSS controls.
 x Save and restore rig state.
 x Allow changing working frequency while in TX mode.
-x Fixed bug which caused the frequency display to oscillate
+x Fix bug which caused the frequency display to oscillate
   between the current working frequency and some previously
   used frequency.
-x Added the possibility to suspend rig command execution
+x Add the possibility to suspend rig command execution
   without shutting down the daemon, ie. without closing
   connection to the rig. The statusbar contains a small
   indicator showing the status.
