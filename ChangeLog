@@ -6,6 +6,9 @@
 	* src/*.c, src/*.h:
 	Update year and replace FSF address with website.
 
+	* doc/man/grig.1.in:
+	Added minimal info about the debug handler.
+
 
 2006-03-12;	Alexandru Csete <csete@users.sourceforge.net>
 
