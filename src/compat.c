@@ -2,7 +2,7 @@
 /*
     Grig:  Gtk+ user interface for the Hamradio Control Libraries.
 
-    Copyright (C)  2001-2005  Alexandru Csete, OZ9AEC.
+    Copyright (C)  2001-2006  Alexandru Csete, OZ9AEC.
 
     Authors: Alexandru Csete <csete@users.sourceforge.net>
 

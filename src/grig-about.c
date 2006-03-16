@@ -2,7 +2,7 @@
 /*
     Grig:  Gtk+ user interface for the Hamradio Control Libraries.
 
-    Copyright (C)  2001-2005  Alexandru Csete.
+    Copyright (C)  2001-2006  Alexandru Csete.
 
     Authors: Alexandru Csete <csete@users.sourceforge.net>
 
@@ -23,11 +23,11 @@
     GNU General Public License for more details.
   
     You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the
-          Free Software Foundation, Inc.,
-	  59 Temple Place, Suite 330,
-	  Boston, MA  02111-1307
-	  USA
+    along with this program; if not, visit http://www.fsf.org/
+ 
+ 
+ 
+ 
 */
 /** \file grig-about.c
  *  \ingroup about
@@ -115,7 +115,7 @@ grig_about_about_create ()
 	gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 10);
 
 	/* copyright info */
-	label = gtk_label_new (_("Copyright 2001-2005 Alexandru Csete, OZ9AEC"));
+	label = gtk_label_new (_("Copyright 2001-2006 Alexandru Csete, OZ9AEC"));
 	gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 5);
 
 	/* info */
