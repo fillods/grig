@@ -2,7 +2,7 @@ AC_INIT(src/main.c)
 
 AM_CONFIG_HEADER(config.h)
 
-AM_INIT_AUTOMAKE(grig, 0.5.0)
+AM_INIT_AUTOMAKE(grig, 0.6.cvs)
 
 AM_MAINTAINER_MODE
 AC_PROG_INTLTOOL([0.21])
