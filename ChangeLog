@@ -6,7 +6,10 @@
 	* src/Makefile.am:
 	Added new files to list.
 
-
+	* src/grig-menubar.c:
+	Enable Load and Save State entries.
+	
+	
 2006-03-17;	Alexandru Csete <csete@users.sourceforge.net>
 
 	* doc/userman/latex:
