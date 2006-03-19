@@ -34,7 +34,6 @@ grig_SOURCES = \
 	rig-gui-smeter.c rig-gui-smeter.h \
 	rig-gui-smeter-conv.c rig-gui-smeter-conv.h \
 	rig-gui-vfo.c rig-gui-vfo.h \
-	rig-state.c rig-state.h \
 	rig-utils.c rig-utils.h
 
 grig_LDADD = @PACKAGE_LIBS@
