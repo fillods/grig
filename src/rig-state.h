@@ -29,17 +29,19 @@
 #ifndef RIG_STATE_H
 #define RIG_STATE_H 1
 
+#include <hamlib/rig.h>
+
 
 /* general load and save */
 gint rig_state_load (const gchar *file);
 gint rig_state_save (const gchar *file);
 
-gint rig_state_get_link_info (const gchar *file,
-			      rig_model_t *model,
-			      gchar *model,
-			      gchar *mfg,
-			      gchar *port,
-			      int   *ser_rate);
+/* gint rig_state_get_link_info (const gchar *file, */
+/* 			      rig_model_t *model, */
+/* 			      gchar *model, */
+/* 			      gchar *mfg, */
+/* 			      gchar *port, */
+/* 			      int   *ser_rate); */
 
 
 /* callback to be used from menubar */

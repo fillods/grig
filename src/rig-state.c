@@ -47,6 +47,10 @@
 #include "rig-state.h"
 
 
+
+extern GtkWidget    *grigapp;
+
+
 /** \brief Load rig state from file
  *  \param file The file to read the rig state from
  *
@@ -56,6 +60,7 @@
 gint
 rig_state_load (const gchar *file)
 {
+	return 0;
 }
 
 
@@ -69,6 +74,7 @@ rig_state_load (const gchar *file)
 gint
 rig_state_save (const gchar *file)
 {
+	return 0;
 }
 
 
@@ -81,16 +87,16 @@ rig_state_save (const gchar *file)
  * bar, grig is already running a connection and this can not
  * be changed. In those cases this function has no use.
  */
-gint
-rig_state_get_link_info (const gchar *file,
-			 rig_model_t *model,
-			 gchar *model,
-			 gchar *mfg,
-			 gchar *port,
-			 int   *ser_rate)
-{
+/* gint */
+/* rig_state_get_link_info (const gchar *file, */
+/* 			 rig_model_t *model, */
+/* 			 gchar *model, */
+/* 			 gchar *mfg, */
+/* 			 gchar *port, */
+/* 			 int   *ser_rate) */
+/* { */
 
-}
+/* } */
 
 
 
@@ -105,6 +111,84 @@ rig_state_get_link_info (const gchar *file,
 void
 rig_state_load_cb (GtkWidget *widget, gpointer data)
 {
+	GtkWidget     *dialog;     /* file chooser dialog */
+	GtkFileFilter *filter1;    /* *.rig filter used in the dialog */
+	GtkFileFilter *filter2;    /* filter used in the dialog for all files */
+	gchar         *filename;   /* file name selected by user */
+
+	GtkWidget     *msgdiag;    /* message dialog */
+	gint           status;     /* error status */
+
+
+	/* create file chooser dialog */
+	dialog = gtk_file_chooser_dialog_new (_("Load Rig State"),
+					      GTK_WINDOW (grigapp),
+					      GTK_FILE_CHOOSER_ACTION_OPEN,
+					      GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+					      GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
+					      NULL);
+
+	/* Add filters for .rig files and all files */
+	filter1 = gtk_file_filter_new ();
+	gtk_file_filter_set_name (filter1, _("Rig state files (*.rig)"));
+	gtk_file_filter_add_pattern (filter1, "*.rig");
+	gtk_file_chooser_add_filter (GTK_FILE_CHOOSER (dialog), filter1);
+
+	filter2 = gtk_file_filter_new ();
+	gtk_file_filter_set_name (filter2, _("All files"));
+	gtk_file_filter_add_pattern (filter2, "*");
+	gtk_file_chooser_add_filter (GTK_FILE_CHOOSER (dialog), filter2);
+
+
+	if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT) {
+
+		filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
+
+		/* check that file exists and it is a regular file */
+		if (g_file_test (filename, G_FILE_TEST_IS_REGULAR)) {
+
+			status = rig_state_load (filename);
+
+			if (status) {
+				msgdiag = gtk_message_dialog_new (GTK_WINDOW (grigapp),
+								  GTK_DIALOG_MODAL |
+								  GTK_DIALOG_DESTROY_WITH_PARENT,
+								  GTK_MESSAGE_ERROR,
+								  GTK_BUTTONS_OK,
+								  _("There was an error reading "\
+								    "the settings from:\n\n "\
+								    "%s\n\n "\
+								    "Examine the log messages "\
+								    "for further info."),
+								  filename);
+				gtk_dialog_run (GTK_DIALOG (msgdiag));
+				gtk_widget_destroy (msgdiag);
+			}
+			
+		}
+		else {
+			/* tell user to select an existing file */
+			msgdiag = gtk_message_dialog_new (GTK_WINDOW (grigapp),
+							  GTK_DIALOG_MODAL |
+							  GTK_DIALOG_DESTROY_WITH_PARENT,
+							  GTK_MESSAGE_ERROR,
+							  GTK_BUTTONS_OK,
+							  _("The selected file:\n "\
+							    "%s\n "\
+							    "does not exist or is not "\
+							    "a regular file."),
+							    filename);
+			gtk_dialog_run (GTK_DIALOG (msgdiag));
+			gtk_widget_destroy (msgdiag);
+		}
+
+		g_free (filename);
+	}
+
+	gtk_file_chooser_remove_filter (GTK_FILE_CHOOSER (dialog), filter1);
+	gtk_file_chooser_remove_filter (GTK_FILE_CHOOSER (dialog), filter2);
+	gtk_widget_destroy (dialog);
+
 }
 
 
@@ -119,5 +203,44 @@ rig_state_load_cb (GtkWidget *widget, gpointer data)
 void
 rig_state_save_cb (GtkWidget *widget, gpointer data)
 {
+	GtkWidget     *dialog;     /* file chooser dialog */
+	GtkFileFilter *filter1;    /* *.rig filter used in the dialog */
+	GtkFileFilter *filter2;    /* filter used in the dialog for all files */
+	gchar         *filename;   /* file name selected by user */
+
+	GtkWidget     *msgdiag;    /* message dialog */
+	gint           status;     /* error status */
+
+
+	/* create file chooser dialog */
+	dialog = gtk_file_chooser_dialog_new (_("Save Rig State"),
+					      GTK_WINDOW (grigapp),
+					      GTK_FILE_CHOOSER_ACTION_SAVE,
+					      GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+					      GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
+					      NULL);
+
+	/* Add filters for .rig files and all files */
+	filter1 = gtk_file_filter_new ();
+	gtk_file_filter_set_name (filter1, _("Rig state files (*.rig)"));
+	gtk_file_filter_add_pattern (filter1, "*.rig");
+	gtk_file_chooser_add_filter (GTK_FILE_CHOOSER (dialog), filter1);
+
+	filter2 = gtk_file_filter_new ();
+	gtk_file_filter_set_name (filter2, _("All files"));
+	gtk_file_filter_add_pattern (filter2, "*");
+	gtk_file_chooser_add_filter (GTK_FILE_CHOOSER (dialog), filter2);
+
+
+	if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT) {
+
+		filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
+
+
+		g_free (filename);
+	}
+
+	gtk_file_chooser_remove_filter (GTK_FILE_CHOOSER (dialog), filter1);
+	gtk_file_chooser_remove_filter (GTK_FILE_CHOOSER (dialog), filter2);
+	gtk_widget_destroy (dialog);
 }
-y
