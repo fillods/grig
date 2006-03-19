@@ -38,6 +38,7 @@
 #include "grig-menubar.h"
 #include "rig-gui-info.h"
 #include "rig-gui-message-window.h"
+#include "rig-state.h"
 
 
 
@@ -63,8 +64,8 @@ static GtkActionEntry entries[] = {
 	{ "Info", GTK_STOCK_DND, N_("_Info"), "<control>I", N_("Show info about radio"), G_CALLBACK (rig_gui_info_run) },
 	{ "Stop", GTK_STOCK_STOP, N_("St_op daemon"), NULL, N_("Stop the Grig daemon"), NULL },
 	{ "Start", GTK_STOCK_EXECUTE, N_("St_art daemon"), NULL, N_("Start the Grig daemon"), NULL },
-	{ "Save", GTK_STOCK_SAVE, N_("_Save State"), "<control>S", N_("Save the state of the rig to a file"), NULL },
-	{ "Load", GTK_STOCK_OPEN, N_("_Load State"), "<control>O", N_("Load the state of the rig from a file"), NULL },
+	{ "Save", GTK_STOCK_SAVE, N_("_Save State"), "<control>S", N_("Save the state of the rig to a file"), rig_state_save_cb },
+	{ "Load", GTK_STOCK_OPEN, N_("_Load State"), "<control>O", N_("Load the state of the rig from a file"), rig_state_load_cb },
 	{ "Exit", GTK_STOCK_QUIT, N_("E_xit"), "<control>Q", N_("Exit the program"), G_CALLBACK (grig_menu_app_exit) },
 
 	/* SettingsMenu */
@@ -109,9 +110,9 @@ static const char *menu_desc =
 /*"       <menuitem action='Start'/>"
 "       <menuitem action='Stop'/>"
 "       <separator/>"*/
-/* "       <menuitem action='Save'/>" */
-/* "       <menuitem action='Load'/>" */
-/* "       <separator/>" */
+"       <menuitem action='Save'/>"
+"       <menuitem action='Load'/>"
+"       <separator/>"
 "       <menuitem action='Exit'/>"
 "    </menu>"
 "    <menu action='SettingsMenu'>"
