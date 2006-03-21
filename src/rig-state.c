@@ -198,18 +198,49 @@ rig_state_load_cb (GtkWidget *widget, gpointer data)
  * GtkFileChooser dialog, whereafter it calls rig_state_save
  * with the specified file name.
  * If the file already exists it will ask the user whether to
- * replace the contents or not.
+ * replace the contents or not. If not, the code returns to the
+ * file chooser.
+ *
+ * The complete algorithm:
+ *
+ *   while (!done) {
+ *       if (run_file_chooser == YES) {
+ *           get_filename
+ *           if (file_exists) {
+ *               create_cfm_dialog
+ *               if (do_overwrite) {
+ *                   save_file
+ *                   if (error)
+ *                       show_error_message
+ *                   done = TRUE
+ *               } else {
+ *                   done = FALSE
+ *               }
+ *               destroy_cfm_dialog
+ *           } else {
+ *               save_file
+ *               if (error)
+ *                   show_error_message
+ *               done = TRUE
+ *           }
+ *       } else {
+ *           done = TRUE
+ *       }
+ *   }
  */
 void
 rig_state_save_cb (GtkWidget *widget, gpointer data)
 {
-	GtkWidget     *dialog;     /* file chooser dialog */
-	GtkFileFilter *filter1;    /* *.rig filter used in the dialog */
-	GtkFileFilter *filter2;    /* filter used in the dialog for all files */
-	gchar         *filename;   /* file name selected by user */
+	GtkWidget     *dialog;        /* file chooser dialog */
+	GtkFileFilter *filter1;       /* *.rig filter used in the dialog */
+	GtkFileFilter *filter2;       /* filter used in the dialog for all files */
+	gchar         *filename;      /* file name selected by user */
 
-	GtkWidget     *msgdiag;    /* message dialog */
-	gint           status;     /* error status */
+	GtkWidget     *msgdiag;       /* message dialog */
+	gint           status;        /* error status */
+
+	gboolean       done = FALSE;  /* flag to indicate whether we are done or not */
+	GtkWidget     *cfmdiag;       /* configrmation dialog */
 
 
 	/* create file chooser dialog */
@@ -232,12 +263,100 @@ rig_state_save_cb (GtkWidget *widget, gpointer data)
 	gtk_file_chooser_add_filter (GTK_FILE_CHOOSER (dialog), filter2);
 
 
-	if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT) {
+	/* loop until we save the settings or the user selects cancel
+	   in the file chooser dialog
+	*/
+	while (!done) {
 
-		filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
+		if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT) {
 
+			/* user selected OK */
+			filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
 
-		g_free (filename);
+			/* if file exists warn user and ask for confirmation */
+			if (g_file_test (filename, G_FILE_TEST_EXISTS)) {
+
+				/* create warning/confirmation dialog */
+				cfmdiag = gtk_message_dialog_new (GTK_WINDOW (dialog),
+								  GTK_DIALOG_MODAL |
+								  GTK_DIALOG_DESTROY_WITH_PARENT,
+								  GTK_MESSAGE_QUESTION,
+								  GTK_BUTTONS_YES_NO,
+								  _("Selected file already exists.\n"\
+								    "Overwrite file?"));
+
+				/* if user says YES, save file and bail out */
+				if (gtk_dialog_run (GTK_DIALOG (cfmdiag)) == GTK_RESPONSE_YES) {
+
+					status = rig_state_save (filename);
+
+					if (status) {
+
+						/* save function returned non-zero value
+						   => show error dialog
+						*/
+						msgdiag = gtk_message_dialog_new (GTK_WINDOW (grigapp),
+										  GTK_DIALOG_MODAL |
+										  GTK_DIALOG_DESTROY_WITH_PARENT,
+										  GTK_MESSAGE_ERROR,
+										  GTK_BUTTONS_OK,
+										  _("There was an error saving "\
+										    "the settings to:\n\n "\
+										    "%s\n\n "\
+										    "Examine the log messages "\
+										    "for further info."),
+										  filename);
+						gtk_dialog_run (GTK_DIALOG (msgdiag));
+						gtk_widget_destroy (msgdiag);
+
+					}
+					done = TRUE;
+
+				} else {
+					/* else bail out and re-run file chooser */
+					done = FALSE;
+				}
+
+				gtk_widget_destroy (cfmdiag);
+
+			} else {
+
+				/* otherwise just save the file and we are done */
+				status = rig_state_save (filename);
+
+				if (status) {
+
+					/* save function returned non-zero value
+					   => show error dialog
+					*/
+					msgdiag = gtk_message_dialog_new (GTK_WINDOW (grigapp),
+									  GTK_DIALOG_MODAL |
+									  GTK_DIALOG_DESTROY_WITH_PARENT,
+									  GTK_MESSAGE_ERROR,
+									  GTK_BUTTONS_OK,
+									  _("There was an error saving "\
+									    "the settings to:\n\n "\
+									    "%s\n\n "\
+									    "Examine the log messages "\
+									    "for further info."),
+									  filename);
+					gtk_dialog_run (GTK_DIALOG (msgdiag));
+					gtk_widget_destroy (msgdiag);
+
+				}
+
+				/* set flag so that process can terminate */
+				done = TRUE;
+			}
+
+			g_free (filename);
+
+		} else {
+
+			/* user pressed CANCEL; terminate process */
+			done = TRUE;
+
+		}
 	}
 
 	gtk_file_chooser_remove_filter (GTK_FILE_CHOOSER (dialog), filter1);
