@@ -1,3 +1,9 @@
+2006-03-21;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/rig-state.c:
+	Finished load and save state callbacks.
+
+
 2006-03-19;	Alexandru Csete <csete@users.sourceforge.net>
 
 	* src/rig-state.c, src/rig-state.h:
