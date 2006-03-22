@@ -35,10 +35,10 @@
 
 
 /** \brief Minimum delay in msec between widget updates. */
-#define RIG_GUI_BUTTONS_MIN_TVAL 1100
+#define RIG_GUI_BUTTONS_MIN_TVAL 500
 
 /** \brief Default delay in msec between widget updates. */
-#define RIG_GUI_BUTTONS_DEF_TVAL 1367
+#define RIG_GUI_BUTTONS_DEF_TVAL 967
 
 /** \brief Maximum delay in msec between widget updates. */
 #define RIG_GUI_BUTTONS_MAX_TVAL 10000

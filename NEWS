@@ -20,7 +20,8 @@ x Add the possibility to suspend rig command execution
 GRIG 0.6.0:
 
 - RF power meter scale is now functional with ranges of 5, 10, 50, 100
-  and 500 watts.
+  and 500 watts. There is currently a bug, which causes the meter needle
+  to jump up when switching between RX/TX.
 - Fixed bug, which caused the frequency reading to flicker between the
   current value and a previously set value (bug #1388342). Same bug was
   found for the PTT and POWER controls, too.
