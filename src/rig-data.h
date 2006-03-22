@@ -178,6 +178,7 @@ void rig_data_set_att     (int);
 void rig_data_set_preamp  (int);
 void rig_data_set_power   (float);
 void rig_data_set_split   (int);
+void rig_data_set_max_rfpwr (float);
 
 
 #define rig_data_set_freq1(x) (rig_data_set_freq(1,x))
@@ -208,6 +209,7 @@ shortfreq_t      rig_data_get_xitmin   (void);
 shortfreq_t      rig_data_get_xitmax   (void);
 shortfreq_t      rig_data_get_xitstep  (void);
 int              rig_data_get_split    (void);
+float            rig_data_get_max_rfpwr (void);
 
 
 /* has_get functions */

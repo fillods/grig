@@ -83,6 +83,9 @@ static freq_t fmin;
 /** \brief Maximum frequency. */
 static freq_t fmax;
 
+/** \brief Maximum power in W */
+static float maxpwr = 0.0;
+
 
 /** \brief Getavailable VFOs.
  *  \return Bit field of available VFOs.
@@ -1257,3 +1260,17 @@ rig_data_get_all_modes    ()
 }
 
 
+/** \brief Store tha maximum RF power level */
+void
+rig_data_set_max_rfpwr (float maxpow)
+{
+	maxpwr = maxpow;
+}
+
+
+/** \brief Get maximum RF power level */
+float
+rig_data_get_max_rfpwr ()
+{
+	return maxpwr;
+}
