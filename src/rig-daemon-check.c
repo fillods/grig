@@ -466,6 +466,8 @@ rig_daemon_check_level     (RIG               *myrig,
 	int               retcode;                 /* Hamlib status code */
 	setting_t         haslevel;                /* available level settings */
 	value_t           val;                     /* generic value */
+	int               i = 0;
+	float             maxpwr = 0.0;
 
 
 	/* get available read levels
@@ -493,6 +495,20 @@ rig_daemon_check_level     (RIG               *myrig,
 					  _("%s: Could not get RF power"),
 					  __FUNCTION__);
 		}
+
+		/* find and store max RF power */
+		while (!RIG_IS_FRNG_END(myrig->state.tx_range_list[i])) {
+					       
+			if ((myrig->state.tx_range_list[i].high_power / 1000.0) > maxpwr) {
+				/* remember, power is in mW, we use watts only */
+				maxpwr = myrig->state.tx_range_list[i].high_power / 1000.0;
+			}
+			i++;
+		}
+		rig_data_set_max_rfpwr (maxpwr);
+		grig_debug_local (RIG_DEBUG_VERBOSE,
+				  _("%s: Maximum RF power is %.3f watts"),
+				  __FUNCTION__, maxpwr);
 	}
 
 	if (has_get->strength) {
