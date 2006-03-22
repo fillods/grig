@@ -128,6 +128,10 @@ static const rig_cmd_t DEF_RX_CYCLE[C_MAX_CMD_PER_CYCLE] = {
 	RIG_CMD_SET_RIT,
 	RIG_CMD_GET_RIT,
 	RIG_CMD_GET_LOCK,
+	RIG_CMD_SET_VFO,
+	RIG_CMD_GET_VFO,
+	RIG_CMD_SET_PTT,
+	RIG_CMD_GET_PTT,
 	RIG_CMD_GET_STRENGTH,
 	RIG_CMD_SET_FREQ_1,
 	RIG_CMD_GET_FREQ_1,
@@ -139,8 +143,6 @@ static const rig_cmd_t DEF_RX_CYCLE[C_MAX_CMD_PER_CYCLE] = {
 	RIG_CMD_GET_STRENGTH,
 	RIG_CMD_SET_PREAMP,
 	RIG_CMD_GET_PREAMP,
-	RIG_CMD_SET_VFO,
-	RIG_CMD_GET_VFO,
 	RIG_CMD_SET_SPLIT,
 	RIG_CMD_GET_SPLIT,
 	RIG_CMD_GET_STRENGTH,
@@ -183,6 +185,7 @@ static const rig_cmd_t DEF_TX_CYCLE[C_MAX_CMD_PER_CYCLE] = {
 	RIG_CMD_GET_SWR,
 	RIG_CMD_GET_ALC,
 	RIG_CMD_GET_FREQ_1,
+	RIG_CMD_NONE,
 	RIG_CMD_SET_POWER,
 	RIG_CMD_NONE,
 	RIG_CMD_GET_POWER,
@@ -201,13 +204,14 @@ static const rig_cmd_t DEF_TX_CYCLE[C_MAX_CMD_PER_CYCLE] = {
 	RIG_CMD_GET_SWR,
 	RIG_CMD_GET_ALC,
 	RIG_CMD_NONE,
+	RIG_CMD_SET_PTT,
 	RIG_CMD_SET_POWER,
 	RIG_CMD_NONE,
 	RIG_CMD_GET_FREQ_1,
 	RIG_CMD_GET_POWER,
 	RIG_CMD_GET_SWR,
 	RIG_CMD_GET_ALC,
-	RIG_CMD_NONE,
+	RIG_CMD_GET_PTT,
 	RIG_CMD_NONE,
 	RIG_CMD_NONE,
 };
@@ -1317,9 +1321,8 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 
 			/* reset flag */
 			new->pstat = FALSE;
+			get->pstat = set->pstat;
 		}
-
-		get->pstat = set->pstat;
 
 		break;
 
@@ -1370,9 +1373,8 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 
 			/* reset flag */
 			new->ptt = FALSE;
+			get->ptt = set->ptt;
 		}
-
-		get->ptt = set->ptt;
 
 		break;
 
