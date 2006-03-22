@@ -457,13 +457,29 @@ rig_gui_scale_selector_create ()
 		gtk_combo_box_append_text (GTK_COMBO_BOX (combo), TX_SCALE_S[i]);
 	}
 
-	/* temporary disable */
-	gtk_combo_box_set_active (GTK_COMBO_BOX (combo), SMETER_SCALE_100);
-
 	/* connect changed signal */
 	g_signal_connect (G_OBJECT (combo), "changed",
 			  G_CALLBACK (rig_gui_smeter_scale_cb),
 			  NULL);
+
+	/* set default scale */
+	if (rig_data_get_max_rfpwr () <= 5.0) {
+		gtk_combo_box_set_active (GTK_COMBO_BOX (combo), SMETER_SCALE_5);
+	}
+	else if (rig_data_get_max_rfpwr () <= 10.0) {
+		gtk_combo_box_set_active (GTK_COMBO_BOX (combo), SMETER_SCALE_10);
+	}
+	else if (rig_data_get_max_rfpwr () <= 100.0) {
+		gtk_combo_box_set_active (GTK_COMBO_BOX (combo), SMETER_SCALE_100);
+	}
+	else {
+		gtk_combo_box_set_active (GTK_COMBO_BOX (combo), SMETER_SCALE_500);
+	}
+
+	/* add tooltips when widget is realized */
+	g_signal_connect (combo, "realize",
+			  G_CALLBACK (grig_set_combo_tooltips),
+			  _("Select TX meter scale"));
 
 
 	return combo;
