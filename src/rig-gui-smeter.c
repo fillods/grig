@@ -87,8 +87,11 @@ static const gchar *TX_SCALE_S[] = {
 };
 
 
-/** \brief Conversion table to conver combo box index to smeter_tx_mode_t. */
+/** \brief Conversion table to convert combo box index to smeter_tx_mode_t. */
 static smeter_tx_mode_t index_to_mode[SMETER_TX_MODE_LAST];
+
+/** \brief Conversion table to convert smeter_scale_t to power level */
+static gfloat scale_to_power[SMETER_SCALE_LAST] = { 5.0, 10.0, 50.0, 100.0, 500.0 };
 
 
 /* private fuunction prototypes */
@@ -267,6 +270,16 @@ rig_gui_smeter_timeout_exec  (gpointer data)
 			valf = (gfloat) g_random_double_range (0.8, 1.5);
 #else
 			valf = rig_data_get_power ();
+
+			/* now, valf corresponds to the scale of the rig,
+			   that is, 1.0 = PMAX(rig). We need to scale this
+			   value according to the current scale, ie
+
+			        valf *= PMAX(rig) / PMAX(scale)
+
+			   FIXME: we should use power2mW
+			*/
+			valf *= rig_data_get_max_rfpwr () / scale_to_power[smeter.scale];
 #endif
 			break;
 
@@ -452,8 +465,6 @@ rig_gui_scale_selector_create ()
 			  G_CALLBACK (rig_gui_smeter_scale_cb),
 			  NULL);
 
-	/* disable scale selector for now */
-	gtk_widget_set_sensitive (combo, FALSE);
 
 	return combo;
 }
