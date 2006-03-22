@@ -1,3 +1,22 @@
+2006-03-22;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/rig-daemon.c:
+	Fixed bug, which caused the ptt and pstat readings to be overwritten
+	by the old set values every time the SET command was executed. Added
+	and extra SET_PTT and GET_PTT command to both the RX and the TX cycle.
+	Same bug found for SET_FREQx (may fix bug #1388342?).
+
+	* src/rig-daemon-check.c:
+	Check and store maximum RF power level.
+
+	* src/rig-data.c, src/rig-data.h:
+	Added possibility to store maximum RF power level (needed to scale the
+	power meter).
+
+	* src/rig-gui-smeter.c:
+	Implemented power meter scale.
+
+
 2006-03-21;	Alexandru Csete <csete@users.sourceforge.net>
 
 	* src/rig-state.c:
