@@ -968,10 +968,8 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 
                         /* reset flag */
 			new->freq1 = FALSE;
-		
+			get->freq1 = set->freq1;
 		}
-		
-		get->freq1 = set->freq1;
 
 		break;
 
@@ -1104,10 +1102,8 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 
 			/* reset flag */
 			new->freq2 = FALSE;
-
+			get->freq2 = set->freq2;
 		}
-		
-		get->freq2 = set->freq2;
 
 		break;
 
