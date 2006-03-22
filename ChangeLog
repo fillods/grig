@@ -14,7 +14,7 @@
 	power meter).
 
 	* src/rig-gui-smeter.c:
-	Implemented power meter scale.
+	Implemented power meter scale. Select best scale automatically.
 
 
 2006-03-21;	Alexandru Csete <csete@users.sourceforge.net>
