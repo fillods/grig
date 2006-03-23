@@ -125,7 +125,7 @@ rig_utils_chk_ext (gchar **filename, const gchar *ext)
 {
 	gchar *buff;
 
-	if (!g_str_has_suffix (filename, ext)) {
+	if (!g_str_has_suffix (*filename, ext)) {
 
 		buff = g_strconcat (*filename, ext, NULL);
 
