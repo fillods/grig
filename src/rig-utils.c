@@ -111,3 +111,26 @@ rig_utils_index_to_mode (gint index)
 
 	return mode;
 }
+
+
+/** \brief Check filename for extension.
+ *  \param filename The file name to check
+ *  \param ext The extension to check for
+ *
+ * This function check filename to see, whether it has extension ext.
+ * If not, it appends ext to filename.
+ */
+void
+rig_utils_chk_ext (gchar *filename, const gchar *ext)
+{
+	gchar *buff;
+
+	if (!g_str_has_suffix (filename, suffix)) {
+
+		buff = g_strdup (filename);
+		g_free (filename);
+		filename = g_strconcat (buff, ext, NULL);
+		g_free (buff);
+	}
+
+}
