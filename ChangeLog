@@ -1,3 +1,17 @@
+2006-03-23;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/rig-daemon.c:
+	Nailed even more potential flicker bugs. Added function to obtain hamlib
+	id of radio.
+
+	* src/rig-utils:
+	Added function to check file name for extension.
+
+	* src/rig-state.c:
+	Done some work on save state. Rig ID is already saved, all I need is to
+	add the remaining parameters and the save function is done.
+	
+
 2006-03-22;	Alexandru Csete <csete@users.sourceforge.net>
 
 	* src/rig-daemon.c:
