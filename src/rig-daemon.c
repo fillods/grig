@@ -2006,7 +2006,7 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
  *  \return The id of the rig
  */
 gint
-rig_daemon_get_id ()
+rig_daemon_get_rig_id ()
 {
 	if (myrig == NULL) {
 		return -1;
