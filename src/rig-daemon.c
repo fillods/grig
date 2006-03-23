@@ -2002,6 +2002,18 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 }
 
 
+/** \brief Get hamlib id of radio.
+ *  \return The id of the rig
+ */
+gint
+rig_daemon_get_id ()
+{
+	if (myrig == NULL) {
+		return -1;
+	}
+
+	return myrig->caps->rig_model;
+}
 
 /** \brief Get radio brand.
  *  \return A character string containing the radio brand.

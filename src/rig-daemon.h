@@ -105,6 +105,7 @@ void      rig_daemon_set_suspend (gboolean);
 gboolean  rig_daemon_get_suspend (void);
 gchar    *rig_daemon_get_brand   (void);
 gchar    *rig_daemon_get_model   (void);
+gint      rig_daemon_get_rig_id  (void);
 gint      rig_daemon_get_delay   (void);
 
 #endif
