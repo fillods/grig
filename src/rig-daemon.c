@@ -1155,10 +1155,8 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 
 			/* reset flag */
 			new->rit = FALSE;
-
+			get->rit = set->rit;
 		}
-
-		get->rit = set->rit;
 
 		break;
 
@@ -1210,10 +1208,8 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 
 			/* reset flag */
 			new->xit = FALSE;
-
+			get->xit = set->xit;
 		}
-
-		get->xit = set->xit;
 
 		break;
 
@@ -1264,9 +1260,8 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 
 			/* reset flag */
 			new->vfo = FALSE;
+			get->vfo = set->vfo;
 		}
-
-		get->vfo = set->vfo;
 
 		break;
 
@@ -1600,9 +1595,8 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 			}
 			/* reset flag */
 			new->agc = FALSE;
+			get->agc = set->agc;
 		}
-
-		get->agc = set->agc;
 
 		break;
 
@@ -1655,9 +1649,8 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 			}
 			/* reset flag */
 			new->att = FALSE;
+			get->att = set->att;
 		}
-
-		get->att = set->att;
 
 		break;
 
@@ -1710,9 +1703,8 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 			}
 			/* reset flag */
 			new->preamp = FALSE;
+			get->preamp = set->preamp;
 		}
-
-		get->preamp = set->preamp;
 
 		break;
 
