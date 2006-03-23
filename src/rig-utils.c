@@ -125,7 +125,7 @@ rig_utils_chk_ext (gchar *filename, const gchar *ext)
 {
 	gchar *buff;
 
-	if (!g_str_has_suffix (filename, suffix)) {
+	if (!g_str_has_suffix (filename, ext)) {
 
 		buff = g_strdup (filename);
 		g_free (filename);
