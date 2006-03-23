@@ -121,15 +121,18 @@ rig_utils_index_to_mode (gint index)
  * If not, it appends ext to filename.
  */
 void
-rig_utils_chk_ext (gchar *filename, const gchar *ext)
+rig_utils_chk_ext (gchar **filename, const gchar *ext)
 {
 	gchar *buff;
 
 	if (!g_str_has_suffix (filename, ext)) {
 
-		buff = g_strdup (filename);
-		g_free (filename);
-		filename = g_strconcat (buff, ext, NULL);
+		buff = g_strconcat (*filename, ext, NULL);
+
+		g_free (*filename);
+
+		*filename = g_strdup (buff);
+
 		g_free (buff);
 	}
 

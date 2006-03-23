@@ -39,6 +39,6 @@
 guint rig_utils_mode_to_index (gint mode);
 guint rig_utils_index_to_mode (gint index);
 
-void  rig_utils_chk_ext (gchar *filename, const gchar *ext);
+void  rig_utils_chk_ext (gchar **filename, const gchar *ext);
 
 #endif
