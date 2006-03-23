@@ -33,9 +33,6 @@
  * object. The rig state is saved to a file using the glib key/value
  * infrastructure.
  *
- * To begin with we just implement it in a simple straight forward way,
- * but later the could should be checnged to something more generic,
- * if possible.
  */
 #include <gtk/gtk.h>
 #include <glib/gi18n.h>
@@ -43,6 +40,9 @@
 #ifdef HAVE_CONFIG_H
 #  include <config.h>
 #endif
+#include "rig-utils.h"
+#include "grig-debug.h"
+#include "rig-daemon.h"
 #include "rig-data.h"
 #include "rig-state.h"
 
@@ -50,32 +50,7 @@
 
 extern GtkWidget    *grigapp;
 
-
-/** \brief Load rig state from file
- *  \param file The file to read the rig state from
- *
- * The file parameter may not be NULL. If you need to open
- * the file selector use the callback functions instead.
- */
-gint
-rig_state_load (const gchar *file)
-{
-	return 0;
-}
-
-
-/** \brief Save rig state to file
- *  \param file The file to save the rig state to
- *
- * The file parameter may not be NULL. If you need to open
- * the file selector use the callback functions instead.
- * existing file will be replaced without any warning!
- */
-gint
-rig_state_save (const gchar *file)
-{
-	return 0;
-}
+static gint rig_state_write_data (GKeyFile *cfgdata, const gchar *file);
 
 
 /** \brief Get connection info about radio
@@ -272,6 +247,10 @@ rig_state_save_cb (GtkWidget *widget, gpointer data)
 
 			/* user selected OK */
 			filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
+			rig_utils_chk_ext (&filename, ".rig");
+			grig_debug_local (RIG_DEBUG_VERBOSE,
+					  _("%s: User selected new file:\n%s"),
+					  __FUNCTION__, filename);
 
 			/* if file exists warn user and ask for confirmation */
 			if (g_file_test (filename, G_FILE_TEST_EXISTS)) {
@@ -363,3 +342,167 @@ rig_state_save_cb (GtkWidget *widget, gpointer data)
 	gtk_file_chooser_remove_filter (GTK_FILE_CHOOSER (dialog), filter2);
 	gtk_widget_destroy (dialog);
 }
+
+
+
+/** \brief Load rig state from file
+ *  \param file The file to read the rig state from
+ *
+ * The file parameter may not be NULL. If you need to open
+ * the file selector use the callback functions instead.
+ */
+gint
+rig_state_load (const gchar *file)
+{
+	grig_settings_t   *state;    /* pointer to current rig state */
+	grig_cmd_avail_t  *newval;   /* pointer to new flag struct */
+
+
+	/* disable daemon */
+	rig_daemon_set_suspend (TRUE);
+
+	/* link state to rig-data.set */
+	state = rig_data_get_get_addr ();
+
+	/* link newval to rig-data.new */
+	newval = rig_data_get_new_addr ();
+
+
+
+	/* enable daemon */
+	rig_daemon_set_suspend (FALSE);
+	return 0;
+}
+
+
+/** \brief Save rig state to file
+ *  \param file The file to save the rig state to
+ *
+ * The file parameter may not be NULL. If you need to open
+ * the file selector use the callback functions instead.
+ * existing file will be replaced without any warning!
+ */
+gint
+rig_state_save (const gchar *file)
+{
+	GKeyFile        *cfgdata;       /* the data  */
+	GError          *error = NULL;  /* error buffer */
+	grig_settings_t *state;         /* pointer to current rig state */
+	gboolean         errorflag = 0;
+	gint             vali;
+	gfloat           valfl;
+
+
+	/* disable daemon */
+	rig_daemon_set_suspend (TRUE);
+
+	/* link state to rig-data.get */
+	state = rig_data_get_get_addr ();
+
+	/* create data */
+	cfgdata = g_key_file_new ();
+
+	/* get rigid */
+	vali = rig_daemon_get_rig_id ();
+	if (vali < 1) {
+		/* got to be a bug */
+		grig_debug_local (RIG_DEBUG_BUG,
+				  _("%s: RIG ID is invalid (%d)"),
+				  __FUNCTION__, vali);
+
+		/* try recovery by using dummy id */
+		vali = 1;
+	}
+	g_key_file_set_integer (cfgdata, "GENERAL", "ID", vali);
+
+
+
+	/* write data to file */
+	errorflag |= rig_state_write_data (cfgdata, file);
+
+	g_key_file_free (cfgdata);
+
+	/* enable daemon */
+	rig_daemon_set_suspend (FALSE);
+
+
+	return errorflag;
+}
+
+
+/** \brief Write rig state to file.
+ *
+ * This function takes the rig state in the form of a GKeyFile
+ * and writes it to the specified file.
+ */
+static gint
+rig_state_write_data (GKeyFile *cfgdata, const gchar *file)
+{
+	GError          *error = NULL;  /* error buffer */
+	gchar           *cfgstr;        /* data in string form */
+	GIOChannel      *cfgfile;       /* data file */
+	gsize            length;        /* length of cfg data */
+	gsize            written;       /* bytes written to file */
+	gboolean         errorflag = 0;
+
+
+	/* save the data */
+	cfgstr = g_key_file_to_data (cfgdata, &length, &error);
+
+	if (error != NULL) {
+		grig_debug_local (RIG_DEBUG_ERR,
+				  _("%s: Error building state data (%s)"),
+				  __FUNCTION__, error->message);
+		g_clear_error (&error);
+		errorflag |= 1;
+	}
+	else {
+
+		cfgfile = g_io_channel_new_file (file, "w", &error);
+
+		if (error != NULL) {
+			grig_debug_local (RIG_DEBUG_ERR,
+					  _("%s: Could not create data file (%s)\n%s"),
+					  __FUNCTION__, error->message, filename);
+			g_clear_error (&error);
+			errorflag |= 1;
+		}
+		else {
+			g_io_channel_write_chars (cfgfile,
+						  cfgstr,
+						  length,
+						  &written,
+						  &error);
+
+			g_io_channel_shutdown (cfgfile, TRUE, NULL);
+			g_io_channel_unref (cfgfile);
+
+			if (error != NULL) {
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Error writing config data (%s)"),
+						  __FUNCTION__, error->message);
+				g_clear_error (&error);
+				errorflag |= 1;
+			}
+			else if (length != written) {
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Wrote only %d instead of %d chars"),
+						  __FUNCTION__, written, length);
+				errorflag |= 1;	
+			}
+			else {
+				grig_debug_local (RIG_DEBUG_VERBOSE,
+						  _("%s: Rig state saved successfully to\n%s."),
+						  __FUNCTION__, filename);
+				errorflag |= 0;
+			}
+		}
+		
+		g_free (cfgstr);
+
+	}
+
+
+	return errorflag;
+}
+
