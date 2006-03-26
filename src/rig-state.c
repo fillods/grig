@@ -354,24 +354,77 @@ rig_state_save_cb (GtkWidget *widget, gpointer data)
 gint
 rig_state_load (const gchar *file)
 {
+	GKeyFile          *cfgdata;       /* the data  */
+	GError            *error = NULL;  /* error buffer */
 	grig_settings_t   *state;    /* pointer to current rig state */
 	grig_cmd_avail_t  *newval;   /* pointer to new flag struct */
-
-
-	/* disable daemon */
-	rig_daemon_set_suspend (TRUE);
-
-	/* link state to rig-data.set */
-	state = rig_data_get_get_addr ();
-
-	/* link newval to rig-data.new */
-	newval = rig_data_get_new_addr ();
+	gint               vali;
+	gboolean           errorflag = 0;
+	gboolean           loadstate = 1;  /* flag to indicate whether to laod state */
 
 
 
-	/* enable daemon */
-	rig_daemon_set_suspend (FALSE);
-	return 0;
+	cfgdata = g_key_file_new ();
+	g_key_file_load_from_file (cfgdata, file, G_KEY_FILE_NONE, &error);
+
+	if (error != NULL) {
+
+		/* send an error message */
+		grig_debug_local (RIG_DEBUG_ERR,
+				  _("%s: Error loading rig file (%s)"),
+				  __FUNCTION__, error->message);
+		
+		g_clear_error (&error);
+
+		errorflag |= 1;
+	}
+	else {
+		/* disable daemon */
+		rig_daemon_set_suspend (TRUE);
+
+		/* link state to rig-data.set */
+		state = rig_data_get_get_addr ();
+
+		/* link newval to rig-data.new */
+		newval = rig_data_get_new_addr ();
+
+		/* get and check rig id */
+		vali = g_key_file_get_integer (cfgfile, "GENERAL", "ID", &error);
+		if (error != NULL) {
+			vali = 1;
+			grig_debug_local (RIG_DEBUG_ERR,
+					  _("%s: Error reading rig id (%s)"),
+					  __FUNCTION__, error->message);
+			g_clear_error (&error);
+			errorflag |= 1;
+			loadstate = FALSE;
+		}
+		else {
+			/* check rig id */
+			if (vali != rig_daemon_get_id ()) {
+
+				/* ask user whether to apply settings */
+
+			}
+			else {
+
+				loadstate = TRIE;
+			}
+		}
+
+		if (loadstate) {
+
+		}
+
+		/* enable daemon */
+		rig_daemon_set_suspend (FALSE);
+	}
+
+	if (cfgdata != NULL) {
+		g_key_file_free (cfgdata);
+	}
+
+	return errorflag;
 }
 
 
@@ -391,6 +444,7 @@ rig_state_save (const gchar *file)
 	gboolean         errorflag = 0;
 	gint             vali;
 	gfloat           valfl;
+	gchar           *buff;
 
 
 	/* disable daemon */
@@ -402,7 +456,7 @@ rig_state_save (const gchar *file)
 	/* create data */
 	cfgdata = g_key_file_new ();
 
-	/* get rigid */
+	/* save rigid */
 	vali = rig_daemon_get_rig_id ();
 	if (vali < 1) {
 		/* got to be a bug */
@@ -415,7 +469,29 @@ rig_state_save (const gchar *file)
 	}
 	g_key_file_set_integer (cfgdata, "GENERAL", "ID", vali);
 
+	/* save port */
 
+	/* if serial, save serial speed, too */
+
+	/* conf parameters */
+
+	/* frequencies, incl. vfo, rit, xit, split and lock */
+	buff = g_strdup_printf ("%.0f", get_freq1);
+	g_key_file_set_string (cfgdata, "FREQ", "FREQ1", buff);
+	g_free (buff);
+	
+	buff = g_strdup_printf ("%.0f", get_freq2);
+	g_key_file_set_string (cfgdata, "FREQ", "FREQ2", buff);
+	g_free (buff);
+	
+	
+
+
+	/* Mode and filter */
+
+	/* ATT/PREAMP */
+
+	/* AGC */
 
 	/* write data to file */
 	errorflag |= rig_state_write_data (cfgdata, file);
@@ -463,7 +539,7 @@ rig_state_write_data (GKeyFile *cfgdata, const gchar *file)
 		if (error != NULL) {
 			grig_debug_local (RIG_DEBUG_ERR,
 					  _("%s: Could not create data file (%s)\n%s"),
-					  __FUNCTION__, error->message, filename);
+					  __FUNCTION__, error->message, file);
 			g_clear_error (&error);
 			errorflag |= 1;
 		}
@@ -493,7 +569,7 @@ rig_state_write_data (GKeyFile *cfgdata, const gchar *file)
 			else {
 				grig_debug_local (RIG_DEBUG_VERBOSE,
 						  _("%s: Rig state saved successfully to\n%s."),
-						  __FUNCTION__, filename);
+						  __FUNCTION__, file);
 				errorflag |= 0;
 			}
 		}
