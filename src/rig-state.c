@@ -408,7 +408,7 @@ rig_state_load (const gchar *file)
 			}
 			else {
 
-				loadstate = TRIE;
+				loadstate = TRUE;
 			}
 		}
 
@@ -476,11 +476,11 @@ rig_state_save (const gchar *file)
 	/* conf parameters */
 
 	/* frequencies, incl. vfo, rit, xit, split and lock */
-	buff = g_strdup_printf ("%.0f", get_freq1);
+	buff = g_strdup_printf ("%.0f", get.freq1);
 	g_key_file_set_string (cfgdata, "FREQ", "FREQ1", buff);
 	g_free (buff);
 	
-	buff = g_strdup_printf ("%.0f", get_freq2);
+	buff = g_strdup_printf ("%.0f", get.freq2);
 	g_key_file_set_string (cfgdata, "FREQ", "FREQ2", buff);
 	g_free (buff);
 	
