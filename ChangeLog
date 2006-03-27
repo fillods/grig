@@ -1,3 +1,15 @@
+2006-03-27;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/rig-daemon.c:
+	Generate log message when rig_daemon_set_suspend is called.
+
+	* src/rig-state.c:
+	Finished save/load state of supported parameters.
+
+	* NEWS:
+	Updated with information about saving and restoring rig state.
+	
+
 2006-03-23;	Alexandru Csete <csete@users.sourceforge.net>
 
 	* src/rig-daemon.c:

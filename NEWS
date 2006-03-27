@@ -6,7 +6,6 @@ x Software Memory Manager.
 x Software Scan.
 x Band Map.
 x DCS and CTCSS controls.
-x Save and restore rig state.
 x Allow changing working frequency while in TX mode.
 x Fix bug which caused the frequency display to oscillate
   between the current working frequency and some previously
@@ -19,6 +18,7 @@ x Add the possibility to suspend rig command execution
 
 GRIG 0.6.0:
 
+- Save and restore RIG state.
 - RF power meter scale is now functional with ranges of 5, 10, 50, 100
   and 500 watts. There is currently a bug, which causes the meter needle
   to jump up when switching between RX/TX.
