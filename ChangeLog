@@ -13,6 +13,9 @@
 	Fixed bug, which gave the error message "Can not find VFO list for this
 	rig! Bug in backend?" if the rig did not have any of the rig_set_vfo or
 	rig_get_vfo functions (bug #1440876).
+
+	* src/grig-menubar.c:
+	Modified menu utems in View menu to toggle items.
 	
 
 2006-03-23;	Alexandru Csete <csete@users.sourceforge.net>
