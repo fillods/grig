@@ -148,14 +148,16 @@ rig_daemon_check_vfo     (RIG               *myrig,
 	has_get->split = (myrig->caps->get_split_vfo != NULL) ? TRUE : FALSE;
 
 	/* store available VFOs */
-	if ((has_get->vfo || has_set->vfo) && (myrig->state.vfo_list != 0)) {
-		rig_data_set_vfos (myrig->state.vfo_list);
-	}
-	else {
-		grig_debug_local (RIG_DEBUG_BUG,
-				  _("%s: Can not find VFO list for this "\
-				    "backend! Bug in backend?"),
-				  __FUNCTION__);
+	if (has_get->vfo || has_set->vfo) {
+		if (myrig->state.vfo_list != 0) {
+			rig_data_set_vfos (myrig->state.vfo_list);
+		}
+		else {
+			grig_debug_local (RIG_DEBUG_BUG,
+					  _("%s: Can not find VFO list for this "\
+					    "backend! Bug in backend?"),
+					  __FUNCTION__);
+		}
 	}
 
 	/* try to get current VFO */
