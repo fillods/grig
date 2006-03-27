@@ -50,7 +50,32 @@
 
 extern GtkWidget    *grigapp;
 
-static gint rig_state_write_data (GKeyFile *cfgdata, const gchar *file);
+
+static gint     rig_state_write_data (GKeyFile *cfgdata, const gchar *file);
+static gboolean ask_cfm (gint state_id, gint rig_id);
+static gboolean read_and_check_float (GKeyFile    *cfgdata,
+				      const gchar *group,
+				      const gchar *key,
+				      gfloat      *param,
+				      gboolean    *newflag);
+
+static gboolean read_and_check_double (GKeyFile    *cfgdata,
+				       const gchar *group,
+				       const gchar *key,
+				       gdouble     *param,
+				       gboolean    *newflag);
+
+static gboolean read_and_check_int (GKeyFile    *cfgdata,
+				    const gchar *group,
+				    const gchar *key,
+				    gint        *param,
+				    gboolean    *newflag);
+
+static gboolean read_and_check_bool (GKeyFile    *cfgdata,
+				     const gchar *group,
+				     const gchar *key,
+				     gboolean    *param,
+				     gboolean    *newflag);
 
 
 /** \brief Get connection info about radio
@@ -379,15 +404,6 @@ rig_state_load (const gchar *file)
 		errorflag |= 1;
 	}
 	else {
-		/* disable daemon */
-		rig_daemon_set_suspend (TRUE);
-
-		/* link state to rig-data.set */
-		state = rig_data_get_get_addr ();
-
-		/* link newval to rig-data.new */
-		newval = rig_data_get_new_addr ();
-
 		/* get and check rig id */
 		vali = g_key_file_get_integer (cfgdata, "DEVICE", "ID", &error);
 		if (error != NULL) {
@@ -403,7 +419,15 @@ rig_state_load (const gchar *file)
 			/* check rig id */
 			if (vali != rig_daemon_get_rig_id ()) {
 
+				grig_debug_local (RIG_DEBUG_WARN,
+						  _("%s: ID mismatch detected: state id is %d\n"\
+						    "while current rig id is %d"),
+						  __FUNCTION__,
+						  vali, 
+						  rig_daemon_get_rig_id ());
+
 				/* ask user whether to apply settings */
+				loadstate = ask_cfm (vali, rig_daemon_get_rig_id ());
 
 			}
 			else {
@@ -412,12 +436,35 @@ rig_state_load (const gchar *file)
 			}
 		}
 
+
 		if (loadstate) {
+			grig_debug_local (RIG_DEBUG_VERBOSE,
+					  _("%s: Applying settings (model=%d)"),
+					  __FUNCTION__, vali);
 
+			/* disable daemon */
+			rig_daemon_set_suspend (TRUE);
+
+			/* link state to rig-data.set */
+			state = rig_data_get_set_addr ();
+
+			/* link newval to rig-data.new */
+			newval = rig_data_get_new_addr ();
+
+			/* read frequencies, vfo, rit, xit, split and lock */
+			errorflag |= read_and_check_double (cfgdata,
+							    "FREQUENCY", "FREQ1",
+							    &(state->freq1),
+							    &(newval->freq1));
+						      
+			errorflag |= read_and_check_double (cfgdata,
+							    "FREQUENCY", "FREQ2",
+							    &(state->freq2),
+							    &(newval->freq2));
+						      
+			/* enable daemon */
+			rig_daemon_set_suspend (FALSE);
 		}
-
-		/* enable daemon */
-		rig_daemon_set_suspend (FALSE);
 	}
 
 	if (cfgdata != NULL) {
@@ -477,16 +524,14 @@ rig_state_save (const gchar *file)
 
 	/* frequencies, incl. vfo, rit, xit, split and lock */
 	buff = g_strdup_printf ("%.0f", state->freq1);
-	g_key_file_set_string (cfgdata, "FREQ", "FREQ1", buff);
+	g_key_file_set_string (cfgdata, "FREQUENCY", "FREQ1", buff);
 	g_free (buff);
 	
 	buff = g_strdup_printf ("%.0f", state->freq2);
-	g_key_file_set_string (cfgdata, "FREQ", "FREQ2", buff);
+	g_key_file_set_string (cfgdata, "FREQUENCY", "FREQ2", buff);
 	g_free (buff);
 	
 	
-
-
 	/* Mode and filter */
 
 	/* ATT/PREAMP */
@@ -580,5 +625,207 @@ rig_state_write_data (GKeyFile *cfgdata, const gchar *file)
 
 
 	return errorflag;
+}
+
+
+/** \brief Ask user whether to apply state if current rig
+ *         id is different from rig id in rig file.
+ *  \return TRUE if the user says YES, FALSE otherwise.
+ */
+static gboolean
+ask_cfm (gint state_id, gint rig_id)
+{
+	GtkWidget *dialog;
+	gint response;
+	
+	dialog = gtk_message_dialog_new (GTK_WINDOW (grigapp),
+					 GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+					 GTK_MESSAGE_QUESTION,
+					 GTK_BUTTONS_YES_NO,
+					 _("Selected rig state has been saved for model %d,\n"\
+					   "while the current rig model is %d.\n"\
+					   "Do you want to try to apply settings?"),
+					 state_id, rig_id);
+
+	response = gtk_dialog_run (GTK_DIALOG (dialog));
+
+	gtk_widget_destroy (dialog);
+
+	if (response == GTK_RESPONSE_YES)
+		return TRUE;
+	
+
+	return FALSE;
+}
+
+
+
+/** \brief Read and check parameter of type gfloat.
+ *  \param cfgdata The GKeyFile data structure to read from.
+ *  \param group The name of the configuration group.
+ *  \param key The name of the configuiration key.
+ *  \param param Pointer to the parameter where the value should be stored.
+ *  \param newflag Pointer to the new flag of the parameter.
+ *  \return TRUE if an error has occured during read, FALSE otherwise.
+ */
+static gboolean
+read_and_check_float (GKeyFile    *cfgdata,
+		      const gchar *group,
+		      const gchar *key,
+		      gfloat      *param,
+		      gboolean    *newflag)
+{
+	GError  *error = NULL;
+	gchar   *buff;
+	gboolean errflag = FALSE;
+	
+
+	buff = g_key_file_get_string (cfgdata, group, key, &error);
+
+	if (error != NULL) {
+
+		grig_debug_local (RIG_DEBUG_ERR,
+				  _("%s:%d: Could nor read param %s::%s\n(%s)"),
+				  __FILE__, __LINE__,
+				  group, key, error->message);
+
+		g_clear_error (&error);
+		errflag = TRUE;
+		*newflag = FALSE;
+	}
+	else {
+		*param = (gfloat) g_ascii_strtod (buff, NULL);
+		*newflag = TRUE;
+		g_free (buff);
+	}
+
+	return errflag;
+}
+
+
+
+/** \brief Read and check parameter of type gdouble.
+ *  \param cfgdata The GKeyFile data structure to read from.
+ *  \param group The name of the configuration group.
+ *  \param key The name of the configuiration key.
+ *  \param param Pointer to the parameter where the value should be stored.
+ *  \param newflag Pointer to the new flag of the parameter.
+ *  \return TRUE if an error has occured during read, FALSE otherwise.
+ */
+static gboolean
+read_and_check_double (GKeyFile    *cfgdata,
+		       const gchar *group,
+		       const gchar *key,
+		       gdouble     *param,
+		       gboolean    *newflag)
+{
+	GError  *error = NULL;
+	gchar   *buff;
+	gboolean errflag = FALSE;
+	
+
+	buff = g_key_file_get_string (cfgdata, group, key, &error);
+
+	if (error != NULL) {
+
+		grig_debug_local (RIG_DEBUG_ERR,
+				  _("%s:%d: Could nor read param %s::%s\n(%s)"),
+				  __FILE__, __LINE__,
+				  group, key, error->message);
+
+		g_clear_error (&error);
+		errflag = TRUE;
+		*newflag = FALSE;
+	}
+	else {
+		*param = g_ascii_strtod (buff, NULL);
+		*newflag = TRUE;
+
+		g_free (buff);
+	}
+
+	return errflag;
+}
+
+
+
+/** \brief Read and check parameter of type integer.
+ *  \param cfgdata The GKeyFile data structure to read from.
+ *  \param group The name of the configuration group.
+ *  \param key The name of the configuiration key.
+ *  \param param Pointer to the parameter where the value should be stored.
+ *  \param newflag Pointer to the new flag of the parameter.
+ *  \return TRUE if an error has occured during read, FALSE otherwise.
+ */
+static gboolean read_and_check_int (GKeyFile    *cfgdata,
+				    const gchar *group,
+				    const gchar *key,
+				    gint        *param,
+				    gboolean    *newflag)
+{
+	GError  *error = NULL;
+	gboolean errflag = FALSE;
+	gint     val;
+
+	val = g_key_file_get_integer (cfgdata, group, key, &error);
+
+	if (error != NULL) {
+
+		grig_debug_local (RIG_DEBUG_ERR,
+				  _("%s:%d: Could nor read param %s::%s\n(%s)"),
+				  __FILE__, __LINE__,
+				  group, key, error->message);
+
+		g_clear_error (&error);
+		errflag = TRUE;
+		*newflag = FALSE;
+	}
+	else {
+		*param = val;
+		*newflag = TRUE;
+	}
+
+	return errflag;
+}
+
+
+/** \brief Read and check parameter of type boolean.
+ *  \param cfgdata The GKeyFile data structure to read from.
+ *  \param group The name of the configuration group.
+ *  \param key The name of the configuiration key.
+ *  \param param Pointer to the parameter where the value should be stored.
+ *  \param newflag Pointer to the new flag of the parameter.
+ *  \return TRUE if an error has occured during read, FALSE otherwise.
+ */
+static gboolean read_and_check_bool (GKeyFile    *cfgdata,
+				     const gchar *group,
+				     const gchar *key,
+				     gboolean    *param,
+				     gboolean    *newflag)
+{
+	GError  *error = NULL;
+	gboolean errflag = FALSE;
+	gboolean     val;
+
+	val = g_key_file_get_boolean (cfgdata, group, key, &error);
+
+	if (error != NULL) {
+
+		grig_debug_local (RIG_DEBUG_ERR,
+				  _("%s:%d: Could nor read param %s::%s\n(%s)"),
+				  __FILE__, __LINE__,
+				  group, key, error->message);
+
+		g_clear_error (&error);
+		errflag = TRUE;
+		*newflag = FALSE;
+	}
+	else {
+		*param = val;
+		*newflag = TRUE;
+	}
+
+	return errflag;
+
 }
 
