@@ -50,10 +50,16 @@
 
 extern GtkWidget    *grigapp;
 
+#define GEN_GRP   "GENERAL"
+#define DEV_GRP   "DEVICE"
+#define FREQ_GRP  "FREQUENCY"
+#define LEVEL_GRP "LEVELS"
+#define MODE_GRP  "MODE"
+
 
 static gint     rig_state_write_data (GKeyFile *cfgdata, const gchar *file);
 static gboolean ask_cfm (gint state_id, gint rig_id);
-static gboolean read_and_check_float (GKeyFile    *cfgdata,
+static gboolean read_and_check_level (GKeyFile    *cfgdata,
 				      const gchar *group,
 				      const gchar *key,
 				      gfloat      *param,
@@ -384,6 +390,7 @@ rig_state_load (const gchar *file)
 	grig_settings_t   *state;    /* pointer to current rig state */
 	grig_cmd_avail_t  *newval;   /* pointer to new flag struct */
 	gint               vali;
+	gboolean           valb;
 	gboolean           errorflag = 0;
 	gboolean           loadstate = 1;  /* flag to indicate whether to laod state */
 
@@ -405,7 +412,7 @@ rig_state_load (const gchar *file)
 	}
 	else {
 		/* get and check rig id */
-		vali = g_key_file_get_integer (cfgdata, "DEVICE", "ID", &error);
+		vali = g_key_file_get_integer (cfgdata, DEV_GRP, "ID", &error);
 		if (error != NULL) {
 			vali = 1;
 			grig_debug_local (RIG_DEBUG_ERR,
@@ -453,15 +460,75 @@ rig_state_load (const gchar *file)
 
 			/* read frequencies, vfo, rit, xit, split and lock */
 			errorflag |= read_and_check_double (cfgdata,
-							    "FREQUENCY", "FREQ1",
+							    FREQ_GRP, "FREQ1",
 							    &(state->freq1),
 							    &(newval->freq1));
 						      
 			errorflag |= read_and_check_double (cfgdata,
-							    "FREQUENCY", "FREQ2",
+							    FREQ_GRP, "FREQ2",
 							    &(state->freq2),
 							    &(newval->freq2));
-						      
+			
+			/* RIT and XIT need to be converted */
+			errorflag |= read_and_check_int (cfgdata,
+							 FREQ_GRP, "RIT",
+							 &vali,
+							 &(newval->rit));
+			state->rit = (shortfreq_t) vali;
+			errorflag |= read_and_check_int (cfgdata,
+							 FREQ_GRP, "XIT",
+							 &vali,
+							 &(newval->xit));
+			state->xit = (shortfreq_t) vali;
+
+			errorflag |= read_and_check_int (cfgdata,
+							 FREQ_GRP, "VFO",
+							 &(state->vfo),
+							 &(newval->vfo));
+			errorflag |= read_and_check_bool (cfgdata,
+							  FREQ_GRP, "SPLIT",
+							  &valb,
+							  &(newval->split));
+			state->split = (split_t) valb;
+
+			errorflag |= read_and_check_bool (cfgdata,
+							  FREQ_GRP, "LOCK",
+							  &(state->lock),
+							  &(newval->lock));
+
+			/* mode and filter */
+			errorflag |= read_and_check_int (cfgdata,
+							 MODE_GRP, "MODE",
+							 &vali,
+							 &(newval->mode));
+			state->mode = (rmode_t) vali;
+			errorflag |= read_and_check_int (cfgdata,
+							 MODE_GRP, "FILTER",
+							 &vali,
+							 &(newval->pbw));
+			state->pbw = (rig_data_pbw_t) vali;
+
+			/* ATT/PREAMP/AGC */
+			errorflag |= read_and_check_int (cfgdata,
+							 LEVEL_GRP, "ATT",
+							 &(state->att),
+							 &(newval->att));
+			errorflag |= read_and_check_int (cfgdata,
+							 LEVEL_GRP, "PREAMP",
+							 &(state->preamp),
+							 &(newval->preamp));
+			errorflag |= read_and_check_int (cfgdata,
+							 LEVEL_GRP, "AGC",
+							 &(state->agc),
+							 &(newval->agc));
+			
+
+			/* TX levels */
+			errorflag |= read_and_check_level (cfgdata,
+							   LEVEL_GRP, "POWER",
+							   &(state->power),
+							   &(newval->power));
+
 			/* enable daemon */
 			rig_daemon_set_suspend (FALSE);
 		}
@@ -486,11 +553,9 @@ gint
 rig_state_save (const gchar *file)
 {
 	GKeyFile        *cfgdata;       /* the data  */
-	GError          *error = NULL;  /* error buffer */
 	grig_settings_t *state;         /* pointer to current rig state */
 	gboolean         errorflag = 0;
 	gint             vali;
-	gfloat           valfl;
 	gchar           *buff;
 
 
@@ -503,6 +568,9 @@ rig_state_save (const gchar *file)
 	/* create data */
 	cfgdata = g_key_file_new ();
 
+	/* save grig version */
+	g_key_file_set_string (cfgdata, GEN_GRP, "VERSION", VERSION);
+
 	/* save rigid */
 	vali = rig_daemon_get_rig_id ();
 	if (vali < 1) {
@@ -514,7 +582,7 @@ rig_state_save (const gchar *file)
 		/* try recovery by using dummy id */
 		vali = 1;
 	}
-	g_key_file_set_integer (cfgdata, "DEVICE", "ID", vali);
+	g_key_file_set_integer (cfgdata, DEV_GRP, "ID", vali);
 
 	/* save port */
 
@@ -524,19 +592,30 @@ rig_state_save (const gchar *file)
 
 	/* frequencies, incl. vfo, rit, xit, split and lock */
 	buff = g_strdup_printf ("%.0f", state->freq1);
-	g_key_file_set_string (cfgdata, "FREQUENCY", "FREQ1", buff);
+	g_key_file_set_string (cfgdata, FREQ_GRP, "FREQ1", buff);
 	g_free (buff);
 	
 	buff = g_strdup_printf ("%.0f", state->freq2);
-	g_key_file_set_string (cfgdata, "FREQUENCY", "FREQ2", buff);
+	g_key_file_set_string (cfgdata, FREQ_GRP, "FREQ2", buff);
 	g_free (buff);
-	
+
+	g_key_file_set_integer (cfgdata, FREQ_GRP, "RIT", state->rit);
+	g_key_file_set_integer (cfgdata, FREQ_GRP, "XIT", state->xit);
+	g_key_file_set_integer (cfgdata, FREQ_GRP, "VFO", state->vfo);
+	g_key_file_set_boolean (cfgdata, FREQ_GRP, "SPLIT", state->split);
+	g_key_file_set_boolean (cfgdata, FREQ_GRP, "LOCK", state->lock);
 	
 	/* Mode and filter */
+	g_key_file_set_integer (cfgdata, MODE_GRP, "MODE", state->mode);
+	g_key_file_set_integer (cfgdata, MODE_GRP, "FILTER", state->pbw);
 
-	/* ATT/PREAMP */
+	/* ATT/PREAMP/AGC */
+	g_key_file_set_integer (cfgdata, LEVEL_GRP, "ATT", state->att);
+	g_key_file_set_integer (cfgdata, LEVEL_GRP, "PREAMP", state->preamp);
+	g_key_file_set_integer (cfgdata, LEVEL_GRP, "AGC", state->agc);
 
-	/* AGC */
+	/* TX levels */
+	g_key_file_set_integer (cfgdata, LEVEL_GRP, "POWER", (gint)(state->power*100));
 
 	/* write data to file */
 	errorflag |= rig_state_write_data (cfgdata, file);
@@ -667,21 +746,25 @@ ask_cfm (gint state_id, gint rig_id)
  *  \param param Pointer to the parameter where the value should be stored.
  *  \param newflag Pointer to the new flag of the parameter.
  *  \return TRUE if an error has occured during read, FALSE otherwise.
+ *
+ *  \note Float type values are usually levels and constrained to [0.0;1.0]
+ *        freq_t is double :P
  */
 static gboolean
-read_and_check_float (GKeyFile    *cfgdata,
+read_and_check_level (GKeyFile    *cfgdata,
 		      const gchar *group,
 		      const gchar *key,
 		      gfloat      *param,
 		      gboolean    *newflag)
 {
 	GError  *error = NULL;
-	gchar   *buff;
+	gint     lev;
 	gboolean errflag = FALSE;
 	
 
-	buff = g_key_file_get_string (cfgdata, group, key, &error);
+	lev = g_key_file_get_integer (cfgdata, group, key, &error);
 
+	/* IO error */
 	if (error != NULL) {
 
 		grig_debug_local (RIG_DEBUG_ERR,
@@ -694,9 +777,20 @@ read_and_check_float (GKeyFile    *cfgdata,
 		*newflag = FALSE;
 	}
 	else {
-		*param = (gfloat) g_ascii_strtod (buff, NULL);
-		*newflag = TRUE;
-		g_free (buff);
+		*param = ((gfloat) lev) / 100.0;
+
+		if ((*param >= 0.0) && (*param <= 1.0)) {
+			*newflag = TRUE;
+		}
+		else {
+			/* possible range check error */
+			grig_debug_local (RIG_DEBUG_ERR,
+					  _("%s:%d:\nFLOAT value out of range: %.2f\n"\
+					    "Floats expected to be between 0.0 and 1.0"),
+					  __FILE__, __LINE__, *param);
+			errflag = TRUE;
+		}
+
 	}
 
 	return errflag;
