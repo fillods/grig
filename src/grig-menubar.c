@@ -72,11 +72,6 @@ static GtkActionEntry entries[] = {
 	{ "Debug", GTK_STOCK_HARDDISK, N_("_Debug Level"), NULL, N_("Set Hamlib debug level"), NULL },
 
 	/* ViewMenu */
-	{ "LevelsRX", NULL, N_("_RX Level Controls"), NULL, N_("Show receiver level controls"), NULL },
-	{ "LevelsTX", NULL, N_("_TX Level Controls"), NULL, N_("Show transmitter level controls"), NULL },
-	{ "CW", NULL, N_("_CW Controls"), NULL, N_("Show CW related controls"), NULL },
-	{ "Tones", NULL, N_("_DCS/CTCSS"), NULL, N_("Show DCS and CTCSS controls"), NULL },
-	{ "Func", GTK_STOCK_DIALOG_INFO, N_("_Special Functions"), NULL, N_("Radio specific functions"), NULL },
 	{ "MsgWin", GTK_STOCK_JUSTIFY_LEFT, N_("Message _Window"), NULL, N_("Show window with debug messages"), G_CALLBACK (rig_gui_message_window_show) },
 
 	/* ToolsMenu */
@@ -97,6 +92,16 @@ static GtkRadioActionEntry radio_entries[] = {
   { "Warn",    NULL, N_("_Warning"),  NULL, N_("Show warnings"),                               3 },
   { "Verbose", NULL, N_("_Verbose"),  NULL, N_("Verbose reporting"),                           4 },
   { "Trace",   NULL, N_("_Trace"),    NULL, N_("Trace everything"),                            5 }
+};
+
+
+static GtkToggleActionEntry toggle_entries[] = 
+{
+	{ "LevelsRX", NULL, N_("_RX Level Controls"), NULL, N_("Show receiver level controls"), NULL },
+	{ "LevelsTX", NULL, N_("_TX Level Controls"), NULL, N_("Show transmitter level controls"), NULL },
+	{ "CW", NULL, N_("_CW Controls"), NULL, N_("Show CW related controls"), NULL },
+	{ "Tones", NULL, N_("_DCS/CTCSS"), NULL, N_("Show DCS and CTCSS controls"), NULL },
+	{ "Func", GTK_STOCK_DIALOG_INFO, N_("_Special Functions"), NULL, N_("Radio specific functions"), NULL },
 };
 
 
@@ -127,13 +132,13 @@ static const char *menu_desc =
 "       </menu>"
 "    </menu>"
 "    <menu action='ViewMenu'>"
-/* "       <menuitem action='LevelsRX'/>" */
-/* "       <menuitem action='LevelsTX'/>" */
-/* "       <menuitem action='CW'/>" */
-/* "       <separator/>" */
-/* "       <menuitem action='Tones'/>" */
-/* "       <menuitem action='Func'/>" */
-/* "       <separator/>" */
+"       <menuitem action='LevelsRX'/>"
+"       <menuitem action='LevelsTX'/>"
+"       <menuitem action='CW'/>"
+"       <separator/>"
+"       <menuitem action='Tones'/>"
+"       <menuitem action='Func'/>"
+"       <separator/>"
 "       <menuitem action='MsgWin'/>"
 "    </menu>"
 /* "    <menu action='ToolsMenu'>" */
@@ -167,9 +172,13 @@ grig_menubar_create ()
 	/* create action group */
 	actgrp = gtk_action_group_new ("MenuActions");
 	gtk_action_group_add_actions (actgrp, entries, G_N_ELEMENTS (entries), NULL);
+
+	/* debug level radio group */
 	gtk_action_group_add_radio_actions (actgrp, radio_entries, G_N_ELEMENTS (radio_entries), debug,
 					    G_CALLBACK (grig_menu_set_debug_level), NULL);
 
+	/* View toggle items */
+	gtk_action_group_add_toggle_actions (actgrp, toggle_entries, G_N_ELEMENTS (toggle_entries), NULL);
 
 	/* create UI manager */
 	uimgr = gtk_ui_manager_new ();
