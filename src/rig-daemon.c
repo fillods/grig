@@ -2083,6 +2083,8 @@ void
 rig_daemon_set_suspend (gboolean spnd)
 {
 	suspended = spnd;
+
+	grig_debug_local (RIG_DEBUG_VERBOSE, _("%s: %d"), __FUNCTION__, spnd);
 }
 
 
