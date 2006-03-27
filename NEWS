@@ -25,6 +25,9 @@ GRIG 0.6.0:
 - Fixed bug, which caused the frequency reading to flicker between the
   current value and a previously set value (bug #1388342). Same bug was
   found for the PTT and POWER controls, too.
+- Fixed bug, which gave the error message "Can not find VFO list for this
+  rig! Bug in backend?" if the rig did not have any of the rig_set_vfo or
+  rig_get_vfo functions (bug #1440876).
 
 
 GRIG 0.5.0:

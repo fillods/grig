@@ -8,6 +8,11 @@
 
 	* NEWS:
 	Updated with information about saving and restoring rig state.
+
+	* src/rig-daemon-check.c:
+	Fixed bug, which gave the error message "Can not find VFO list for this
+	rig! Bug in backend?" if the rig did not have any of the rig_set_vfo or
+	rig_get_vfo functions (bug #1440876).
 	
 
 2006-03-23;	Alexandru Csete <csete@users.sourceforge.net>
