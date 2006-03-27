@@ -389,7 +389,7 @@ rig_state_load (const gchar *file)
 		newval = rig_data_get_new_addr ();
 
 		/* get and check rig id */
-		vali = g_key_file_get_integer (cfgfile, "GENERAL", "ID", &error);
+		vali = g_key_file_get_integer (cfgdata, "DEVICE", "ID", &error);
 		if (error != NULL) {
 			vali = 1;
 			grig_debug_local (RIG_DEBUG_ERR,
@@ -401,7 +401,7 @@ rig_state_load (const gchar *file)
 		}
 		else {
 			/* check rig id */
-			if (vali != rig_daemon_get_id ()) {
+			if (vali != rig_daemon_get_rig_id ()) {
 
 				/* ask user whether to apply settings */
 
@@ -467,7 +467,7 @@ rig_state_save (const gchar *file)
 		/* try recovery by using dummy id */
 		vali = 1;
 	}
-	g_key_file_set_integer (cfgdata, "GENERAL", "ID", vali);
+	g_key_file_set_integer (cfgdata, "DEVICE", "ID", vali);
 
 	/* save port */
 
@@ -476,11 +476,11 @@ rig_state_save (const gchar *file)
 	/* conf parameters */
 
 	/* frequencies, incl. vfo, rit, xit, split and lock */
-	buff = g_strdup_printf ("%.0f", get.freq1);
+	buff = g_strdup_printf ("%.0f", state->freq1);
 	g_key_file_set_string (cfgdata, "FREQ", "FREQ1", buff);
 	g_free (buff);
 	
-	buff = g_strdup_printf ("%.0f", get.freq2);
+	buff = g_strdup_printf ("%.0f", state->freq2);
 	g_key_file_set_string (cfgdata, "FREQ", "FREQ2", buff);
 	g_free (buff);
 	
