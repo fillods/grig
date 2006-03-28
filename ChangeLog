@@ -1,8 +1,15 @@
-2006-03-27;	Alexandru Csete <csete@users.sourceforge.net>
+2006-03-28;	Alexandru Csete <csete@users.sourceforge.net>
 
 	* src/rig-daemon.c:
 	Sleep between commands only if the last command has been executed.
 	Added hamlib error message when a command failes to execute.
+
+	* src/grig-debug:
+	Use local debug level in order to be able to filter grig debug messages
+	(bug #1457361).
+
+	* src/grig-menubar.c, src/main.c:
+	Use grig_debug_set_level instead of rig_set_debug.
 
 
 2006-03-27;	Alexandru Csete <csete@users.sourceforge.net>

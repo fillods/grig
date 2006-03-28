@@ -29,6 +29,8 @@ GRIG 0.6.0:
   rig! Bug in backend?" if the rig did not have any of the rig_set_vfo or
   rig_get_vfo functions (bug #1440876).
 - Better error messages when a command fails to execute.
+- Fixed bug, which blocked the debug handler to preoperly filter messages
+  copming from grig (hamlib messages were filtered correctly).
 
 
 GRIG 0.5.0:
