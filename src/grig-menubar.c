@@ -132,13 +132,13 @@ static const char *menu_desc =
 "       </menu>"
 "    </menu>"
 "    <menu action='ViewMenu'>"
-"       <menuitem action='LevelsRX'/>"
-"       <menuitem action='LevelsTX'/>"
-"       <menuitem action='CW'/>"
-"       <separator/>"
-"       <menuitem action='Tones'/>"
-"       <menuitem action='Func'/>"
-"       <separator/>"
+/* "       <menuitem action='LevelsRX'/>" */
+/* "       <menuitem action='LevelsTX'/>" */
+/* "       <menuitem action='CW'/>" */
+/* "       <separator/>" */
+/* "       <menuitem action='Tones'/>" */
+/* "       <menuitem action='Func'/>" */
+/* "       <separator/>" */
 "       <menuitem action='MsgWin'/>"
 "    </menu>"
 /* "    <menu action='ToolsMenu'>" */
