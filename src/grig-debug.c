@@ -51,6 +51,8 @@
 
 
 
+static enum rig_debug_level_e dbglvl = RIG_DEBUG_NONE;
+
 static gchar      *logfname = NULL;
 /*static GIOChannel *logfile  = NULL;*/
 
@@ -126,6 +128,10 @@ grig_debug_hamlib_cb    (enum rig_debug_level_e debug_level,
 	guint           i;
 
 
+	if (debug_level >= dbglvl)
+		return RIG_OK;
+
+
 	/* create character string and split it in case
 	   it is a multi-line message */
 	msg = g_strdup_vprintf (fmt, ap);
@@ -167,6 +173,10 @@ grig_debug_local    (enum rig_debug_level_e debug_level,
 	guint       numlines;  /* the number of lines in the message */
 	guint       i;
 	va_list     ap;
+
+
+	if (debug_level >= dbglvl)
+		return RIG_OK;
 
 
 	va_start (ap, fmt);
@@ -260,4 +270,15 @@ manage_debug_message (debug_msg_src_t source,
 		   GRIG_DEBUG_SEPARATOR,
 		   message);
 
+}
+
+
+void
+grig_debug_set_level (enum rig_debug_level_e level)
+{
+	if ((level >= RIG_DEBUG_NONE) && (level <= RIG_DEBUG_TRACE)) {
+
+		dbglvl = level;
+		rig_set_debug (level);
+	}
 }

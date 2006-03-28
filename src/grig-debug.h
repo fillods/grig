@@ -60,4 +60,6 @@ int  grig_debug_local      (enum rig_debug_level_e debug_level,
 gchar *grig_debug_get_log_file (void);
 
 
+void grig_debug_set_level (enum rig_debug_level_e level);
+
 #endif
