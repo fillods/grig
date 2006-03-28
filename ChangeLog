@@ -1,6 +1,13 @@
 2006-03-27;	Alexandru Csete <csete@users.sourceforge.net>
 
 	* src/rig-daemon.c:
+	Sleep between commands only if the last command has been executed.
+	Added hamlib error message when a command failes to execute.
+
+
+2006-03-27;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/rig-daemon.c:
 	Generate log message when rig_daemon_set_suspend is called.
 
 	* src/rig-state.c:

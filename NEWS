@@ -1,4 +1,4 @@
-FUTURE:
+FUTURE RELEASES:
 
 x Added receiver and transmitter level controls.
 x Added CW controls.
@@ -28,6 +28,7 @@ GRIG 0.6.0:
 - Fixed bug, which gave the error message "Can not find VFO list for this
   rig! Bug in backend?" if the rig did not have any of the rig_set_vfo or
   rig_get_vfo functions (bug #1440876).
+- Better error messages when a command fails to execute.
 
 
 GRIG 0.5.0:
