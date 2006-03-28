@@ -332,7 +332,7 @@ main (int argc, char *argv[])
 	/* we set hamlib debug level to TRACE while we fire up the daemon;
 	   it will be reset when we create the menubar
 	*/
-	rig_set_debug (RIG_DEBUG_TRACE);
+	grig_debug_set_level (RIG_DEBUG_TRACE);
 
 	/* initialise debug handler */
 	grig_debug_init (NULL);
@@ -359,10 +359,10 @@ main (int argc, char *argv[])
 	   debuglevel, otherwise use RIG_DEBUG_WARN.
 	*/
 	if ((debug >= RIG_DEBUG_NONE) && (debug <= RIG_DEBUG_TRACE)) {
-		rig_set_debug (debug);
+		grig_debug_set_level (debug);
 	}
 	else {
-		rig_set_debug (RIG_DEBUG_WARN);
+		grig_debug_set_level (RIG_DEBUG_WARN);
 	}
 
 	/* create application */
@@ -496,7 +496,7 @@ grig_app_destroy    (GtkWidget *widget,
 {
 
 	/* set debug level to TRACE */
-	rig_set_debug (RIG_DEBUG_TRACE);
+	grig_debug_set_level (RIG_DEBUG_TRACE);
 
 	/* stop daemons */
 	rig_daemon_stop ();
@@ -640,7 +640,7 @@ grig_list_rigs ()
 	array = g_array_new (FALSE, FALSE, sizeof (grig_rig_info_t));
 
 	/* make hamlib quiet and load all backends */
-	rig_set_debug (RIG_DEBUG_NONE);
+	grig_debug_set_level (RIG_DEBUG_NONE);
 	rig_load_all_backends();
 
 	/* fill list using rig_list_foreach */

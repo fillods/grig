@@ -39,7 +39,7 @@
 #include "rig-gui-info.h"
 #include "rig-gui-message-window.h"
 #include "rig-state.h"
-
+#include "grig-debug.h"
 
 
 
@@ -234,7 +234,7 @@ grig_menu_app_exit       (GtkWidget *widget, gpointer data)
 static void
 grig_menu_set_debug_level (GtkRadioAction *action, gpointer data)
 {
-	rig_set_debug (gtk_radio_action_get_current_value (action));
+	grig_debug_set_level (gtk_radio_action_get_current_value (action));
 }
 
 
