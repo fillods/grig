@@ -2,7 +2,7 @@ AC_INIT(src/main.c)
 
 AM_CONFIG_HEADER(config.h)
 
-AM_INIT_AUTOMAKE(grig, 0.6.0)
+AM_INIT_AUTOMAKE(grig, 0.6.99)
 
 AM_MAINTAINER_MODE
 AC_PROG_INTLTOOL([0.21])
@@ -35,42 +35,42 @@ AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,
                    "definition of GETTEXT_PACKAGE")
 
 dnl Set PACKAGE_LOCALE_DIR
-if test "x${prefix}" = "xNONE"; then
-  AC_DEFINE_UNQUOTED(PACKAGE_LOCALE_DIR,
-                     "${ac_default_prefix}/share/locale",
-                     "Locale directory")
-else
-  AC_DEFINE_UNQUOTED(PACKAGE_LOCALE_DIR,
-                     "${prefix}/share/locale",
-                     "Locale directory")
-fi
+dnl if test "x${prefix}" = "xNONE"; then
+dnl   AC_DEFINE_UNQUOTED(PACKAGE_LOCALE_DIR,
+dnl                      "${ac_default_prefix}/share/locale",
+dnl                      "Locale directory")
+dnl else
+dnl   AC_DEFINE_UNQUOTED(PACKAGE_LOCALE_DIR,
+dnl                      "${prefix}/share/locale",
+dnl                      "Locale directory")
+dnl fi
 
 
 dnl Set PACKAGE_DATA_DIR and PACKAGE_PIXMAPS_DIR
-if test "x${datadir}" = 'x${prefix}/share'; then
-  if test "x${prefix}" = "xNONE"; then
-    AC_DEFINE_UNQUOTED(PACKAGE_DATA_DIR,
-                       "${ac_default_prefix}/share/${PACKAGE}",
-		       "Data directory")
-    AC_DEFINE_UNQUOTED(PACKAGE_PIXMAPS_DIR,
-                       "${ac_default_prefix}/share/${PACKAGE}/pixmaps",
-                       "Pixmaps directory")
-  else
-    AC_DEFINE_UNQUOTED(PACKAGE_DATA_DIR,
-                       "${prefix}/share/${PACKAGE}",
-		       "Data directory")
-    AC_DEFINE_UNQUOTED(PACKAGE_PIXMAPS_DIR,
-                       "${prefix}/share/${PACKAGE}/pixmaps",
-                       "Pixmaps directory")
-  fi
-else
-  AC_DEFINE_UNQUOTED(PACKAGE_DATA_DIR,
-                     "${datadir}/${PACKAGE}",
-		     "Data directory")
-  AC_DEFINE_UNQUOTED(PACKAGE_PIXMAPS_DIR,
-                     "${datadir}/${PACKAGE}/pixmaps",
-                     "Pixmaps directory")
-fi
+dnl if test "x${datadir}" = 'x${prefix}/share'; then
+dnl   if test "x${prefix}" = "xNONE"; then
+dnl     AC_DEFINE_UNQUOTED(PACKAGE_DATA_DIR,
+dnl                        "${ac_default_prefix}/share/${PACKAGE}",
+dnl 		       "Data directory")
+dnl     AC_DEFINE_UNQUOTED(PACKAGE_PIXMAPS_DIR,
+dnl                        "${ac_default_prefix}/share/${PACKAGE}/pixmaps",
+dnl                        "Pixmaps directory")
+dnl   else
+dnl     AC_DEFINE_UNQUOTED(PACKAGE_DATA_DIR,
+dnl                        "${prefix}/share/${PACKAGE}",
+dnl 		       "Data directory")
+dnl     AC_DEFINE_UNQUOTED(PACKAGE_PIXMAPS_DIR,
+dnl                        "${prefix}/share/${PACKAGE}/pixmaps",
+dnl                        "Pixmaps directory")
+dnl   fi
+dnl else
+dnl   AC_DEFINE_UNQUOTED(PACKAGE_DATA_DIR,
+dnl                      "${datadir}/${PACKAGE}",
+dnl 		     "Data directory")
+dnl   AC_DEFINE_UNQUOTED(PACKAGE_PIXMAPS_DIR,
+dnl                      "${datadir}/${PACKAGE}/pixmaps",
+dnl                      "Pixmaps directory")
+dnl fi
 
 
 dnl Set PACKAGE_SOURCE_DIR
