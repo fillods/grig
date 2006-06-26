@@ -1,3 +1,22 @@
+2006-06-26;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* configure.ac:
+	Don't use AC_DEFINEs to define locale, data and pixmapsdirs because that
+	does not work with autoconf 2.59e anymore (was wrong way to do it
+	according to GNU Coding Std).
+
+	* src/Makefile.am:
+	Added locale, data and pixmapdir definitions:
+	-DPACKAGE_DATA_DIR=\""$(datadir)/grig"\" \
+	-DPACKAGE_PIXMAPS_DIR=\""$(datadir)/pixmaps/grig"\" \
+	-DPACKAGE_LOCALE_DIR=\""$(datadir)/locale"\"
+	Pixmaps will thus go to /usr/local/share/pixmaps/grig instead of
+	/usr/local/share/grig/pixmaps by default.
+
+	* pixmaps/Makefile.am:
+	Redefined pixmapsdir to $(datadir)/pixmaps/grig
+	
+
 2006-03-28;	Alexandru Csete <csete@users.sourceforge.net>
 
 	* src/rig-daemon.c:
