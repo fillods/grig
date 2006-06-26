@@ -2,7 +2,7 @@
 
 	* configure.ac:
 	Don't use AC_DEFINEs to define locale, data and pixmapsdirs because that
-	does not work with autoconf 2.59e anymore (was wrong way to do it
+	does not work with autoconf 2.59e anymore (was the wrong way to do it
 	according to GNU Coding Std).
 
 	* src/Makefile.am:

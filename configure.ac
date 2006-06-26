@@ -34,48 +34,6 @@ AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,
                    "$GETTEXT_PACKAGE",
                    "definition of GETTEXT_PACKAGE")
 
-dnl Set PACKAGE_LOCALE_DIR
-dnl if test "x${prefix}" = "xNONE"; then
-dnl   AC_DEFINE_UNQUOTED(PACKAGE_LOCALE_DIR,
-dnl                      "${ac_default_prefix}/share/locale",
-dnl                      "Locale directory")
-dnl else
-dnl   AC_DEFINE_UNQUOTED(PACKAGE_LOCALE_DIR,
-dnl                      "${prefix}/share/locale",
-dnl                      "Locale directory")
-dnl fi
-
-
-dnl Set PACKAGE_DATA_DIR and PACKAGE_PIXMAPS_DIR
-dnl if test "x${datadir}" = 'x${prefix}/share'; then
-dnl   if test "x${prefix}" = "xNONE"; then
-dnl     AC_DEFINE_UNQUOTED(PACKAGE_DATA_DIR,
-dnl                        "${ac_default_prefix}/share/${PACKAGE}",
-dnl 		       "Data directory")
-dnl     AC_DEFINE_UNQUOTED(PACKAGE_PIXMAPS_DIR,
-dnl                        "${ac_default_prefix}/share/${PACKAGE}/pixmaps",
-dnl                        "Pixmaps directory")
-dnl   else
-dnl     AC_DEFINE_UNQUOTED(PACKAGE_DATA_DIR,
-dnl                        "${prefix}/share/${PACKAGE}",
-dnl 		       "Data directory")
-dnl     AC_DEFINE_UNQUOTED(PACKAGE_PIXMAPS_DIR,
-dnl                        "${prefix}/share/${PACKAGE}/pixmaps",
-dnl                        "Pixmaps directory")
-dnl   fi
-dnl else
-dnl   AC_DEFINE_UNQUOTED(PACKAGE_DATA_DIR,
-dnl                      "${datadir}/${PACKAGE}",
-dnl 		     "Data directory")
-dnl   AC_DEFINE_UNQUOTED(PACKAGE_PIXMAPS_DIR,
-dnl                      "${datadir}/${PACKAGE}/pixmaps",
-dnl                      "Pixmaps directory")
-dnl fi
-
-
-dnl Set PACKAGE_SOURCE_DIR
-dnl packagesrcdir=`cd $srcdir && pwd`
-dnl AC_DEFINE_UNQUOTED(PACKAGE_SOURCE_DIR, "${packagesrcdir}")
 
 dnl Check hamlib
 hamlib_modules="hamlib >= 1.2.5"
