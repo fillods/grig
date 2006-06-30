@@ -484,6 +484,24 @@ rig_daemon_check_level     (RIG               *myrig,
 	has_get->agc      = ((haslevel & RIG_LEVEL_AGC) ? 1 : 0);
 	has_get->att      = ((haslevel & RIG_LEVEL_ATT) ? 1 : 0);
 	has_get->preamp   = ((haslevel & RIG_LEVEL_PREAMP) ? 1 : 0);
+	has_get->afg      = ((haslevel & RIG_LEVEL_AF) ? 1 : 0);
+	has_get->rfg      = ((haslevel & RIG_LEVEL_RF) ? 1 : 0);
+	has_get->sql      = ((haslevel & RIG_LEVEL_SQL) ? 1 : 0);
+	has_get->ifs      = ((haslevel & RIG_LEVEL_IF) ? 1 : 0);
+	has_get->apf      = ((haslevel & RIG_LEVEL_APF) ? 1 : 0);
+	has_get->nr       = ((haslevel & RIG_LEVEL_NR) ? 1 : 0);
+	has_get->notch    = ((haslevel & RIG_LEVEL_NOTCHF) ? 1 : 0);
+	has_get->pbtin    = ((haslevel & RIG_LEVEL_PBT_IN) ? 1 : 0);
+	has_get->pbtout   = ((haslevel & RIG_LEVEL_PBT_OUT) ? 1 : 0);
+	has_get->cwpitch  = ((haslevel & RIG_LEVEL_CWPITCH) ? 1 : 0);
+	has_get->keyspd   = ((haslevel & RIG_LEVEL_KEYSPD) ? 1 : 0);
+	has_get->bkindel  = ((haslevel & RIG_LEVEL_BKINDL) ? 1 : 0);
+	has_get->balance  = ((haslevel & RIG_LEVEL_BALANCE) ? 1 : 0);
+	has_get->voxdel   = ((haslevel & RIG_LEVEL_VOXDELAY) ? 1 : 0);
+	has_get->voxg     = ((haslevel & RIG_LEVEL_VOXGAIN) ? 1 : 0);
+	has_get->antivox  = ((haslevel & RIG_LEVEL_ANTIVOX) ? 1 : 0);
+	has_get->micg     = ((haslevel & RIG_LEVEL_MICGAIN) ? 1 : 0);
+	has_get->comp     = ((haslevel & RIG_LEVEL_COMP) ? 1 : 0);
 
 	/* read values */
 	if (has_get->power) {
@@ -593,6 +611,239 @@ rig_daemon_check_level     (RIG               *myrig,
 		}
 	}
 
+	if (has_get->afg) {
+		retcode = rig_get_level (myrig, RIG_VFO_CURR, RIG_LEVEL_AF, &val);
+		if (retcode == RIG_OK) {
+			get->afg = val.f;
+		}
+		else {
+			/* send an error report */
+			grig_debug_local (RIG_DEBUG_ERR,
+					  _("%s: Could not get AF"),
+					  __FUNCTION__);
+		}
+	}
+
+	if (has_get->rfg) {
+		retcode = rig_get_level (myrig, RIG_VFO_CURR, RIG_LEVEL_RF, &val);
+		if (retcode == RIG_OK) {
+			get->rfg = val.f;
+		}
+		else {
+			/* send an error report */
+			grig_debug_local (RIG_DEBUG_ERR,
+					  _("%s: Could not get RF"),
+					  __FUNCTION__);
+		}
+	}
+
+	if (has_get->sql) {
+		retcode = rig_get_level (myrig, RIG_VFO_CURR, RIG_LEVEL_SQL, &val);
+		if (retcode == RIG_OK) {
+			get->sql = val.f;
+		}
+		else {
+			/* send an error report */
+			grig_debug_local (RIG_DEBUG_ERR,
+					  _("%s: Could not get SQL"),
+					  __FUNCTION__);
+		}
+	}
+
+	if (has_get->ifs) {
+		retcode = rig_get_level (myrig, RIG_VFO_CURR, RIG_LEVEL_IF, &val);
+		if (retcode == RIG_OK) {
+			get->ifs = val.i;
+		}
+		else {
+			/* send an error report */
+			grig_debug_local (RIG_DEBUG_ERR,
+					  _("%s: Could not get IF shift"),
+					  __FUNCTION__);
+		}
+	}
+
+	if (has_get->apf) {
+		retcode = rig_get_level (myrig, RIG_VFO_CURR, RIG_LEVEL_APF, &val);
+		if (retcode == RIG_OK) {
+			get->apf = val.f;
+		}
+		else {
+			/* send an error report */
+			grig_debug_local (RIG_DEBUG_ERR,
+					  _("%s: Could not get APF"),
+					  __FUNCTION__);
+		}
+	}
+
+	if (has_get->nr) {
+		retcode = rig_get_level (myrig, RIG_VFO_CURR, RIG_LEVEL_NR, &val);
+		if (retcode == RIG_OK) {
+			get->nr = val.f;
+		}
+		else {
+			/* send an error report */
+			grig_debug_local (RIG_DEBUG_ERR,
+					  _("%s: Could not get NR"),
+					  __FUNCTION__);
+		}
+	}
+
+	if (has_get->notch) {
+		retcode = rig_get_level (myrig, RIG_VFO_CURR, RIG_LEVEL_NOTCHF, &val);
+		if (retcode == RIG_OK) {
+			get->notch = val.i;
+		}
+		else {
+			/* send an error report */
+			grig_debug_local (RIG_DEBUG_ERR,
+					  _("%s: Could not get NOTCH"),
+					  __FUNCTION__);
+		}
+	}
+
+	if (has_get->pbtin) {
+		retcode = rig_get_level (myrig, RIG_VFO_CURR, RIG_LEVEL_PBT_IN, &val);
+		if (retcode == RIG_OK) {
+			get->pbtin = val.f;
+		}
+		else {
+			/* send an error report */
+			grig_debug_local (RIG_DEBUG_ERR,
+					  _("%s: Could not get PBT IN"),
+					  __FUNCTION__);
+		}
+	}
+
+	if (has_get->pbtout) {
+		retcode = rig_get_level (myrig, RIG_VFO_CURR, RIG_LEVEL_PBT_OUT, &val);
+		if (retcode == RIG_OK) {
+			get->pbtout = val.f;
+		}
+		else {
+			/* send an error report */
+			grig_debug_local (RIG_DEBUG_ERR,
+					  _("%s: Could not get PBT OUT"),
+					  __FUNCTION__);
+		}
+	}
+
+	if (has_get->cwpitch) {
+		retcode = rig_get_level (myrig, RIG_VFO_CURR, RIG_LEVEL_CWPITCH, &val);
+		if (retcode == RIG_OK) {
+			get->cwpitch = val.i;
+		}
+		else {
+			/* send an error report */
+			grig_debug_local (RIG_DEBUG_ERR,
+					  _("%s: Could not get CW pitch"),
+					  __FUNCTION__);
+		}
+	}
+
+	if (has_get->keyspd) {
+		retcode = rig_get_level (myrig, RIG_VFO_CURR, RIG_LEVEL_KEYSPD, &val);
+		if (retcode == RIG_OK) {
+			get->keyspd = val.i;
+		}
+		else {
+			/* send an error report */
+			grig_debug_local (RIG_DEBUG_ERR,
+					  _("%s: Could not get CW speed"),
+					  __FUNCTION__);
+		}
+	}
+
+	if (has_get->bkindel) {
+		retcode = rig_get_level (myrig, RIG_VFO_CURR, RIG_LEVEL_BKINDL, &val);
+		if (retcode == RIG_OK) {
+			get->bkindel = val.i;
+		}
+		else {
+			/* send an error report */
+			grig_debug_local (RIG_DEBUG_ERR,
+					  _("%s: Could not get break-in delay"),
+					  __FUNCTION__);
+		}
+	}
+
+	if (has_get->balance) {
+		retcode = rig_get_level (myrig, RIG_VFO_CURR, RIG_LEVEL_BALANCE, &val);
+		if (retcode == RIG_OK) {
+			get->balance = val.f;
+		}
+		else {
+			/* send an error report */
+			grig_debug_local (RIG_DEBUG_ERR,
+					  _("%s: Could not get balance"),
+					  __FUNCTION__);
+		}
+	}
+
+	if (has_get->voxdel) {
+		retcode = rig_get_level (myrig, RIG_VFO_CURR, RIG_LEVEL_VOXDELAY, &val);
+		if (retcode == RIG_OK) {
+			get->voxdel = val.i;
+		}
+		else {
+			/* send an error report */
+			grig_debug_local (RIG_DEBUG_ERR,
+					  _("%s: Could not get VOX delay"),
+					  __FUNCTION__);
+		}
+	}
+
+	if (has_get->voxg) {
+		retcode = rig_get_level (myrig, RIG_VFO_CURR, RIG_LEVEL_VOXGAIN, &val);
+		if (retcode == RIG_OK) {
+			get->voxg = val.f;
+		}
+		else {
+			/* send an error report */
+			grig_debug_local (RIG_DEBUG_ERR,
+					  _("%s: Could not get VOX gain"),
+					  __FUNCTION__);
+		}
+	}
+
+	if (has_get->antivox) {
+		retcode = rig_get_level (myrig, RIG_VFO_CURR, RIG_LEVEL_ANTIVOX, &val);
+		if (retcode == RIG_OK) {
+			get->antivox = val.f;
+		}
+		else {
+			/* send an error report */
+			grig_debug_local (RIG_DEBUG_ERR,
+					  _("%s: Could not get anti-vox"),
+					  __FUNCTION__);
+		}
+	}
+
+	if (has_get->comp) {
+		retcode = rig_get_level (myrig, RIG_VFO_CURR, RIG_LEVEL_COMP, &val);
+		if (retcode == RIG_OK) {
+			get->comp = val.f;
+		}
+		else {
+			/* send an error report */
+			grig_debug_local (RIG_DEBUG_ERR,
+					  _("%s: Could not get compression level"),
+					  __FUNCTION__);
+		}
+	}
+
+	if (has_get->micg) {
+		retcode = rig_get_level (myrig, RIG_VFO_CURR, RIG_LEVEL_MICGAIN, &val);
+		if (retcode == RIG_OK) {
+			get->micg = val.f;
+		}
+		else {
+			/* send an error report */
+			grig_debug_local (RIG_DEBUG_ERR,
+					  _("%s: Could not get MIC gain"),
+					  __FUNCTION__);
+		}
+	}
 
 	/* get available write levels */
 	haslevel = rig_has_set_level (myrig, GRIG_LEVEL_WR);
@@ -605,6 +856,24 @@ rig_daemon_check_level     (RIG               *myrig,
 	has_set->agc    = ((haslevel & RIG_LEVEL_AGC) ? 1 : 0);
 	has_set->att    = ((haslevel & RIG_LEVEL_ATT) ? 1 : 0);
 	has_set->preamp = ((haslevel & RIG_LEVEL_PREAMP) ? 1 : 0);
+	has_set->afg      = ((haslevel & RIG_LEVEL_AF) ? 1 : 0);
+	has_set->rfg      = ((haslevel & RIG_LEVEL_RF) ? 1 : 0);
+	has_set->sql      = ((haslevel & RIG_LEVEL_SQL) ? 1 : 0);
+	has_set->ifs      = ((haslevel & RIG_LEVEL_IF) ? 1 : 0);
+	has_set->apf      = ((haslevel & RIG_LEVEL_APF) ? 1 : 0);
+	has_set->nr       = ((haslevel & RIG_LEVEL_NR) ? 1 : 0);
+	has_set->notch    = ((haslevel & RIG_LEVEL_NOTCHF) ? 1 : 0);
+	has_set->pbtin    = ((haslevel & RIG_LEVEL_PBT_IN) ? 1 : 0);
+	has_set->pbtout   = ((haslevel & RIG_LEVEL_PBT_OUT) ? 1 : 0);
+	has_set->cwpitch  = ((haslevel & RIG_LEVEL_CWPITCH) ? 1 : 0);
+	has_set->keyspd   = ((haslevel & RIG_LEVEL_KEYSPD) ? 1 : 0);
+	has_set->bkindel  = ((haslevel & RIG_LEVEL_BKINDL) ? 1 : 0);
+	has_set->balance  = ((haslevel & RIG_LEVEL_BALANCE) ? 1 : 0);
+	has_set->voxdel   = ((haslevel & RIG_LEVEL_VOXDELAY) ? 1 : 0);
+	has_set->voxg     = ((haslevel & RIG_LEVEL_VOXGAIN) ? 1 : 0);
+	has_set->antivox  = ((haslevel & RIG_LEVEL_ANTIVOX) ? 1 : 0);
+	has_set->micg     = ((haslevel & RIG_LEVEL_MICGAIN) ? 1 : 0);
+	has_set->comp     = ((haslevel & RIG_LEVEL_COMP) ? 1 : 0);
 
 	/* initialise preamp and att arrays in rig-data */
 	if (has_get->att || has_set->att) {
