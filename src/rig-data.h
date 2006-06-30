@@ -96,7 +96,7 @@ typedef struct {
 	int             notch;     /*!< Notch freq */
 	float           pbtin;     /*!< PBT in */
 	float           pbtout;    /*!< PBT out */
-	float           cwpitch;   /*!< CW pitch */
+	int             cwpitch;   /*!< CW pitch */
 	int             keyspd;    /*!< keyer speed */
 	int             bkindel;   /*!< break in delay in tens of dots :-L */
 	float           balance;   /*!< balance */
@@ -354,8 +354,8 @@ void  rig_data_set_pbtout     (float pbt);
 /* CW pitch */
 int   rig_data_has_get_cwpitch (void);
 int   rig_data_has_set_cwpitch (void);
-float rig_data_get_cwpitch     (void);
-void  rig_data_set_cwpitch     (float cwp);
+int   rig_data_get_cwpitch     (void);
+void  rig_data_set_cwpitch     (int cwp);
 
 /* keyer speed */
 int   rig_data_has_get_keyspd (void);

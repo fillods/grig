@@ -1533,14 +1533,14 @@ rig_data_has_set_cwpitch (void)
 	return has_set.cwpitch;
 }
 
-float
+int
 rig_data_get_cwpitch     (void)
 {
 	return get.cwpitch;
 }
 
 void
-rig_data_set_cwpitch     (float cwp)
+rig_data_set_cwpitch     (int cwp)
 {
 	set.cwpitch = cwp;
 	get.cwpitch = cwp;
