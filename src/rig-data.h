@@ -81,11 +81,31 @@ typedef struct {
 	freq_t           freq2;    /*!< Secondary frequency. */
 	shortfreq_t      rit;      /*!< RIT. */
 	shortfreq_t      xit;      /*!< XIT. */
-	float            power;    /*!< TX power. */
 	int              agc;      /*!< AGC level. */
 	int              att;      /*!< Attenuator. */
 	int              preamp;   /*!< Pre-amplifier. */
 	split_t          split;    /*!< Spit ON/OFF. */
+
+	/* R/W levels */
+	float           afg;       /*!< AF gain */
+	float           rfg;       /*!< RF gain */
+	float           sql;       /*!< Squelch */
+	int             ifs;       /*!< IF shitf in Hz */
+	float           apf;       /*!< APF */
+	float           nr;        /*!< Noise reduction */
+	int             notch;     /*!< Notch freq */
+	float           pbtin;     /*!< PBT in */
+	float           pbtout;    /*!< PBT out */
+	float           cwpitch;   /*!< CW pitch */
+	int             keyspd;    /*!< keyer speed */
+	int             bkindel;   /*!< break in delay in tens of dots :-L */
+	float           balance;   /*!< balance */
+	int             voxdel;    /*!< Vox delay tenth of sec */
+	float           voxg;      /*!< Vox gain */
+	float           antivox;   /*!< Antivox */
+	float           micg;      /*!< Mic gain */
+	float           comp;      /*!< Compression */
+	float           power;     /*!< TX power. */
 
 	/* read only fields */
 	int             strength;  /*!< Signal strength. */
@@ -120,7 +140,6 @@ typedef struct {
 	int         freq2;
 	int         rit;
 	int         xit;
-	int         power;
 	int         agc;
 	int         att;
 	int         preamp;
@@ -128,6 +147,27 @@ typedef struct {
 	int         vfo_op_toggle;
 	int         vfo_op_copy;
 	int         vfo_op_xchg;
+
+	/* R/W levels */
+	int         afg;       /*!< AF gain */
+	int         rfg;       /*!< RF gain */
+	int         sql;       /*!< Squelch */
+	int         ifs;       /*!< IF shitf in Hz */
+	int         apf;       /*!< APF */
+	int         nr;        /*!< Noise reduction */
+	int         notch;     /*!< Notch freq */
+	int         pbtin;     /*!< PBT in */
+	int         pbtout;    /*!< PBT out */
+	int         cwpitch;   /*!< CW pitch */
+	int         keyspd;    /*!< keyer speed */
+	int         bkindel;   /*!< break in delay in tens of dots :-L */
+	int         balance;   /*!< balance */
+	int         voxdel;    /*!< Vox delay tenth of sec */
+	int         voxg;      /*!< Vox gain */
+	int         antivox;   /*!< Antivox */
+	int         micg;      /*!< Mic gain */
+	int         comp;      /*!< Compression */
+	int         power;     /*!< TX power. */
 
 	/* read only fields */
 	int         strength;
@@ -137,8 +177,22 @@ typedef struct {
 
 
 #define GRIG_LEVEL_RD (RIG_LEVEL_RFPOWER | RIG_LEVEL_AGC | RIG_LEVEL_SWR | RIG_LEVEL_ALC | \
-		       RIG_LEVEL_STRENGTH | RIG_LEVEL_ATT | RIG_LEVEL_PREAMP)
-#define GRIG_LEVEL_WR (RIG_LEVEL_RFPOWER | RIG_LEVEL_AGC | RIG_LEVEL_ATT | RIG_LEVEL_PREAMP)
+		       RIG_LEVEL_STRENGTH | RIG_LEVEL_ATT | RIG_LEVEL_PREAMP | \
+                       RIG_LEVEL_VOX | RIG_LEVEL_AF | RIG_LEVEL_RF | RIG_LEVEL_SQL | \
+		       RIG_LEVEL_IF | RIG_LEVEL_APF | RIG_LEVEL_NR | RIG_LEVEL_PBT_IN | \
+                       RIG_LEVEL_PBT_OUT | RIG_LEVEL_CWPITCH | \
+                       RIG_LEVEL_MICGAIN | RIG_LEVEL_KEYSPD | RIG_LEVEL_NOTCHF | \
+                       RIG_LEVEL_COMP | RIG_LEVEL_BKINDL | RIG_LEVEL_BALANCE | \
+                       RIG_LEVEL_VOXGAIN | RIG_LEVEL_ANTIVOX)
+
+#define GRIG_LEVEL_WR (RIG_LEVEL_RFPOWER | RIG_LEVEL_AGC | RIG_LEVEL_ATT | RIG_LEVEL_PREAMP | \
+                       RIG_LEVEL_VOX | RIG_LEVEL_AF | RIG_LEVEL_RF | RIG_LEVEL_SQL | \
+		       RIG_LEVEL_IF | RIG_LEVEL_APF | RIG_LEVEL_NR | RIG_LEVEL_PBT_IN | \
+                       RIG_LEVEL_PBT_OUT | RIG_LEVEL_CWPITCH | \
+                       RIG_LEVEL_MICGAIN | RIG_LEVEL_KEYSPD | RIG_LEVEL_NOTCHF | \
+                       RIG_LEVEL_COMP | RIG_LEVEL_BKINDL | RIG_LEVEL_BALANCE | \
+                       RIG_LEVEL_VOXGAIN | RIG_LEVEL_ANTIVOX)
+
 
 #define GRIG_FUNC_RD (RIG_FUNC_LOCK)
 #define GRIG_FUNC_WR (RIG_FUNC_LOCK)
@@ -241,6 +295,116 @@ int   rig_data_has_set_xit      (void);
 int   rig_data_has_set_att      (void);
 int   rig_data_has_set_preamp   (void);
 int   rig_data_has_set_split    (void);
+
+
+/* AF gain */
+int   rig_data_has_get_afg (void);
+int   rig_data_has_set_afg (void);
+float rig_data_get_afg     (void);
+void  rig_data_set_afg     (float afg);
+
+/* RF gain */
+int   rig_data_has_get_rfg (void);
+int   rig_data_has_set_rfg (void);
+float rig_data_get_rfg     (void);
+void  rig_data_set_rfg     (float rfg);
+
+/* SQL */
+int   rig_data_has_get_sql (void);
+int   rig_data_has_set_sql (void);
+float rig_data_get_sql     (void);
+void  rig_data_set_sql     (float sql);
+
+/* IF shift */
+int   rig_data_has_get_ifs (void);
+int   rig_data_has_set_ifs (void);
+int   rig_data_get_ifs     (void);
+void  rig_data_set_ifs     (int ifs);
+
+/* APF */
+int   rig_data_has_get_apf (void);
+int   rig_data_has_set_apf (void);
+float rig_data_get_apf     (void);
+void  rig_data_set_apf     (float apf);
+
+/* NR */
+int   rig_data_has_get_nr (void);
+int   rig_data_has_set_nr (void);
+float rig_data_get_nr     (void);
+void  rig_data_set_nr     (float nr);
+
+/* Notch */
+int   rig_data_has_get_notch (void);
+int   rig_data_has_set_notch (void);
+int   rig_data_get_notch     (void);
+void  rig_data_set_notch     (int notch);
+
+/* PBT in */
+int   rig_data_has_get_pbtin (void);
+int   rig_data_has_set_pbtin (void);
+float rig_data_get_pbtin     (void);
+void  rig_data_set_pbtin     (float pbt);
+
+/* PBT out */
+int   rig_data_has_get_pbtout (void);
+int   rig_data_has_set_pbtout (void);
+float rig_data_get_pbtout     (void);
+void  rig_data_set_pbtout     (float pbt);
+
+/* CW pitch */
+int   rig_data_has_get_cwpitch (void);
+int   rig_data_has_set_cwpitch (void);
+float rig_data_get_cwpitch     (void);
+void  rig_data_set_cwpitch     (float cwp);
+
+/* keyer speed */
+int   rig_data_has_get_keyspd (void);
+int   rig_data_has_set_keyspd (void);
+int   rig_data_get_keyspd     (void);
+void  rig_data_set_keyspd     (int keyspd);
+
+/* break-in delay */
+int   rig_data_has_get_bkindel (void);
+int   rig_data_has_set_bkindel (void);
+int   rig_data_get_bkindel     (void);
+void  rig_data_set_bkindel     (int bkindel);
+
+/* balance */
+int   rig_data_has_get_balance (void);
+int   rig_data_has_set_balance (void);
+float rig_data_get_balance     (void);
+void  rig_data_set_balance     (float bal);
+
+/* VOX delay */
+int   rig_data_has_get_voxdel (void);
+int   rig_data_has_set_voxdel (void);
+int   rig_data_get_voxdel     (void);
+void  rig_data_set_voxdel     (int voxdel);
+
+/* VOX gain */
+int   rig_data_has_get_voxg (void);
+int   rig_data_has_set_voxg (void);
+float rig_data_get_voxg     (void);
+void  rig_data_set_voxg     (float voxg);
+
+/* anti VOX */
+int   rig_data_has_get_antivox (void);
+int   rig_data_has_set_antivox (void);
+float rig_data_get_antivox     (void);
+void  rig_data_set_antivox     (float antivox);
+
+/* MIC gain */
+int   rig_data_has_get_micg (void);
+int   rig_data_has_set_micg (void);
+float rig_data_get_micg     (void);
+void  rig_data_set_micg     (float micg);
+
+/* compression */
+int   rig_data_has_get_comp (void);
+int   rig_data_has_set_comp (void);
+float rig_data_get_comp     (void);
+void  rig_data_set_comp     (float comp);
+
 
 
 /* LOCK */

@@ -24,12 +24,7 @@
   
     You should have received a copy of the GNU General Public License
     along with this program; if not, visit http://www.fsf.org/
- 
- 
- 
- 
 */
-
 /**  \file    rig-data.c
  *   \ingroup shdata
  *   \brief   Shared data between rig daemon and GUI.
@@ -1274,3 +1269,500 @@ rig_data_get_max_rfpwr ()
 {
 	return maxpwr;
 }
+
+
+/* AF gain */
+int
+rig_data_has_get_afg (void)
+{
+	return has_get.afg;
+}
+
+int
+rig_data_has_set_afg (void)
+{
+	return has_set.afg;
+}
+
+float
+rig_data_get_afg     (void)
+{
+	return get.afg;
+}
+
+void
+rig_data_set_afg     (float afg)
+{
+	set.afg = afg;
+	get.afg = afg;
+	new.afg = TRUE;
+}
+
+
+/* RF gain */
+int
+rig_data_has_get_rfg (void)
+{
+	return has_get.rfg;
+}
+
+int
+rig_data_has_set_rfg (void)
+{
+	return has_set.rfg;
+}
+
+float
+rig_data_get_rfg     (void)
+{
+	return get.rfg;
+}
+
+void
+rig_data_set_rfg     (float rfg)
+{
+	set.rfg = rfg;
+	get.rfg = rfg;
+	new.rfg = TRUE;
+}
+
+
+/* SQL */
+int
+rig_data_has_get_sql (void)
+{
+	return has_get.sql;
+}
+
+int
+rig_data_has_set_sql (void)
+{
+	return has_set.sql;
+}
+
+float
+rig_data_get_sql     (void)
+{
+	return get.sql;
+}
+
+void
+rig_data_set_sql     (float sql)
+{
+	set.sql = sql;
+	get.sql = sql;
+	new.sql = TRUE;
+}
+
+
+/* IF shift */
+int
+rig_data_has_get_ifs (void)
+{
+	return has_get.ifs;
+}
+
+int
+rig_data_has_set_ifs (void)
+{
+	return has_set.ifs;
+}
+
+int
+rig_data_get_ifs     (void)
+{
+	return get.ifs;
+}
+
+void
+rig_data_set_ifs     (int ifs)
+{
+	set.ifs = ifs;
+	get.ifs = ifs;
+	new.ifs = TRUE;
+}
+
+
+/* APF */
+int
+rig_data_has_get_apf (void)
+{
+	return has_get.apf;
+}
+
+int
+rig_data_has_set_apf (void)
+{
+	return has_set.apf;
+}
+
+float
+rig_data_get_apf     (void)
+{
+	return get.apf;
+}
+
+void
+rig_data_set_apf     (float apf)
+{
+	set.apf = apf;
+	get.apf = apf;
+	new.apf = TRUE;
+}
+
+
+/* NR */
+int
+rig_data_has_get_nr (void)
+{
+	return has_get.nr;
+}
+
+int
+rig_data_has_set_nr (void)
+{
+	return has_set.nr;
+}
+
+float rig_data_get_nr     (void)
+{
+	return get.nr;
+}
+
+void  rig_data_set_nr     (float nr)
+{
+	set.nr = nr;
+	get.nr = nr;
+	new.nr = TRUE;
+}
+	
+
+/* Notch */
+int
+rig_data_has_get_notch (void)
+{
+	return has_get.notch;
+}
+
+int
+rig_data_has_set_notch (void)
+{
+	return has_set.notch;
+}
+
+int
+rig_data_get_notch     (void)
+{
+	return get.notch;
+}
+
+void
+rig_data_set_notch     (int notch)
+{
+	set.notch = notch;
+	get.notch = notch;
+	new.notch = TRUE;
+}
+
+
+/* PBT in */
+int
+rig_data_has_get_pbtin (void)
+{
+	return has_get.pbtin;
+}
+
+int
+rig_data_has_set_pbtin (void)
+{
+	return has_set.pbtin;
+}
+
+float
+rig_data_get_pbtin     (void)
+{
+	return get.pbtin;
+}
+
+void
+rig_data_set_pbtin     (float pbt)
+{
+	set.pbtin = pbt;
+	get.pbtin = pbt;
+	new.pbtin = TRUE;
+}
+
+
+/* PBT out */
+int
+rig_data_has_get_pbtout (void)
+{
+	return has_get.pbtout;
+}
+
+int
+rig_data_has_set_pbtout (void)
+{
+	return has_set.pbtout;
+}
+
+float
+rig_data_get_pbtout     (void)
+{
+	return get.pbtout;
+}
+
+void
+rig_data_set_pbtout     (float pbt)
+{
+	set.pbtout = pbt;
+	get.pbtout = pbt;
+	new.pbtout = TRUE;
+}
+
+/* CW pitch */
+int
+rig_data_has_get_cwpitch (void)
+{
+	return has_get.cwpitch;
+}
+
+int
+rig_data_has_set_cwpitch (void)
+{
+	return has_set.cwpitch;
+}
+
+float
+rig_data_get_cwpitch     (void)
+{
+	return get.cwpitch;
+}
+
+void
+rig_data_set_cwpitch     (float cwp)
+{
+	set.cwpitch = cwp;
+	get.cwpitch = cwp;
+	new.cwpitch = TRUE;
+}
+
+
+/* keyer speed */
+int
+rig_data_has_get_keyspd (void)
+{
+	return has_get.keyspd;
+}
+
+int
+rig_data_has_set_keyspd (void)
+{
+	return has_set.keyspd;
+}
+
+int
+rig_data_get_keyspd     (void)
+{
+	return get.keyspd;
+}
+
+void
+rig_data_set_keyspd     (int keyspd)
+{
+	set.keyspd = keyspd;
+	get.keyspd = keyspd;
+	new.keyspd = TRUE;
+}
+
+/* break-in delay */
+int
+rig_data_has_get_bkindel (void)
+{
+	return has_get.bkindel;
+}
+
+int
+rig_data_has_set_bkindel (void)
+{
+	return has_set.bkindel;
+}
+
+int
+rig_data_get_bkindel     (void)
+{
+	return get.bkindel;
+}
+
+void
+rig_data_set_bkindel     (int bkindel)
+{
+	set.bkindel = bkindel;
+	get.bkindel = bkindel;
+	new.bkindel = TRUE;
+}
+
+
+/* balance */
+int
+rig_data_has_get_balance (void)
+{
+	return has_get.balance;
+}
+
+int
+rig_data_has_set_balance (void)
+{
+	return has_set.balance;
+}
+
+float
+rig_data_get_balance     (void)
+{
+	return get.balance;
+}
+
+void
+rig_data_set_balance     (float bal)
+{
+	set.balance = bal;
+	get.balance = bal;
+	new.balance = TRUE;
+}
+
+/* VOX delay */
+int
+rig_data_has_get_voxdel (void)
+{
+	return has_get.voxdel;
+}
+
+int
+rig_data_has_set_voxdel (void)
+{
+	return has_set.voxdel;
+}
+
+int
+rig_data_get_voxdel     (void)
+{
+	return get.voxdel;
+}
+
+void
+rig_data_set_voxdel     (int voxdel)
+{
+	set.voxdel = voxdel;
+	get.voxdel = voxdel;
+	new.voxdel = TRUE;
+}
+
+/* VOX gain */
+int
+rig_data_has_get_voxg (void)
+{
+	return has_get.voxg;
+}
+
+int
+rig_data_has_set_voxg (void)
+{
+	return has_set.voxg;
+}
+
+float
+rig_data_get_voxg     (void)
+{
+	return get.voxg;
+}
+
+void
+rig_data_set_voxg     (float voxg)
+{
+	set.voxg = voxg;
+	get.voxg = voxg;
+	new.voxg = TRUE;
+}
+
+/* anti VOX */
+int
+rig_data_has_get_antivox (void)
+{
+	return has_get.antivox;
+}
+
+int
+rig_data_has_set_antivox (void)
+{
+	return has_set.antivox;
+}
+
+float
+rig_data_get_antivox     (void)
+{
+	return get.antivox;
+}
+
+void
+rig_data_set_antivox     (float antivox)
+{
+	set.antivox = antivox;
+	get.antivox = antivox;
+	new.antivox = TRUE;
+}
+
+/* MIC gain */
+int
+rig_data_has_get_micg (void)
+{
+	return has_get.micg;
+}
+
+int
+rig_data_has_set_micg (void)
+{
+	return has_set.micg;
+}
+
+float
+rig_data_get_micg     (void)
+{
+	return get.micg;
+}
+
+void
+rig_data_set_micg     (float micg)
+{
+	set.micg = micg;
+	get.micg = micg;
+	new.micg = micg;
+}
+
+/* compression */
+int
+rig_data_has_get_comp (void)
+{
+	return has_get.comp;
+}
+
+int
+rig_data_has_set_comp (void)
+{
+	return has_set.comp;
+}
+
+float
+rig_data_get_comp     (void)
+{
+	return get.comp;
+}
+
+void
+rig_data_set_comp     (float comp)
+{
+	set.comp = comp;
+	get.comp = comp;
+	new.comp = comp;
+}
+
+
