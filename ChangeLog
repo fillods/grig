@@ -1,3 +1,12 @@
+2006-06-30;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/rig-data:
+	Added support for all missing level settings.
+
+	* doc/devnotes/commands.txt:
+	Updated.
+	
+
 2006-06-26;	Alexandru Csete <csete@users.sourceforge.net>
 
 	* configure.ac:
