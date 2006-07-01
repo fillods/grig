@@ -151,6 +151,8 @@ static const char *menu_desc =
 "</ui>";
 
 
+static GtkUIManager   *uimgr;
+
 
 /** \brief Create Grig menubar.
  *  \return The menubar widget.
@@ -163,7 +165,6 @@ grig_menubar_create ()
 {
 	GtkWidget      *menubar;
 	GtkActionGroup *actgrp;
-	GtkUIManager   *uimgr;
 	GtkAccelGroup  *accgrp;
 	GError         *error;
 
@@ -236,6 +237,12 @@ grig_menu_set_debug_level (GtkRadioAction *action, gpointer data)
 }
 
 
+/** \brief Show/hide CW controls
+ *
+ * This function is called when the user selects the "CW controls" menut item.
+ * Depending on the state of the item (on/off) we have to either open or close
+ * the CW controls window
+ */
 static void
 cw_window_cb (GtkToggleAction *toggleaction, gpointer user_data)
 {
@@ -247,3 +254,56 @@ cw_window_cb (GtkToggleAction *toggleaction, gpointer user_data)
 		rig_gui_cw_close ();
 	}
 }
+
+
+/** \bried Force TX menu item.
+ *
+ * This function can be used to force the TX controls menu item to
+ * TRUE or FALSE. This is useful when the TX controls window is closed
+ * without any menu action
+ */
+void
+grig_menubar_force_tx_item (gboolean val)
+{
+	GtkWidget *item = NULL;
+
+	item = gtk_ui_manager_get_widget (uimgr, "/GrigMenu/ViewMenu/LevelsTX");
+
+	if (item != NULL)
+		gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (item), val);
+}
+
+/** \bried Force RX menu item.
+ *
+ * This function can be used to force the RX controls menu item to
+ * TRUE or FALSE. This is useful when the RX controls window is closed
+ * without any menu action
+ */
+void
+grig_menubar_force_rx_item (gboolean val)
+{
+	GtkWidget *item = NULL;
+
+	item = gtk_ui_manager_get_widget (uimgr, "/GrigMenu/ViewMenu/LevelsRX");
+
+	if (item != NULL)
+		gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (item), val);
+}
+
+/** \bried Force CW menu item.
+ *
+ * This function can be used to force the CW controls menu item to
+ * TRUE or FALSE. This is useful when the CW controls window is closed
+ * without any menu action
+ */
+void
+grig_menubar_force_cw_item (gboolean val)
+{
+	GtkWidget *item = NULL;
+
+	item = gtk_ui_manager_get_widget (uimgr, "/GrigMenu/ViewMenu/CW");
+
+	if (item != NULL)
+		gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (item), val);
+}
+
