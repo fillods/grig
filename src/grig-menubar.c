@@ -35,6 +35,8 @@
 #include "rig-gui-info.h"
 #include "rig-gui-message-window.h"
 #include "rig-gui-cw.h"
+#include "rig-gui-rx.h"
+#include "rig-gui-tx.h"
 #include "rig-state.h"
 #include "grig-debug.h"
 
@@ -48,6 +50,8 @@ extern GtkWidget   *grigapp;    /* defined in main.c */
 static void  grig_menu_app_exit        (GtkWidget *, gpointer);
 static void  grig_menu_set_debug_level (GtkRadioAction *, gpointer);
 static void  cw_window_cb (GtkToggleAction *toggleaction, gpointer data);
+static void  rx_window_cb (GtkToggleAction *toggleaction, gpointer data);
+static void  tx_window_cb (GtkToggleAction *toggleaction, gpointer data);
 
 
 /** \brief Regular menu items. */
@@ -95,8 +99,8 @@ static GtkRadioActionEntry radio_entries[] = {
 
 static GtkToggleActionEntry toggle_entries[] = 
 {
-	{ "LevelsRX", NULL, N_("_RX Level Controls"), NULL, N_("Show receiver level controls"), NULL },
-	{ "LevelsTX", NULL, N_("_TX Level Controls"), NULL, N_("Show transmitter level controls"), NULL },
+	{ "LevelsRX", NULL, N_("_RX Level Controls"), NULL, N_("Show receiver level controls"), G_CALLBACK (rx_window_cb)NULL },
+	{ "LevelsTX", NULL, N_("_TX Level Controls"), NULL, N_("Show transmitter level controls"), G_CALLBACK (tx_window_cb)NULL },
 	{ "CW", NULL, N_("_CW Controls"), NULL, N_("Show CW related controls"), G_CALLBACK (cw_window_cb) },
 	{ "Tones", NULL, N_("_DCS/CTCSS"), NULL, N_("Show DCS and CTCSS controls"), NULL },
 	{ "Func", GTK_STOCK_DIALOG_INFO, N_("_Special Functions"), NULL, N_("Radio specific functions"), NULL },
@@ -252,6 +256,44 @@ cw_window_cb (GtkToggleAction *toggleaction, gpointer user_data)
 	}
 	else {
 		rig_gui_cw_close ();
+	}
+}
+
+
+/** \brief Show/hide RX controls
+ *
+ * This function is called when the user selects the "RX controls" menut item.
+ * Depending on the state of the item (on/off) we have to either open or close
+ * the CW controls window
+ */
+static void
+rx_window_cb (GtkToggleAction *toggleaction, gpointer user_data)
+{
+
+	if (gtk_toggle_action_get_active (toggleaction)) {
+		rig_gui_rx_create ();
+	}
+	else {
+		rig_gui_rx_close ();
+	}
+}
+
+
+/** \brief Show/hide TX controls
+ *
+ * This function is called when the user selects the "TX controls" menut item.
+ * Depending on the state of the item (on/off) we have to either open or close
+ * the CW controls window
+ */
+static void
+tx_window_cb (GtkToggleAction *toggleaction, gpointer user_data)
+{
+
+	if (gtk_toggle_action_get_active (toggleaction)) {
+		rig_gui_tx_create ();
+	}
+	else {
+		rig_gui_tx_close ();
 	}
 }
 
