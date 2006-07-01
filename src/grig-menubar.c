@@ -99,8 +99,8 @@ static GtkRadioActionEntry radio_entries[] = {
 
 static GtkToggleActionEntry toggle_entries[] = 
 {
-	{ "LevelsRX", NULL, N_("_RX Level Controls"), NULL, N_("Show receiver level controls"), G_CALLBACK (rx_window_cb)NULL },
-	{ "LevelsTX", NULL, N_("_TX Level Controls"), NULL, N_("Show transmitter level controls"), G_CALLBACK (tx_window_cb)NULL },
+	{ "LevelsRX", NULL, N_("_RX Level Controls"), NULL, N_("Show receiver level controls"), G_CALLBACK (rx_window_cb) },
+	{ "LevelsTX", NULL, N_("_TX Level Controls"), NULL, N_("Show transmitter level controls"), G_CALLBACK (tx_window_cb) },
 	{ "CW", NULL, N_("_CW Controls"), NULL, N_("Show CW related controls"), G_CALLBACK (cw_window_cb) },
 	{ "Tones", NULL, N_("_DCS/CTCSS"), NULL, N_("Show DCS and CTCSS controls"), NULL },
 	{ "Func", GTK_STOCK_DIALOG_INFO, N_("_Special Functions"), NULL, N_("Radio specific functions"), NULL },
