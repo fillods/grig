@@ -24,10 +24,6 @@
   
     You should have received a copy of the GNU General Public License
     along with this program; if not, visit http://www.fsf.org/
- 
- 
- 
- 
 */
 #include <stdlib.h>
 #include <gtk/gtk.h>
@@ -45,7 +41,7 @@
 
 
 extern GtkWidget   *grigapp;    /* defined in main.c */
-extern gint         debug;      /* defined in main.c */
+
 
 
 /* private function prototypes */
@@ -176,7 +172,8 @@ grig_menubar_create ()
 	gtk_action_group_add_actions (actgrp, entries, G_N_ELEMENTS (entries), NULL);
 
 	/* debug level radio group */
-	gtk_action_group_add_radio_actions (actgrp, radio_entries, G_N_ELEMENTS (radio_entries), debug,
+	gtk_action_group_add_radio_actions (actgrp, radio_entries, G_N_ELEMENTS (radio_entries),
+					    grig_debug_get_level (),
 					    G_CALLBACK (grig_menu_set_debug_level), NULL);
 
 	/* View toggle items */
@@ -230,7 +227,6 @@ grig_menu_app_exit       (GtkWidget *widget, gpointer data)
  *  \param data  Pointer to user data (not used).
  *
  * This function is called when the user selects a new debug level.
- * The new debug level is stored in the GConf domain.
  *
  */
 static void
