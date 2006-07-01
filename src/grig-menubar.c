@@ -38,6 +38,7 @@
 #include "grig-menubar.h"
 #include "rig-gui-info.h"
 #include "rig-gui-message-window.h"
+#include "rig-gui-cw.h"
 #include "rig-state.h"
 #include "grig-debug.h"
 
@@ -50,6 +51,7 @@ extern gint         debug;      /* defined in main.c */
 /* private function prototypes */
 static void  grig_menu_app_exit        (GtkWidget *, gpointer);
 static void  grig_menu_set_debug_level (GtkRadioAction *, gpointer);
+static void  cw_window_cb (GtkToggleAction *toggleaction, gpointer data);
 
 
 /** \brief Regular menu items. */
@@ -64,8 +66,8 @@ static GtkActionEntry entries[] = {
 	{ "Info", GTK_STOCK_DND, N_("_Info"), "<control>I", N_("Show info about radio"), G_CALLBACK (rig_gui_info_run) },
 	{ "Stop", GTK_STOCK_STOP, N_("St_op daemon"), NULL, N_("Stop the Grig daemon"), NULL },
 	{ "Start", GTK_STOCK_EXECUTE, N_("St_art daemon"), NULL, N_("Start the Grig daemon"), NULL },
-	{ "Save", GTK_STOCK_SAVE, N_("_Save State"), "<control>S", N_("Save the state of the rig to a file"), rig_state_save_cb },
-	{ "Load", GTK_STOCK_OPEN, N_("_Load State"), "<control>O", N_("Load the state of the rig from a file"), rig_state_load_cb },
+	{ "Save", GTK_STOCK_SAVE, N_("_Save State"), "<control>S", N_("Save the state of the rig to a file"), G_CALLBACK (rig_state_save_cb) },
+	{ "Load", GTK_STOCK_OPEN, N_("_Load State"), "<control>O", N_("Load the state of the rig from a file"), G_CALLBACK (rig_state_load_cb) },
 	{ "Exit", GTK_STOCK_QUIT, N_("E_xit"), "<control>Q", N_("Exit the program"), G_CALLBACK (grig_menu_app_exit) },
 
 	/* SettingsMenu */
@@ -99,7 +101,7 @@ static GtkToggleActionEntry toggle_entries[] =
 {
 	{ "LevelsRX", NULL, N_("_RX Level Controls"), NULL, N_("Show receiver level controls"), NULL },
 	{ "LevelsTX", NULL, N_("_TX Level Controls"), NULL, N_("Show transmitter level controls"), NULL },
-	{ "CW", NULL, N_("_CW Controls"), NULL, N_("Show CW related controls"), NULL },
+	{ "CW", NULL, N_("_CW Controls"), NULL, N_("Show CW related controls"), G_CALLBACK (cw_window_cb) },
 	{ "Tones", NULL, N_("_DCS/CTCSS"), NULL, N_("Show DCS and CTCSS controls"), NULL },
 	{ "Func", GTK_STOCK_DIALOG_INFO, N_("_Special Functions"), NULL, N_("Radio specific functions"), NULL },
 };
@@ -238,3 +240,14 @@ grig_menu_set_debug_level (GtkRadioAction *action, gpointer data)
 }
 
 
+static void
+cw_window_cb (GtkToggleAction *toggleaction, gpointer user_data)
+{
+
+	if (gtk_toggle_action_get_active (toggleaction)) {
+		rig_gui_cw_create ();
+	}
+	else {
+		rig_gui_cw_close ();
+	}
+}
