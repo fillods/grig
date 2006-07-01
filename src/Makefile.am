@@ -34,8 +34,10 @@ grig_SOURCES = \
 	rig-gui-lcd.c rig-gui-lcd.h \
 	rig-gui-levels.c rig-gui-levels.h \
 	rig-gui-message-window.c rig-gui-message-window.h \
+	rig-gui-rx.c rig-gui-rx.h \
 	rig-gui-smeter.c rig-gui-smeter.h \
 	rig-gui-smeter-conv.c rig-gui-smeter-conv.h \
+	rig-gui-tx.c rig-gui-tx.h \
 	rig-gui-vfo.c rig-gui-vfo.h \
 	rig-state.c rig-state.h \
 	rig-utils.c rig-utils.h
