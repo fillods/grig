@@ -282,3 +282,10 @@ grig_debug_set_level (enum rig_debug_level_e level)
 		rig_set_debug (level);
 	}
 }
+
+int
+grig_debug_get_level ()
+{
+	return (int) (dbglvl);
+}
+

@@ -61,5 +61,6 @@ gchar *grig_debug_get_log_file (void);
 
 
 void grig_debug_set_level (enum rig_debug_level_e level);
+int  grig_debug_get_level (void);
 
 #endif
