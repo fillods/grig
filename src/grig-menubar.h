@@ -37,7 +37,6 @@ GtkWidget *grig_menubar_create (void);
 
 void grig_menubar_force_tx_item (gboolean val);
 void grig_menubar_force_rx_item (gboolean val);
-void grig_menubar_force_cw_item (gboolean val);
 
 
 #endif

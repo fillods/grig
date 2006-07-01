@@ -34,7 +34,6 @@
 #include "grig-menubar.h"
 #include "rig-gui-info.h"
 #include "rig-gui-message-window.h"
-#include "rig-gui-cw.h"
 #include "rig-gui-rx.h"
 #include "rig-gui-tx.h"
 #include "rig-state.h"
@@ -49,7 +48,6 @@ extern GtkWidget   *grigapp;    /* defined in main.c */
 /* private function prototypes */
 static void  grig_menu_app_exit        (GtkWidget *, gpointer);
 static void  grig_menu_set_debug_level (GtkRadioAction *, gpointer);
-static void  cw_window_cb (GtkToggleAction *toggleaction, gpointer data);
 static void  rx_window_cb (GtkToggleAction *toggleaction, gpointer data);
 static void  tx_window_cb (GtkToggleAction *toggleaction, gpointer data);
 
@@ -101,7 +99,6 @@ static GtkToggleActionEntry toggle_entries[] =
 {
 	{ "LevelsRX", NULL, N_("_RX Level Controls"), NULL, N_("Show receiver level controls"), G_CALLBACK (rx_window_cb) },
 	{ "LevelsTX", NULL, N_("_TX Level Controls"), NULL, N_("Show transmitter level controls"), G_CALLBACK (tx_window_cb) },
-	{ "CW", NULL, N_("_CW Controls"), NULL, N_("Show CW related controls"), G_CALLBACK (cw_window_cb) },
 	{ "Tones", NULL, N_("_DCS/CTCSS"), NULL, N_("Show DCS and CTCSS controls"), NULL },
 	{ "Func", GTK_STOCK_DIALOG_INFO, N_("_Special Functions"), NULL, N_("Radio specific functions"), NULL },
 };
@@ -136,7 +133,6 @@ static const char *menu_desc =
 "    <menu action='ViewMenu'>"
 "       <menuitem action='LevelsRX'/>"
 "       <menuitem action='LevelsTX'/>"
-"       <menuitem action='CW'/>"
 "       <separator/>"
 /* "       <menuitem action='Tones'/>" */
 /* "       <menuitem action='Func'/>" */
@@ -241,23 +237,6 @@ grig_menu_set_debug_level (GtkRadioAction *action, gpointer data)
 }
 
 
-/** \brief Show/hide CW controls
- *
- * This function is called when the user selects the "CW controls" menut item.
- * Depending on the state of the item (on/off) we have to either open or close
- * the CW controls window
- */
-static void
-cw_window_cb (GtkToggleAction *toggleaction, gpointer user_data)
-{
-
-	if (gtk_toggle_action_get_active (toggleaction)) {
-		rig_gui_cw_create ();
-	}
-	else {
-		rig_gui_cw_close ();
-	}
-}
 
 
 /** \brief Show/hide RX controls
@@ -327,23 +306,6 @@ grig_menubar_force_rx_item (gboolean val)
 	GtkWidget *item = NULL;
 
 	item = gtk_ui_manager_get_widget (uimgr, "/GrigMenu/ViewMenu/LevelsRX");
-
-	if (item != NULL)
-		gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (item), val);
-}
-
-/** \bried Force CW menu item.
- *
- * This function can be used to force the CW controls menu item to
- * TRUE or FALSE. This is useful when the CW controls window is closed
- * without any menu action
- */
-void
-grig_menubar_force_cw_item (gboolean val)
-{
-	GtkWidget *item = NULL;
-
-	item = gtk_ui_manager_get_widget (uimgr, "/GrigMenu/ViewMenu/CW");
 
 	if (item != NULL)
 		gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (item), val);
