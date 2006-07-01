@@ -29,5 +29,6 @@
 #define RIG_GUI_CW_H 1
 
 void rig_gui_cw_create (void);
+void rig_gui_cw_close  (void);
 
 #endif

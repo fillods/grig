@@ -35,6 +35,18 @@
 #include "rig-data.h"
 #include "rig-utils.h"
 #include "rig-gui-cw.h"
+#include "grig-debug.h"
+
+/* defined in main.c */
+extern GtkWidget *grigapp;
+
+
+static gint cw_window_delete  (GtkWidget *widget, GdkEvent *event, gpointer data);
+static void cw_window_destroy (GtkWidget *widget, gpointer data);
+
+static GtkWidget *dialog;
+
+static gboolean visible = FALSE;
 
 
 /** \brief Create level controls.
@@ -46,5 +58,77 @@
 void
 rig_gui_cw_create ()
 {
+
+	if (visible) {
+		grig_debug_local (RIG_DEBUG_BUG,
+				  _("%s: CW window already visible."),
+				  __FUNCTION__);
+
+		return;
+	}
+	
+	/* create dialog window */
+	dialog = gtk_dialog_new_with_buttons (_("CW"),
+				 GTK_WINDOW (grigapp),
+				 GTK_DIALOG_DESTROY_WITH_PARENT,
+				 NULL);
+
+	/* allow interaction with other windows */
+	gtk_window_set_modal (GTK_WINDOW (dialog), FALSE);
+
+	g_signal_connect (dialog, "delete_event",
+			  G_CALLBACK (cw_window_delete), NULL);    
+ 	g_signal_connect (dialog, "destroy",
+			  G_CALLBACK (cw_window_destroy), NULL);
+
+	//gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), table);
+
+	visible = TRUE;
+
+	gtk_widget_show_all (dialog);
+}
+
+
+static gint
+cw_window_delete      (GtkWidget *widget,
+		       GdkEvent  *event,
+		       gpointer   data)
+{
+
+	/* force menu item to unset */
+	grig_menubar_force_cw_item (FALSE);
+
+	/* return FALSE so that Gtk+ will emit the destroy signal */
+	return FALSE;
+}
+
+
+
+static void
+cw_window_destroy    (GtkWidget *widget,
+		      gpointer   data)
+{
+
+	/* stop callback */
+
+	/* clear cw-active flag in rig-data */
+
+	visible = FALSE;
+
+}
+
+
+void
+rig_gui_cw_close ()
+{
+	if (!visible) {
+		grig_debug_local (RIG_DEBUG_BUG,
+				  _("%s: CW window is not visible."),
+				  __FUNCTION__);
+
+		return;
+	}
+
+	gtk_widget_destroy (dialog);
 
 }
