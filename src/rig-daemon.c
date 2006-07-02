@@ -107,6 +107,61 @@ static const rig_cmd_t DEF_RX_CYCLE[C_MAX_CMD_PER_CYCLE] = {
 	RIG_CMD_NONE,
 	RIG_CMD_NONE,
 	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE
 };
 
 #else
@@ -122,43 +177,94 @@ static const rig_cmd_t DEF_RX_CYCLE[C_MAX_CMD_PER_CYCLE] = {
 	RIG_CMD_GET_FREQ_1,
 	RIG_CMD_SET_PSTAT,
 	RIG_CMD_GET_PSTAT,
+	RIG_CMD_SET_KEYSPD,
+	RIG_CMD_GET_KEYSPD,
 	RIG_CMD_SET_LOCK,
+	RIG_CMD_SET_AF,
+	RIG_CMD_GET_AF,
 	RIG_CMD_GET_STRENGTH,
+	RIG_CMD_SET_FREQ_1,
+	RIG_CMD_GET_FREQ_1,
+	RIG_CMD_SET_BKINDEL,
+	RIG_CMD_GET_BKINDEL,
 	RIG_CMD_SET_ATT,
 	RIG_CMD_GET_ATT,
 	RIG_CMD_SET_RIT,
 	RIG_CMD_GET_RIT,
-	RIG_CMD_GET_LOCK,
-	RIG_CMD_SET_VFO,
-	RIG_CMD_GET_VFO,
-	RIG_CMD_SET_PTT,
-	RIG_CMD_GET_PTT,
+	RIG_CMD_SET_RF,
+	RIG_CMD_GET_RF,
 	RIG_CMD_GET_STRENGTH,
 	RIG_CMD_SET_FREQ_1,
 	RIG_CMD_GET_FREQ_1,
+	RIG_CMD_GET_LOCK,
+	RIG_CMD_SET_VFO,
+	RIG_CMD_GET_VFO,
+	RIG_CMD_SET_VOXDEL,
+	RIG_CMD_GET_VOXDEL,
+	RIG_CMD_SET_PTT,
+	RIG_CMD_GET_PTT,
+	RIG_CMD_SET_IFS,
+	RIG_CMD_GET_IFS,
+	RIG_CMD_GET_STRENGTH,
+	RIG_CMD_SET_FREQ_1,
+	RIG_CMD_GET_FREQ_1,
+	RIG_CMD_SET_VOXGAIN,
+	RIG_CMD_GET_VOXGAIN,
 	RIG_CMD_SET_AGC,
 	RIG_CMD_GET_AGC,
+	RIG_CMD_SET_SQL,
+	RIG_CMD_GET_SQL,
 	RIG_CMD_VFO_TOGGLE,
 	RIG_CMD_VFO_COPY,
 	RIG_CMD_VFO_XCHG,
 	RIG_CMD_GET_STRENGTH,
+	RIG_CMD_SET_FREQ_1,
+	RIG_CMD_GET_FREQ_1,
+	RIG_CMD_SET_ANTIVOX,
+	RIG_CMD_GET_ANTIVOX,
+	RIG_CMD_SET_PBT_IN,
+	RIG_CMD_GET_PBT_IN,
+	RIG_CMD_SET_PBT_OUT,
+	RIG_CMD_GET_PBT_OUT,
+	RIG_CMD_GET_STRENGTH,
+	RIG_CMD_SET_FREQ_1,
+	RIG_CMD_GET_FREQ_1,
+	RIG_CMD_SET_CW_PITCH,
+	RIG_CMD_GET_CW_PITCH,
 	RIG_CMD_SET_PREAMP,
 	RIG_CMD_GET_PREAMP,
 	RIG_CMD_SET_SPLIT,
 	RIG_CMD_GET_SPLIT,
+	RIG_CMD_SET_MICGAIN,
+	RIG_CMD_GET_MICGAIN,
 	RIG_CMD_GET_STRENGTH,
 	RIG_CMD_SET_FREQ_1,
 	RIG_CMD_GET_FREQ_1,
 	RIG_CMD_SET_MODE,
 	RIG_CMD_GET_MODE,
+	RIG_CMD_SET_BALANCE,
+	RIG_CMD_GET_BALANCE,
 	RIG_CMD_GET_STRENGTH,
+	RIG_CMD_SET_FREQ_1,
+	RIG_CMD_GET_FREQ_1,
 	RIG_CMD_SET_VFO,
 	RIG_CMD_GET_VFO,
 	RIG_CMD_SET_PTT,
 	RIG_CMD_GET_PTT,
+	RIG_CMD_SET_COMP,
+	RIG_COM_GET_COMP,
 	RIG_CMD_VFO_TOGGLE,
 	RIG_CMD_VFO_COPY,
-	RIG_CMD_VFO_XCHG
+	RIG_CMD_VFO_XCHG,
+	RIG_CMD_GET_STRENGTH,
+	RIG_CMD_SET_FREQ_1,
+	RIG_CMD_GET_FREQ_1,
+	RIG_CMD_SET_APF,
+	RIG_CMD_GET_APF,
+	RIG_CMD_SET_NR,
+	RIG_CMD_GET_NR,
+	RIG_CMD_SET_NOTCH,
+	RIG_CMD_GET_NOTCH
 };
 
 #endif
@@ -176,18 +282,28 @@ static const rig_cmd_t DEF_TX_CYCLE[C_MAX_CMD_PER_CYCLE] = {
 	RIG_CMD_SET_PTT,
 	RIG_CMD_SET_FREQ_1,
 	RIG_CMD_GET_POWER,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
 	RIG_CMD_GET_SWR,
 	RIG_CMD_GET_ALC,
 	RIG_CMD_NONE,
 	RIG_CMD_SET_LOCK,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
 	RIG_CMD_GET_PTT,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
 	RIG_CMD_NONE,
 	RIG_CMD_GET_POWER,
 	RIG_CMD_GET_SWR,
+	RIG_CMD_GET_PTT,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
 	RIG_CMD_GET_ALC,
 	RIG_CMD_GET_FREQ_1,
 	RIG_CMD_NONE,
 	RIG_CMD_SET_POWER,
+	RIG_CMD_GET_PTT,
 	RIG_CMD_NONE,
 	RIG_CMD_GET_POWER,
 	RIG_CMD_GET_SWR,
@@ -195,26 +311,64 @@ static const rig_cmd_t DEF_TX_CYCLE[C_MAX_CMD_PER_CYCLE] = {
 	RIG_CMD_NONE,
 	RIG_CMD_SET_PTT,
 	RIG_CMD_NONE,
+	RIG_CMD_GET_ALC,
 	RIG_CMD_GET_POWER,
 	RIG_CMD_GET_SWR,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
 	RIG_CMD_GET_ALC,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_SET_PTT,
+	RIG_CMD_SET_FREQ_1,
+	RIG_CMD_NONE,
+	RIG_CMD_GET_ALC,
+	RIG_CMD_GET_POWER,
+	RIG_CMD_GET_SWR,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_SET_MICGAIN,
+	RIG_CMD_GET_MICGAIN,
+	RIG_CMD_GET_PTT,
+	RIG_CMD_GET_POWER,
+	RIG_CMD_GET_SWR,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
 	RIG_CMD_SET_FREQ_1,
 	RIG_CMD_GET_PTT,
 	RIG_CMD_NONE,
 	RIG_CMD_GET_POWER,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_GET_PTT,
 	RIG_CMD_GET_SWR,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
 	RIG_CMD_GET_ALC,
 	RIG_CMD_NONE,
 	RIG_CMD_SET_PTT,
 	RIG_CMD_SET_POWER,
 	RIG_CMD_NONE,
 	RIG_CMD_GET_FREQ_1,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_GET_PTT,
 	RIG_CMD_GET_POWER,
 	RIG_CMD_GET_SWR,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
 	RIG_CMD_GET_ALC,
 	RIG_CMD_GET_PTT,
 	RIG_CMD_NONE,
 	RIG_CMD_NONE,
+	RIG_CMD_SET_MICGAIN,
+	RIG_CMD_GET_MICGAIN,
+	RIG_CMD_GET_PTT,
+	RIG_CMD_GET_POWER,
+	RIG_CMD_GET_SWR,
+	RIG_CMD_NONE,
+	RIG_CMD_SET_COMP,
+	RIG_COM_GET_COMP
 };
 
 
@@ -2083,6 +2237,564 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 
 		break;
 
+
+	case RIG_CMD_SET_AF:
+		/* check whether command is available */
+		if (has_set->afg && new->afg) {
+			value_t val;
+
+			val.f = set->afg;
+
+			/* try to execute command */
+			retcode = rig_set_level (myrig, RIG_VFO_CURR, RIG_LEVEL_AF, val);
+
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_SET_AF:\n%s"),
+						  __FUNCTION__, ERR_TO_STR[abs(retcode)]);
+
+				rig_anomaly_raise (RIG_CMD_SET_AF);
+			}
+
+			/* reset flag */
+			new->afg = FALSE;
+			get->afg = set->afg;
+
+			status = 1;
+		}
+		break;
+
+	case RIG_CMD_GET_AF:
+		/* check whether command is available */
+		if (has_get->afg) {
+			value_t val;
+
+			/* try to execute command */
+			retcode = rig_get_level (myrig, RIG_VFO_CURR, RIG_LEVEL_AF, &val);
+
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_GET_AF:\n%s"),
+						  __FUNCTION__, ERR_TO_STR[abs(retcode)]);
+
+				rig_anomaly_raise (RIG_CMD_GET_AF);
+			}
+			else {
+				get->afg = val.f;
+			}
+
+			status = 1;
+		}
+		break;
+
+	case RIG_CMD_SET_RF:
+		/* check whether command is available */
+		if (has_set->rfg && new->rfg) {
+			value_t val;
+
+			val.f = set->rfg;
+
+			/* try to execute command */
+			retcode = rig_set_level (myrig, RIG_VFO_CURR, RIG_LEVEL_RF, val);
+
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_SET_RF:\n%s"),
+						  __FUNCTION__, ERR_TO_STR[abs(retcode)]);
+
+				rig_anomaly_raise (RIG_CMD_SET_RF);
+			}
+
+			/* reset flag */
+			new->rfg = FALSE;
+			get->rfg = set->rfg;
+
+			status = 1;
+		}
+		break;
+
+	case RIG_CMD_GET_RF:
+		/* check whether command is available */
+		if (has_get->rfg) {
+			value_t val;
+
+			/* try to execute command */
+			retcode = rig_get_level (myrig, RIG_VFO_CURR, RIG_LEVEL_RF, &val);
+
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_GET_RF:\n%s"),
+						  __FUNCTION__, ERR_TO_STR[abs(retcode)]);
+
+				rig_anomaly_raise (RIG_CMD_GET_RF);
+			}
+			else {
+				get->rfg = val.f;
+			}
+
+			status = 1;
+		}
+		break;
+
+	case RIG_CMD_SET_SQL:
+		/* check whether command is available */
+		if (has_set->sql && new->sql) {
+			value_t val;
+
+			val.f = set->sql;
+
+			/* try to execute command */
+			retcode = rig_set_level (myrig, RIG_VFO_CURR, RIG_LEVEL_SQL, val);
+
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_SET_SQL:\n%s"),
+						  __FUNCTION__, ERR_TO_STR[abs(retcode)]);
+
+				rig_anomaly_raise (RIG_CMD_SET_SQL);
+			}
+
+			/* reset flag */
+			new->sql = FALSE;
+			get->sql = set->sql;
+
+			status = 1;
+		}
+		break;
+
+	case RIG_CMD_GET_SQL:
+		/* check whether command is available */
+		if (has_get->sql) {
+			value_t val;
+
+			/* try to execute command */
+			retcode = rig_get_level (myrig, RIG_VFO_CURR, RIG_LEVEL_SQL, &val);
+
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_GET_SQL:\n%s"),
+						  __FUNCTION__, ERR_TO_STR[abs(retcode)]);
+
+				rig_anomaly_raise (RIG_CMD_GET_SQL);
+			}
+			else {
+				get->sql = val.f;
+			}
+
+			status = 1;
+		}
+		break;
+
+	case RIG_CMD_SET_IFS:
+		/* check whether command is available */
+		if (has_set->ifs && new->ifs) {
+			value_t val;
+
+			val.i = set->rfg;
+
+			/* try to execute command */
+			retcode = rig_set_level (myrig, RIG_VFO_CURR, RIG_LEVEL_IF, val);
+
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_SET_IFS:\n%s"),
+						  __FUNCTION__, ERR_TO_STR[abs(retcode)]);
+
+				rig_anomaly_raise (RIG_CMD_SET_IFS);
+			}
+
+			/* reset flag */
+			new->ifs = FALSE;
+			get->ifs = set->ifs;
+
+			status = 1;
+		}
+		break;
+
+	case RIG_CMD_GET_IFS:
+		/* check whether command is available */
+		if (has_get->ifs) {
+			value_t val;
+
+			/* try to execute command */
+			retcode = rig_get_level (myrig, RIG_VFO_CURR, RIG_LEVEL_IF, &val);
+
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_GET_IFS:\n%s"),
+						  __FUNCTION__, ERR_TO_STR[abs(retcode)]);
+
+				rig_anomaly_raise (RIG_CMD_GET_IFS);
+			}
+			else {
+				get->rfg = val.i;
+			}
+
+			status = 1;
+		}
+		break;
+
+	case RIG_CMD_SET_APF:
+		/* check whether command is available */
+		if (has_set->apf && new->apf) {
+			value_t val;
+
+			val.f = set->apf;
+
+			/* try to execute command */
+			retcode = rig_set_level (myrig, RIG_VFO_CURR, RIG_LEVEL_APF, val);
+
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_SET_APF:\n%s"),
+						  __FUNCTION__, ERR_TO_STR[abs(retcode)]);
+
+				rig_anomaly_raise (RIG_CMD_SET_APF);
+			}
+
+			/* reset flag */
+			new->apf = FALSE;
+			get->apf = set->apf;
+
+			status = 1;
+		}
+		break;
+
+	case RIG_CMD_GET_APF:
+		/* check whether command is available */
+		if (has_get->apf) {
+			value_t val;
+
+			/* try to execute command */
+			retcode = rig_get_level (myrig, RIG_VFO_CURR, RIG_LEVEL_APF, &val);
+
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_GET_APF:\n%s"),
+						  __FUNCTION__, ERR_TO_STR[abs(retcode)]);
+
+				rig_anomaly_raise (RIG_CMD_GET_APF);
+			}
+			else {
+				get->apf = val.f;
+			}
+
+			status = 1;
+		}
+		break;
+
+	case RIG_CMD_SET_NR:
+		/* check whether command is available */
+		if (has_set->nr && new->nr) {
+			value_t val;
+
+			val.f = set->nr;
+
+			/* try to execute command */
+			retcode = rig_set_level (myrig, RIG_VFO_CURR, RIG_LEVEL_NR, val);
+
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_SET_NR:\n%s"),
+						  __FUNCTION__, ERR_TO_STR[abs(retcode)]);
+
+				rig_anomaly_raise (RIG_CMD_SET_NR);
+			}
+
+			/* reset flag */
+			new->nr = FALSE;
+			get->nr = set->nr;
+
+			status = 1;
+		}
+		break;
+
+	case RIG_CMD_GET_NR:
+		/* check whether command is available */
+		if (has_get->nr) {
+			value_t val;
+
+			/* try to execute command */
+			retcode = rig_get_level (myrig, RIG_VFO_CURR, RIG_LEVEL_NR, &val);
+
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_GET_NR:\n%s"),
+						  __FUNCTION__, ERR_TO_STR[abs(retcode)]);
+
+				rig_anomaly_raise (RIG_CMD_GET_NR);
+			}
+			else {
+				get->nr = val.f;
+			}
+
+			status = 1;
+		}
+		break;
+
+	case RIG_CMD_SET_NOTCH:
+		/* check whether command is available */
+		if (has_set->notch && new->notch) {
+			value_t val;
+
+			val.i = set->notch;
+
+			/* try to execute command */
+			retcode = rig_set_level (myrig, RIG_VFO_CURR, RIG_LEVEL_NOTCHF, val);
+
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_SET_NOTCH:\n%s"),
+						  __FUNCTION__, ERR_TO_STR[abs(retcode)]);
+
+				rig_anomaly_raise (RIG_CMD_SET_NOTCH);
+			}
+
+			/* reset flag */
+			new->notch = FALSE;
+			get->notch = set->notch;
+
+			status = 1;
+		}
+		break;
+
+	case RIG_CMD_GET_NOTCH:
+		/* check whether command is available */
+		if (has_get->notch) {
+			value_t val;
+
+			/* try to execute command */
+			retcode = rig_get_level (myrig, RIG_VFO_CURR, RIG_LEVEL_NOTCHF, &val);
+
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_GET_NOTCH:\n%s"),
+						  __FUNCTION__, ERR_TO_STR[abs(retcode)]);
+
+				rig_anomaly_raise (RIG_CMD_GET_NOTCH);
+			}
+			else {
+				get->notch = val.i;
+			}
+
+			status = 1;
+		}
+		break;
+
+	case RIG_CMD_SET_PBT_IN:
+		/* check whether command is available */
+		if (has_set->pbtin && new->pbtin) {
+			value_t val;
+
+			val.f = set->pbtin;
+
+			/* try to execute command */
+			retcode = rig_set_level (myrig, RIG_VFO_CURR, RIG_LEVEL_PBT_IN, val);
+
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_SET_PBT_IN:\n%s"),
+						  __FUNCTION__, ERR_TO_STR[abs(retcode)]);
+
+				rig_anomaly_raise (RIG_CMD_SET_PBT_IN);
+			}
+
+			/* reset flag */
+			new->pbtin = FALSE;
+			get->pbtin = set->pbtin;
+
+			status = 1;
+		}
+		break;
+
+	case RIG_CMD_GET_PBT_IN:
+		/* check whether command is available */
+		if (has_get->pbtin) {
+			value_t val;
+
+			/* try to execute command */
+			retcode = rig_get_level (myrig, RIG_VFO_CURR, RIG_LEVEL_PBT_IN, &val);
+
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_GET_PBT_IN:\n%s"),
+						  __FUNCTION__, ERR_TO_STR[abs(retcode)]);
+
+				rig_anomaly_raise (RIG_CMD_GET_PBT_IN);
+			}
+			else {
+				get->pbtin = val.f;
+			}
+
+			status = 1;
+		}
+		break;
+
+	case RIG_CMD_SET_PBT_OUT:
+		/* check whether command is available */
+		if (has_set->pbtout && new->pbtout) {
+			value_t val;
+
+			val.f = set->pbtout;
+
+			/* try to execute command */
+			retcode = rig_set_level (myrig, RIG_VFO_CURR, RIG_LEVEL_PBT_OUT, val);
+
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_SET_PBT_OUT:\n%s"),
+						  __FUNCTION__, ERR_TO_STR[abs(retcode)]);
+
+				rig_anomaly_raise (RIG_CMD_SET_PBT_OUT);
+			}
+
+			/* reset flag */
+			new->pbtout = FALSE;
+			get->pbtout = set->pbtout;
+
+			status = 1;
+		}
+		break;
+
+	case RIG_CMD_GET_PBT_OUT:
+		/* check whether command is available */
+		if (has_get->pbtout) {
+			value_t val;
+
+			/* try to execute command */
+			retcode = rig_get_level (myrig, RIG_VFO_CURR, RIG_LEVEL_PBT_OUT, &val);
+
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_GET_PBT_OUT:\n%s"),
+						  __FUNCTION__, ERR_TO_STR[abs(retcode)]);
+
+				rig_anomaly_raise (RIG_CMD_GET_PBT_OUT);
+			}
+			else {
+				get->pbtout = val.f;
+			}
+
+			status = 1;
+		}
+		break;
+
+	case RIG_CMD_SET_CW_PITCH:
+		/* check whether command is available */
+		if (has_set->cwpitch && new->cwpitch) {
+			value_t val;
+
+			val.i = set->cwpitch;
+
+			/* try to execute command */
+			retcode = rig_set_level (myrig, RIG_VFO_CURR, RIG_LEVEL_CWPITCH, val);
+
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_SET_CW_PITCH:\n%s"),
+						  __FUNCTION__, ERR_TO_STR[abs(retcode)]);
+
+				rig_anomaly_raise (RIG_CMD_SET_CW_PITCH);
+			}
+
+			/* reset flag */
+			new->cwpitch = FALSE;
+			get->cwpitch = set->cwpitch;
+
+			status = 1;
+		}
+		break;
+
+	case RIG_CMD_GET_CW_PITCH:
+		/* check whether command is available */
+		if (has_get->cwpitch) {
+			value_t val;
+
+			/* try to execute command */
+			retcode = rig_get_level (myrig, RIG_VFO_CURR, RIG_LEVEL_CWPITCH, &val);
+
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_GET_CW_PITCH:\n%s"),
+						  __FUNCTION__, ERR_TO_STR[abs(retcode)]);
+
+				rig_anomaly_raise (RIG_CMD_GET_CW_PITCH);
+			}
+			else {
+				get->cwpitch = val.i;
+			}
+
+			status = 1;
+		}
+		break;
+
+	case RIG_CMD_SET_KEYSPD:
+		break;
+
+	case RIG_CMD_GET_KEYSPD:
+		break;
+
+	case RIG_CMD_SET_BKINDEL:
+		break;
+
+	case RIG_CMD_GET_BKINDEL:
+		break;
+
+	case RIG_CMD_SET_BALANCE:
+		break;
+
+	case RIG_CMD_GET_BALANCE:
+		break;
+
+	case RIG_CMD_SET_VOXDEL:
+		break;
+
+	case RIG_CMD_GET_VOXDEL:
+		break;
+
+	case RIG_CMD_SET_VOXGAIN:
+		break;
+
+	case RIG_CMD_GET_VOXGAIN:
+		break;
+
+	case RIG_CMD_SET_ANTIVOX:
+		break;
+
+	case RIG_CMD_GET_ANTIVOX:
+		break;
+
+	case RIG_CMD_SET_MICGAIN:
+		break;
+
+	case RIG_CMD_GET_MICGAIN:
+		break;
+
+	case RIG_CMD_SET_COMP:
+		break;
+
+	case RIG_COM_GET_COMP:
+		break;
 
 		/* bug in grig! */
 	default:
