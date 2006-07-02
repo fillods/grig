@@ -125,6 +125,8 @@ typedef struct {
 	shortfreq_t     ritstep;   /*!< Smallest RIT step. */
 	shortfreq_t     xitmax;    /*!< Absolute max XIT. */
 	shortfreq_t     xitstep;   /*!< Smallest XIT step. */
+	shortfreq_t     ifsmax;    /*!< Absolute max IF shift. */
+	shortfreq_t     ifsstep;   /*!< Smallest IF shift step. */
 	int             allmodes;  /*!< Bit field of all supported modes. */
 } grig_settings_t;
 
@@ -320,6 +322,8 @@ int   rig_data_has_get_ifs (void);
 int   rig_data_has_set_ifs (void);
 int   rig_data_get_ifs     (void);
 void  rig_data_set_ifs     (int ifs);
+shortfreq_t rig_data_get_ifsmax   (void);
+shortfreq_t rig_data_get_ifsstep  (void);
 
 /* APF */
 int   rig_data_has_get_apf (void);

@@ -1382,6 +1382,18 @@ rig_data_set_ifs     (int ifs)
 	new.ifs = TRUE;
 }
 
+shortfreq_t
+rig_data_get_ifsmax     ()
+{
+	return get.ifsmax;
+}
+
+shortfreq_t
+rig_data_get_ifsstep    ()
+{
+	return get.ifsstep;
+}
+
 
 /* APF */
 int
