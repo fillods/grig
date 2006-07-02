@@ -8,6 +8,9 @@
 
 	* src/rig-gui-rx.c:
 	Finished implementation. Can not test until daemon has support for it.
+
+	* src/rig-daemon.c:
+	Added support for RX level controls. Cycle also includes TX level controls.
 	
 
 2006-07-01;	Alexandru Csete <csete@users.sourceforge.net>

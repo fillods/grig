@@ -35,7 +35,7 @@
 
 
 
-#define C_MAX_CMD_PER_CYCLE   42   /*!< Max number of commands executed in one cycle */
+#define C_MAX_CMD_PER_CYCLE   95   /*!< Max number of commands executed in one cycle */
 #define C_MAX_CYCLES          6    /*!< Number of cycles */
 
 #define C_DEF_RX_CMD_DELAY    10   /*!< Default delay between two RX commands [msec] */
