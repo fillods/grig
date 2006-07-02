@@ -1,7 +1,43 @@
+2006-07-02;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/rig-daemon-check.c:
+	Store IF shift range and step in rig-data.
+
+	* src/rig-data.[ch]:
+	Store IF shift range and step.
+
+	* src/rig-gui-rx.c:
+	Finished implementation. Can not test until daemon has support for it.
+	
+
+2006-07-01;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/rig-gui-rx.[ch]:
+	Added files.
+
+	* src/rig-gui-tx.[ch]:
+	Added files.
+
+	* src/grig-debug.[ch]:
+	Added funstion to read the current debug level.
+
+	* src/grig-menubar.c:
+	Use grig_debug_get_level instead of direct reference to debug var in
+	main.c. Moved UIManager to be global private so that we can access the
+	individual menu items after creation. Added functions to force the value
+	of the RX, TX and CW level controls.
+	
+
 2006-06-30;	Alexandru Csete <csete@users.sourceforge.net>
 
-	* src/rig-data:
+	* src/rig-data.[ch]:
 	Added support for all missing level settings.
+
+	* src/rig-daemon-check.c:
+	Added checks for remaining levels.
+
+	* src/rig-daemon.h:
+	Added new level commands.
 
 	* doc/devnotes/commands.txt:
 	Updated.
