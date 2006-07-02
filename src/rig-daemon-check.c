@@ -654,6 +654,8 @@ rig_daemon_check_level     (RIG               *myrig,
 		retcode = rig_get_level (myrig, RIG_VFO_CURR, RIG_LEVEL_IF, &val);
 		if (retcode == RIG_OK) {
 			get->ifs = val.i;
+			get->ifsmax = myrig->caps->max_ifshift;
+			get->ifsstep = s_Hz(10);
 		}
 		else {
 			/* send an error report */
