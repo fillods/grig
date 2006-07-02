@@ -24,18 +24,35 @@
   
     You should have received a copy of the GNU General Public License
     along with this program; if not, visit http://www.fsf.org/
- 
- 
- 
- 
 */
+/** \brief RX Level Controls
+ *
+ * This module implements the RX level controls consisting of:
+ *
+ *  - RIG_LEVEL_AF
+ *  - RIG_LEVEL_RF
+ *  - RIG_LEVEL_IF
+ *  - RIG_LEVEL_CWPITCH
+ *  - RIG_LEVEL_PBT_IN
+ *  - RIG_LEVEL_PBT_OUT
+ *  - RIG_LEVEL_APF
+ *  - RIG_LEVEL_NR
+ *  - RIG_LEVEL_NOTCH
+ *  - RIG_LEVEL_SQL
+ *  - RIG_LEVEL_BALANCE
+ *
+ * Note: In Gtk+ vertical sliders have their minimum on top (nice...)
+ * so all values have to be inverted.
+ */
 #include <gtk/gtk.h>
 #include <glib/gi18n.h>
 #include <hamlib/rig.h>
+#include <math.h>
 #include "rig-data.h"
 #include "rig-utils.h"
 #include "rig-gui-rx.h"
 #include "grig-debug.h"
+#include "grig-menubar.h"
 
 /* defined in main.c */
 extern GtkWidget *grigapp;
@@ -43,10 +60,17 @@ extern GtkWidget *grigapp;
 
 static gint rx_window_delete  (GtkWidget *widget, GdkEvent *event, gpointer data);
 static void rx_window_destroy (GtkWidget *widget, gpointer data);
+static void create_controls   (GtkBox *box);
+static void float_level_cb    (GtkRange *range, gpointer data);
+static gchar *float_format_value_cb (GtkScale *scale, gdouble value);
+static gchar *sfreq_format_value_cb (GtkScale *scale, gdouble value);
 
 static GtkWidget *dialog;
 
 static gboolean visible = FALSE;
+
+
+static GtkWidget *afs,*rfs,*ifs,*cwp,*pbti,*pbto,*apf,*nrs,*not,*sql,*bal;
 
 
 /** \brief Create level controls.
@@ -58,6 +82,9 @@ static gboolean visible = FALSE;
 void
 rig_gui_rx_create ()
 {
+	GtkWidget *hbox;
+	gchar     *title;
+
 
 	if (visible) {
 		grig_debug_local (RIG_DEBUG_BUG,
@@ -66,12 +93,20 @@ rig_gui_rx_create ()
 
 		return;
 	}
+
+	/* create hbox and add sliders */
+	hbox = gtk_hbox_new (TRUE, 5);
+	create_controls (GTK_BOX (hbox));
 	
 	/* create dialog window */
-	dialog = gtk_dialog_new_with_buttons (_("RX"),
-				 GTK_WINDOW (grigapp),
-				 GTK_DIALOG_DESTROY_WITH_PARENT,
-				 NULL);
+	title = g_strdup_printf (_("%s (RX Levels)"),
+				 gtk_window_get_title (GTK_WINDOW (grigapp)));
+	dialog = gtk_dialog_new_with_buttons (title,
+					      GTK_WINDOW (grigapp),
+					      GTK_DIALOG_DESTROY_WITH_PARENT,
+					      NULL);
+	g_free (title);
+	gtk_window_set_default_size (GTK_WINDOW (dialog), -1, 150);
 
 	/* allow interaction with other windows */
 	gtk_window_set_modal (GTK_WINDOW (dialog), FALSE);
@@ -81,7 +116,7 @@ rig_gui_rx_create ()
  	g_signal_connect (dialog, "destroy",
 			  G_CALLBACK (rx_window_destroy), NULL);
 
-	//gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), table);
+	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), hbox);
 
 	visible = TRUE;
 
@@ -132,3 +167,310 @@ rig_gui_rx_close ()
 	gtk_widget_destroy (dialog);
 
 }
+
+
+
+/** \brief Common callback used by float levels
+ *
+ * - actually, int level are managed here, too
+ */
+static void
+float_level_cb (GtkRange *range, gpointer data)
+{
+	int level = GPOINTER_TO_INT (data);
+	float value = -1.0 * gtk_range_get_value (range);
+
+	switch (level) {
+
+	case RIG_LEVEL_AF:
+		rig_data_set_afg (value);
+		break;
+
+	case RIG_LEVEL_RF:
+		rig_data_set_rfg (value);
+		break;
+
+	case RIG_LEVEL_IF:
+		rig_data_set_ifs ((int) value);
+		break;
+
+	case RIG_LEVEL_CWPITCH:
+		rig_data_set_cwpitch ((int) value);
+		break;
+
+	case RIG_LEVEL_PBT_IN:
+		rig_data_set_pbtin (value);
+		break;
+
+	case RIG_LEVEL_PBT_OUT:
+		rig_data_set_pbtout (value);
+		break;
+
+	case RIG_LEVEL_APF:
+		rig_data_set_apf (value);
+		break;
+
+	case RIG_LEVEL_NR:
+		rig_data_set_nr (value);
+		break;
+
+	case RIG_LEVEL_NOTCHF:
+		rig_data_set_notch ((int) value);
+		break;
+
+	case RIG_LEVEL_SQL:
+		rig_data_set_sql (value);
+		break;
+
+	case RIG_LEVEL_BALANCE:
+		rig_data_set_balance (value);
+		break;
+
+	default:
+		grig_debug_local (RIG_DEBUG_BUG,
+				  _("%s:%d: Invalid level %d"),
+				  __FILE__, __LINE__, level);
+		break;
+	}
+}
+
+static gchar *
+float_format_value_cb (GtkScale *scale, gdouble value)
+{
+	return g_strdup_printf ("%0.2f", -1.0 * value);
+}
+
+static gchar *
+sfreq_format_value_cb (GtkScale *scale, gdouble value)
+{
+	if (fabs (value) <= 999) {
+		return g_strdup_printf ("%0.0fHz", -1.0 * value);
+	}
+	else {
+		value = value / 1000.0;
+		return g_strdup_printf ("%0.2fkHz", -1.0 * value);
+	}
+}
+
+
+static void
+create_controls   (GtkBox *box)
+{
+	GtkWidget *label;
+	GtkWidget *vbox;
+
+	/* afs */
+	if (rig_data_has_set_afg ()) {
+		afs = gtk_vscale_new_with_range (-1.0, 0.0, 0.01);
+		gtk_range_set_value (GTK_RANGE (afs), -1.0*rig_data_get_afg ());
+		g_signal_connect (afs, "value-changed",
+				  G_CALLBACK (float_level_cb),
+				  GINT_TO_POINTER (RIG_LEVEL_AF));
+		g_signal_connect (afs, "format-value",
+				  G_CALLBACK (float_format_value_cb),
+				  NULL);
+		label = gtk_label_new (_("AF Gain"));
+		gtk_misc_set_alignment (GTK_MISC (label), 0.5, 0.5);
+
+		vbox = gtk_vbox_new (FALSE, 0);
+		gtk_box_pack_start (GTK_BOX (vbox), afs, TRUE, TRUE, 0);
+		gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
+		gtk_box_pack_start (box, vbox, TRUE, TRUE, 0);
+	}
+
+	/* rfs */
+	if (rig_data_has_set_rfg ()) {
+		rfs = gtk_vscale_new_with_range (-1.0, 0.0, 0.01);
+		gtk_range_set_value (GTK_RANGE (rfs), -1.0*rig_data_get_rfg ());
+		g_signal_connect (rfs, "value-changed",
+				  G_CALLBACK (float_level_cb),
+				  GINT_TO_POINTER (RIG_LEVEL_RF));
+		g_signal_connect (rfs, "format-value",
+				  G_CALLBACK (float_format_value_cb),
+				  NULL);
+		label = gtk_label_new (_("RF Gain"));
+		gtk_misc_set_alignment (GTK_MISC (label), 0.5, 0.5);
+
+		vbox = gtk_vbox_new (FALSE, 0);
+		gtk_box_pack_start (GTK_BOX (vbox), rfs, TRUE, TRUE, 0);
+		gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
+		gtk_box_pack_start (box, vbox, TRUE, TRUE, 0);
+	}
+
+	/* ifs */
+	if (rig_data_has_set_ifs ()) {
+		/* FIXME */
+		ifs = gtk_vscale_new_with_range (-rig_data_get_ifsmax (),
+						 rig_data_get_ifsmax (),
+						 10.0);
+		gtk_range_set_value (GTK_RANGE (ifs), -1.0*rig_data_get_ifs ());
+		g_signal_connect (ifs, "value-changed",
+				  G_CALLBACK (float_level_cb),
+				  GINT_TO_POINTER (RIG_LEVEL_IF));
+		g_signal_connect (ifs, "format-value",
+				  G_CALLBACK (sfreq_format_value_cb),
+				  NULL);
+		label = gtk_label_new (_("IF Shift"));
+		gtk_misc_set_alignment (GTK_MISC (label), 0.5, 0.5);
+
+		vbox = gtk_vbox_new (FALSE, 0);
+		gtk_box_pack_start (GTK_BOX (vbox), ifs, TRUE, TRUE, 0);
+		gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
+		gtk_box_pack_start (box, vbox, TRUE, TRUE, 0);
+	}
+
+	/* cwp */
+	if (rig_data_has_set_cwpitch ()) {
+		cwp = gtk_vscale_new_with_range (-1000, -500, 10.0);
+		gtk_range_set_value (GTK_RANGE (cwp), -1.0*rig_data_get_cwpitch ());
+		g_signal_connect (cwp, "value-changed",
+				  G_CALLBACK (float_level_cb),
+				  GINT_TO_POINTER (RIG_LEVEL_CWPITCH));
+		g_signal_connect (cwp, "format-value",
+				  G_CALLBACK (sfreq_format_value_cb),
+				  NULL);
+		label = gtk_label_new (_("CW Pitch"));
+		gtk_misc_set_alignment (GTK_MISC (label), 0.5, 0.5);
+
+		vbox = gtk_vbox_new (FALSE, 0);
+		gtk_box_pack_start (GTK_BOX (vbox), cwp, TRUE, TRUE, 0);
+		gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
+		gtk_box_pack_start (box, vbox, TRUE, TRUE, 0);
+	}
+
+	/* pbti */
+	if (rig_data_has_set_pbtin ()) {
+		pbti = gtk_vscale_new_with_range (-1.0, 0.0, 0.01);
+		gtk_range_set_value (GTK_RANGE (pbti), -1.0*rig_data_get_pbtin ());
+		g_signal_connect (pbti, "value-changed",
+				  G_CALLBACK (float_level_cb),
+				  GINT_TO_POINTER (RIG_LEVEL_PBT_IN));
+		g_signal_connect (pbti, "format-value",
+				  G_CALLBACK (float_format_value_cb),
+				  NULL);
+		label = gtk_label_new (_("PBT In"));
+		gtk_misc_set_alignment (GTK_MISC (label), 0.5, 0.5);
+
+		vbox = gtk_vbox_new (FALSE, 0);
+		gtk_box_pack_start (GTK_BOX (vbox), pbti, TRUE, TRUE, 0);
+		gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
+		gtk_box_pack_start (box, vbox, TRUE, TRUE, 0);
+	}
+
+	/* pbto */
+	if (rig_data_has_set_pbtout ()) {
+		pbto = gtk_vscale_new_with_range (-1.0, 0.0, 0.01);
+		gtk_range_set_value (GTK_RANGE (pbto), -1.0*rig_data_get_pbtout ());
+		g_signal_connect (pbto, "value-changed",
+				  G_CALLBACK (float_level_cb),
+				  GINT_TO_POINTER (RIG_LEVEL_PBT_OUT));
+		g_signal_connect (pbto, "format-value",
+				  G_CALLBACK (float_format_value_cb),
+				  NULL);
+		label = gtk_label_new (_("PBT Out"));
+		gtk_misc_set_alignment (GTK_MISC (label), 0.5, 0.5);
+
+		vbox = gtk_vbox_new (FALSE, 0);
+		gtk_box_pack_start (GTK_BOX (vbox), pbto, TRUE, TRUE, 0);
+		gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
+		gtk_box_pack_start (box, vbox, TRUE, TRUE, 0);
+	}
+
+
+	/* apf */
+	if (rig_data_has_set_apf ()) {
+		apf = gtk_vscale_new_with_range (-1.0, 0.0, 0.01);
+		gtk_range_set_value (GTK_RANGE (apf), -1.0*rig_data_get_apf ());
+		g_signal_connect (apf, "value-changed",
+				  G_CALLBACK (float_level_cb),
+				  GINT_TO_POINTER (RIG_LEVEL_APF));
+		g_signal_connect (apf, "format-value",
+				  G_CALLBACK (float_format_value_cb),
+				  NULL);
+		label = gtk_label_new (_("APF"));
+		gtk_misc_set_alignment (GTK_MISC (label), 0.5, 0.5);
+
+		vbox = gtk_vbox_new (FALSE, 0);
+		gtk_box_pack_start (GTK_BOX (vbox), apf, TRUE, TRUE, 0);
+		gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
+		gtk_box_pack_start (box, vbox, TRUE, TRUE, 0);
+	}
+
+	/* nrs */
+	if (rig_data_has_set_nr ()) {
+		nrs = gtk_vscale_new_with_range (-1.0, 0.0, 0.01);
+		gtk_range_set_value (GTK_RANGE (nrs), -1.0*rig_data_get_nr ());
+		g_signal_connect (nrs, "value-changed",
+				  G_CALLBACK (float_level_cb),
+				  GINT_TO_POINTER (RIG_LEVEL_NR));
+		g_signal_connect (nrs, "format-value",
+				  G_CALLBACK (float_format_value_cb),
+				  NULL);
+		label = gtk_label_new (_("N.R."));
+		gtk_misc_set_alignment (GTK_MISC (label), 0.5, 0.5);
+
+		vbox = gtk_vbox_new (FALSE, 0);
+		gtk_box_pack_start (GTK_BOX (vbox), nrs, TRUE, TRUE, 0);
+		gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
+		gtk_box_pack_start (box, vbox, TRUE, TRUE, 0);
+	}
+
+	/* not */
+	if (rig_data_has_set_notch ()) {
+		not = gtk_vscale_new_with_range (-3000, -500, 10.0);
+		gtk_range_set_value (GTK_RANGE (not), -1.0*rig_data_get_notch ());
+		g_signal_connect (not, "value-changed",
+				  G_CALLBACK (float_level_cb),
+				  GINT_TO_POINTER (RIG_LEVEL_NOTCHF));
+		g_signal_connect (not, "format-value",
+				  G_CALLBACK (sfreq_format_value_cb),
+				  NULL);
+		label = gtk_label_new (_("NOTCH"));
+		gtk_misc_set_alignment (GTK_MISC (label), 0.5, 0.5);
+
+		vbox = gtk_vbox_new (FALSE, 0);
+		gtk_box_pack_start (GTK_BOX (vbox), not, TRUE, TRUE, 0);
+		gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
+		gtk_box_pack_start (box, vbox, TRUE, TRUE, 0);
+	}
+
+	/* sql */
+	if (rig_data_has_set_sql ()) {
+		sql = gtk_vscale_new_with_range (-1.0, 0.0, 0.01);
+		gtk_range_set_value (GTK_RANGE (sql), -1.0*rig_data_get_sql ());
+		g_signal_connect (sql, "value-changed",
+				  G_CALLBACK (float_level_cb),
+				  GINT_TO_POINTER (RIG_LEVEL_SQL));
+		g_signal_connect (sql, "format-value",
+				  G_CALLBACK (float_format_value_cb),
+				  NULL);
+		label = gtk_label_new (_("Squelch"));
+		gtk_misc_set_alignment (GTK_MISC (label), 0.5, 0.5);
+
+		vbox = gtk_vbox_new (FALSE, 0);
+		gtk_box_pack_start (GTK_BOX (vbox), sql, TRUE, TRUE, 0);
+		gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
+		gtk_box_pack_start (box, vbox, TRUE, TRUE, 0);
+	}
+
+	/* bal */
+	if (rig_data_has_set_balance ()) {
+		bal = gtk_vscale_new_with_range (-1.0, 0.0, 0.01);
+		gtk_range_set_value (GTK_RANGE (bal), -1.0*rig_data_get_balance ());
+		g_signal_connect (bal, "value-changed",
+				  G_CALLBACK (float_level_cb),
+				  GINT_TO_POINTER (RIG_LEVEL_BALANCE));
+		g_signal_connect (bal, "format-value",
+				  G_CALLBACK (float_format_value_cb),
+				  NULL);
+		label = gtk_label_new (_("Balance"));
+		gtk_misc_set_alignment (GTK_MISC (label), 0.5, 0.5);
+
+		vbox = gtk_vbox_new (FALSE, 0);
+		gtk_box_pack_start (GTK_BOX (vbox), bal, TRUE, TRUE, 0);
+		gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
+		gtk_box_pack_start (box, vbox, TRUE, TRUE, 0);
+	}
+
+}
+
