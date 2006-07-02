@@ -64,13 +64,19 @@ static void create_controls   (GtkBox *box);
 static void float_level_cb    (GtkRange *range, gpointer data);
 static gchar *float_format_value_cb (GtkScale *scale, gdouble value);
 static gchar *sfreq_format_value_cb (GtkScale *scale, gdouble value);
+static gboolean rx_levels_update (gpointer data);
+
+
 
 static GtkWidget *dialog;
-
 static gboolean visible = FALSE;
+static guint timerid = 0;
 
-
+/* controls */
 static GtkWidget *afs,*rfs,*ifs,*cwp,*pbti,*pbto,*apf,*nrs,*not,*sql,*bal;
+
+/* handler ids */
+static gulong afi,rfi,ifi,cwi,pbii,pboi,api,nri,noi,sqi,bai;
 
 
 /** \brief Create level controls.
@@ -121,6 +127,9 @@ rig_gui_rx_create ()
 	visible = TRUE;
 
 	gtk_widget_show_all (dialog);
+
+	/* start callback */
+	timerid = g_timeout_add (1007, rx_levels_update, NULL);
 }
 
 
@@ -145,6 +154,8 @@ rx_window_destroy    (GtkWidget *widget,
 {
 
 	/* stop callback */
+	g_source_remove (timerid);
+	timerid = 0;
 
 	/* clear rx-active flag in rig-data */
 
@@ -258,14 +269,15 @@ create_controls   (GtkBox *box)
 {
 	GtkWidget *label;
 	GtkWidget *vbox;
+	guint count = 0;
 
 	/* afs */
 	if (rig_data_has_set_afg ()) {
 		afs = gtk_vscale_new_with_range (-1.0, 0.0, 0.01);
 		gtk_range_set_value (GTK_RANGE (afs), -1.0*rig_data_get_afg ());
-		g_signal_connect (afs, "value-changed",
-				  G_CALLBACK (float_level_cb),
-				  GINT_TO_POINTER (RIG_LEVEL_AF));
+		afi = g_signal_connect (afs, "value-changed",
+					G_CALLBACK (float_level_cb),
+					GINT_TO_POINTER (RIG_LEVEL_AF));
 		g_signal_connect (afs, "format-value",
 				  G_CALLBACK (float_format_value_cb),
 				  NULL);
@@ -276,15 +288,16 @@ create_controls   (GtkBox *box)
 		gtk_box_pack_start (GTK_BOX (vbox), afs, TRUE, TRUE, 0);
 		gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
 		gtk_box_pack_start (box, vbox, TRUE, TRUE, 0);
+		count++;
 	}
 
 	/* rfs */
 	if (rig_data_has_set_rfg ()) {
 		rfs = gtk_vscale_new_with_range (-1.0, 0.0, 0.01);
 		gtk_range_set_value (GTK_RANGE (rfs), -1.0*rig_data_get_rfg ());
-		g_signal_connect (rfs, "value-changed",
-				  G_CALLBACK (float_level_cb),
-				  GINT_TO_POINTER (RIG_LEVEL_RF));
+		rfi = g_signal_connect (rfs, "value-changed",
+					G_CALLBACK (float_level_cb),
+					GINT_TO_POINTER (RIG_LEVEL_RF));
 		g_signal_connect (rfs, "format-value",
 				  G_CALLBACK (float_format_value_cb),
 				  NULL);
@@ -295,18 +308,23 @@ create_controls   (GtkBox *box)
 		gtk_box_pack_start (GTK_BOX (vbox), rfs, TRUE, TRUE, 0);
 		gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
 		gtk_box_pack_start (box, vbox, TRUE, TRUE, 0);
+		count++;
 	}
 
 	/* ifs */
 	if (rig_data_has_set_ifs ()) {
-		/* FIXME */
-		ifs = gtk_vscale_new_with_range (-rig_data_get_ifsmax (),
-						 rig_data_get_ifsmax (),
-						 10.0);
+		if (rig_data_get_ifsmax () > 0) {
+			ifs = gtk_vscale_new_with_range (-rig_data_get_ifsmax (),
+							 rig_data_get_ifsmax (),
+							 10.0);
+		}
+		else {
+			ifs = gtk_vscale_new_with_range (-10000, 10000, 10);
+		}
 		gtk_range_set_value (GTK_RANGE (ifs), -1.0*rig_data_get_ifs ());
-		g_signal_connect (ifs, "value-changed",
-				  G_CALLBACK (float_level_cb),
-				  GINT_TO_POINTER (RIG_LEVEL_IF));
+		ifi = g_signal_connect (ifs, "value-changed",
+					G_CALLBACK (float_level_cb),
+					GINT_TO_POINTER (RIG_LEVEL_IF));
 		g_signal_connect (ifs, "format-value",
 				  G_CALLBACK (sfreq_format_value_cb),
 				  NULL);
@@ -317,15 +335,16 @@ create_controls   (GtkBox *box)
 		gtk_box_pack_start (GTK_BOX (vbox), ifs, TRUE, TRUE, 0);
 		gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
 		gtk_box_pack_start (box, vbox, TRUE, TRUE, 0);
+		count++;
 	}
 
 	/* cwp */
 	if (rig_data_has_set_cwpitch ()) {
 		cwp = gtk_vscale_new_with_range (-1000, -500, 10.0);
 		gtk_range_set_value (GTK_RANGE (cwp), -1.0*rig_data_get_cwpitch ());
-		g_signal_connect (cwp, "value-changed",
-				  G_CALLBACK (float_level_cb),
-				  GINT_TO_POINTER (RIG_LEVEL_CWPITCH));
+		cwi = g_signal_connect (cwp, "value-changed",
+					G_CALLBACK (float_level_cb),
+					GINT_TO_POINTER (RIG_LEVEL_CWPITCH));
 		g_signal_connect (cwp, "format-value",
 				  G_CALLBACK (sfreq_format_value_cb),
 				  NULL);
@@ -336,15 +355,16 @@ create_controls   (GtkBox *box)
 		gtk_box_pack_start (GTK_BOX (vbox), cwp, TRUE, TRUE, 0);
 		gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
 		gtk_box_pack_start (box, vbox, TRUE, TRUE, 0);
+		count++;
 	}
 
 	/* pbti */
 	if (rig_data_has_set_pbtin ()) {
 		pbti = gtk_vscale_new_with_range (-1.0, 0.0, 0.01);
 		gtk_range_set_value (GTK_RANGE (pbti), -1.0*rig_data_get_pbtin ());
-		g_signal_connect (pbti, "value-changed",
-				  G_CALLBACK (float_level_cb),
-				  GINT_TO_POINTER (RIG_LEVEL_PBT_IN));
+		pbii = g_signal_connect (pbti, "value-changed",
+					 G_CALLBACK (float_level_cb),
+					 GINT_TO_POINTER (RIG_LEVEL_PBT_IN));
 		g_signal_connect (pbti, "format-value",
 				  G_CALLBACK (float_format_value_cb),
 				  NULL);
@@ -355,15 +375,16 @@ create_controls   (GtkBox *box)
 		gtk_box_pack_start (GTK_BOX (vbox), pbti, TRUE, TRUE, 0);
 		gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
 		gtk_box_pack_start (box, vbox, TRUE, TRUE, 0);
+		count++;
 	}
 
 	/* pbto */
 	if (rig_data_has_set_pbtout ()) {
 		pbto = gtk_vscale_new_with_range (-1.0, 0.0, 0.01);
 		gtk_range_set_value (GTK_RANGE (pbto), -1.0*rig_data_get_pbtout ());
-		g_signal_connect (pbto, "value-changed",
-				  G_CALLBACK (float_level_cb),
-				  GINT_TO_POINTER (RIG_LEVEL_PBT_OUT));
+		pboi = g_signal_connect (pbto, "value-changed",
+					 G_CALLBACK (float_level_cb),
+					 GINT_TO_POINTER (RIG_LEVEL_PBT_OUT));
 		g_signal_connect (pbto, "format-value",
 				  G_CALLBACK (float_format_value_cb),
 				  NULL);
@@ -374,6 +395,7 @@ create_controls   (GtkBox *box)
 		gtk_box_pack_start (GTK_BOX (vbox), pbto, TRUE, TRUE, 0);
 		gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
 		gtk_box_pack_start (box, vbox, TRUE, TRUE, 0);
+		count++;
 	}
 
 
@@ -381,9 +403,9 @@ create_controls   (GtkBox *box)
 	if (rig_data_has_set_apf ()) {
 		apf = gtk_vscale_new_with_range (-1.0, 0.0, 0.01);
 		gtk_range_set_value (GTK_RANGE (apf), -1.0*rig_data_get_apf ());
-		g_signal_connect (apf, "value-changed",
-				  G_CALLBACK (float_level_cb),
-				  GINT_TO_POINTER (RIG_LEVEL_APF));
+		api = g_signal_connect (apf, "value-changed",
+					G_CALLBACK (float_level_cb),
+					GINT_TO_POINTER (RIG_LEVEL_APF));
 		g_signal_connect (apf, "format-value",
 				  G_CALLBACK (float_format_value_cb),
 				  NULL);
@@ -394,15 +416,16 @@ create_controls   (GtkBox *box)
 		gtk_box_pack_start (GTK_BOX (vbox), apf, TRUE, TRUE, 0);
 		gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
 		gtk_box_pack_start (box, vbox, TRUE, TRUE, 0);
+		count++;
 	}
 
 	/* nrs */
 	if (rig_data_has_set_nr ()) {
 		nrs = gtk_vscale_new_with_range (-1.0, 0.0, 0.01);
 		gtk_range_set_value (GTK_RANGE (nrs), -1.0*rig_data_get_nr ());
-		g_signal_connect (nrs, "value-changed",
-				  G_CALLBACK (float_level_cb),
-				  GINT_TO_POINTER (RIG_LEVEL_NR));
+		nri = g_signal_connect (nrs, "value-changed",
+					G_CALLBACK (float_level_cb),
+					GINT_TO_POINTER (RIG_LEVEL_NR));
 		g_signal_connect (nrs, "format-value",
 				  G_CALLBACK (float_format_value_cb),
 				  NULL);
@@ -413,15 +436,16 @@ create_controls   (GtkBox *box)
 		gtk_box_pack_start (GTK_BOX (vbox), nrs, TRUE, TRUE, 0);
 		gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
 		gtk_box_pack_start (box, vbox, TRUE, TRUE, 0);
+		count++;
 	}
 
 	/* not */
 	if (rig_data_has_set_notch ()) {
 		not = gtk_vscale_new_with_range (-3000, -500, 10.0);
 		gtk_range_set_value (GTK_RANGE (not), -1.0*rig_data_get_notch ());
-		g_signal_connect (not, "value-changed",
-				  G_CALLBACK (float_level_cb),
-				  GINT_TO_POINTER (RIG_LEVEL_NOTCHF));
+		noi = g_signal_connect (not, "value-changed",
+					G_CALLBACK (float_level_cb),
+					GINT_TO_POINTER (RIG_LEVEL_NOTCHF));
 		g_signal_connect (not, "format-value",
 				  G_CALLBACK (sfreq_format_value_cb),
 				  NULL);
@@ -432,15 +456,16 @@ create_controls   (GtkBox *box)
 		gtk_box_pack_start (GTK_BOX (vbox), not, TRUE, TRUE, 0);
 		gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
 		gtk_box_pack_start (box, vbox, TRUE, TRUE, 0);
+		count++;
 	}
 
 	/* sql */
 	if (rig_data_has_set_sql ()) {
 		sql = gtk_vscale_new_with_range (-1.0, 0.0, 0.01);
 		gtk_range_set_value (GTK_RANGE (sql), -1.0*rig_data_get_sql ());
-		g_signal_connect (sql, "value-changed",
-				  G_CALLBACK (float_level_cb),
-				  GINT_TO_POINTER (RIG_LEVEL_SQL));
+		sqi = g_signal_connect (sql, "value-changed",
+					G_CALLBACK (float_level_cb),
+					GINT_TO_POINTER (RIG_LEVEL_SQL));
 		g_signal_connect (sql, "format-value",
 				  G_CALLBACK (float_format_value_cb),
 				  NULL);
@@ -451,15 +476,16 @@ create_controls   (GtkBox *box)
 		gtk_box_pack_start (GTK_BOX (vbox), sql, TRUE, TRUE, 0);
 		gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
 		gtk_box_pack_start (box, vbox, TRUE, TRUE, 0);
+		count++;
 	}
 
 	/* bal */
 	if (rig_data_has_set_balance ()) {
 		bal = gtk_vscale_new_with_range (-1.0, 0.0, 0.01);
 		gtk_range_set_value (GTK_RANGE (bal), -1.0*rig_data_get_balance ());
-		g_signal_connect (bal, "value-changed",
-				  G_CALLBACK (float_level_cb),
-				  GINT_TO_POINTER (RIG_LEVEL_BALANCE));
+		bai = g_signal_connect (bal, "value-changed",
+					G_CALLBACK (float_level_cb),
+					GINT_TO_POINTER (RIG_LEVEL_BALANCE));
 		g_signal_connect (bal, "format-value",
 				  G_CALLBACK (float_format_value_cb),
 				  NULL);
@@ -470,7 +496,112 @@ create_controls   (GtkBox *box)
 		gtk_box_pack_start (GTK_BOX (vbox), bal, TRUE, TRUE, 0);
 		gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
 		gtk_box_pack_start (box, vbox, TRUE, TRUE, 0);
+		count++;
 	}
 
+	/* if no controls available, create a label
+	   telling user why window is empty
+	*/
+	if (count == 0) {
+		gtk_box_pack_start (box,
+				    gtk_label_new (_("Rig has no support.")),
+				    TRUE, TRUE, 0);
+	}
+
+}
+
+
+static gboolean
+rx_levels_update (gpointer data)
+{
+	/* afs */
+	if (rig_data_has_get_afg ()) {
+		g_signal_handler_block (afs, afi);
+		gtk_range_set_value (GTK_RANGE (afs), -1.0*rig_data_get_afg ());
+		g_signal_handler_unblock (afs, afi);
+	}
+
+
+	/* rfs */
+	if (rig_data_has_get_rfg ()) {
+		g_signal_handler_block (rfs, rfi);
+		gtk_range_set_value (GTK_RANGE (rfs), -1.0*rig_data_get_rfg ());
+		g_signal_handler_unblock (rfs, rfi);
+	}
+
+
+	/* ifs */
+	if (rig_data_has_get_ifs ()) {
+		g_signal_handler_block (ifs, ifi);
+		gtk_range_set_value (GTK_RANGE (ifs), -1.0*rig_data_get_ifs ());
+		g_signal_handler_unblock (ifs, ifi);
+	}
+
+
+	/* cwp */
+	if (rig_data_has_get_cwpitch ()) {
+		g_signal_handler_block (cwp, cwi);
+		gtk_range_set_value (GTK_RANGE (cwp), -1.0*rig_data_get_cwpitch ());
+		g_signal_handler_unblock (cwp, cwi);
+	}
+
+
+	/* pbti */
+	if (rig_data_has_get_pbtin ()) {
+		g_signal_handler_block (pbti, pbii);
+		gtk_range_set_value (GTK_RANGE (pbti), -1.0*rig_data_get_pbtin ());
+		g_signal_handler_unblock (pbti, pbii);
+	}
+
+
+	/* pbto */
+	if (rig_data_has_get_pbtout ()) {
+		g_signal_handler_block (pbto, pboi);
+		gtk_range_set_value (GTK_RANGE (pbto), -1.0*rig_data_get_pbtout ());
+		g_signal_handler_unblock (pbto, pboi);
+	}
+
+
+	/* apf */
+	if (rig_data_has_get_apf ()) {
+		g_signal_handler_block (apf, api);
+		gtk_range_set_value (GTK_RANGE (apf), -1.0*rig_data_get_apf ());
+		g_signal_handler_unblock (apf, api);
+	}
+
+
+	/* nrs */
+	if (rig_data_has_get_nr ()) {
+		g_signal_handler_block (nrs, nri);
+		gtk_range_set_value (GTK_RANGE (nrs), -1.0*rig_data_get_nr ());
+		g_signal_handler_unblock (nrs, nri);
+	}
+
+
+	/* not */
+	if (rig_data_has_get_notch ()) {
+		g_signal_handler_block (not, noi);
+		gtk_range_set_value (GTK_RANGE (not), -1.0*rig_data_get_notch ());
+		g_signal_handler_unblock (not, noi);
+	}
+
+
+	/* sql */
+	if (rig_data_has_get_sql ()) {
+		g_signal_handler_block (sql, sqi);
+		gtk_range_set_value (GTK_RANGE (sql), -1.0*rig_data_get_sql ());
+		g_signal_handler_unblock (sql, sqi);
+	}
+
+
+	/* bal */
+	if (rig_data_has_get_balance ()) {
+		g_signal_handler_block (bal, bai);
+		gtk_range_set_value (GTK_RANGE (bal), -1.0*rig_data_get_balance ());
+		g_signal_handler_unblock (bal, bai);
+	}
+
+
+	return TRUE;
 }
 
