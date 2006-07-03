@@ -1750,17 +1750,17 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 				rig_anomaly_raise (RIG_CMD_SET_MODE);
 			}
 
+			if (new->mode) {
+				get->mode = set->mode;
+				new->mode = FALSE;
+			}
+			if (new->pbw) {
+				get->pbw  = set->pbw;
+				new->pbw  = FALSE;
+			}
 			status = 1;
 		}
 
-		if (new->mode) {
-			get->mode = set->mode;
-			new->mode = FALSE;
-		}
-		if (new->pbw) {
-			get->pbw  = set->pbw;
-			new->pbw  = FALSE;
-		}
 
 		break;
 
