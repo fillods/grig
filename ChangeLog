@@ -1,3 +1,9 @@
+2006-07-06;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/rig-gui-tx.c:
+	Implemented TX levels with the exception of RFPOWER and ALC.
+	
+
 2006-07-02;	Alexandru Csete <csete@users.sourceforge.net>
 
 	* src/rig-daemon-check.c:
