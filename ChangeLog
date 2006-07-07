@@ -1,3 +1,15 @@
+2006-07-07;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* src/rig-data.[ch]:
+	Added missing support functions.
+
+	* src/rig-gui-tx.c:
+	Implemented RF power and ALC.
+
+	* src/rig-daemon.c:
+	Implemented missing commands.
+	
+
 2006-07-06;	Alexandru Csete <csete@users.sourceforge.net>
 
 	* src/rig-gui-tx.c:
