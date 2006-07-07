@@ -24,11 +24,13 @@
   
     You should have received a copy of the GNU General Public License
     along with this program; if not, visit http://www.fsf.org/
- 
- 
- 
- 
 */
+
+/**** FIXME: Add support for double-reading of some values. For example,
+             ALC and RF power should support both meter reading as well
+             as setting
+*/
+
 
 /**  \file    rig-data.h
  *   \ingroup shdata
@@ -232,7 +234,6 @@ void rig_data_set_xit     (shortfreq_t);
 void rig_data_set_agc     (int);
 void rig_data_set_att     (int);
 void rig_data_set_preamp  (int);
-void rig_data_set_power   (float);
 void rig_data_set_split   (int);
 void rig_data_set_max_rfpwr (float);
 
@@ -252,9 +253,7 @@ int              rig_data_get_agc      (void);
 int              rig_data_get_att      (void);
 int              rig_data_get_preamp   (void);
 int              rig_data_get_strength (void);
-float            rig_data_get_power    (void);
 float            rig_data_get_swr      (void);
-float            rig_data_get_alc      (void);
 freq_t           rig_data_get_fmin     (void);
 freq_t           rig_data_get_fmax     (void);
 shortfreq_t      rig_data_get_fstep    (void);
@@ -281,9 +280,7 @@ int   rig_data_has_get_agc      (void);
 int   rig_data_has_get_att      (void);
 int   rig_data_has_get_preamp   (void);
 int   rig_data_has_get_strength (void);
-int   rig_data_has_get_power    (void);
 int   rig_data_has_get_swr      (void);
-int   rig_data_has_get_alc      (void);
 int   rig_data_has_get_split    (void);
 
 
@@ -297,6 +294,21 @@ int   rig_data_has_set_xit      (void);
 int   rig_data_has_set_att      (void);
 int   rig_data_has_set_preamp   (void);
 int   rig_data_has_set_split    (void);
+
+
+
+/* ALC */
+float rig_data_get_alc      (void);
+void  rig_data_set_alc      (float);
+int   rig_data_has_get_alc  (void);
+int   rig_data_has_set_alc  (void);
+
+
+/* RF power */
+int   rig_data_has_get_power    (void);
+int   rig_data_has_set_power    (void);
+float rig_data_get_power    (void);
+void  rig_data_set_power   (float);
 
 
 /* AF gain */

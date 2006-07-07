@@ -690,6 +690,14 @@ rig_data_get_alc      ()
 }
 
 
+void
+rig_data_set_alc      (float alc)
+{
+	set.alc = alc;
+	new.alc = TRUE;
+}
+
+
 /** \brief Get availablility of signal strength readback.
  *  \return 1 if available, otherwise 0.
  *
@@ -860,6 +868,12 @@ rig_data_has_get_power    ()
 	return has_get.power;
 }
 
+int
+rig_data_has_set_power    ()
+{
+	return has_set.power;
+}
+
 
 
 /** \brief Get availability of reading SWR.
@@ -888,6 +902,11 @@ rig_data_has_get_alc      ()
 }
 
 
+int
+rig_data_has_set_alc      ()
+{
+	return has_set.alc;
+}
 
 /** \brief Get availablility of power status.
  *  \return 1 if available, otherwise 0.
