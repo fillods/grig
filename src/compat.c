@@ -99,15 +99,14 @@ get_pixmaps_dir   ()
 
 
 #ifdef G_OS_UNIX
-        dir = g_strconcat (PACKAGE_DATA_DIR, G_DIR_SEPARATOR_S,
-                           "pixmaps", NULL);
+        dir = g_strdup (PACKAGE_PIXMAPS_DIR);
 #else
 #  ifdef G_OS_WIN32
         gchar *buff = g_win32_get_package_installation_directory (NULL, NULL);
         dir = g_strconcat (buff, G_DIR_SEPARATOR_S,
                            "share", G_DIR_SEPARATOR_S,
-                           "grig", G_DIR_SEPARATOR_S,
-                           "pixmaps", NULL);
+                           "pixmaps", G_DIR_SEPARATOR_S,
+                           "grig", NULL);
         g_free (buff);
 #  endif
 #endif
