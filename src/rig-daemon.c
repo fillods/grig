@@ -252,7 +252,7 @@ static const rig_cmd_t DEF_RX_CYCLE[C_MAX_CMD_PER_CYCLE] = {
 	RIG_CMD_SET_PTT,
 	RIG_CMD_GET_PTT,
 	RIG_CMD_SET_COMP,
-	RIG_COM_GET_COMP,
+	RIG_CMD_GET_COMP,
 	RIG_CMD_VFO_TOGGLE,
 	RIG_CMD_VFO_COPY,
 	RIG_CMD_VFO_XCHG,
@@ -281,8 +281,8 @@ static const rig_cmd_t DEF_RX_CYCLE[C_MAX_CMD_PER_CYCLE] = {
 static const rig_cmd_t DEF_TX_CYCLE[C_MAX_CMD_PER_CYCLE] = {
 	RIG_CMD_SET_PTT,
 	RIG_CMD_SET_FREQ_1,
+	RIG_CMD_SET_POWER,
 	RIG_CMD_GET_POWER,
-	RIG_CMD_NONE,
 	RIG_CMD_NONE,
 	RIG_CMD_GET_SWR,
 	RIG_CMD_GET_ALC,
@@ -293,12 +293,12 @@ static const rig_cmd_t DEF_TX_CYCLE[C_MAX_CMD_PER_CYCLE] = {
 	RIG_CMD_GET_PTT,
 	RIG_CMD_NONE,
 	RIG_CMD_NONE,
-	RIG_CMD_NONE,
+	RIG_CMD_SET_POWER,
 	RIG_CMD_GET_POWER,
 	RIG_CMD_GET_SWR,
 	RIG_CMD_GET_PTT,
 	RIG_CMD_NONE,
-	RIG_CMD_NONE,
+	RIG_CMD_SET_ALC,
 	RIG_CMD_GET_ALC,
 	RIG_CMD_GET_FREQ_1,
 	RIG_CMD_NONE,
@@ -368,7 +368,7 @@ static const rig_cmd_t DEF_TX_CYCLE[C_MAX_CMD_PER_CYCLE] = {
 	RIG_CMD_GET_SWR,
 	RIG_CMD_NONE,
 	RIG_CMD_SET_COMP,
-	RIG_COM_GET_COMP
+	RIG_CMD_GET_COMP
 };
 
 
@@ -2075,6 +2075,35 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 
 		break;
 
+		/* set ALC */
+	case RIG_CMD_SET_ALC:
+
+		/* check whether command is available */
+		if (has_set->alc && new->alc) {
+			value_t val;
+
+			val.f = set->alc;
+
+			/* try to execute command */
+			retcode = rig_set_level (myrig, RIG_VFO_CURR, RIG_LEVEL_ALC, val);
+
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_SET_ALC:\n%s"),
+						  __FUNCTION__, ERR_TO_STR[abs(retcode)]);
+
+				rig_anomaly_raise (RIG_CMD_SET_ALC);
+			}
+
+			/* reset flag */
+			new->alc = FALSE;
+
+			status = 1;
+		}
+
+		break;
+
 		/* set LOCK status */
 	case RIG_CMD_SET_LOCK:
 
@@ -2749,51 +2778,387 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 		break;
 
 	case RIG_CMD_SET_KEYSPD:
+		/* check whether command is available */
+		if (has_set->keyspd && new->keyspd) {
+			value_t val;
+
+			val.i = set->keyspd;
+
+			/* try to execute command */
+			retcode = rig_set_level (myrig, RIG_VFO_CURR, RIG_LEVEL_KEYSPD, val);
+
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_SET_KEYSPD:\n%s"),
+						  __FUNCTION__, ERR_TO_STR[abs(retcode)]);
+
+				rig_anomaly_raise (RIG_CMD_SET_KEYSPD);
+			}
+
+			/* reset flag */
+			new->keyspd = FALSE;
+			get->keyspd = set->keyspd;
+
+			status = 1;
+		}
 		break;
 
 	case RIG_CMD_GET_KEYSPD:
+		/* check whether command is available */
+		if (has_get->keyspd) {
+			value_t val;
+
+			/* try to execute command */
+			retcode = rig_get_level (myrig, RIG_VFO_CURR, RIG_LEVEL_KEYSPD, &val);
+
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_GET_KEYSPD:\n%s"),
+						  __FUNCTION__, ERR_TO_STR[abs(retcode)]);
+
+				rig_anomaly_raise (RIG_CMD_GET_KEYSPD);
+			}
+			else {
+				get->keyspd = val.i;
+			}
+
+			status = 1;
+		}
 		break;
 
 	case RIG_CMD_SET_BKINDEL:
+		/* check whether command is available */
+		if (has_set->bkindel && new->bkindel) {
+			value_t val;
+
+			val.i = set->bkindel;
+
+			/* try to execute command */
+			retcode = rig_set_level (myrig, RIG_VFO_CURR, RIG_LEVEL_BKINDL, val);
+
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_SET_BKINDEL:\n%s"),
+						  __FUNCTION__, ERR_TO_STR[abs(retcode)]);
+
+				rig_anomaly_raise (RIG_CMD_SET_BKINDEL);
+			}
+
+			/* reset flag */
+			new->bkindel = FALSE;
+			get->bkindel = set->bkindel;
+
+			status = 1;
+		}
 		break;
 
 	case RIG_CMD_GET_BKINDEL:
+		/* check whether command is available */
+		if (has_get->bkindel) {
+			value_t val;
+
+			/* try to execute command */
+			retcode = rig_get_level (myrig, RIG_VFO_CURR, RIG_LEVEL_BKINDL, &val);
+
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_GET_BKINDEL:\n%s"),
+						  __FUNCTION__, ERR_TO_STR[abs(retcode)]);
+
+				rig_anomaly_raise (RIG_CMD_GET_BKINDEL);
+			}
+			else {
+				get->bkindel = val.i;
+			}
+
+			status = 1;
+		}
 		break;
 
 	case RIG_CMD_SET_BALANCE:
+		/* check whether command is available */
+		if (has_set->balance && new->balance) {
+			value_t val;
+
+			val.f = set->balance;
+
+			/* try to execute command */
+			retcode = rig_set_level (myrig, RIG_VFO_CURR, RIG_LEVEL_BALANCE, val);
+
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_SET_BALANCE:\n%s"),
+						  __FUNCTION__, ERR_TO_STR[abs(retcode)]);
+
+				rig_anomaly_raise (RIG_CMD_SET_BALANCE);
+			}
+
+			/* reset flag */
+			new->balance = FALSE;
+			get->balance = set->balance;
+
+			status = 1;
+		}
 		break;
 
 	case RIG_CMD_GET_BALANCE:
+		/* check whether command is available */
+		if (has_get->balance) {
+			value_t val;
+
+			/* try to execute command */
+			retcode = rig_get_level (myrig, RIG_VFO_CURR, RIG_LEVEL_BALANCE, &val);
+
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_GET_BALANCE:\n%s"),
+						  __FUNCTION__, ERR_TO_STR[abs(retcode)]);
+
+				rig_anomaly_raise (RIG_CMD_GET_BALANCE);
+			}
+			else {
+				get->balance = val.f;
+			}
+
+			status = 1;
+		}
 		break;
 
 	case RIG_CMD_SET_VOXDEL:
+		/* check whether command is available */
+		if (has_set->voxdel && new->voxdel) {
+			value_t val;
+
+			val.i = set->voxdel;
+
+			/* try to execute command */
+			retcode = rig_set_level (myrig, RIG_VFO_CURR, RIG_LEVEL_VOX, val);
+
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_SET_VOXDEL:\n%s"),
+						  __FUNCTION__, ERR_TO_STR[abs(retcode)]);
+
+				rig_anomaly_raise (RIG_CMD_SET_VOXDEL);
+			}
+
+			/* reset flag */
+			new->voxdel = FALSE;
+			get->voxdel = set->voxdel;
+
+			status = 1;
+		}
 		break;
 
 	case RIG_CMD_GET_VOXDEL:
+		/* check whether command is available */
+		if (has_get->voxdel) {
+			value_t val;
+
+			/* try to execute command */
+			retcode = rig_get_level (myrig, RIG_VFO_CURR, RIG_LEVEL_VOX, &val);
+
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_GET_VOXDEL:\n%s"),
+						  __FUNCTION__, ERR_TO_STR[abs(retcode)]);
+
+				rig_anomaly_raise (RIG_CMD_GET_VOXDEL);
+			}
+			else {
+				get->voxdel = val.i;
+			}
+
+			status = 1;
+		}
 		break;
 
 	case RIG_CMD_SET_VOXGAIN:
+		/* check whether command is available */
+		if (has_set->voxg && new->voxg) {
+			value_t val;
+
+			val.f = set->voxg;
+
+			/* try to execute command */
+			retcode = rig_set_level (myrig, RIG_VFO_CURR, RIG_LEVEL_VOXGAIN, val);
+
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_SET_VOXGAIN:\n%s"),
+						  __FUNCTION__, ERR_TO_STR[abs(retcode)]);
+
+				rig_anomaly_raise (RIG_CMD_SET_VOXGAIN);
+			}
+
+			/* reset flag */
+			new->voxg = FALSE;
+			get->voxg = set->voxg;
+
+			status = 1;
+		}
 		break;
 
 	case RIG_CMD_GET_VOXGAIN:
+		/* check whether command is available */
+		if (has_get->voxg) {
+			value_t val;
+
+			/* try to execute command */
+			retcode = rig_get_level (myrig, RIG_VFO_CURR, RIG_LEVEL_VOXGAIN, &val);
+
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_GET_VOXGAIN:\n%s"),
+						  __FUNCTION__, ERR_TO_STR[abs(retcode)]);
+
+				rig_anomaly_raise (RIG_CMD_GET_VOXGAIN);
+			}
+			else {
+				get->voxg = val.f;
+			}
+
+			status = 1;
+		}
 		break;
 
 	case RIG_CMD_SET_ANTIVOX:
+		/* check whether command is available */
+		if (has_set->antivox && new->antivox) {
+			value_t val;
+
+			val.f = set->antivox;
+
+			/* try to execute command */
+			retcode = rig_set_level (myrig, RIG_VFO_CURR, RIG_LEVEL_ANTIVOX, val);
+
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_SET_ANTIVOX:\n%s"),
+						  __FUNCTION__, ERR_TO_STR[abs(retcode)]);
+
+				rig_anomaly_raise (RIG_CMD_SET_ANTIVOX);
+			}
+
+			/* reset flag */
+			new->antivox = FALSE;
+			get->antivox = set->antivox;
+
+			status = 1;
+		}
 		break;
 
 	case RIG_CMD_GET_ANTIVOX:
+		/* check whether command is available */
+		if (has_get->antivox) {
+			value_t val;
+
+			/* try to execute command */
+			retcode = rig_get_level (myrig, RIG_VFO_CURR, RIG_LEVEL_ANTIVOX, &val);
+
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_GET_ANTIVOX:\n%s"),
+						  __FUNCTION__, ERR_TO_STR[abs(retcode)]);
+
+				rig_anomaly_raise (RIG_CMD_GET_ANTIVOX);
+			}
+			else {
+				get->antivox = val.f;
+			}
+
+			status = 1;
+		}
 		break;
 
 	case RIG_CMD_SET_MICGAIN:
+		/* check whether command is available */
+		if (has_set->micg && new->micg) {
+			value_t val;
+
+			val.f = set->micg;
+
+			/* try to execute command */
+			retcode = rig_set_level (myrig, RIG_VFO_CURR, RIG_LEVEL_MICGAIN, val);
+
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_SET_MICGAIN:\n%s"),
+						  __FUNCTION__, ERR_TO_STR[abs(retcode)]);
+
+				rig_anomaly_raise (RIG_CMD_SET_MICGAIN);
+			}
+
+			/* reset flag */
+			new->micg = FALSE;
+			get->micg = set->micg;
+
+			status = 1;
+		}
 		break;
 
 	case RIG_CMD_GET_MICGAIN:
+		/* check whether command is available */
+		if (has_get->micg) {
+			value_t val;
+
+			/* try to execute command */
+			retcode = rig_get_level (myrig, RIG_VFO_CURR, RIG_LEVEL_MICGAIN, &val);
+
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_GET_MICGAIN:\n%s"),
+						  __FUNCTION__, ERR_TO_STR[abs(retcode)]);
+
+				rig_anomaly_raise (RIG_CMD_GET_MICGAIN);
+			}
+			else {
+				get->micg = val.f;
+			}
+
+			status = 1;
+		}
 		break;
 
 	case RIG_CMD_SET_COMP:
 		break;
 
-	case RIG_COM_GET_COMP:
+	case RIG_CMD_GET_COMP:
+		/* check whether command is available */
+		if (has_get->comp) {
+			value_t val;
+
+			/* try to execute command */
+			retcode = rig_get_level (myrig, RIG_VFO_CURR, RIG_LEVEL_COMP, &val);
+
+			/* raise anomaly if execution did not succeed */
+			if (retcode != RIG_OK) {
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Failed to execute RIG_CMD_GET_COMP:\n%s"),
+						  __FUNCTION__, ERR_TO_STR[abs(retcode)]);
+
+				rig_anomaly_raise (RIG_CMD_GET_COMP);
+			}
+			else {
+				get->comp = val.f;
+			}
+
+			status = 1;
+		}
 		break;
 
 		/* bug in grig! */

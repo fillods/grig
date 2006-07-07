@@ -114,12 +114,13 @@ typedef enum {
 	RIG_CMD_SET_MICGAIN,
 	RIG_CMD_GET_MICGAIN,
 	RIG_CMD_SET_COMP,
-	RIG_COM_GET_COMP,
+	RIG_CMD_GET_COMP,
 
 	RIG_CMD_GET_STRENGTH,  /*!< Command to get signal strength. */
 	RIG_CMD_SET_POWER,     /*!< Command to set TX power. */
 	RIG_CMD_GET_POWER,     /*!< Command to get TX power. */
 	RIG_CMD_GET_SWR,       /*!< Command to get SWR level. */
+	RIG_CMD_SET_ALC,       /*!< Command to set ALC level. */
 	RIG_CMD_GET_ALC,       /*!< Command to get ALC level. */
 
 	RIG_CMD_GET_LOCK,      /*!< Command to get LOCK status. */
