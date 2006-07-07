@@ -8,6 +8,12 @@
 
 	* src/rig-daemon.c:
 	Implemented missing commands.
+
+	* src/grig-about.c:
+	Updated to use GtkAboutDialog.
+
+	* src/compat.c:
+	Fix pixmaps directory.
 	
 
 2006-07-06;	Alexandru Csete <csete@users.sourceforge.net>

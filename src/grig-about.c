@@ -46,7 +46,7 @@
 
 
 const gchar *authors[] = {
-	"Alexandru Csete, OZ9AEC (design and development)",
+	"Alexandru Csete, OZ9AEC.",
 	NULL
 };
 
@@ -93,7 +93,7 @@ grig_about_run ()
 	gtk_about_dialog_set_website_label (GTK_ABOUT_DIALOG (dialog),
 					    _("Grig Website"));
 	gtk_about_dialog_set_license (GTK_ABOUT_DIALOG (dialog), license);
-	iconfile = icon_file_name ("grig-logo.png");
+	iconfile = pixmap_file_name ("grig-logo.png");
 	icon = gdk_pixbuf_new_from_file (iconfile, NULL);
 	gtk_about_dialog_set_logo (GTK_ABOUT_DIALOG (dialog), icon);
 	g_free (iconfile);
