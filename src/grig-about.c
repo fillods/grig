@@ -40,16 +40,34 @@
 #ifdef HAVE_CONFIG_H
 #  include <config.h>
 #endif
+#include "compat.h"
 #include "grig-about.h"
 
 
-extern GtkWidget   *grigapp;    /* defined in main.c */
+
+const gchar *authors[] = {
+	"Alexandru Csete, OZ9AEC (design and development)",
+	NULL
+};
 
 
-static GtkWidget *grig_about_about_create   (void);
-static GtkWidget *grig_about_credits_create (void);
-static GtkWidget *grig_about_sysinfo_create (void);
-static GtkWidget *grig_about_logo_create    (void);
+const gchar license[] = N_("Copyright (C) 2001-2006 Alexandru Csete <alex@oz9aec.dk>\n\n"\
+			   "Grig is free software; you can redistribute it and/or modify\n"\
+			   "it under the terms of the GNU General Public License as published\n"\
+			   "by the Free Software Foundation; either version 2 of the License,\n"\
+			   "or (at your option) any later version.\n\n"\
+			   "This program is distributed in the hope that it will be useful,\n"\
+			   "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"\
+			   "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the\n"\
+			   "GNU Library General Public License for more details.\n\n"\
+			   "You should have received a copy of the GNU General Public License\n"\
+			   "along with this program; if not, you can find a copy on the FSF\n"\
+			   "website http://www.fsf.org/ or you can write to the\n\n"
+			   "Free Software Foundation, Inc.\n"\
+			   "59 Temple Place - Suite 330\n"
+			   "Boston\n"\
+			   "MA 02111-1307\n"
+			   "USA.\n");
 
 
 
@@ -60,146 +78,36 @@ static GtkWidget *grig_about_logo_create    (void);
 void
 grig_about_run ()
 {
-
 	GtkWidget *dialog;
-	GtkWidget *notebook;
-
-	dialog = gtk_dialog_new_with_buttons (_("About GRIG"), GTK_WINDOW (grigapp),
-					      GTK_DIALOG_DESTROY_WITH_PARENT,
-					      GTK_STOCK_CLOSE, GTK_RESPONSE_NONE, NULL);
-
-	/* Ensure that the dialog box is destroyed when the user responds. */
-	g_signal_connect_swapped (dialog, "response", G_CALLBACK (gtk_widget_destroy), dialog);
-
-	/* create notebook and add pages */
-	notebook = gtk_notebook_new ();
-	gtk_notebook_append_page (GTK_NOTEBOOK (notebook), grig_about_about_create (), 
-				  gtk_label_new (_("About")));
-/* 	gtk_notebook_append_page (GTK_NOTEBOOK (notebook), grig_about_credits_create (),  */
-/* 				  gtk_label_new (_("Credits"))); */
-/* 	gtk_notebook_append_page (GTK_NOTEBOOK (notebook), grig_about_sysinfo_create (),  */
-/* 				  gtk_label_new (_("System Info"))); */
+	GdkPixbuf *icon;
+	gchar     *iconfile;
 
 
-	/* Add the logo and notebook; show everything we've added to the dialog. */
-	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox),
-			    grig_about_logo_create (), FALSE, FALSE, 10);
-	gtk_box_pack_end   (GTK_BOX (GTK_DIALOG (dialog)->vbox), notebook, FALSE, FALSE, 5);
-	gtk_widget_show_all (dialog);
+	dialog = gtk_about_dialog_new ();
+	gtk_about_dialog_set_name (GTK_ABOUT_DIALOG (dialog), _("Grig"));
+	gtk_about_dialog_set_version (GTK_ABOUT_DIALOG (dialog), VERSION);
+	gtk_about_dialog_set_copyright (GTK_ABOUT_DIALOG (dialog),
+					_("Copyright (C) 2001-2006 Alexandru Csete OZ9AEC"));
+	gtk_about_dialog_set_website (GTK_ABOUT_DIALOG (dialog),
+				      "http://www.oz9aec.dk/software/grig");
+	gtk_about_dialog_set_website_label (GTK_ABOUT_DIALOG (dialog),
+					    _("Grig Website"));
+	gtk_about_dialog_set_license (GTK_ABOUT_DIALOG (dialog), license);
+	iconfile = icon_file_name ("grig-logo.png");
+	icon = gdk_pixbuf_new_from_file (iconfile, NULL);
+	gtk_about_dialog_set_logo (GTK_ABOUT_DIALOG (dialog), icon);
+	g_free (iconfile);
+	g_object_unref (icon);
+
+	gtk_about_dialog_set_authors (GTK_ABOUT_DIALOG (dialog), authors);
+	gtk_about_dialog_set_translator_credits (GTK_ABOUT_DIALOG (dialog),
+					 _("translator-credits"));
+
+	gtk_dialog_run (GTK_DIALOG (dialog));
+
+	gtk_widget_destroy (dialog);
 
 }
 
 
 
-/** \brief Create 'about' page.
- *  \return A GtkWidget containing the page.
- *
- * This function creates the first notebook page containing some
- * very basic information about GRIG.
- */
-static GtkWidget *
-grig_about_about_create ()
-{
-	GtkWidget *vbox;
-	GtkWidget *label;
-	gchar     *text;
-
-
-	vbox = gtk_vbox_new (FALSE, 0);
-
-	/* program label and version */
-	label = gtk_label_new (NULL);
-	text = g_strdup_printf ("<b><big><big>%s %s</big></big></b>", _("Grig"), VERSION);
-	gtk_label_set_markup (GTK_LABEL (label), text);
-	g_free (text);
-	gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 10);
-
-	/* copyright info */
-	label = gtk_label_new (_("Copyright 2001-2006 Alexandru Csete, OZ9AEC"));
-	gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 5);
-
-	/* info */
-	label = gtk_label_new (_("Grig is a graphical user interface for the Hamradio "\
-				 "Control Libraries.\n"\
-				 "Grig is free software licensed under the terms and "\
-				 "conditions of the\n"\
-				 "GNU General Public License version 2 or later.\n\n"\
-				 "Comments, questions and bug reports can be made on "
-				 "the project\npage at:"));
-	gtk_misc_set_padding (GTK_MISC (label), 5, 0);
-	gtk_misc_set_alignment (GTK_MISC (label), 0.5, 0.5);
-	gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
-
-
-	label = gtk_label_new (_("http://sourceforge.net/projects/groundstation"));
-	gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
-
-
-
-	return vbox;
-}
-
-
-/** \brief Create 'credits' page.
- *  \return A GtkWidget containing the page.
- *
- * This function creates the second notebook page containing the
- * credits information.
- */
-static GtkWidget *
-grig_about_credits_create ()
-{
-	GtkWidget *vbox;
-	GtkWidget *label;
-
-	vbox = gtk_vbox_new (FALSE, 0);
-
-	return vbox;
-}
-
-/** \brief Create 'sysinfo' page.
- *  \return A GtkWidget containing the page.
- *
- * This function creates the third notebook page containing the
- * sysinfo information.
- */
-static GtkWidget *
-grig_about_sysinfo_create ()
-{
-	GtkWidget *vbox;
-	GtkWidget *table;
-
-
-	table = gtk_table_new (10, 3, FALSE);
-
-
-	vbox = gtk_vbox_new (FALSE, 0);
-	gtk_box_pack_start_defaults (GTK_BOX (vbox), table);
-				    
-	return vbox;
-}
-
-
-
-/** \brief Create grig log page.
- *  \return A GtkWidget containing the logo.
- *
- * This function creates the grig logo and returns it as a GtkWidget.
- *
- * \bug PIXMAP_DIR should be defined as constant somewhere!
- */
-static GtkWidget *
-grig_about_logo_create ()
-{
-	GtkWidget *logo;
-	gchar     *name;
-
-	name = g_strconcat (PACKAGE_PIXMAPS_DIR, G_DIR_SEPARATOR_S,
-			    "grig-logo.png", NULL);
-
-	logo = gtk_image_new_from_file (name);
-
-	g_free (name);
-
-	return logo;
-}
