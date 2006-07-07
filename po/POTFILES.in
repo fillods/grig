@@ -1,5 +1,5 @@
 # List of source files containing translatable strings.
-
+[encoding: UTF-8]
 src/compat.c
 src/grig-about.c
 src/grig-config.c
