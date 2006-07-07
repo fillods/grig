@@ -100,7 +100,7 @@ containing both time, source and level of the message. Each field is separated
 with ;; so you can also import the log file into a spread sheet for further analysis.
 
 .SH "FEATURES"
-.TP
+.PP
 Grig @VERSION@ supports the most commonly used CAT command implemented by hamlib. These
 include frequency, mode, filter and various level settings. Please note that not all
 features have been thoroughly tested since I don't have access to any modern high-end
