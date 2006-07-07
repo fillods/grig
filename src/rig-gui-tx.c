@@ -40,8 +40,6 @@
  * - RIG_LEVEL_ANTIVOX   RW
  *
  *
- * FIXME: ALC RFPOWER not implemented
- *
  * Note: In Gtk+ vertical sliders have their minimum on top (nice...)
  * so all values have to be inverted.
  */
@@ -199,9 +197,9 @@ float_level_cb (GtkRange *range, gpointer data)
 	switch (level) {
 
 		/* FIXME */
-/* 	case RIG_LEVEL_RFPOWER: */
-/* 		rig_data_set_power (value); */
-/* 		break; */
+	case RIG_LEVEL_RFPOWER:
+		rig_data_set_power (value);
+		break;
 
 	case RIG_LEVEL_MICGAIN:
 		rig_data_set_micg (value);
@@ -215,9 +213,9 @@ float_level_cb (GtkRange *range, gpointer data)
 		rig_data_set_comp ( value);
 		break;
 
-/* 	case RIG_LEVEL_ALC: */
-/* 		rig_data_set_pbtin (value); */
-/* 		break; */
+	case RIG_LEVEL_ALC:
+		rig_data_set_alc (value);
+		break;
 
 	case RIG_LEVEL_BKINDL:
 		rig_data_set_bkindel ((int) value);
@@ -316,10 +314,46 @@ create_controls   (GtkBox *box)
 	}
 
 	/* rfs */
-	/* FIXME */
+	if (rig_data_has_set_power ()) {
+		rfs = gtk_vscale_new_with_range (-1.0, 0.0, 0.01);
+		gtk_range_set_value (GTK_RANGE (rfs), -1.0*rig_data_get_power ());
+		g_signal_connect (rfs, "value-changed",
+				  G_CALLBACK (float_level_cb),
+				  GINT_TO_POINTER (RIG_LEVEL_RFPOWER));
+		g_signal_connect (rfs, "format-value",
+				  G_CALLBACK (float_format_value_cb),
+				  NULL);
+		label = gtk_label_new (_("POWER"));
+		gtk_misc_set_alignment (GTK_MISC (label), 0.5, 0.5);
+
+		vbox = gtk_vbox_new (FALSE, 0);
+		gtk_box_pack_start (GTK_BOX (vbox), rfs, TRUE, TRUE, 0);
+		gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
+		gtk_box_pack_start (box, vbox, TRUE, TRUE, 0);
+		count++;
+	}
+
 
 	/* als */
-	/* FIXME */
+	if (rig_data_has_set_alc ()) {
+		als = gtk_vscale_new_with_range (-1.0, 0.0, 0.01);
+		gtk_range_set_value (GTK_RANGE (als), -1.0*rig_data_get_alc ());
+		g_signal_connect (als, "value-changed",
+				  G_CALLBACK (float_level_cb),
+				  GINT_TO_POINTER (RIG_LEVEL_ALC));
+		g_signal_connect (als, "format-value",
+				  G_CALLBACK (float_format_value_cb),
+				  NULL);
+		label = gtk_label_new (_("ALC"));
+		gtk_misc_set_alignment (GTK_MISC (label), 0.5, 0.5);
+
+		vbox = gtk_vbox_new (FALSE, 0);
+		gtk_box_pack_start (GTK_BOX (vbox), als, TRUE, TRUE, 0);
+		gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
+		gtk_box_pack_start (box, vbox, TRUE, TRUE, 0);
+		count++;
+	}
+
 
 	/* mgs */
 	if (rig_data_has_set_micg ()) {
