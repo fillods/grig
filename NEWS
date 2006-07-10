@@ -1,7 +1,5 @@
 FUTURE RELEASES:
 
-x Added receiver and transmitter level controls.
-x Added CW controls.
 x Software Memory Manager.
 x Software Scan.
 x Band Map.
@@ -14,12 +12,15 @@ x Add the possibility to suspend rig command execution
   without shutting down the daemon, ie. without closing
   connection to the rig. The statusbar contains a small
   indicator showing the status.
+x Auto-Tune: When mouse button is pressed and held down, grig will
+  start tuning automatically.
+x Special functions (RIG_FUNC_XXX).
+x Support for external tuning knobs: Powermate, other?
 
 
 GRIG 0.7.0:
 
-x Added receiver and transmitter level controls.
-x Added CW controls.
+- Added receiver and transmitter level controls.
 - Fixed bug that caused installation errors when using autoconf 2.59e.
 - Pixmaps are now installed to /usr/local/share/pixmaps/grig instead of
   /usr/local/share/grig/pixmaps by default (related to the above bug).
