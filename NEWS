@@ -16,10 +16,14 @@ x Add the possibility to suspend rig command execution
   indicator showing the status.
 
 
+GRIG 0.7.1:
+
+- A bug that caused installation to fail has been fixed (#1523367).
+
+
 GRIG 0.7.0:
 
-x Added receiver and transmitter level controls.
-x Added CW controls.
+- Added receiver and transmitter level controls.
 - Fixed bug that caused installation errors when using autoconf 2.59e.
 - Pixmaps are now installed to /usr/local/share/pixmaps/grig instead of
   /usr/local/share/grig/pixmaps by default (related to the above bug).
