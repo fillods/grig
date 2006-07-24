@@ -16,6 +16,11 @@ x Support for external tuning knobs: Powermate, other?
 x Service layer watchdog.
 
 
+GRIG 0.7.1:
+
+- A bug that caused installation to fail has been fixed (#1523367).
+
+
 GRIG 0.7.0:
 
 - Added receiver and transmitter level controls.
