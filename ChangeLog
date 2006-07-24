@@ -1,3 +1,13 @@
+2006-07-24;	Alexandru Csete <csete@users.sourceforge.net>
+
+	* Makefile.am:
+	Explicitly create $(DESTDIR)$(pkgdatadir) before trying to install.
+	This fixes bug #1523367.
+
+	* configure.ac:
+	Updated version number.
+	
+
 2006-07-07;	Alexandru Csete <csete@users.sourceforge.net>
 
 	* src/rig-data.[ch]:
