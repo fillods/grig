@@ -161,6 +161,12 @@ static const rig_cmd_t DEF_RX_CYCLE[C_MAX_CMD_PER_CYCLE] = {
 	RIG_CMD_NONE,
 	RIG_CMD_NONE,
 	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
+	RIG_CMD_NONE,
 	RIG_CMD_NONE
 };
 
@@ -205,6 +211,8 @@ static const rig_cmd_t DEF_RX_CYCLE[C_MAX_CMD_PER_CYCLE] = {
 	RIG_CMD_GET_PTT,
 	RIG_CMD_SET_IFS,
 	RIG_CMD_GET_IFS,
+	RIG_CMD_SET_AF,
+	RIG_CMD_GET_AF,
 	RIG_CMD_GET_STRENGTH,
 	RIG_CMD_SET_FREQ_1,
 	RIG_CMD_GET_FREQ_1,
@@ -226,6 +234,8 @@ static const rig_cmd_t DEF_RX_CYCLE[C_MAX_CMD_PER_CYCLE] = {
 	RIG_CMD_GET_PBT_IN,
 	RIG_CMD_SET_PBT_OUT,
 	RIG_CMD_GET_PBT_OUT,
+	RIG_CMD_SET_AF,
+	RIG_CMD_GET_AF,
 	RIG_CMD_GET_STRENGTH,
 	RIG_CMD_SET_FREQ_1,
 	RIG_CMD_GET_FREQ_1,
@@ -256,6 +266,8 @@ static const rig_cmd_t DEF_RX_CYCLE[C_MAX_CMD_PER_CYCLE] = {
 	RIG_CMD_VFO_TOGGLE,
 	RIG_CMD_VFO_COPY,
 	RIG_CMD_VFO_XCHG,
+	RIG_CMD_SET_AF,
+	RIG_CMD_GET_AF,
 	RIG_CMD_GET_STRENGTH,
 	RIG_CMD_SET_FREQ_1,
 	RIG_CMD_GET_FREQ_1,
@@ -284,6 +296,7 @@ static const rig_cmd_t DEF_TX_CYCLE[C_MAX_CMD_PER_CYCLE] = {
 	RIG_CMD_SET_POWER,
 	RIG_CMD_GET_POWER,
 	RIG_CMD_NONE,
+	RIG_CMD_NONE,
 	RIG_CMD_GET_SWR,
 	RIG_CMD_GET_ALC,
 	RIG_CMD_NONE,
@@ -302,6 +315,7 @@ static const rig_cmd_t DEF_TX_CYCLE[C_MAX_CMD_PER_CYCLE] = {
 	RIG_CMD_GET_ALC,
 	RIG_CMD_GET_FREQ_1,
 	RIG_CMD_NONE,
+	RIG_CMD_NONE,
 	RIG_CMD_SET_POWER,
 	RIG_CMD_GET_PTT,
 	RIG_CMD_NONE,
@@ -322,6 +336,7 @@ static const rig_cmd_t DEF_TX_CYCLE[C_MAX_CMD_PER_CYCLE] = {
 	RIG_CMD_SET_PTT,
 	RIG_CMD_SET_FREQ_1,
 	RIG_CMD_NONE,
+	RIG_CMD_NONE,
 	RIG_CMD_GET_ALC,
 	RIG_CMD_GET_POWER,
 	RIG_CMD_GET_SWR,
@@ -337,6 +352,7 @@ static const rig_cmd_t DEF_TX_CYCLE[C_MAX_CMD_PER_CYCLE] = {
 	RIG_CMD_SET_FREQ_1,
 	RIG_CMD_GET_PTT,
 	RIG_CMD_NONE,
+	RIG_CMD_NONE,
 	RIG_CMD_GET_POWER,
 	RIG_CMD_NONE,
 	RIG_CMD_NONE,
@@ -345,6 +361,7 @@ static const rig_cmd_t DEF_TX_CYCLE[C_MAX_CMD_PER_CYCLE] = {
 	RIG_CMD_NONE,
 	RIG_CMD_NONE,
 	RIG_CMD_GET_ALC,
+	RIG_CMD_NONE,
 	RIG_CMD_NONE,
 	RIG_CMD_SET_PTT,
 	RIG_CMD_SET_POWER,
@@ -366,6 +383,7 @@ static const rig_cmd_t DEF_TX_CYCLE[C_MAX_CMD_PER_CYCLE] = {
 	RIG_CMD_GET_PTT,
 	RIG_CMD_GET_POWER,
 	RIG_CMD_GET_SWR,
+	RIG_CMD_NONE,
 	RIG_CMD_NONE,
 	RIG_CMD_SET_COMP,
 	RIG_CMD_GET_COMP
@@ -2425,7 +2443,7 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 		if (has_set->ifs && new->ifs) {
 			value_t val;
 
-			val.i = set->rfg;
+			val.i = set->ifs;
 
 			/* try to execute command */
 			retcode = rig_set_level (myrig, RIG_VFO_CURR, RIG_LEVEL_IF, val);
@@ -2464,7 +2482,7 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 				rig_anomaly_raise (RIG_CMD_GET_IFS);
 			}
 			else {
-				get->rfg = val.i;
+				get->ifs = val.i;
 			}
 
 			status = 1;
