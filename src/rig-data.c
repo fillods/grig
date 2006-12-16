@@ -1766,7 +1766,7 @@ rig_data_set_micg     (float micg)
 {
 	set.micg = micg;
 	get.micg = micg;
-	new.micg = micg;
+	new.micg = TRUE;
 }
 
 /* compression */
@@ -1793,7 +1793,7 @@ rig_data_set_comp     (float comp)
 {
 	set.comp = comp;
 	get.comp = comp;
-	new.comp = comp;
+	new.comp = TRUE;
 }
 
 
