@@ -16,6 +16,14 @@ x Support for external tuning knobs: Powermate, other?
 x Service layer watchdog.
 
 
+GRIG 0.7.2:
+
+- Fixed bug that caused wrong handling of RF gain, IF shift, MIC gain,
+  and compressor controls (bug #1613622).
+- Give volume level control higher priority to avoid jumpy behaviour
+  (bug #1616926).
+
+
 GRIG 0.7.1:
 
 - A bug that caused installation to fail has been fixed (#1523367).
