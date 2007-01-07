@@ -20,16 +20,17 @@ RCFLAGS = --define __WIN32__ --define __WIN95__ --define MSRC \
 # libraries
 GTKLIBS := $(shell PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) pkg-config --libs gtk+-win32-2.0)
 GLIBLIB := $(shell PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) pkg-config --libs glib-2.0 gthread-2.0)
-GUI_LIBS = -lwsock32 -lole32 $(GTKLIBS) 
-LIBS = -lm -lhamlib -ladvapi32
+GUI_LIBS = $(GTKLIBS) $(GLIBLIB)
+LIBS = -lm
 
 # flags/defines
-CFLAGS = -I. -I$(grigdir) \
-GTK_CFLAGS := $(shell PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) pkg-config --cflags gtk+-win32-2.0)
+CFLAGS = -DVERSION=\"0.7.2\" -DHAVE_GETOPT_H -I. -I$(grigdir) -I$(CROSSDIR)/include \
+# GTK_CFLAGS := $(shell PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) pkg-config --cflags gtk+-win32-2.0)
+GTK_CFLAGS := `pkg-config --cflags gtk+-win32-2.0`
 
 
 # source paths
-vpath %.c $(guidir)
+vpath %.c $(grigdir)
 vpath %.rc $(topsrc)/win32
 
 #### End of sys conf section
@@ -67,15 +68,15 @@ GRIGOBJ = $(GRIGSRC:.c=.o)
 OBJS = $(GRIGOBJ)
 
 %.o: %.c
-	$(CC) -c $(CFLAGS) $(GTK_CFLAGS) $(GLIBLIB) $<
-	$(CC) -MM $(CFLAGS) $(GTK_CFLAGS) $(GLIBLIB) $< > $*.d 
+	$(CC) -c $(CFLAGS) $(GTK_CFLAGS) $<
+	$(CC) -MM $(CFLAGS) $(GTK_CFLAGS) $< > $*.d 
 
 # targets begin
 
 all: grig.exe
 
-grig.exe: $(GUIOBJ) grig_res.o
-	$(CC) -mwindows -o $@ $^ $(LIBS) $(GUI_LIBS) -lpng13 -lz -lmingwex -s
+grig.exe: $(GRIGOBJ) grig_res.o $(CROSSDIR)/lib/libhamlib-2.lib
+	$(CC) -mconsole -o $@ $^ $(GUI_LIBS) $(LIBS) -lmingwex -s
 
 grig_res.o: grig.rc 
 	$(RC) $(RCFLAGS) $< $@
