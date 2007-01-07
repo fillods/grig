@@ -243,14 +243,15 @@ manage_debug_message (debug_msg_src_t source,
 {
 	gchar msg_time[50];
 	guint size;
-	struct timeval tval;
-	struct timezone tzone;
+	//struct timeval tval;
+	//struct timezone tzone;
 	time_t t;
 	gint x;
-
+	GTimeVal tval;
 
 	/* get the time */
-	x = gettimeofday (&tval, &tzone);
+	//x = gettimeofday (&tval, &tzone);
+	g_get_current_time (&tval);
 	t = (time_t ) tval.tv_sec;
 	size = strftime (msg_time, 48, "%Y/%m/%d %H:%M:%S", localtime (&t));
 	if (size < 49) {
