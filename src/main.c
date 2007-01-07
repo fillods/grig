@@ -410,7 +410,8 @@ grig_app_create       (gint rignum)
 	title = g_strdup_printf (_("GRIG: %s %s"), brand, model);
 
 	/* window icon file */
-	icon = g_strconcat (PACKAGE_PIXMAPS_DIR, G_DIR_SEPARATOR_S, "ic910.png", NULL);
+	//icon = g_strconcat (PACKAGE_PIXMAPS_DIR, G_DIR_SEPARATOR_S, "ic910.png", NULL);
+	icon = pixmap_file_name ("ic910.png");
 
 	/* create application */
 	app = gtk_window_new (GTK_WINDOW_TOPLEVEL);

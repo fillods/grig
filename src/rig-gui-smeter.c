@@ -49,6 +49,7 @@
 #ifdef HAVE_CONFIG_H
 #  include <config.h>
 #endif
+#include "compat.h"
 #include "rig-data.h"
 #include "grig-gtk-workarounds.h"
 #include "rig-gui-smeter-conv.h"
@@ -207,8 +208,9 @@ rig_gui_smeter_create_canvas ()
 			  G_CALLBACK (rig_gui_smeter_expose_cb), NULL);	
 
 	/* create background pixmap and add it to canvas */
-	fname = g_strconcat (PACKAGE_PIXMAPS_DIR, G_DIR_SEPARATOR_S,
-			     "smeter.png", NULL);
+	//fname = g_strconcat (PACKAGE_PIXMAPS_DIR, G_DIR_SEPARATOR_S,
+	//		     "smeter.png", NULL);
+	fname = pixmap_file_name ("smeter.png");
 	smeter.pixbuf = gdk_pixbuf_new_from_file (fname, NULL);
 	g_free (fname);
 

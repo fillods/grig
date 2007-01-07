@@ -82,6 +82,7 @@
 #  include <config.h>
 #endif
 #include <hamlib/rig.h>
+#include "compat.h"
 #include "rig-data.h"
 #include "grig-gtk-workarounds.h"
 #include "rig-gui-lcd.h"
@@ -256,17 +257,22 @@ rig_gui_lcd_load_digits (const gchar *name)
 	guint dw,dh,cw;      /* width and height of a digit and width of comma */
 	gint bps,rs;         /* bits pr.ample and rowstride */
 	gchar *fname;
+	gchar *tmp;
 	guchar *pixels;
 
 	
 	/* normal digits */
 	if (name == NULL) {
-		fname = g_strconcat (PACKAGE_PIXMAPS_DIR, G_DIR_SEPARATOR_S,
-				     "digits_normal.png", NULL);
+		//fname = g_strconcat (PACKAGE_PIXMAPS_DIR, G_DIR_SEPARATOR_S,
+		//		     "digits_normal.png", NULL);
+		fname = pixmap_file_name ("digits_normal.png");
 	}
 	else {
-		fname = g_strconcat (PACKAGE_PIXMAPS_DIR, G_DIR_SEPARATOR_S,
-				     name, "_normal.png", NULL);
+		//fname = g_strconcat (PACKAGE_PIXMAPS_DIR, G_DIR_SEPARATOR_S,
+		//		     name, "_normal.png", NULL);
+		tmp = g_strconcat (name, "_normal.png", NULL);
+		fname = pixmap_file_name (tmp);
+		g_free (tmp);
 	}
 
 	/* load pixmap */
@@ -310,12 +316,16 @@ rig_gui_lcd_load_digits (const gchar *name)
 
 	/* small digits */
 	if (name == NULL) {
-		fname = g_strconcat (PACKAGE_PIXMAPS_DIR, G_DIR_SEPARATOR_S,
-				     "digits_small.png", NULL);
+		//fname = g_strconcat (PACKAGE_PIXMAPS_DIR, G_DIR_SEPARATOR_S,
+		//		     "digits_small.png", NULL);
+		fname = pixmap_file_name ("digits_small.png");
 	}
 	else {
-		fname = g_strconcat (PACKAGE_PIXMAPS_DIR, G_DIR_SEPARATOR_S,
-				     name, "_small.png", NULL);
+		//fname = g_strconcat (PACKAGE_PIXMAPS_DIR, G_DIR_SEPARATOR_S,
+		//		     name, "_small.png", NULL);
+		tmp = g_strconcat (name, "_small.png", NULL);
+		fname = pixmap_file_name (tmp);
+		g_free (tmp);
 	}
 
 	/* load pixmap */
