@@ -51,6 +51,7 @@
 #ifdef HAVE_GETOPT_H
 #  include <getopt.h>
 #endif
+#include "compat.h"
 #include "grig-config.h"
 #include "rig-gui.h"
 #include "grig-debug.h"
@@ -161,7 +162,8 @@ main (int argc, char *argv[])
 	   can avoid surprises later on, when exit
 	   is not an option anymore.
 	*/
-	fname = g_strconcat (PACKAGE_PIXMAPS_DIR, G_DIR_SEPARATOR_S, "smeter.png", NULL);
+	//fname = g_strconcat (PACKAGE_PIXMAPS_DIR, G_DIR_SEPARATOR_S, "smeter.png", NULL);
+	fname = pixmap_file_name ("smeter.png");
 	if (!g_file_test (fname, G_FILE_TEST_EXISTS)) {
 
 		g_print ("\n\n");
