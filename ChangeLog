@@ -3,6 +3,10 @@
 	* src/grig-debug.c:
 	Use g_get_current_time() instead of gettimeoftheday().
 
+	* src/main.c:
+	Use portable pixmap_file_name() instead of PACKAGE_PIXMAP_DIR, which
+	only works on Unix (bug #1629905).
+
 	* win32:
 	Added files related to win32 build.
 	
