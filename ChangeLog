@@ -6,6 +6,11 @@
 	* src/main.c:
 	Use portable pixmap_file_name() instead of PACKAGE_PIXMAP_DIR, which
 	only works on Unix (bug #1629905).
+	Removed other traces of PACKAGE_PIXMAP_DIR too.
+
+	* src/rig-gui-lcd.c:
+	* src/rig-gui-smeter.c:
+	Removed traces of PACKAGE_PIXMAP_DIR.
 
 	* win32:
 	Added files related to win32 build.

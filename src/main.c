@@ -171,7 +171,7 @@ main (int argc, char *argv[])
 		g_print (_("This usually means that your installation is incomplete.\n"));
 		g_print (_("Sorry... but I can not continue..."));
 		g_print ("\n\n");
-
+		g_print ("%s\n\n",fname);
 		return 1;
 	}
 
