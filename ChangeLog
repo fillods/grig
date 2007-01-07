@@ -7,7 +7,7 @@
 	Added files related to win32 build.
 	
 
-2006-12-16;	Alexandru Csete <csete@users.sourceforge.net>
+2006-12-16;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-data.c:
 	Set 'new' flags to TRUE when receiving new values for mic gain and 
@@ -21,7 +21,7 @@
 	* configure.ac, NEWS:
 	Updated for 0.7.2
 	
-2006-07-24;	Alexandru Csete <csete@users.sourceforge.net>
+2006-07-24;	Alexandru Csete <oz9aec@gmail.com>
 
 	* Makefile.am:
 	Explicitly create $(DESTDIR)$(pkgdatadir) before trying to install.
@@ -31,7 +31,7 @@
 	Updated version number.
 	
 
-2006-07-07;	Alexandru Csete <csete@users.sourceforge.net>
+2006-07-07;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-data.[ch]:
 	Added missing support functions.
@@ -49,13 +49,13 @@
 	Fix pixmaps directory.
 	
 
-2006-07-06;	Alexandru Csete <csete@users.sourceforge.net>
+2006-07-06;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-gui-tx.c:
 	Implemented TX levels with the exception of RFPOWER and ALC.
 	
 
-2006-07-02;	Alexandru Csete <csete@users.sourceforge.net>
+2006-07-02;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-daemon-check.c:
 	Store IF shift range and step in rig-data.
@@ -70,7 +70,7 @@
 	Added support for RX level controls. Cycle also includes TX level controls.
 	
 
-2006-07-01;	Alexandru Csete <csete@users.sourceforge.net>
+2006-07-01;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-gui-rx.[ch]:
 	Added files.
@@ -88,7 +88,7 @@
 	of the RX, TX and CW level controls.
 	
 
-2006-06-30;	Alexandru Csete <csete@users.sourceforge.net>
+2006-06-30;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-data.[ch]:
 	Added support for all missing level settings.
@@ -103,7 +103,7 @@
 	Updated.
 	
 
-2006-06-26;	Alexandru Csete <csete@users.sourceforge.net>
+2006-06-26;	Alexandru Csete <oz9aec@gmail.com>
 
 	* configure.ac:
 	Don't use AC_DEFINEs to define locale, data and pixmapsdirs because that
@@ -122,7 +122,7 @@
 	Redefined pixmapsdir to $(datadir)/pixmaps/grig
 	
 
-2006-03-28;	Alexandru Csete <csete@users.sourceforge.net>
+2006-03-28;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-daemon.c:
 	Sleep between commands only if the last command has been executed.
@@ -136,7 +136,7 @@
 	Use grig_debug_set_level instead of rig_set_debug.
 
 
-2006-03-27;	Alexandru Csete <csete@users.sourceforge.net>
+2006-03-27;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-daemon.c:
 	Generate log message when rig_daemon_set_suspend is called.
@@ -156,7 +156,7 @@
 	Modified menu utems in View menu to toggle items.
 	
 
-2006-03-23;	Alexandru Csete <csete@users.sourceforge.net>
+2006-03-23;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-daemon.c:
 	Nailed even more potential flicker bugs. Added function to obtain hamlib
@@ -170,7 +170,7 @@
 	add the remaining parameters and the save function is done.
 	
 
-2006-03-22;	Alexandru Csete <csete@users.sourceforge.net>
+2006-03-22;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-daemon.c:
 	Fixed bug, which caused the ptt and pstat readings to be overwritten
@@ -189,13 +189,13 @@
 	Implemented power meter scale. Select best scale automatically.
 
 
-2006-03-21;	Alexandru Csete <csete@users.sourceforge.net>
+2006-03-21;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-state.c:
 	Finished load and save state callbacks.
 
 
-2006-03-19;	Alexandru Csete <csete@users.sourceforge.net>
+2006-03-19;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-state.c, src/rig-state.h:
 	Added files.
@@ -207,13 +207,13 @@
 	Enable Load and Save State entries.
 	
 	
-2006-03-17;	Alexandru Csete <csete@users.sourceforge.net>
+2006-03-17;	Alexandru Csete <oz9aec@gmail.com>
 
 	* doc/userman/latex:
 	Added a few files containing a skeleton for a user manual.
 
 
-2006-03-16;	Alexandru Csete <csete@users.sourceforge.net>
+2006-03-16;	Alexandru Csete <oz9aec@gmail.com>
 
 	* COPYING:
 	Updated the address of FSF.
@@ -225,7 +225,7 @@
 	Added minimal info about the debug handler.
 
 
-2006-03-12;	Alexandru Csete <csete@users.sourceforge.net>
+2006-03-12;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-gui-message-window.c:
 	Implemented clear message list signal. Added message source to
@@ -242,7 +242,7 @@
 	with rigctl as much as possible.
 
 
-2006-03-11;	Alexandru Csete <csete@users.sourceforge.net>
+2006-03-11;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/grig-debug:
 	Include <glib/gprintf.h> to avoid compiler warning. Changes separator
@@ -260,7 +260,7 @@
 	"Clean" and some visual fixups.
 
 
-2006-02-27;	Alexandru Csete <csete@users.sourceforge.net>
+2006-02-27;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/Makefile.am:
 	Added new files to list.
@@ -277,7 +277,7 @@
 	Use new grig-debug infrastructure.
 	
 	
-2006-02-24;	Alexandru Csete <csete@users.sourceforge.net>
+2006-02-24;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/grig-debug.c, src/grig-debug.h:
 	Added files containing new debug handler. The new debug handler	will
@@ -286,21 +286,21 @@
 	on the command line.
 
 
-2006-02-23;	Alexandru Csete <csete@users.sourceforge.net>
+2006-02-23;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/main.c, doc/man/grig.1.in:
 	Changed --rig-file to --rig-device. We keep the former for compatibility
 	reasons but issue a warning message to tell the user about this.
 
 
-2006-02-21;	Alexandru Csete <csete@users.sourceforge.net>
+2006-02-21;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-gui-message-window:
 	Moved column definition from header to source file. Add debug messages
 	to the the message list. Works all right but needs a lot of optimisation.
 	
 
-2006-01-16;	Alexandru Csete <csete@users.sourceforge.net>
+2006-01-16;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-gui-message-window, src/main.c:
 	Changed back to original hamlib implementation of debug message
@@ -308,7 +308,7 @@
 	which caused the misbehaviour.
 
 
-2005-12-22;	Alexandru Csete <csete@users.sourceforge.net>
+2005-12-22;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-daemon.c:
 	Added RIG_CMD_SET_FREQ_1 and RIG_CMD_GET_FREQ_1 to the default TX
@@ -317,7 +317,7 @@
 	report opened #1388342.
 
 
-2005-12-19;	Alexandru Csete <csete@users.sourceforge.net>
+2005-12-19;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/menubar.c:
 	Moved message window to View menu, band map and spectrum to tools menu.
@@ -328,7 +328,7 @@
 	Added code to update message statistics.
 	
 
-2005-11-25;	Alexandru Csete <csete@users.sourceforge.net>
+2005-11-25;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-gui-message-window.c:
 	Added code to create list view. Need some minor mods to allow access
@@ -336,19 +336,19 @@
 	
 
 
-2005-11-23;	Alexandru Csete <csete@users.sourceforge.net>
+2005-11-23;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-gui-message-window.c:
 	Create message window skeleton.
 
 
-2005-11-22;	Alexandru Csete <csete@users.sourceforge.net>
+2005-11-22;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-gui-message_window.c:
 	Added code to show and hide window.
 
 
-2005-11-14;	Alexandru Csete <csete@users.sourceforge.net>
+2005-11-14;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/grig-menubar.c:
 	Added RIG_FUNC and software memory menu entries.
@@ -359,7 +359,7 @@
 
 
 	
-2005-11-11;	Alexandru Csete <csete@users.sourceforge.net>
+2005-11-11;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-gui-vfo.c:
 	Added split button. Rearranged button layout.
@@ -376,7 +376,7 @@
 
 
 
-2005-11-10;	Alexandru Csete <csete@users.sourceforge.net>
+2005-11-10;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-gui.c:
 	Don't include level controls in main window. They will be in separate
@@ -390,13 +390,13 @@
 	Added support for VFO COPY and EXCHANGE.
 	
 	
-2005-11-08;	Alexandru Csete <csete@users.sourceforge.net>
+2005-11-08;	Alexandru Csete <oz9aec@gmail.com>
 	
 	* src/compat.c, src/compat.h:
 	Added files containing utilities for data directory retrieval.
 	
 
-2005-09-29;	Alexandru Csete <csete@users.sourceforge.net>
+2005-09-29;	Alexandru Csete <oz9aec@gmail.com>
 	
 	* src/rig-gui-lcd.c:
 	Added readback of VFO.
@@ -405,7 +405,7 @@
 	Added support for RIG_CMD_VFO_TOGGLE, ie. RIG_OP_TOGGLE.
 
 
-2005-09-28;	Alexandru Csete <csete@users.sourceforge.net>
+2005-09-28;	Alexandru Csete <oz9aec@gmail.com>
 	
 	* src/rig-gui-vfo.c, src/rig-gui-vfo.h:
 	Added files containing VFO controls.
@@ -420,7 +420,7 @@
 	Added rig-gui-vfo to build list.
 
 
-2005-09-22;	Alexandru Csete <csete@users.sourceforge.net>
+2005-09-22;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-gui-info-data.h:
 	Added RIG_FUNC_STR and RIG_OP arrays.
@@ -430,7 +430,7 @@
 	
 
 
-2005-09-21;	Alexandru Csete <csete@users.sourceforge.net>
+2005-09-21;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-gui-buttons,
 	* src/rig-data,
@@ -442,13 +442,13 @@
 	availabilities.
 	
 
-2005-09-20;	Alexandru Csete <csete@users.sourceforge.net>
+2005-09-20;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-gui-message-window:
 	Added prototype for debug callback function.
 	
 
-2005-09-06;	Alexandru Csete <csete@users.sourceforge.net>
+2005-09-06;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-daemon.c, src/rig-daemon-check.c:
 	Added additional check in rig_daemon_check_mode to ensure that
@@ -466,7 +466,7 @@
 	Updated.
 	
 
-2005-08-25;	Alexandru Csete <csete@users.sourceforge.net>
+2005-08-25;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-daemon.c:
 	Fixed bug which caused grig to show WIDE instead of NORMAL
@@ -479,7 +479,7 @@
 	Power button should now really work as claimed :o)
 	
 
-2005-08-22;	Alexandru Csete <csete@users.sourceforge.net>
+2005-08-22;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-daemon.c:
 	Suspend all but RIG_CMD_SET_PSTAT command while the rig is in
@@ -490,7 +490,7 @@
 	power OFF state.
 	
 
-2005-08-21;	Alexandru Csete <csete@users.sourceforge.net>
+2005-08-21;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-daemon-check.c:
 	Fixed very nasty bug in checking the availability of level
@@ -513,13 +513,13 @@
 	* NEWS:
 	Updated.
 
-2005-08-16;	Alexandru Csete <csete@users.sourceforge.net>
+2005-08-16;	Alexandru Csete <oz9aec@gmail.com>
 
 	* grig.spec.in:
 	Fix erroneous pixmap drectories.
 	
 
-2005-08-10;	Alexandru Csete <csete@users.sourceforge.net>
+2005-08-10;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-gui-smeter.h:
 	Adjusted DEF_TVAL and DEF_FALLOFF based on tests using a
@@ -529,7 +529,7 @@
 	fall-off time.
 
 
-2005-07-25;	Alexandru Csete <csete@users.sourceforge.net>
+2005-07-25;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-daemon, src/rig-daemon.h, src/main.c:
 	Disable POWER and PTT buttons by default. Use command line
@@ -539,7 +539,7 @@
 	Added description of the new command line switches.
 	
 
-2005-06-21;	Alexandru Csete <csete@users.sourceforge.net>
+2005-06-21;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-gui-message-window.c, src/rig-gui-message-window.h:
 	Added files.
@@ -552,7 +552,7 @@
 	Added message window files.
 
 
-2005-06-16;	Alexandru Csete <csete@users.sourceforge.net>
+2005-06-16;	Alexandru Csete <oz9aec@gmail.com>
 
 	* doc/man/grig.1.in:
 	Corrected one more error.
@@ -565,7 +565,7 @@
 	old one for a while.
 
 
-2005-06-15;	Alexandru Csete <csete@users.sourceforge.net>
+2005-06-15;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-daemon.c, src/rig-daemon.h:
 	Changed shut-down procedure to wait until daemon process
@@ -586,7 +586,7 @@
 	Added some news for 0.5
 
 
-2005-06-03;	Alexandru Csete <csete@users.sourceforge.net>
+2005-06-03;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-daemon.c:
 	Use g_usleep instead of usleep to make code more portable.
@@ -595,7 +595,7 @@
 	Increment micro version and remove check for unistd.h
 	
 
-2005-02-12;	Alexandru Csete <csete@users.sourceforge.net>
+2005-02-12;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-daemon.c:
 	Implemented timeout based daemon process. The timeout
@@ -630,7 +630,7 @@
 	Updated info.
 
 	
-2005-02-11;	Alexandru Csete <csete@users.sourceforge.net>
+2005-02-11;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/main.c:
 	Added --nothread command line option.
@@ -639,14 +639,14 @@
 	Added (empty) branch for the --nothread option.
 
 
-2005-02-09;	Alexandru Csete <csete@users.sourceforge.net>
+2005-02-09;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-daemon.c:
 	Added error handling when creation of daemon process
 	is not successful.
 
 	
-2005-02-02;	Alexandru Csete <csete@users.sourceforge.net>
+2005-02-02;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-daemon.h, src/rig-daemon.c:
 	Replaced cycle delay with a default command delay. The
@@ -668,13 +668,13 @@
 	Updated with some 0.4.2 info.
 	
 
-2005-02-01;	Alexandru Csete <csete@users.sourceforge.net>
+2005-02-01;	Alexandru Csete <oz9aec@gmail.com>
 
 	* configure.ac:
 	Define PACKAGE_LOCALE_DIR. Increment version number.
 
 
-2005-01-27;     Alexandru Csete <csete@users.sourceforge.net>
+2005-01-27;     Alexandru Csete <oz9aec@gmail.com>
 
 	* pixmaps/Makefile.am:
 	Fixed typo which caused pixmaps not to be included in
@@ -684,7 +684,7 @@
 	Incremented version number.
 
 
-2005-01-22;	Alexandru Csete <csete@users.sourceforge.net>
+2005-01-22;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-gui-smeter-conv.c, src/rig-gui-smeter-conv.h:
 	Implemented linear conversion for TX scale. No need for
@@ -706,7 +706,7 @@
 	Changed versionnumber to 0.4
 
 
-2005-01-21;	Alexandru Csete <csete@users.sourceforge.net>
+2005-01-21;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-data.c, src/rig-data.h:
 	Added get functions for tx power, swr and alc.
@@ -718,7 +718,7 @@
 	Updated year.
 	
 
-2005-01-20;	Alexandru Csete <csete@users.sourceforge.net>
+2005-01-20;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-data.h:
 	Removed TX levels that are not available via rig_get_level.
@@ -737,7 +737,7 @@
 	s-meter angle. Still need to define conversion parameters.
 
 
-2005-01-07;	Alexandru Csete <csete@users.sourceforge.net>
+2005-01-07;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-data.c:
 	Fixed a mis-spelling.
@@ -746,7 +746,7 @@
 	Updated doxygen comments for smeter_scale_t.
 	
 
-2004-12-21;	Alexandru Csete <csete@users.sourceforge.net>
+2004-12-21;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-daemon-check.c:
 	Worked on a fix for bug #1082325, which causes misbehaviour if the rig
@@ -762,7 +762,7 @@
 	Removed section saying that RIG must be powered ON.
 
 
-2004-12-12;	Alexandru Csete <csete@users.sourceforge.net>
+2004-12-12;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-daemon.c, src/rig-daemon.h:
 	Added rigconf parameter to rig_daemon_start.
@@ -787,7 +787,7 @@
 	option.
 
 
-2004-12-11;	Alexandru Csete <csete@users.sourceforge.net>
+2004-12-11;	Alexandru Csete <oz9aec@gmail.com>
 
 	* configure.ac:
 	Added HAMLIB_VERSION define.
@@ -800,7 +800,7 @@
 	Added --set-conf command line option (bug #1082329). Has no effect yet.
 
 
-2004-12-10;	Alexandru Csete <csete@users.sourceforge.net>
+2004-12-10;	Alexandru Csete <oz9aec@gmail.com>
 
 	* config.guess, config.sub, configure.in:
 	Removed files.
@@ -849,19 +849,19 @@
 	Removed file.
 	
 
-2004-12-06;	Alexandru Csete <csete@users.sourceforge.net>
+2004-12-06;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-gui-info.c:
 	Don't translate strings containing UTF-8 octal codes.
 	
 
-2004-12-05;	Alexandru Csete <csete@users.sourceforge.net>
+2004-12-05;	Alexandru Csete <oz9aec@gmail.com>
 
 	* configure.in:
 	Bumped version number.
 	
 
-2004-12-04;	Alexandru Csete <csete@users.sourceforge.net>
+2004-12-04;	Alexandru Csete <oz9aec@gmail.com>
 
 	* configure.in:
 	Removed possibility to fall back to the old style hamlib check.
@@ -874,13 +874,13 @@
 	Updated.
 	
 
-2004-12-03;	Alexandru Csete <csete@users.sourceforge.net>
+2004-12-03;	Alexandru Csete <oz9aec@gmail.com>
 
 	* grig.desktop:
 	Removed file.
 	
 
-2004-12-02;	Alexandru Csete <csete@users.sourceforge.net>
+2004-12-02;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/grig-gtk-workarounds.c, src/griggtk-workarounds.h:
 	Created files. Intended to contain various workaround tricks for Gtk+
@@ -895,13 +895,13 @@
 	Added new files to the list.
 
 
-2004-12-01;	Alexandru Csete <csete@users.sourceforge.net>
+2004-12-01;	Alexandru Csete <oz9aec@gmail.com>
 
 	* configure.in:
 	Added configure option to enable coverage report generation by gcov.
 
 
-2004-11-30;	Alexandru Csete <csete@users.sourceforge.net>
+2004-11-30;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/main.c:
 	Catch SIGTERM, SIGINT and SIGABRT and try to make a clean exit.
@@ -910,7 +910,7 @@
 	Fixed a typo.
 
 
-2004-11-27;	Alexandru Csete <csete@users.sourceforge.net>
+2004-11-27;	Alexandru Csete <oz9aec@gmail.com>
 
 	* configure.in, grig.1.in:
 	Moved man page to doc/man/ subdirectory. Added more text to man page.
@@ -925,7 +925,7 @@
 	Removed explicit handling of man page.
 	
 
-2004-11-23;	Alexandru Csete <csete@users.sourceforge.net>
+2004-11-23;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-daemon.c:
 	Added rig_daemon.get_brand and rig_daemon_get_model functions. Ideally,
@@ -944,13 +944,13 @@
 	Don't include the levels widget since it contains nothing yet.
 
 
-2004-11-21;	Alexandru Csete <csete@users.sourceforge.net>
+2004-11-21;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-gui-info.c:
 	Finished preamp and att info frame and reorganized main container.
 
 
-2004-11-19;	Alexandru Csete <csete@users.sourceforge.net>
+2004-11-19;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-data.c:
 	Fixed bug which caused the new secondary frequency to be sent to
@@ -961,7 +961,7 @@
 	Added skeleton for front end info frame (attenuator and preamp).
 
 
-2004-11-15;	Alexandru Csete <csete@users.sourceforge.net>
+2004-11-15;	Alexandru Csete <oz9aec@gmail.com>
 
 	* configure.in, Makefile.am:
 	autogen.sh was (again!) behaving stupid again. Removed all output
@@ -974,7 +974,7 @@
 	Added tuing step info frame.
 	
 
-2004-11-14;	Alexandru Csete <csete@users.sourceforge.net>
+2004-11-14;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-gui-info.c, src/grig-about.c, src/grig-menubar.c,
 	* src/main.c, src/rig-data.c, src/rig-gui-buttons.c,
@@ -989,13 +989,13 @@
 	Removed support.h from list.
 
 
-2004-11-13;	Alexandru Csete <csete@users.sourceforge.net>
+2004-11-13;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-gui-info.c:
 	Added interface info frame.
 
 
-2004-11-12;	Alexandru Csete <csete@users.sourceforge.net>
+2004-11-12;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-gui-info.c:
 	Changed level checkboxes to labels. Fixed bug which caused the not all
@@ -1004,7 +1004,7 @@
 	gtk_container_add but gtk_scrolled_window_add_with_viewport).
 	
 
-2004-11-10;	Alexandru Csete - IC177 <csete@users.sourceforge.net>
+2004-11-10;	Alexandru Csete - IC177 <oz9aec@gmail.com>
 
 	* src/rig-gui-info.c:
 	Rewrote create_levels to use a vertical table in a scrolled window.
@@ -1025,7 +1025,7 @@
 	Added new file.
 
 
-2004-11-05;	Alexandru Csete <csete@users.sourceforge.net>
+2004-11-05;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-gui-ctrl2.c:
 	Removed note regarding the discrepacy between hamlib and grig symbillic
@@ -1054,7 +1054,7 @@
 	Ahow true VFO on LCD.
 	
 	
-2004-11-04;	Alexandru Csete <csete@users.sourceforge.net>
+2004-11-04;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-gui-buttons.c:
 	Added preamp selector. Added code to disable controls if read or write
@@ -1067,7 +1067,7 @@
 	Added RX matrix for debug mode.
 
 
-2004-11-02;	Alexandru Csete <csete@users.sourceforge.net>
+2004-11-02;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-data.c, src/rig-data.h:
 	Added global private data to store ATT and PREAMP levels. Also added
@@ -1081,7 +1081,7 @@
 	Finished ATT selector code.
 
 
-2004-10-30;	Alexandru Csete <csete@users.sourceforge.net>
+2004-10-30;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-gui-info.c:
 	Added doxygen description.
@@ -1127,7 +1127,7 @@
 	of rig_type.
 	
 
-2004-10-26;	Alexandru Csete <csete@users.sourceforge.net>
+2004-10-26;	Alexandru Csete <oz9aec@gmail.com>
 
 	* configure.in:
 	Added --disable-hardware option to disable any hamlib operations except
@@ -1137,7 +1137,7 @@
 	Added '\n' to the end of error messages.
 
 
-2004-10-25;	Alexandru Csete <csete@users.sourceforge.net>
+2004-10-25;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-gui-lcd.c:
 	Fixed a bug which caused incorrect RIT jumps especially when the RIT
@@ -1148,13 +1148,13 @@
 	Added summary of library versions (hamlib, glib, gthread, gdk and gtk).
 
 
-2004-10-24;	Alexandru Csete <csete@users.sourceforge.net>
+2004-10-24;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-gui-lcd.c:
 	Fixed bug where RIT could jump from -9.99 to 9.99 kHz. 
 
 
-2004-10-23;	Alexandru Csete <csete@users.sourceforge.net>
+2004-10-23;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/grig-about.c:
 	Added missing ';' character (caused compiled error).
@@ -1183,7 +1183,7 @@
 	to the value of set after writing new value.
 	
 
-2004-10-21;	Alexandru Csete <csete@users.sourceforge.net>
+2004-10-21;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/grig-menubar.c:
 	Removed about-callback since grig_about_run an be used directly as
@@ -1196,7 +1196,7 @@
 	Added some info.
 	
 
-2004-10-20;	Alexandru Csete <csete@users.sourceforge.net>
+2004-10-20;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/grig-menubar.c:
 	Added debug level menu items.
@@ -1208,7 +1208,7 @@
 	Added new files to list.
 
 
-2004-10-19;	Alexandru Csete <csete@users.sourceforge.net>
+2004-10-19;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/grig-menubar.c, src/grig-menubar.h:
 	Remove rotator and GConf related code. Created menubar using GtkAction
@@ -1222,7 +1222,7 @@
 	window is ceated before the creation of the menubar.
 	
 
-2004-10-18;	Alexandru Csete <csete@users.sourceforge.net>
+2004-10-18;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/main.c:
 	Added grig_show_help, grig_show_version, grig_list_add and
@@ -1230,13 +1230,13 @@
 	are now working (all of them).
 
 
-2004-10-17;	Alexandru Csete - SK1563 <csete@users.sourceforge.net>
+2004-10-17;	Alexandru Csete - SK1563 <oz9aec@gmail.com>
 
 	* src/main.c:
 	More work on command line arguments.
 	
 
-2004-10-15;	Alexandru Csete - CDG <csete@users.sourceforge.net>
+2004-10-15;	Alexandru Csete - CDG <oz9aec@gmail.com>
 
 	* src/main.c:
 	Begun work on command line arguments. Added list of args and while loop
@@ -1244,7 +1244,7 @@
 	of the first announced 2h30.
 	
 
-2004-10-11;	Alexandru Csete <csete@users.sourceforge.net>
+2004-10-11;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-daemon.c, src/rig-daemon.h:
 	Changed rig_daemon_start interface to take port, speed and CIV address
@@ -1255,7 +1255,7 @@
 	Removed any rotator related code.
 	
 
-2004-10-10;	Alexandru Csete <csete@users.sourceforge.net>
+2004-10-10;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-gui-lcd.c:
 	Fixed bug which cause grig to crash when user clicked on RIT decimal
@@ -1271,7 +1271,7 @@
 	Changed version number. Added checks for sys/time.h unistd.h getopt.h
 
 
-2004-10-09;	Alexandru Csete <csete@users.sourceforge.net>
+2004-10-09;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-data.c, src/rig-data.h:
 	Added has_set_freq and macros to wrap set_freq.
@@ -1286,14 +1286,14 @@
 	Store RIT and XIT ranges when check for functionalities.
 	
 
-2004-10-08;	Alexandru Csete <csete@users.sourceforge.net>
+2004-10-08;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-gui-lcd.c:
 	Added more event handlig code to catch mouse events on the LCD
 	display. Expose event call has been merged into this code.
 	
 
-2004-10-07;	Alexandru Csete <csete@users.sourceforge.net>
+2004-10-07;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-gui-lcd.c:
 	Added code to display small digits and removed first dot between
@@ -1304,7 +1304,7 @@
 	Added rig_data_has_get_rit() and rig_data_has_get_xit().
 
 
-2004-10-06;	Alexandru Csete <csete@users.sourceforge.net>
+2004-10-06;	Alexandru Csete <oz9aec@gmail.com>
 
 	* configure.in, Makefile.am:
 	Even more build environment fixes :(
@@ -1318,7 +1318,7 @@
 	structure accordingly.
 	
 
-2004-10-05;	Alexandru Csete <csete@users.sourceforge.net>
+2004-10-05;	Alexandru Csete <oz9aec@gmail.com>
 
 	* NEWS:
 	Readded file currently containing primary objectives for this 
@@ -1329,7 +1329,7 @@
 	nicer.
 	
 
-2004-10-04;	Alexandru Csete <csete@users.sourceforge.net>
+2004-10-04;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/main.c, src/rig-gui-lcd.c, src/rig-gui-smeter.c:
 	Replaced "/" with G_DIR_SEPARATOR_S.
@@ -1339,7 +1339,7 @@
 	and positions.
 	
 
-2004-10-03;	Alexandru Csete <csete@users.sourceforge.net>
+2004-10-03;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-data.h:
 	Added fields to store frequency limits and tuning step for the current
@@ -1361,7 +1361,7 @@
 	updated design docs.
 
 
-2004-10-02;	Alexandru Csete <csete@users.sourceforge.net>
+2004-10-02;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-gui-meter.c, src/rig-gui-smeter.h, src/rig-gui-smeter-conv.c,
 	* src/rig-gui-lcd.c, src/rig-gui-lcd.h, src/rig-gui-buttons.c,
@@ -1404,7 +1404,7 @@
 	with Gtk+ only. Replaced code which is deprecated in Gtk+ 2.4
 
 	
-2004-09-30;	Alexandru Csete <csete@users.sourceforge.net>
+2004-09-30;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/main.c:
 	Removed GNOME dependencies.
@@ -1426,13 +1426,13 @@
 	Added files.
 
 
-2004-09-29;	Alexandru Csete <csete@users.sourceforge.net>
+2004-09-29;	Alexandru Csete <oz9aec@gmail.com>
 
 	* pixmaps/digits_normal.png, digits_small.png:
 	Added files.
 
 	
-2004-09-26;	Alexandru Csete - SK1563 <csete@users.sourceforge.net>
+2004-09-26;	Alexandru Csete - SK1563 <oz9aec@gmail.com>
 
 	* src/rig-data.c:
 	rig_data_set functions will temporarely set the 'get' data to 
@@ -1450,7 +1450,7 @@
 	Added the two new iles to the list.
 
 	
-2004-09-22;	Alexandru Csete <csete@users.sourceforge.net>
+2004-09-22;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-gui-smeter.c: 
 	Added callback functions to mode and range selector widgets. 
@@ -1460,7 +1460,7 @@
 	Adjusted fall-off delays.
 
 	
-2004-09-21;	Alexandru Csete <csete@users.sourceforge.net>
+2004-09-21;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-gui-smeter.h: 
 	Renamed rig_gui_smeter_t to smeter_t. Added enumerations 
@@ -1472,7 +1472,7 @@
 	and mode selection.
 
 	
-2004-09-20;	Alexandru Csete <csete@users.sourceforge.net>
+2004-09-20;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-data.[ch]: 
 	Added rig_data_get_strength function. Added almost all 
@@ -1482,7 +1482,7 @@
 	instead of get-and-set which could cause override of GUI command.
 
 	
-2004-09-18;	Alexandru Csete <csete@users.sourceforge.net>
+2004-09-18;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-gui-smeter-conv.[ch]: 
 	Added files. Contain utility functions to convert dB to needle angle 
@@ -1498,7 +1498,7 @@
 	Added new files to list.
 
 	
-2004-09-13;	Alexandru Csete <csete@users.sourceforge.net>
+2004-09-13;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-gui-smeter.c: 
 	Added constants an macros to convert from dB to
@@ -1506,7 +1506,7 @@
 	be a so-called perfect S-meter with 6dB per S-unit and S9 = 0dB.
 
 	
-2004-08-03;	Alexandru Csete <csete@users.sourceforge.net>
+2004-08-03;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-utils.c: 
 	mode_to_index algorithm was buggy. Fixed.
@@ -1522,7 +1522,7 @@
 	Added new files to list. Resolved patch for bug 996435 (bug closed).
 	
 
-2004-08-02;	Alexandru Csete <csete@users.sourceforge.net>
+2004-08-02;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-gui-buttons.c: 
 	Finished readback handlers. Also, connected signal
@@ -1538,7 +1538,7 @@
 	Added logo pixmap.
 
 	
-2004-08-01;	Alexandru Csete <csete@users.sourceforge.net>
+2004-08-01;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-daemon-check.c, src/rig-daemon-check.h: 
 	Added function to check AGC.
@@ -1557,7 +1557,7 @@
 	Added readback timeout.
 
 	
-2004-07-31;	Alexandru Csete <csete@users.sourceforge.net>
+2004-07-31;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/main.c: 
 	Added more info on -r and -a options.
@@ -1581,12 +1581,12 @@
 	and SET function prototypes accordingly.
 
 	
-2004-07-28;	Alexandru Csete <csete@users.sourceforge.net>
+2004-07-28;	Alexandru Csete <oz9aec@gmail.com>
 
 	* configure.in: Require Gtk+ >= 2.4
 
 	
-2004-07-24;	Alexandru Csete <csete@users.sourceforge.net>
+2004-07-24;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-gui.c, src/rig-gui.h: 
 	Added files.
@@ -1605,25 +1605,25 @@
 	Added AGC.
 
 	
-2004-07-23;	Alexandru Csete <csete@users.sourceforge.net>
+2004-07-23;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/main.c, src/rig-daemon.c: 
 	Added patch for bug #996426.
 
 	
-2004-07-18;	Alexandru Csete <csete@users.sourceforge.net>
+2004-07-18;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/grig-druid.c: 
 	Added basic functionality with start and end pages.
 
 	
-2004-07-17;	Alexandru Csete <csete@users.sourceforge.net>
+2004-07-17;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/grig-about.c, src/grig-about.h: 
 	Added files.
 
 	
-2004-07-14;	Alexandru Csete <csete@users.sourceforge.net>
+2004-07-14;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/main.c: 
 	Implemented missing functions and added main application
@@ -1636,7 +1636,7 @@
 	Created files.
 
 	
-2004-07-01;	Alexandru Csete <csete@users.sourceforge.net>
+2004-07-01;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-daemon.c, src/rig-daemon.h: 
 	Finished first draft of rig daemon.
