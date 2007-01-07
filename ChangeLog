@@ -1,3 +1,12 @@
+2007-01-07;	Alexandru Csete <oz9aec@gmail.com>
+
+	* src/grig-debug.c:
+	Use g_get_current_time() instead of gettimeoftheday().
+
+	* win32:
+	Added files related to win32 build.
+	
+
 2006-12-16;	Alexandru Csete <csete@users.sourceforge.net>
 
 	* src/rig-data.c:
