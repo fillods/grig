@@ -1,0 +1,238 @@
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of GRIG</TITLE>
+</HEAD><BODY>
+<H1>GRIG</H1>
+Section: User Commands (1)<BR>Updated: Version 0.7.2<BR><A HREF="#index">Index</A>
+<A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<P>
+<A NAME="lbAB">&nbsp;</A>
+<H2>NAME</H2>
+
+grig - graphical user interface for the Ham Radio Control Libraries (hamlib)
+<P>
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>grig</B>
+
+[<I>OPTION</I>]...
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+
+<P>
+
+Grig is a simple Ham Radio control (CAT) program based on the Ham Radio Control Libraries. It is intended to be highly generic presenting the user to the same graphical user interface regardless of which radio is being controlled.
+<P>
+
+Grig does not store any radio configuration, instead it takes a number of command line options.
+<DL COMPACT>
+<DT><B>-m</B>, <B>--model</B>=<I>ID</I><DD>
+select radio model number; see <B>--list</B>
+<DT><B>-r</B>, <B>--rig-file</B>=<I>DEVICE</I><DD>
+set device of the radio, eg. /dev/ttyS0
+<DT><B>-s</B>, <B>--speed</B>=<I>BAUD</I><DD>
+set transfer rate (serial port only)
+<DT><B>-c</B>, <B>--civ-addr</B>=<I>ID</I><DD>
+set CI-V address (decimal, ICOM only)
+<DT><B>-C</B>, <B>--set-conf</B>=<I>par=val[,par2=val2]</I><DD>
+set additiional configuration parameters
+<DT><B>-d</B>, <B>--debug</B>=<I>LEVEL</I><DD>
+set hamlib debug level (0..5)
+<DT><B>-D</B>, <B>--delay</B>=<I>VALUE</I><DD>
+set delay between commands in msec (see below)
+<DT><B>-n</B>, <B>--nothread</B><DD>
+use timeout calls instead of thread (see below)
+<DT><B>-l</B>, <B>--list</B><DD>
+list supported radios and exit
+<DT><B>-p</B>, <B>--enable-ptt</B><DD>
+enable ptt control
+<DT><B>-P</B>, <B>--enable-pwr</B><DD>
+enable power status control
+<DT><B>-h</B>, <B>--help</B><DD>
+show a brief help message and exit
+<DT><B>-v</B>, <B>--version</B><DD>
+show version information and exit
+</DL>
+<P>
+
+<B>Example:</B>
+Start grig using YAESU FT-990 connected to the first serial port,
+using 4800 baud and debug level set to warning:
+<P>
+
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;grig&nbsp;-m&nbsp;116&nbsp;-r&nbsp;/dev/ttyS0&nbsp;-s&nbsp;4800&nbsp;-d&nbsp;3
+<P>
+
+or if you prefer the long options:
+<P>
+
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;grig&nbsp;--model=116&nbsp;--rig-file=/dev/ttyS0&nbsp;--speed=4800&nbsp;--debug=3
+<P>
+
+It is usually enough to specify the model ID and the DEVICE.
+<P>
+
+If you start grig without any options it will use the Dummy backend
+and set the debug level to 0 (RIG_DEBUG_NONE). If you do not specify
+the transfer rate for the serial port, the default serial speed will
+be used by the backend and even if you specify a value, it can be
+overridden by the backend. If you omit the radio device (port)
+grig will use <I>/dev/ttyS0</I> or <I>localhost</I> if the selected
+radio is RPC-rig.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>DEBUG LEVELS</H2>
+
+<BR>
+
+0    No debug, keep quiet.
+<BR>
+
+1    Serious bug.
+<BR>
+
+2    Error case (e.g. protocol, memory allocation).
+<BR>
+
+3    Warnings.
+<BR>
+
+4    Verbose information.
+<BR>
+
+5    Trace.
+<P>
+
+Grig has its own debug message handler, which will manage messages from hamlib too.
+The messages are printed to STDERR by default but they can be redirected to a file.
+In bash shell you would write something like:
+<P>
+
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;grig&nbsp;[options]&nbsp;2&gt;&nbsp;grig.log
+<P>
+
+You can then use the Message Window in the View menu to view these messages. The
+debug messages printed by grig a formatted in a structured way with each line
+containing both time, source and level of the message. Each field is separated
+with ;; so you can also import the log file into a spread sheet for further analysis.
+<P>
+<A NAME="lbAF">&nbsp;</A>
+<H2>FEATURES</H2>
+
+<P>
+
+Grig 0.7.2 supports the most commonly used CAT command implemented by hamlib. These
+include frequency, mode, filter and various level settings. Please note that not all
+features have been thoroughly tested since I don't have access to any modern high-end
+radios. Therefore, comments regarding success or failure in using grig will be highly
+appreciated.
+<P>
+<A NAME="lbAG">&nbsp;</A>
+<H2>KNOWN BUGS AND LIMITATIONS</H2>
+
+<DL COMPACT>
+<DT>Buffer Overflow in Radio<DD>
+By default, grig tries to execute rig commands as fast as possible in order to
+achieve an almost real-time remote control experience. This strategy has turned out
+to cause problems with some radios, probably because these radios acknowledge the
+reception of a command before executing them, whereby the next command will be sent
+before the previous one has terminated. To avoid any possible buffer overflow
+in these situations, one can try to experiment with the -D or --delay command line
+argument, which will put the specified delay in between each executed command. The
+default value is 10 milliseconds and the smallest possible value is 1 millisecond
+(if one specifies 0 millisecond on the command line, the default value will be
+<BR>&nbsp;used).
+If you find a value which is better for your radio than the default value, please
+let us know about it.
+<DT>Daemon Never Starts on FreeBSD<DD>
+There have been reports on that the new, thread-based daemon process is never
+started on FreeBSD, while the old, timeout-based daemon worked fine. It is therefore
+possible to choose the two ways to run the daemon process. The default is the new
+thread based daemon, but if you use FreeBSD and nothing seems to work after start-up
+you can select the timout-based daemon with the -n or --nothread command line option.
+<DT>Connection Settings<DD>
+Once you have started grig you can not change the radio settings (model, device,
+speed). You will have to restart the program if you want to change any of these
+settings.
+<DT>Multiple Radios<DD>
+Grig can control only one radio at the time. There are, however, no problems in
+starting several instances of grig as long as they do not try to control the
+same radio. An exception to this is the RPC-rig backend in which case
+the rpc rig daemon will act as a server while grig or any other hamlib
+frontends will act as a clients.
+<DT>Power OFF State<DD>
+On some radios, grig does not cope very well with the power off state. It is yet
+not known whether this is a bug in the hamlib backend or in grig and we will
+definitely appreciate your input.
+The situation gets even more complicated due to the fact that different radios
+behave in a different ways when they are powered OFF; some of them will continue to
+respond to remote commands, while others will not. Even the same radio, like the
+FT-817, can behave differently depending on whether it is powered from internal
+batteries or external power supply.
+Grig tries to handle this mess by suspending all rig commands while in power OFF
+state. Only the power ON command will be sent to the rig.
+By default, the power status control is disabled and must explicitly be enabled
+using the -P or --enable-pwr command line switch.
+<DT>PTT Control<DD>
+Similar to the power state, the PTT has caused strange behaviour on some radios.
+Consequently, it has been disabled by default but can be enabled using the -p or
+--enable-ptt command line aguments.
+<P>
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H2>AUTHOR</H2>
+
+Written by Alexandru Csete, OZ9AEC.
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>REPORTING BUGS</H2>
+
+Report bugs to <B>&lt;<A HREF="mailto:groundstation-developer@lists.sourcforge.net">groundstation-developer@lists.sourcforge.net</A>&gt;</B>.
+<BR>
+
+Bugs related to hamlib should be reported directly to the hamlib developers at
+<B>&lt;<A HREF="mailto:hamlib-developer@lists.sourceforge.net">hamlib-developer@lists.sourceforge.net</A>&gt;</B>.
+<P>
+<A NAME="lbAJ">&nbsp;</A>
+<H2>COPYRIGHT</H2>
+
+Copyright &#169; 2001-2006 Alexandru Csete.
+<BR>
+
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+<P>
+<A NAME="lbAK">&nbsp;</A>
+<H2>SEE ALSO</H2>
+
+<B><A HREF="/cgi-bin/man/man2html?1+rigctl">rigctl</A></B>(1)
+
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NAME</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">DEBUG LEVELS</A><DD>
+<DT><A HREF="#lbAF">FEATURES</A><DD>
+<DT><A HREF="#lbAG">KNOWN BUGS AND LIMITATIONS</A><DD>
+<DT><A HREF="#lbAH">AUTHOR</A><DD>
+<DT><A HREF="#lbAI">REPORTING BUGS</A><DD>
+<DT><A HREF="#lbAJ">COPYRIGHT</A><DD>
+<DT><A HREF="#lbAK">SEE ALSO</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 17:52:09 GMT, January 07, 2007
+</BODY>
+</HTML>
