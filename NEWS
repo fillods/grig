@@ -14,6 +14,7 @@ x Auto-Tune: When mouse button is pressed and held down, grig will
 x Special functions (RIG_FUNC_XXX).
 x Support for external tuning knobs: Powermate, other?
 x Service layer watchdog.
+x Windows build files are now included in the source tarball.
 
 
 GRIG 0.7.2:
