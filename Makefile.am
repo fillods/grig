@@ -13,4 +13,8 @@ EXTRA_DIST = \
 	autogen.sh            \
 	intltool-extract.in   \
 	intltool-merge.in     \
-	intltool-update.in
+	intltool-update.in    \
+	win32/config.mk       \
+	win32/grig.rc         \
+	win32/Makefile        \
+	win32/icons/grig-icon.ico
