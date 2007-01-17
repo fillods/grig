@@ -1,3 +1,9 @@
+2007-01-17;	Alexandru Csete <oz9aec@gmail.com>
+
+	* Makefile.am:
+	Include win32 files in source distribution (bug #1630052).
+	
+
 2007-01-07;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/grig-debug.c:
