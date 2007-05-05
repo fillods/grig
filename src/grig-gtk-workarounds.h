@@ -1,8 +1,7 @@
-/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /*
     Grig:  Gtk+ user interface for the Hamradio Control Libraries.
 
-    Copyright (C)  2001-2006  Alexandru Csete.
+    Copyright (C)  2001-2007  Alexandru Csete.
 
     Authors: Alexandru Csete <csete@users.sourceforge.net>
 
@@ -33,5 +32,17 @@
 #define GRIG_GTK_WORKAROUNDS_H 1
 
 void grig_set_combo_tooltips (GtkWidget *combo, gpointer text);
+
+GtkWidget *grig_hpixmap_button (const gchar *file,
+                                const gchar *text,
+                                const gchar *tooltip);
+
+GtkWidget *grig_vpixmap_button (const gchar *file,
+                                const gchar *text,
+                                const gchar *tooltip);
+
+GtkWidget *grig_hstock_button  (const gchar *stock_id,
+                                const gchar *text,
+                                const gchar *tooltip);
 
 #endif

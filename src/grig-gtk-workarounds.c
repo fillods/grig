@@ -1,4 +1,3 @@
-/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /*
     Grig:  Gtk+ user interface for the Hamradio Control Libraries.
 
@@ -42,6 +41,7 @@
  *      fixed in Gtk+
  */
 #include <gtk/gtk.h>
+#include "compat.h"
 #include "grig-gtk-workarounds.h"
 
 
@@ -106,3 +106,104 @@ set_combo_tooltip (GtkWidget *combo, gpointer text)
 	}
 
 }
+
+
+
+/** \brief Create a horizontal pixmap button.
+ *
+ * The text will be placed to the right of the image.
+ * file is only the icon name, not the full path.
+ */
+GtkWidget *
+grig_hpixmap_button (const gchar *file, const gchar *text, const gchar *tooltip)
+{
+    GtkWidget *button;
+    GtkWidget *image;
+    GtkWidget *box;
+    gchar     *path;
+    GtkTooltips *tips;
+
+    path = pixmap_file_name (file);
+    image = gtk_image_new_from_file (path);
+    g_free (path);
+    box = gtk_hbox_new (FALSE, 0);
+    gtk_box_pack_start (GTK_BOX (box), image, TRUE, TRUE, 0);
+    if (text != NULL)
+        gtk_box_pack_start (GTK_BOX (box), gtk_label_new (text), TRUE, TRUE, 0);
+
+    button = gtk_button_new ();
+    gtk_container_add (GTK_CONTAINER (button), box);
+
+    tips = gtk_tooltips_new ();
+    gtk_tooltips_set_tip (tips, button, tooltip, NULL);
+
+
+    return button;
+}
+
+
+
+
+/** \brief Create a vertical pixmap button.
+ *
+ * The text will be placed under the image.
+ * file is only the icon name, not the full path.
+ */
+GtkWidget *
+grig_vpixmap_button (const gchar *file, const gchar *text, const gchar *tooltip)
+{
+    GtkWidget *button;
+    GtkWidget *image;
+    GtkWidget *box;
+    gchar     *path;
+    GtkTooltips *tips;
+
+    path = pixmap_file_name (file);
+    image = gtk_image_new_from_file (path);
+    g_free (path);
+    box = gtk_vbox_new (FALSE, 0);
+    gtk_box_pack_start (GTK_BOX (box), image, TRUE, TRUE, 0);
+    if (text != NULL)
+        gtk_box_pack_start (GTK_BOX (box), gtk_label_new (text), TRUE, TRUE, 0);
+
+    button = gtk_button_new ();
+    gtk_container_add (GTK_CONTAINER (button), box);
+
+    tips = gtk_tooltips_new ();
+    gtk_tooltips_set_tip (tips, button, tooltip, NULL);
+
+
+    return button;
+}
+
+
+/** \brief Create a horizontal pixmap button using stock pixmap.
+ *
+ * The text will be placed to the right of the image.
+ * The icon size will be GTK_ICON_SIZE_BUTTON.
+ */
+GtkWidget *
+grig_hstock_button (const gchar *stock_id, const gchar *text, const gchar *tooltip)
+{
+    GtkWidget *button;
+    GtkWidget *image;
+    GtkWidget *box;
+    GtkTooltips *tips;
+    
+
+    image = gtk_image_new_from_stock (stock_id, GTK_ICON_SIZE_BUTTON);
+    box = gtk_hbox_new (FALSE, 0);
+    gtk_box_pack_start (GTK_BOX (box), image, TRUE, TRUE, 0);
+    if (text != NULL)
+        gtk_box_pack_start (GTK_BOX (box), gtk_label_new (text), TRUE, TRUE, 0);
+
+    button = gtk_button_new ();
+    gtk_container_add (GTK_CONTAINER (button), box);
+
+    tips = gtk_tooltips_new ();
+    gtk_tooltips_set_tip (tips, button, tooltip, NULL);
+
+
+    return button;
+}
+
