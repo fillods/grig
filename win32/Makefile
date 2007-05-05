@@ -59,6 +59,7 @@ GRIGSRC = \
         rig-gui-smeter-conv.c \
         rig-gui-tx.c \
         rig-gui-vfo.c \
+        rig-selector.c \
         rig-state.c \
         rig-utils.c
 
