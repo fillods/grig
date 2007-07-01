@@ -38,6 +38,16 @@
 /** \brief Execute radio selector.
  *  \return The config file name of the selected radio
  * 
+ * This function creates a window containing a list with the currently
+ * configured radios, allowing the user to select which radio to
+ * connect to.
+ *
+ * Additionally, the window contains buttons to delete, edit, and add
+ * new radios to the list.
+ *
+ * The dummy rig is always listed on the top of the list.
+ *
+ * The radio configurations are stored in $HOME/.grig/xyz.radio files
  */
 gchar *
 rig_selector_execute ()
