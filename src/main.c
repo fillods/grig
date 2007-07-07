@@ -1,8 +1,8 @@
-/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
+/* -*- Mode: C; tab-width: 4; indent-tabs-mode: t; c-basic-offset: 4 -*- */
 /*
     Grig:  Gtk+ user interface for the Hamradio Control Libraries.
 
-    Copyright (C)  2001-2006  Alexandru Csete.
+    Copyright (C)  2001-2007  Alexandru Csete.
 
     Authors: Alexandru Csete <csete@users.sourceforge.net>
 
@@ -24,8 +24,6 @@
   
     You should have received a copy of the GNU General Public License
     along with this program; if not, visit http://www.fsf.org/
- 
- 
  
  
 */
@@ -75,7 +73,7 @@ static gchar   *civaddr   = NULL;    /*!< CI-V address for ICOM rig. */
 static gchar   *rigconf   = NULL;    /*!< Configuration parameter. */
 static gint     rigspeed  = 0;       /*!< Optional serial speed. */
 static gboolean listrigs  = FALSE;   /*!< List supported radios and exit. */ 
-gint     debug     = RIG_DEBUG_NONE; /*!< Hamlib debug level. Note: not static since menubar.c needs access. */
+gint debug     = RIG_DEBUG_NONE; /*!< Hamlib debug level. Note: not static since menubar.c needs access. */
 static gint     delay     = 0;       /*!< Command delay. */
 static gboolean nothread  = FALSE;   /*!< Don't use threads, just a regular gtk-timeout. */
 static gboolean pstat     = FALSE;   /*!< Enable power status button. */
@@ -177,6 +175,7 @@ main (int argc, char *argv[])
 
 	g_free (fname);
 
+
 	/* initialize threads; according to glib docs, this call will terminate
 	   the program if threads are not supported... then why doesn''t it work
 	   on FreeBSD?
@@ -185,12 +184,12 @@ main (int argc, char *argv[])
 		g_thread_init (NULL);
 
 
+
 	/* decode command line arguments; this part of the code only sets the
 	   global flags and variables, whereafter we check each variable in
 	   descending priority order. This way it is easy to exit the program
 	   in case of -v -h and such.
 	*/
-	
 	while(1) {
 		int c;
 		int option_index = 0;
@@ -338,6 +337,20 @@ main (int argc, char *argv[])
 
 	/* initialise debug handler */
 	grig_debug_init (NULL);
+
+	/* check configuration */
+	if (!grig_config_check ()) {
+
+		g_print ("\n\n");
+		g_print (_("Grig configuration check failed!\n"));
+		g_print (_("This usually means that your configuration is broken.\n"));
+		g_print (_("Sorry... but I can not continue..."));
+		g_print ("\n\n");
+		g_print (_("Proposed solutions:\n"));
+		return 1;
+
+	}
+
 
 	/* launch rig daemon and pass the relevant
 	   command line options

@@ -1,8 +1,8 @@
-/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
+/* -*- Mode: C; tab-width: 4; indent-tabs-mode: t; c-basic-offset: 4 -*- */
 /*
     Grig:  Gtk+ user interface for the Hamradio Control Libraries.
 
-    Copyright (C)  2001-2006  Alexandru Csete.
+    Copyright (C)  2001-2004  Alexandru Csete.
 
     Authors: Alexandru Csete <csete@users.sourceforge.net>
 
@@ -31,6 +31,15 @@
 */
 #ifndef GRIG_CONFIG_H
 #define GRIG_CONFIG_H 1
+
+
+#define GRIG_CFG_VER     1
+#define GRIG_RIG_CFG_VER 1
+#define GRIG_ROT_CFG_VER 1
+#define GRIG_MEM_CFG_VER 1
+
+
+gint grig_config_check (void);
 
 
 #endif
