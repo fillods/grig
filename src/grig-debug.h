@@ -33,6 +33,7 @@
 #define GRIG_DEBUG_H 1
 
 #include <glib.h>
+#include <hamlib/rig.h>
 
 
 #define GRIG_DEBUG_SEPARATOR ";;"
