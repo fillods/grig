@@ -36,6 +36,7 @@
  */
 #include <glib.h>
 #include <glib/gi18n.h>
+#include <glib/gstdio.h>
 #ifdef HAVE_CONFIG_H
 #  include <config.h>
 #endif
@@ -91,7 +92,7 @@ check_grig_dir ()
 	gchar *dir;
 	gint status = 0;
 
-	dir = g_strconcat (g_get_home_dir (), "/.grig", NULL);
+	dir = g_strconcat (g_get_home_dir (), G_DIR_SEPARATOR_S, ".grig", NULL);
 
 	if (!g_file_test (dir, G_FILE_TEST_IS_DIR)) {
 		
@@ -99,8 +100,10 @@ check_grig_dir ()
 		status = g_mkdir (dir, 0750);
 	}
 
+	g_free (dir);
+
 	grig_debug_local (RIG_DEBUG_VERBOSE,
-					  _("  Configuration directory: %s"),
+					  _("..Configuration directory: %s"),
 					  status ? _("ERROR") : _("OK"));
 
 	return status;
@@ -133,9 +136,47 @@ static gint
 check_rig_files ()
 {
 	gint status = 0;
+	GDir  *dir = NULL;
+	gchar *dirname;
+	const gchar *fname;
+	gchar *fpath;
+	GError *err = NULL;
+	
 
+	grig_debug_local (RIG_DEBUG_VERBOSE,
+					  _("..Radio config files:"));
 
 	/* scan .grig directory for .rig files */
+	dirname = g_strconcat (g_get_home_dir (), G_DIR_SEPARATOR_S, ".grig", NULL);
+	dir = g_dir_open (dirname, 0, &err);
+
+	if (err != NULL) {
+		grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: %s"),
+						  __FUNCTION__, err->message);
+		g_clear_error (&err);
+
+		return -1;
+	}
+
+	while ((fname = g_dir_read_name (dir)) != NULL) {
+
+		/* we are only interested in .rig files */
+		fpath = g_strconcat (dirname, G_DIR_SEPARATOR_S, fname, NULL);
+		if ((!g_file_test (fpath, G_FILE_TEST_IS_DIR)) &&
+			(g_strrstr (fname, ".rig"))) {
+
+			grig_debug_local (RIG_DEBUG_VERBOSE,
+							  _("....%s OK"),
+							  fname);
+
+		}
+		g_free (fpath);
+
+	}
+
+	g_dir_close (dir);
+	g_free (dirname);
 
 	return status;
 }

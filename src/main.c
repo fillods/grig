@@ -98,7 +98,7 @@ static struct option long_options[] =
 	{"delay",        1, 0, 'D'},
 	{"nothread",     0, 0, 'n'},
 	{"list",         0, 0, 'l'},
-        {"enable-ptt",   0, 0, 'p'},
+	{"enable-ptt",   0, 0, 'p'},
 	{"enable-pwr",   0, 0, 'P'},
 	{"help",         0, 0, 'h'},
 	{"version",      0, 0, 'v'},
@@ -351,19 +351,26 @@ main (int argc, char *argv[])
 
 	}
 
+	/* At this point, configuration is OK.
+	   Check whether user explicitly asked for a specific .rig file,
+	   if yes try to load it. If no explicit .rig file or .rig file
+	   does not exist, open the rig selector dialogue.
+	*/
+
+
 
 	/* launch rig daemon and pass the relevant
 	   command line options
 	*/
 	if (rig_daemon_start (rignum,
-			      rigfile,
-			      rigspeed,
-			      civaddr,
-			      rigconf,
-			      delay,
-			      nothread,
-			      ptt,
-			      pstat))
+						  rigfile,
+						  rigspeed,
+						  civaddr,
+						  rigconf,
+						  delay,
+						  nothread,
+						  ptt,
+						  pstat))
 	{
 
 		return 1;
