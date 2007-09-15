@@ -622,7 +622,7 @@ grig_show_version   ()
 	g_print (_("Graphical User Interface for the "\
 		   "Hamradio Control Libraries."));
 	g_print ("\n\n");
-	g_print (_("Copyright (C)  2001-2006  Alexandru Csete."));
+	g_print (_("Copyright (C)  2001-2007  Alexandru Csete."));
 	g_print ("\n");
 	g_print (_("This is free software; see the source for "\
 		   "copying conditions. "));

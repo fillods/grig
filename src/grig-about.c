@@ -2,7 +2,7 @@
 /*
     Grig:  Gtk+ user interface for the Hamradio Control Libraries.
 
-    Copyright (C)  2001-2006  Alexandru Csete.
+    Copyright (C)  2001-2007  Alexandru Csete.
 
     Authors: Alexandru Csete <csete@users.sourceforge.net>
 
@@ -51,7 +51,7 @@ const gchar *authors[] = {
 };
 
 
-const gchar license[] = N_("Copyright (C) 2001-2006 Alexandru Csete <alex@oz9aec.dk>\n\n"\
+const gchar license[] = N_("Copyright (C) 2001-2007 Alexandru Csete <alex@oz9aec.dk>\n\n"\
 			   "Grig is free software; you can redistribute it and/or modify\n"\
 			   "it under the terms of the GNU General Public License as published\n"\
 			   "by the Free Software Foundation; either version 2 of the License,\n"\
@@ -87,7 +87,7 @@ grig_about_run ()
 	gtk_about_dialog_set_name (GTK_ABOUT_DIALOG (dialog), _("Grig"));
 	gtk_about_dialog_set_version (GTK_ABOUT_DIALOG (dialog), VERSION);
 	gtk_about_dialog_set_copyright (GTK_ABOUT_DIALOG (dialog),
-					_("Copyright (C) 2001-2006 Alexandru Csete OZ9AEC"));
+					_("Copyright (C) 2001-2007 Alexandru Csete OZ9AEC"));
 	gtk_about_dialog_set_website (GTK_ABOUT_DIALOG (dialog),
 				      "http://www.oz9aec.dk/software/grig");
 	gtk_about_dialog_set_website_label (GTK_ABOUT_DIALOG (dialog),
