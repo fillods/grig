@@ -1,0 +1,28 @@
+<para>
+&appname; has built in functionality for performing advanced software scans. Software scan in this context means that the tuning is done by &app; and not by the radio. In other words, rather that using the scan functionality of a particular radio, &app; will perform the frequency stepping and use the set-frequency function to tune the radio to a particular frequency.
+</para>
+
+<para>
+You can select to read sigstr or swr back
+</para>
+
+
+
+<sect1 id="scan-cont">
+<title>Continuous Scanning</title>
+
+<para>
+Continuous scanning: start, end, step, ...
+</para>
+
+</sect1>
+
+
+<sect1 id="scan-mem">
+<title>Memory Scanning</title>
+
+<para>
+Memory scanning: slelect memory channels to scan through.
+</para>
+
+</sect1>

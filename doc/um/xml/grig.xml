@@ -1,0 +1,127 @@
+<?xml version="1.0"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+    "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd" 
+
+[<!ENTITY legal SYSTEM "legal.xml">
+  <!ENTITY appversion "0.8">
+  <!ENTITY manrevision "1.0">
+  <!ENTITY date "May 2007">
+  <!ENTITY app "<application>grig</application>">
+  <!ENTITY appname "Grig">
+  <!ENTITY intro    SYSTEM "introduction.xml">
+  <!ENTITY start    SYSTEM "getting-started.xml">
+  <!ENTITY memman   SYSTEM "memory-manager.xml">
+  <!ENTITY scan     SYSTEM "scan.xml">
+]>
+
+
+<!-- =============Document Header ============================= -->
+<book id="gpredict-um" lang="en">
+  <bookinfo> 
+    <title>&appname; User Manual</title>       
+
+    <copyright> 
+      <year>2001-2007</year> 
+      <holder>Alexandru Csete</holder> 
+    </copyright> 
+
+<!-- translators: uncomment this:
+  <copyright>
+   <year>2003</year>
+   <holder>ME-THE-TRANSLATOR (Latin translation)</holder>
+  </copyright>
+
+   -->
+
+   &legal;
+   <!-- This file  contains link to license for the documentation (GNU FDL), and 
+        other legal stuff such as "NO WARRANTY" statement. Please do not change 
+	any of this. -->
+
+    <authorgroup> 
+      <corpauthor>TBD</corpauthor>
+      
+<!-- This is appropriate place for other contributors: translators,
+     maintainers,  etc. Commented out by default.
+     
+      <othercredit role="translator">
+		<firstname>Latin</firstname> 
+		<surname>Translator 1</surname> 
+		<affiliation> 
+	  		<orgname>Latin Translation Team</orgname> 
+	  		<address> <email>translator@gnome.org</email> </address> 
+		</affiliation>
+		<contrib>Latin translation</contrib>
+      </othercredit>
+-->
+    </authorgroup>
+
+    <revhistory>
+      <revision> 
+        <revnumber>&manrevision;</revnumber> 
+        <date>&date;</date> 
+        <revdescription> 
+          <para role="author">Alexandru Csete</para>
+        </revdescription> 
+      </revision> 
+    </revhistory> 
+    
+<!--
+    <releaseinfo>This user manual describes version &appversion; of &app;.
+    </releaseinfo> 
+-->
+<legalnotice> 
+  <title>Feedback</title> 
+  <para>TBD.</para>
+  <!-- Translators may also add here feedback address for translations -->
+</legalnotice> 
+</bookinfo> 
+
+
+<chapter id="intro">
+<title>Introduction</title>
+
+&intro;
+
+</chapter>
+
+
+<chapter id="start">
+<title>Getting Started</title>
+
+&start;
+
+</chapter>
+
+
+<chapter id="memman">
+<title>The Memory Manager</title>
+
+<warning>
+<para>
+This chapter describes experimental functionality that is not available in the stable release of &app;.
+</para>
+</warning>
+
+&memman;
+
+</chapter>
+
+
+<chapter id="scan">
+<title>Software Scanner</title>
+
+<warning>
+<para>
+This chapter describes experimental functionality that is not available in the stable release of &app;.
+</para>
+</warning>
+
+&scan;
+
+</chapter>
+
+
+
+
+</book>

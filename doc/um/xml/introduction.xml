@@ -1,0 +1,23 @@
+<sect1 id="about-grig">
+<title>About &appname;</title>
+
+<para>
+&appname; is a CAT control application that allows you to remotely control you ham radio transceivers. It uses the Ham Radio Control Libraries for low level drivers, which means that ....
+</para>
+
+<para>
+&appname; has been designed with simplicity and efficiency in mind. My primary objective with &app; was to create a rig control application, which allows near-realtime experience when controlling my radios remotely.
+</para>
+
+</sect1>
+
+
+<sect1 id="about-manual">
+<title>About this Manual</title>
+
+<para>
+Conventions used in this document.
+This manual is available in the following formats.
+</para>
+
+</sect1>
