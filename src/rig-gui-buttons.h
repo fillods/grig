@@ -1,5 +1,5 @@
 
-/* -*- Mode: C; tab-width: 4; indent-tabs-mode: t; c-basic-offse: 4 -*- */
+/* -*- Mode: C; tab-width: 4; indent-tabs-mode: nil; c-basic-offse: 4 -*- */
 /*
     Grig:  Gtk+ user interface for the Hamradio Control Libraries.
 

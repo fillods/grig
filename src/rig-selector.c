@@ -1,4 +1,4 @@
-/* -*- Mode: C; tab-width: 4; indent-tabs-mode: t; c-basic-offse: 4 -*- */
+/* -*- Mode: C; tab-width: 4; indent-tabs-mode: nil; c-basic-offse: 4 -*- */
 /*
     Grig:  Gtk+ user interface for the Hamradio Control Libraries.
 
@@ -52,6 +52,12 @@
 gchar *
 rig_selector_execute ()
 {
+    GtkWidget *window;   /* the main rig-selector window */
+    GtkWidget *vbox;     /* the main vertical box in the window */
+    GtkWidget *butbox;   /* the button box in the bottom of the window	*/
+	
+
+
 
     return NULL;
 }
