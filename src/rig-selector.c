@@ -32,11 +32,20 @@
 #include <gtk/gtk.h>
 #include <glib/gi18n.h>
 #include <hamlib/rig.h>
+#include "compat.h"
+
 #include "rig-selector.h"
 
 
+/* private function declarations */
+static gint rig_selector_delete     (GtkWidget *, GdkEvent *, gpointer);
+static void rig_selector_destroy    (GtkWidget *, gpointer);
+
+
+
 /** \brief Execute radio selector.
- *  \return The config file name of the selected radio
+ *  \return The config file name of the selected radio or NULL if
+ *          selection has been aborted.
  * 
  * This function creates a window containing a list with the currently
  * configured radios, allowing the user to select which radio to
@@ -53,11 +62,111 @@ gchar *
 rig_selector_execute ()
 {
     GtkWidget *window;   /* the main rig-selector window */
+    gchar     *icon;     /* window icon file name */
     GtkWidget *vbox;     /* the main vertical box in the window */
-    GtkWidget *butbox;   /* the button box in the bottom of the window	*/
-	
+    GtkWidget *butbox;   /* the button box in the bottom of the window */
+    GtkWidget *conbut;   /* Connect button */
+    GtkWidget *cancbut;  /* Cancel button */
+    GtkWidget *addbut;   /* New button */
+    GtkWidget *editbut;  /* Edit button */
+    GtkWidget *delbut;   /* delete button */
 
 
 
+    /* connect button */
+    conbut = gtk_button_new_from_stock (GTK_STOCK_CONNECT);
+    
+    /* cancel button */
+    cancbut = gtk_button_new_from_stock (GTK_STOCK_CANCEL);
+    
+    /* add nutton */
+    addbut = gtk_button_new_from_stock (GTK_STOCK_ADD);
+    
+    /* delete button */
+    delbut = gtk_button_new_from_stock (GTK_STOCK_DELETE);
+    
+    /* edit button */
+    editbut = gtk_button_new_from_stock (GTK_STOCK_EDIT);
+    
+    /* button box*/
+    butbox = gtk_hbutton_box_new ();
+    gtk_container_add (GTK_CONTAINER (butbox), addbut);
+    gtk_container_add (GTK_CONTAINER (butbox), editbut);
+    gtk_container_add (GTK_CONTAINER (butbox), delbut);
+    gtk_container_add (GTK_CONTAINER (butbox), cancbut);
+    gtk_container_add (GTK_CONTAINER (butbox), conbut);
+    
+    /* vertical box */
+    vbox = gtk_vbox_new (FALSE, 10);
+    gtk_box_pack_end (GTK_BOX (vbox), butbox, FALSE, FALSE, 0);
+    gtk_box_pack_end (GTK_BOX (vbox), gtk_hseparator_new (), FALSE, FALSE, 0);
+
+    /* create window */
+    window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+    gtk_window_set_title (GTK_WINDOW (window), _("Select a Radio"));
+    icon = pixmap_file_name ("ic910.png");
+    gtk_window_set_icon_from_file (GTK_WINDOW (window), icon, NULL);
+    g_free (icon);
+    
+    gtk_container_set_border_width (GTK_CONTAINER (window), 10);
+    gtk_container_add (GTK_CONTAINER (window), vbox);
+
+    /* connect delete and destroy signals */
+    g_signal_connect (G_OBJECT (window), "delete_event",
+                      G_CALLBACK (rig_selector_delete), NULL);
+    g_signal_connect (G_OBJECT (window), "destroy",
+                      G_CALLBACK (rig_selector_destroy), NULL);
+
+    /* show window */
+    gtk_widget_show_all (window);
+    
+    /* enter main loop that will only be quit
+       when window is destroyed */
+    gtk_main ();
+    
     return NULL;
 }
+
+
+/** \brief Handle delete events.
+ *  \param widget The widget which received the delete event signal.
+ *  \param event  Data structure describing the event.
+ *  \param data   User data (NULL).
+ *  \param return Always FALSE to indicate that the app should be destroyed.
+ *
+ * This function handles the delete event received by the rig selector
+ * window (eg. when the window is closed by the WM). This function simply
+ * returns FALSE indicating that the main application window should be
+ * destroyed by emiting the destroy signal.
+ *
+ */
+static gint
+rig_selector_delete      (GtkWidget *widget,
+                          GdkEvent  *event,
+                          gpointer   data)
+{
+
+    /* return FALSE so that Gtk+ will emit the destroy signal */
+    return FALSE;
+}
+
+
+
+/** \brief Handle destroy signals.
+ *  \param widget The widget which received the signal.
+ *  \param data   User data (NULL).
+ *
+ * This function is called when the rig selector window receives the
+ * destroy signal, ie. it is destroyed. This function signals all daemons
+ * and other threads to stop and exits the Gtk+ main loop.
+ *
+ */
+static void
+rig_selector_destroy    (GtkWidget *widget,
+                         gpointer   data)
+{
+
+    /* exit Gtk+ */
+    gtk_main_quit ();
+}
+

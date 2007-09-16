@@ -80,7 +80,7 @@ static gboolean pstat     = FALSE;   /*!< Enable power status button. */
 static gboolean ptt       = FALSE;   /*!< Enable PTT button. */
 static gboolean version   = FALSE;   /*!< Show version and exit. */
 static gboolean help      = FALSE;   /*!< Show help and exit. */
-
+static gchar    *rigcfg   = NULL;    /*!< .radio file name. */
 
 /* group those which take no arg */
 /** \brief Short options. */
@@ -351,13 +351,15 @@ main (int argc, char *argv[])
 
 	}
 
-	/* At this point, configuration is OK.
-	   Check whether user explicitly asked for a specific .rig file,
-	   if yes try to load it. If no explicit .rig file or .rig file
-	   does not exist, open the rig selector dialogue.
-	*/
+	/* At this point, configuration is OK. */
 
 
+    /* 1. prio: .radio file */
+    
+    /* 2. prio: -m or --model */
+    
+    /* 3. prio: run rig-selector */
+    rig_selector_execute ();
 
 	/* launch rig daemon and pass the relevant
 	   command line options
