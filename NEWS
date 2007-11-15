@@ -1,22 +1,3 @@
-FUTURE RELEASES:
-
-x Rig selector dialogue at startup.
-x Software Memory Manager.
-x Software Scan.
-x Band Map.
-x DCS and CTCSS controls.
-x Allow changing working frequency while in TX mode.
-x Add the possibility to suspend rig command execution
-  without shutting down the daemon, ie. without closing
-  connection to the rig. The statusbar contains a small
-  indicator showing the status.
-x Auto-Tune: When mouse button is pressed and held down, grig will
-  start tuning automatically.
-x Special functions (RIG_FUNC_XXX).
-x Support for external tuning knobs: Powermate, other?
-x Service layer watchdog.
-x Windows build files are now included in the source tarball.
-
 
 GRIG 0.7.2:
 

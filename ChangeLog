@@ -1,3 +1,9 @@
+2007-11-15;	Alexandru Csete <oz9aec@gmail.com>
+
+	* NEWS, TODO:
+	Separate NEWS and future improvments.
+	
+
 2007-09-15;	Alexandru Csete <oz9aec@gmail.com>
 
 	* doc/um/xml:
