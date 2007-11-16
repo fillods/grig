@@ -22,6 +22,7 @@ grig_SOURCES = \
 	grig-debug.c grig-debug.h \
 	grig-gtk-workarounds.c grig-gtk-workarounds.h \
 	grig-menubar.c grig-menubar.h \
+	key-press-handler.c key-press-handler.h \
 	rig-anomaly.c rig-anomaly.h \
 	rig-daemon.c rig-daemon.h \
 	rig-daemon-check.c rig-daemon-check.h \
