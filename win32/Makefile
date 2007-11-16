@@ -42,6 +42,7 @@ GRIGSRC = \
         grig-debug.c \
         grig-gtk-workarounds.c \
         grig-menubar.c \
+	key-press-handler.c \
         main.c \
         rig-anomaly.c \
         rig-daemon.c \
