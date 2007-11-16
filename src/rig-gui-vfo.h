@@ -4,7 +4,7 @@
 
     Copyright (C)  2001-2007  Alexandru Csete.
 
-    Authors: Alexandru Csete <csete@users.sourceforge.net>
+    Authors: Alexandru Csete <oz9aec@gmail.com>
 
     Comments, questions and bugreports should be submitted via
     http://sourceforge.net/projects/groundstation/

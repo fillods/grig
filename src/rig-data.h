@@ -1,34 +1,34 @@
 /* -*- Mode: C; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*
-    Grig:  Gtk+ user interface for the Hamradio Control Libraries.
+  Grig:  Gtk+ user interface for the Hamradio Control Libraries.
 
-    Copyright (C)  2001-2007  Alexandru Csete.
+  Copyright (C)  2001-2007  Alexandru Csete.
 
-    Authors: Alexandru Csete <csete@users.sourceforge.net>
+  Authors: Alexandru Csete <oz9aec@gmail.com>
 
-    Comments, questions and bugreports should be submitted via
-    http://sourceforge.net/projects/groundstation/
-    More details can be found at the project home page:
+  Comments, questions and bugreports should be submitted via
+  http://sourceforge.net/projects/groundstation/
+  More details can be found at the project home page:
 
-            http://groundstation.sourceforge.net/
+  http://groundstation.sourceforge.net/
  
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
+  This program is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation; either version 2 of the License, or
+  (at your option) any later version.
   
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
   
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, visit http://www.fsf.org/
+  You should have received a copy of the GNU General Public License
+  along with this program; if not, visit http://www.fsf.org/
 */
 
 /**** FIXME: Add support for double-reading of some values. For example,
-             ALC and RF power should support both meter reading as well
-             as setting
+      ALC and RF power should support both meter reading as well
+      as setting
 */
 
 
@@ -181,18 +181,18 @@ typedef struct {
 
 
 #define GRIG_LEVEL_RD (RIG_LEVEL_RFPOWER | RIG_LEVEL_AGC | RIG_LEVEL_SWR | RIG_LEVEL_ALC | \
-		       RIG_LEVEL_STRENGTH | RIG_LEVEL_ATT | RIG_LEVEL_PREAMP | \
+                       RIG_LEVEL_STRENGTH | RIG_LEVEL_ATT | RIG_LEVEL_PREAMP | \
                        RIG_LEVEL_VOX | RIG_LEVEL_AF | RIG_LEVEL_RF | RIG_LEVEL_SQL | \
-		       RIG_LEVEL_IF | RIG_LEVEL_APF | RIG_LEVEL_NR | RIG_LEVEL_PBT_IN | \
-                       RIG_LEVEL_PBT_OUT | RIG_LEVEL_CWPITCH | \
+                       RIG_LEVEL_IF | RIG_LEVEL_APF | RIG_LEVEL_NR | RIG_LEVEL_PBT_IN | \
+                       RIG_LEVEL_PBT_OUT | RIG_LEVEL_CWPITCH |          \
                        RIG_LEVEL_MICGAIN | RIG_LEVEL_KEYSPD | RIG_LEVEL_NOTCHF | \
                        RIG_LEVEL_COMP | RIG_LEVEL_BKINDL | RIG_LEVEL_BALANCE | \
                        RIG_LEVEL_VOXGAIN | RIG_LEVEL_ANTIVOX)
 
 #define GRIG_LEVEL_WR (RIG_LEVEL_RFPOWER | RIG_LEVEL_AGC | RIG_LEVEL_ATT | RIG_LEVEL_PREAMP | \
                        RIG_LEVEL_VOX | RIG_LEVEL_AF | RIG_LEVEL_RF | RIG_LEVEL_SQL | \
-		       RIG_LEVEL_IF | RIG_LEVEL_APF | RIG_LEVEL_NR | RIG_LEVEL_PBT_IN | \
-                       RIG_LEVEL_PBT_OUT | RIG_LEVEL_CWPITCH | \
+                       RIG_LEVEL_IF | RIG_LEVEL_APF | RIG_LEVEL_NR | RIG_LEVEL_PBT_IN | \
+                       RIG_LEVEL_PBT_OUT | RIG_LEVEL_CWPITCH |          \
                        RIG_LEVEL_MICGAIN | RIG_LEVEL_KEYSPD | RIG_LEVEL_NOTCHF | \
                        RIG_LEVEL_COMP | RIG_LEVEL_BKINDL | RIG_LEVEL_BALANCE | \
                        RIG_LEVEL_VOXGAIN | RIG_LEVEL_ANTIVOX)
