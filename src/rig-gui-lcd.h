@@ -115,6 +115,8 @@ typedef struct {
 
 
 GtkWidget *rig_gui_lcd_create (void);
+void       rig_gui_lcd_set_freq_digits  (freq_t freq);
+void       rig_gui_lcd_set_rit_digits   (shortfreq_t freq);
 
 
 #endif

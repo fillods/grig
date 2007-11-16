@@ -131,8 +131,6 @@ static gboolean       rig_gui_lcd_expose_cb        (GtkWidget *, GdkEventExpose 
 static gboolean       rig_gui_lcd_handle_event     (GtkWidget *, GdkEvent *, gpointer);
 static event_object_t rig_gui_lcd_get_event_object (GdkEvent *event);
 static void           rig_gui_lcd_calc_dim         (void);
-static void           rig_gui_lcd_set_freq_digits  (freq_t freq);
-static void           rig_gui_lcd_set_rit_digits   (shortfreq_t freq);
 static void           rig_gui_lcd_draw_text        (void);
 
 static gint           rig_gui_lcd_timeout_exec     (gpointer);
@@ -956,7 +954,7 @@ rig_gui_lcd_calc_dim    ()
  *
  * \sa rig_gui_lcd_set_rit_digits
  */
-static void
+void
 rig_gui_lcd_set_freq_digits  (freq_t freq)
 {
 	gchar *str;   /* frequency as a string */
@@ -1092,7 +1090,7 @@ rig_gui_lcd_set_freq_digits  (freq_t freq)
  *
  * \sa rig_gui_lcd_set_freq_digits
  */
-static void
+void
 rig_gui_lcd_set_rit_digits   (shortfreq_t freq)
 {
 	gchar *str;

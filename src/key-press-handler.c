@@ -1,4 +1,4 @@
-/* -*- Mode: C; tab-width: 4; indent-tabs-mode: nil; c-basic-offsett: 4 -*- */
+/* -*- Mode: C; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*
     Grig:  Gtk+ user interface for the Hamradio Control Libraries.
 
@@ -34,21 +34,29 @@
  */
 #include <gtk/gtk.h>
 #include <glib/gi18n.h>
+#include <gdk/gdkkeysyms.h>
 #include <hamlib/rig.h>
 #ifdef HAVE_CONFIG_H
 #  include <config.h>
 #endif
 #include "rig-data.h"
 #include "grig-debug.h"
+#include "rig-gui-lcd.h"
 #include "key-press-handler.h"
 
+
+
+static gint snooper (GtkWidget *grab_widget, GdkEventKey *event, gpointer func_data);
+
+static gint handler_id = -1;
 
 
 void
 key_press_handler_init  ()
 {
-    grig_debug_local (RIG_DEBUG_INFO, _("Initialising key press handler"));
+    grig_debug_local (RIG_DEBUG_VERBOSE, _("Initialising key press handler"));
 
+    handler_id = gtk_key_snooper_install (snooper, NULL);
 }
 
 
@@ -56,6 +64,53 @@ key_press_handler_init  ()
 void
 key_press_handler_close ()
 {
-    grig_debug_local (RIG_DEBUG_INFO, _("Closing key press handler"));
+    grig_debug_local (RIG_DEBUG_VERBOSE, _("Closing key press handler"));
 
+    gtk_key_snooper_remove (handler_id);
 }
+
+
+static gint
+snooper (GtkWidget *grab_widget, GdkEventKey *event, gpointer func_data)
+{
+    gint stop_processing = FALSE;
+    freq_t freq;
+
+
+    switch (event->keyval) {
+
+        /* Arrow Up: Increase frequency with lowest step */
+    case GDK_Up:
+
+        if (event->type == GDK_KEY_PRESS) {
+            freq = rig_data_get_freq (1) + rig_data_get_fstep ();
+            rig_data_set_freq (1, freq);
+            rig_gui_lcd_set_freq_digits(freq);
+        }
+        
+        /* inhibit further processing of event */
+        stop_processing = TRUE;
+        break;
+
+        /* Arrow Down: Descrease frequency with lowest step */
+    case GDK_Down:
+
+        if (event->type == GDK_KEY_PRESS) {
+            freq = rig_data_get_freq (1) - rig_data_get_fstep ();
+            rig_data_set_freq (1, freq);
+            rig_gui_lcd_set_freq_digits(freq);
+        }
+
+        /* inhibit further processing of event */
+        stop_processing = TRUE;
+        break; 
+
+    default:
+        /* key is not handled */
+        stop_processing = FALSE;
+        break;
+    }
+    
+    return stop_processing;
+}
+

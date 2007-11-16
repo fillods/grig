@@ -1,4 +1,4 @@
-/* -*- Mode: C; tab-width: 4; indent-tabs-mode: nil; c-basic-offsett: 4 -*- */
+/* -*- Mode: C; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*
     Grig:  Gtk+ user interface for the Hamradio Control Libraries.
 
@@ -56,6 +56,7 @@
 #include "rig-gui-message-window.h"
 #include "rig-daemon.h"
 #include "rig-data.h"
+#include "key-press-handler.h"
 
 
 
@@ -378,6 +379,9 @@ main (int argc, char *argv[])
 		return 1;
 	}
 
+    /* install key press event handler */
+    key_press_handler_init ();
+
 	/* check whether the debug level is something meaningful
 	   (it could be set to something junk by user); if yes, set
 	   debuglevel, otherwise use RIG_DEBUG_WARN.
@@ -395,8 +399,9 @@ main (int argc, char *argv[])
 	/* add contents */
 	gtk_container_add (GTK_CONTAINER (grigapp), rig_gui_create ());
 	gtk_widget_show_all (grigapp);
-
+    
 	gtk_main ();
+
 
 	return 0;
 }
@@ -523,6 +528,9 @@ grig_app_destroy    (GtkWidget *widget,
 	/* set debug level to TRACE */
 	grig_debug_set_level (RIG_DEBUG_TRACE);
 
+    /* remove key press event handler */
+    key_press_handler_close ();
+    
 	/* stop daemons */
 	rig_daemon_stop ();
 
@@ -531,8 +539,8 @@ grig_app_destroy    (GtkWidget *widget,
 	/* stop timeouts */
 
 	/* shut down debug handler */
-      	grig_debug_close ();
-
+    grig_debug_close ();
+    
 	/* exit Gtk+ */
 	gtk_main_quit ();
 }
