@@ -1,7 +1,25 @@
+2007-11-16;	Alexandru Csete <oz9aec@gmail.com>
+
+	* src/key-press-handler.[ch]:
+	Added functions to snoop and manage key press events.
+
+	* src/main.c:
+	Use new key press event handler.
+
+	* src/rig-gui-lcd.[ch]:
+	Changed rig_gui_lcd_set_freq_digits and rig_gui_lcd_set_rit_digits
+	to be public in order to allow direct setting of frequency display
+	when managing events other than the ones occuring on the LCD area.
+	
+	
+
 2007-11-15;	Alexandru Csete <oz9aec@gmail.com>
 
 	* NEWS, TODO:
 	Separate NEWS and future improvments.
+
+	* src/Makefile.am:
+	Allow build with Gtk+ 2.12 (GtkTooltips deprecated).
 	
 
 2007-09-15;	Alexandru Csete <oz9aec@gmail.com>
