@@ -33,6 +33,6 @@ gchar *get_data_dir   (void);
 gchar *get_pixmaps_dir   (void);
 gchar *pixmap_file_name  (const gchar *map);
 gchar *data_file_name (const gchar *data);
-
+gchar *get_conf_dir (const gchar *subdir);
 
 #endif

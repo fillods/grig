@@ -135,4 +135,29 @@ pixmap_file_name (const gchar *map)
 }
 
 
+/** \brief Get config directory.
+ * \param subdir Optional subdirectory to append
+ * \return A newly allocated string containing the conf dir.
+ *
+ * This funxction returns the absolute path of the user config directory
+ * typically $HOME/.grig/
+ */
+gchar *
+get_conf_dir (const gchar *subdir)
+{
+    gchar *dir;
+    
+    if (subdir != NULL) {
+        dir = g_strconcat (g_get_home_dir(), G_DIR_SEPARATOR_S, 
+                           ".grig", G_DIR_SEPARATOR_S,
+                           subdir, NULL);
+    }
+    else {
+        dir = g_strconcat (g_get_home_dir(), G_DIR_SEPARATOR_S,
+                          ".grig", NULL);
+    }
+    
+    return dir;
+    
+}
 
