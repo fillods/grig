@@ -56,6 +56,7 @@
 #include "rig-gui-message-window.h"
 #include "rig-daemon.h"
 #include "rig-data.h"
+#include "rig-selector.h"
 #include "key-press-handler.h"
 
 
@@ -360,7 +361,7 @@ main (int argc, char *argv[])
     /* 2. prio: -m or --model */
     
     /* 3. prio: run rig-selector */
-    rig_selector_execute ();
+    g_print ("SELECT: %s\n", rig_selector_execute ());
 
 	/* launch rig daemon and pass the relevant
 	   command line options

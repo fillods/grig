@@ -46,11 +46,12 @@ static void rig_selector_edit_cb    (GtkWidget *, gpointer);
 static void rig_selector_cancel_cb  (GtkWidget *, gpointer);
 static void rig_selector_connect_cb (GtkWidget *, gpointer);
 
+static void cancel (GtkWidget*, gpointer);
 
 static GtkWidget    *create_rig_list (void);
 static GtkTreeModel *create_model (void);
 
-
+static gchar *selected = NULL;
 
 
 /** \brief Execute radio selector.
@@ -158,14 +159,19 @@ rig_selector_execute ()
     g_free (icon);
     
     gtk_container_set_border_width (GTK_CONTAINER (window), 10);
+    gtk_window_set_default_size (GTK_WINDOW (window), 400, 300);
     gtk_container_add (GTK_CONTAINER (window), vbox);
 
     /* connect delete and destroy signals */
     g_signal_connect (G_OBJECT (window), "delete_event",
                       G_CALLBACK (rig_selector_delete), NULL);
     g_signal_connect (G_OBJECT (window), "destroy",
-                      G_CALLBACK (rig_selector_destroy), NULL);
+                      G_CALLBACK (rig_selector_destroy), window);
 
+    
+    g_signal_connect (G_OBJECT (cancbut), "clicked",
+                      G_CALLBACK (cancel), window);
+    
     /* show window */
     gtk_widget_show_all (window);
     
@@ -173,7 +179,7 @@ rig_selector_execute ()
        when window is destroyed */
     gtk_main ();
     
-    return NULL;
+    return selected;
 }
 
 
@@ -415,3 +421,16 @@ rig_selector_destroy    (GtkWidget *widget,
     gtk_main_quit ();
 }
 
+
+/** \brief Handle Cancel button signals.
+ * \param button The Cancel button
+ * \param window Pointer to the rig selector window.
+ * 
+ * This function is called when the user clicks on the Cancel button.
+ * It simply destroys the rig selector window and returns control 
+ * to the main() function.
+ */
+static void cancel (GtkWidget *button, gpointer window)
+{
+    gtk_widget_destroy (GTK_WIDGET (window));
+}
