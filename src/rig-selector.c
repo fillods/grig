@@ -33,7 +33,7 @@
 #include <glib/gi18n.h>
 #include <hamlib/rig.h>
 #include "compat.h"
-
+#include "radio-conf.h"
 #include "rig-selector.h"
 
 
@@ -45,6 +45,11 @@ static void rig_selector_del_cb     (GtkWidget *, gpointer);
 static void rig_selector_edit_cb    (GtkWidget *, gpointer);
 static void rig_selector_cancel_cb  (GtkWidget *, gpointer);
 static void rig_selector_connect_cb (GtkWidget *, gpointer);
+
+
+static GtkWidget    *create_rig_list (void);
+static GtkTreeModel *create_model (void);
+
 
 
 
@@ -61,7 +66,8 @@ static void rig_selector_connect_cb (GtkWidget *, gpointer);
  *
  * The dummy rig is always listed on the top of the list.
  *
- * The radio configurations are stored in $HOME/.grig/xyz.radio files
+ * The radio configurations are stored in $HOME/.grig/xyz.grc files and the
+ * functions in radio-conf.c can be used for reading and saving them.
  */
 gchar *
 rig_selector_execute ()
@@ -76,6 +82,8 @@ rig_selector_execute ()
     GtkWidget   *newbut;   /* New button */
     GtkWidget   *editbut;  /* Edit button */
     GtkWidget   *delbut;   /* delete button */
+    GtkWidget   *riglist;
+    GtkWidget   *swin;
     GtkTooltips *tips;
 
 
@@ -97,8 +105,8 @@ rig_selector_execute ()
                           _("Cancel radio selection."),
                           _("Cancel radio selection. This will end grig."));
     
-    /* add nutton */
-    newbut = gtk_button_new_from_stock (GTK_STOCK_NEW);
+    /* add button */
+    newbut = gtk_button_new_from_stock (GTK_STOCK_ADD);
     gtk_tooltips_set_tip (tips, newbut,
                           _("Add a new radio to the list."),
                           _("A new configuration window will be shown allowing "
@@ -130,8 +138,14 @@ rig_selector_execute ()
     gtk_container_add (GTK_CONTAINER (butbox2), cancbut);
     gtk_container_add (GTK_CONTAINER (butbox2), conbut);
     
+    /* radio list */
+    riglist = create_rig_list ();
+    swin = gtk_scrolled_window_new (NULL, NULL);
+    gtk_container_add (GTK_CONTAINER (swin), riglist);
+
     /* vertical box */
     vbox = gtk_vbox_new (FALSE, 10);
+    gtk_box_pack_start (GTK_BOX (vbox), swin, TRUE, TRUE, 0);
     gtk_box_pack_start (GTK_BOX (vbox), butbox1, FALSE, FALSE, 0);
     gtk_box_pack_end (GTK_BOX (vbox), butbox2, FALSE, FALSE, 0);
     gtk_box_pack_end (GTK_BOX (vbox), gtk_hseparator_new (), FALSE, FALSE, 0);
@@ -160,6 +174,202 @@ rig_selector_execute ()
     gtk_main ();
     
     return NULL;
+}
+
+
+static GtkWidget    *create_rig_list (void)
+{
+    GtkWidget   *riglist;
+    GtkTreeModel      *model;
+    GtkCellRenderer   *renderer;
+    GtkTreeViewColumn *column;
+
+    
+    riglist = gtk_tree_view_new ();
+
+    model = create_model ();
+    gtk_tree_view_set_model (GTK_TREE_VIEW (riglist), model);
+    g_object_unref (model);
+    
+    /* Company:1 */
+    renderer = gtk_cell_renderer_text_new ();
+    column = gtk_tree_view_column_new_with_attributes (_("Company"), renderer,
+            "text", 1, NULL);
+    gtk_tree_view_insert_column (GTK_TREE_VIEW (riglist), column, -1);
+    
+    /* model:2 */
+    renderer = gtk_cell_renderer_text_new ();
+    column = gtk_tree_view_column_new_with_attributes (_("Model"), renderer,
+            "text", 2, NULL);
+    gtk_tree_view_insert_column (GTK_TREE_VIEW (riglist), column, -1);
+
+    /* port:4 */
+    renderer = gtk_cell_renderer_text_new ();
+    column = gtk_tree_view_column_new_with_attributes (_("Port"), renderer,
+            "text", 4, NULL);
+    gtk_tree_view_insert_column (GTK_TREE_VIEW (riglist), column, -1);
+
+    /* speed:5 */
+    renderer = gtk_cell_renderer_text_new ();
+    column = gtk_tree_view_column_new_with_attributes (_("Speed"), renderer,
+            "text", 5, NULL);
+    gtk_tree_view_insert_column (GTK_TREE_VIEW (riglist), column, -1);
+
+    /* CI-V:6 */
+    renderer = gtk_cell_renderer_text_new ();
+    column = gtk_tree_view_column_new_with_attributes (_("CI-V"), renderer,
+            "text", 6, NULL);
+    gtk_tree_view_insert_column (GTK_TREE_VIEW (riglist), column, -1);
+
+    /* DTR:7 */
+    renderer = gtk_cell_renderer_text_new ();
+    column = gtk_tree_view_column_new_with_attributes (_("DTR"), renderer,
+            "text", 7, NULL);
+    gtk_tree_view_insert_column (GTK_TREE_VIEW (riglist), column, -1);
+
+    /* RTS:8 */
+    renderer = gtk_cell_renderer_text_new ();
+    column = gtk_tree_view_column_new_with_attributes (_("RTS"), renderer,
+            "text", 8, NULL);
+    gtk_tree_view_insert_column (GTK_TREE_VIEW (riglist), column, -1);
+
+    return riglist;
+}
+
+
+static GtkTreeModel *create_model ()
+{
+    GtkListStore *store;
+    GtkTreePath *path;
+    GtkTreeIter iter;
+    GDir         *dir = NULL;   /* directory handle */
+    gchar        *dirname;      /* directory name */
+    const gchar  *filename;     /* file name */
+    gchar        *buff;
+    gchar       **vbuf;
+    radio_conf_t  conf;
+
+    /* Note that we create a column for each field but will hide
+    some field in the treeview */
+    store = gtk_list_store_new (9,
+                                G_TYPE_STRING,      /* Name */
+                                G_TYPE_STRING,      /* Company */
+                                G_TYPE_STRING,      /* Model */
+                                G_TYPE_INT,         /* ID */
+                                G_TYPE_STRING,      /* Port */
+                                G_TYPE_INT,         /* Speed */
+                                G_TYPE_STRING,      /* CI-V */
+                                G_TYPE_STRING,      /* DTR */
+                                G_TYPE_STRING       /* RTS */
+                               );
+    
+    /* Dummy rig is always number 1 */
+    gtk_list_store_append (store, &iter);
+    gtk_list_store_set (store, &iter,
+                        1, "Hamlib",
+                        2, "DEMO",
+                        3, 1,
+                        4, "/dev/null",
+                        -1);
+    
+    /* now add the configured radios */
+    dirname = g_strconcat (g_get_home_dir (), G_DIR_SEPARATOR_S,
+                           ".grig", NULL);
+    dir = g_dir_open (dirname, 0, NULL);
+
+    if (dir) {
+
+        while ((filename = g_dir_read_name (dir))) {
+
+            if (g_strrstr (filename, ".grc")) {
+
+                /*buff = g_strconcat (dirname, G_DIR_SEPARATOR_S,
+                                    filename, NULL);
+*/
+                vbuf = g_strsplit (filename, ".grc", 2);
+                conf.name = g_strdup (vbuf[0]);
+                g_strfreev(vbuf);
+                
+                if (radio_conf_read (&conf)) {
+                    gtk_list_store_append (store, &iter);
+                    gtk_list_store_set (store, &iter,
+                                        0, conf.name,
+                                        1, conf.company,
+                                        2, conf.model,
+                                        3, conf.id,
+                                        4, conf.port,
+                                        5, conf.speed,
+                                        -1);
+                    
+                    if (conf.civ) {
+                        buff = g_strdup_printf ("0x%X", conf.civ);
+                        gtk_list_store_set (store, &iter, 6, buff, -1);
+                        g_free (buff);
+                    }
+                    
+                    switch (conf.dtr) {
+                        
+                        case LINE_ON:
+                            gtk_list_store_set (store, &iter, 7, "ON", -1);
+                            break;
+                            
+                        case LINE_PTT:
+                            gtk_list_store_set (store, &iter, 7, "PTT", -1);
+                            break;
+                            
+                        case LINE_CW:
+                            gtk_list_store_set (store, &iter, 7, "CW", -1);
+                            break;
+                            
+                        default:
+                            gtk_list_store_set (store, &iter, 7, "OFF", -1);
+                            break;
+                    }
+
+                    switch (conf.rts) {
+                        
+                        case LINE_ON:
+                            gtk_list_store_set (store, &iter, 8, "ON", -1);
+                            break;
+                            
+                        case LINE_PTT:
+                            gtk_list_store_set (store, &iter, 8, "PTT", -1);
+                            break;
+                            
+                        case LINE_CW:
+                            gtk_list_store_set (store, &iter, 8, "CW", -1);
+                            break;
+                            
+                        default:
+                            gtk_list_store_set (store, &iter, 8, "OFF", -1);
+                            break;
+                    }
+                    
+                }
+                
+                /* clean up memmory */
+                //g_free (buff);
+                
+                if (conf.name)
+                    g_free (conf.name);
+                
+                if (conf.company)
+                    g_free (conf.company);
+                if (conf.model)
+                    g_free (conf.model);
+                
+                if (conf.port)
+                    g_free (conf.port);
+                
+            }
+        }
+    }
+
+    g_free (dirname);
+    g_dir_close (dir);
+
+    
+    return GTK_TREE_MODEL (store);
 }
 
 

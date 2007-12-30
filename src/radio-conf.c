@@ -34,3 +34,97 @@
 
 #include "radio-conf.h"
 
+#define GROUP           "Radio"
+#define KEY_MFG         "Company"
+#define KEY_MODEL       "Model"
+#define KEY_ID          "ID"
+#define KEY_PORT        "Port"
+#define KEY_SPEED       "Speed"
+#define KEY_CIV         "CIV"
+#define KEY_DTR         "DTR"
+#define KEY_RTS         "RTS"
+
+
+/** \brief REad radio configuration.
+ * \param conf Pointer to a radio_conf_t structure where the data will be
+ *             stored.
+ * 
+ * conf->name must contain the name of the configuration. The file name of
+ * the configuration file is $HOME/.grig/name.grc
+ */
+gboolean radio_conf_read (radio_conf_t *conf)
+{
+    GKeyFile *cfg = NULL;
+    gchar    *fname;
+    
+    
+    if (conf->name == NULL)
+        return FALSE;
+    
+    fname = g_strconcat (g_get_home_dir(), G_DIR_SEPARATOR_S,
+                         ".grig", G_DIR_SEPARATOR_S,
+                         conf->name, ".grc", NULL);
+    
+    /* open .grc file */
+    cfg = g_key_file_new ();
+    g_key_file_load_from_file(cfg, fname, 0, NULL);
+    
+    if (cfg == NULL) {
+        g_print ("%s: Could not load file %s\n", __FUNCTION__, fname);
+        g_free (fname);
+        return FALSE;
+    }
+    
+    g_free (fname);
+    
+    /* read parameters */
+    conf->company = g_key_file_get_string (cfg, GROUP, KEY_MFG, NULL);
+    conf->model = g_key_file_get_string (cfg, GROUP, KEY_MODEL, NULL);
+    conf->id = g_key_file_get_integer (cfg, GROUP, KEY_ID, NULL);
+    conf->port = g_key_file_get_string (cfg, GROUP, KEY_PORT, NULL);
+    conf->speed = g_key_file_get_integer (cfg, GROUP, KEY_SPEED, NULL);
+    conf->civ = g_key_file_get_integer (cfg, GROUP, KEY_CIV, NULL);
+    conf->dtr = g_key_file_get_integer (cfg, GROUP, KEY_DTR, NULL);
+    conf->rts = g_key_file_get_integer (cfg, GROUP, KEY_RTS, NULL);
+    
+    g_key_file_free (cfg);
+    
+    return TRUE;
+}
+
+
+void radio_conf_save (radio_conf_t *conf)
+{
+    GKeyFile *cfg = NULL;
+    gchar    *fname;
+    gchar    *data;
+    gsize     len;
+    
+    if (conf->name == NULL)
+        return;
+    
+    /* create a config structure */
+    cfg = g_key_file_new();
+    
+    g_key_file_set_string (cfg, GROUP, KEY_MFG, conf->company);
+    g_key_file_set_string (cfg, GROUP, KEY_MODEL, conf->model);
+    g_key_file_set_integer (cfg, GROUP, KEY_MFG, conf->id);
+    g_key_file_set_string (cfg, GROUP, KEY_PORT, conf->port);
+    g_key_file_set_integer (cfg, GROUP, KEY_SPEED, conf->speed);
+    g_key_file_set_integer (cfg, GROUP, KEY_CIV, conf->civ);
+    g_key_file_set_integer (cfg, GROUP, KEY_DTR, conf->dtr);
+    g_key_file_set_integer (cfg, GROUP, KEY_RTS, conf->rts);
+    
+    /* convert to text sdata */
+    data = g_key_file_to_data (cfg, &len, NULL);
+    
+    fname = g_strconcat (g_get_home_dir(), G_DIR_SEPARATOR_S,
+                         ".grig", G_DIR_SEPARATOR_S,
+                         conf->name, ".grc", NULL);
+        
+    g_file_set_contents (fname, data, len, NULL);
+    
+    g_free (fname);
+    g_free (data);
+    g_key_file_free (cfg);
+}

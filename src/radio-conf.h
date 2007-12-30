@@ -33,6 +33,8 @@
 #include <glib.h>
 
 
+
+
 typedef enum {
     LINE_OFF = 0,
     LINE_ON,
@@ -42,16 +44,18 @@ typedef enum {
 
 typedef struct {
     gchar      *name;
-    gchar      *manufac;
+    gchar      *company;
     gchar      *model;
     guint       id;
     gchar      *port;
     guint       speed;
+    guint       civ;
     ctrl_stat_t dtr;
     ctrl_stat_t rts;
-    ctrl_stat_t cts;
 } radio_conf_t;
 
 
+gboolean radio_conf_read (radio_conf_t *conf);
+void radio_conf_save (radio_conf_t *conf);
 
 #endif

@@ -1,3 +1,12 @@
+2007-12-29; Alexandru Csete <oz9aec@gmail.com>
+
+    * src/compat.[ch]:
+    Added function to retrieve user config directory.
+    
+    * src/radio-conf.[ch]:
+    Added files containing functions for reading and writing .radio files.
+
+
 2007-11-16;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/key-press-handler.[ch]:

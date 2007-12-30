@@ -1,3 +1,9 @@
+GRIG 0.8.0 (TBD):
+
+* Configure connection settings using GUI instead of command line.
+* Use DTR or RTS as PTT device if rig has no CAT support but the device
+  supports it (e.g. Microham USB II).
+
 
 GRIG 0.7.2:
 

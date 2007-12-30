@@ -360,7 +360,7 @@ main (int argc, char *argv[])
     /* 2. prio: -m or --model */
     
     /* 3. prio: run rig-selector */
-    //rig_selector_execute ();
+    rig_selector_execute ();
 
 	/* launch rig daemon and pass the relevant
 	   command line options
