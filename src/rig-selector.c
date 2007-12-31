@@ -31,8 +31,10 @@
  */
 #include <gtk/gtk.h>
 #include <glib/gi18n.h>
+#include <glib/gstdio.h>
 #include <hamlib/rig.h>
 #include "compat.h"
+#include "grig-debug.h"
 #include "radio-conf.h"
 #include "rig-selector.h"
 
@@ -40,14 +42,24 @@
 /* private function declarations */
 static gint rig_selector_delete     (GtkWidget *, GdkEvent *, gpointer);
 static void rig_selector_destroy    (GtkWidget *, gpointer);
-static void rig_selector_new_cb     (GtkWidget *, gpointer);
-static void rig_selector_del_cb     (GtkWidget *, gpointer);
-static void rig_selector_edit_cb    (GtkWidget *, gpointer);
-static void rig_selector_cancel_cb  (GtkWidget *, gpointer);
-static void rig_selector_connect_cb (GtkWidget *, gpointer);
+static void new     (GtkWidget *, gpointer);
+static void delete  (GtkWidget *, gpointer);
+static void edit    (GtkWidget *, gpointer);
+static void cancel  (GtkWidget *, gpointer);
+static void connect (GtkWidget *, gpointer);
+static void selection_changed (GtkTreeSelection *sel, gpointer data);
 
-static void cancel (GtkWidget*, gpointer);
-
+static void render_civ (GtkTreeViewColumn *col,
+                        GtkCellRenderer   *renderer,
+                        GtkTreeModel      *model,
+                        GtkTreeIter       *iter,
+                        gpointer           column);
+static void render_dtr_rts (GtkTreeViewColumn *col,
+                            GtkCellRenderer   *renderer,
+                            GtkTreeModel      *model,
+                            GtkTreeIter       *iter,
+                            gpointer           column);
+                                       
 static GtkWidget    *create_rig_list (void);
 static GtkTreeModel *create_model (void);
 
@@ -86,8 +98,19 @@ rig_selector_execute ()
     GtkWidget   *riglist;
     GtkWidget   *swin;
     GtkTooltips *tips;
+    GtkTreeSelection *sel;
 
+    
+    /* radio list */
+    riglist = create_rig_list ();
+    swin = gtk_scrolled_window_new (NULL, NULL);
+    gtk_container_add (GTK_CONTAINER (swin), riglist);
+    gtk_widget_show_all (swin);
 
+    sel = gtk_tree_view_get_selection (GTK_TREE_VIEW (riglist));
+    gtk_tree_selection_set_mode (sel, GTK_SELECTION_SINGLE);
+    
+    
     tips = gtk_tooltips_new ();
 
     /* connect button */
@@ -139,11 +162,8 @@ rig_selector_execute ()
     gtk_container_add (GTK_CONTAINER (butbox2), cancbut);
     gtk_container_add (GTK_CONTAINER (butbox2), conbut);
     
-    /* radio list */
-    riglist = create_rig_list ();
-    swin = gtk_scrolled_window_new (NULL, NULL);
-    gtk_container_add (GTK_CONTAINER (swin), riglist);
-
+    
+    
     /* vertical box */
     vbox = gtk_vbox_new (FALSE, 10);
     gtk_box_pack_start (GTK_BOX (vbox), swin, TRUE, TRUE, 0);
@@ -168,9 +188,19 @@ rig_selector_execute ()
     g_signal_connect (G_OBJECT (window), "destroy",
                       G_CALLBACK (rig_selector_destroy), window);
 
+    g_object_set_data (G_OBJECT(window), "conbut", conbut);
+    g_object_set_data (G_OBJECT(window), "delbut", delbut);
+    g_object_set_data (G_OBJECT(window), "editbut", editbut);
+    g_object_set_data (G_OBJECT(window), "list", riglist);
     
+    /* connect signals */
     g_signal_connect (G_OBJECT (cancbut), "clicked",
                       G_CALLBACK (cancel), window);
+    g_signal_connect (G_OBJECT (conbut), "clicked",
+                      G_CALLBACK (connect), window);
+    g_signal_connect (G_OBJECT (delbut), "clicked",
+                      G_CALLBACK (delete), riglist);
+    g_signal_connect (sel, "changed", G_CALLBACK(selection_changed), window);
     
     /* show window */
     gtk_widget_show_all (window);
@@ -192,10 +222,11 @@ static GtkWidget    *create_rig_list (void)
 
     
     riglist = gtk_tree_view_new ();
-
+    
     model = create_model ();
     gtk_tree_view_set_model (GTK_TREE_VIEW (riglist), model);
     g_object_unref (model);
+    //gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (riglist), TRUE);
     
     /* Company:1 */
     renderer = gtk_cell_renderer_text_new ();
@@ -225,18 +256,24 @@ static GtkWidget    *create_rig_list (void)
     renderer = gtk_cell_renderer_text_new ();
     column = gtk_tree_view_column_new_with_attributes (_("CI-V"), renderer,
             "text", 6, NULL);
+    gtk_tree_view_column_set_cell_data_func (column, renderer,
+                                             render_civ, GUINT_TO_POINTER(6), NULL);
     gtk_tree_view_insert_column (GTK_TREE_VIEW (riglist), column, -1);
 
     /* DTR:7 */
     renderer = gtk_cell_renderer_text_new ();
     column = gtk_tree_view_column_new_with_attributes (_("DTR"), renderer,
             "text", 7, NULL);
+    gtk_tree_view_column_set_cell_data_func (column, renderer,
+                                             render_dtr_rts, GUINT_TO_POINTER(7), NULL);
     gtk_tree_view_insert_column (GTK_TREE_VIEW (riglist), column, -1);
 
     /* RTS:8 */
     renderer = gtk_cell_renderer_text_new ();
     column = gtk_tree_view_column_new_with_attributes (_("RTS"), renderer,
             "text", 8, NULL);
+    gtk_tree_view_column_set_cell_data_func (column, renderer,
+                                             render_dtr_rts, GUINT_TO_POINTER(8), NULL);
     gtk_tree_view_insert_column (GTK_TREE_VIEW (riglist), column, -1);
 
     return riglist;
@@ -246,12 +283,10 @@ static GtkWidget    *create_rig_list (void)
 static GtkTreeModel *create_model ()
 {
     GtkListStore *store;
-    GtkTreePath *path;
     GtkTreeIter iter;
     GDir         *dir = NULL;   /* directory handle */
     gchar        *dirname;      /* directory name */
     const gchar  *filename;     /* file name */
-    gchar        *buff;
     gchar       **vbuf;
     radio_conf_t  conf;
 
@@ -264,14 +299,15 @@ static GtkTreeModel *create_model ()
                                 G_TYPE_INT,         /* ID */
                                 G_TYPE_STRING,      /* Port */
                                 G_TYPE_INT,         /* Speed */
-                                G_TYPE_STRING,      /* CI-V */
-                                G_TYPE_STRING,      /* DTR */
-                                G_TYPE_STRING       /* RTS */
+                                G_TYPE_INT,         /* CI-V */
+                                G_TYPE_INT,      /* DTR */
+                                G_TYPE_INT       /* RTS */
                                );
     
     /* Dummy rig is always number 1 */
     gtk_list_store_append (store, &iter);
     gtk_list_store_set (store, &iter,
+                        0, "dummy",
                         1, "Hamlib",
                         2, "DEMO",
                         3, 1,
@@ -305,51 +341,10 @@ static GtkTreeModel *create_model ()
                                         3, conf.id,
                                         4, conf.port,
                                         5, conf.speed,
+                                        6, conf.civ,
+                                        7, conf.dtr,
+                                        8, conf.rts,
                                         -1);
-                    
-                    if (conf.civ) {
-                        buff = g_strdup_printf ("0x%X", conf.civ);
-                        gtk_list_store_set (store, &iter, 6, buff, -1);
-                        g_free (buff);
-                    }
-                    
-                    switch (conf.dtr) {
-                        
-                        case LINE_ON:
-                            gtk_list_store_set (store, &iter, 7, "ON", -1);
-                            break;
-                            
-                        case LINE_PTT:
-                            gtk_list_store_set (store, &iter, 7, "PTT", -1);
-                            break;
-                            
-                        case LINE_CW:
-                            gtk_list_store_set (store, &iter, 7, "CW", -1);
-                            break;
-                            
-                        default:
-                            gtk_list_store_set (store, &iter, 7, "OFF", -1);
-                            break;
-                    }
-
-                    switch (conf.rts) {
-                        
-                        case LINE_ON:
-                            gtk_list_store_set (store, &iter, 8, "ON", -1);
-                            break;
-                            
-                        case LINE_PTT:
-                            gtk_list_store_set (store, &iter, 8, "PTT", -1);
-                            break;
-                            
-                        case LINE_CW:
-                            gtk_list_store_set (store, &iter, 8, "CW", -1);
-                            break;
-                            
-                        default:
-                            gtk_list_store_set (store, &iter, 8, "OFF", -1);
-                            break;
-                    }
                     
                 }
                 
@@ -432,5 +427,170 @@ rig_selector_destroy    (GtkWidget *widget,
  */
 static void cancel (GtkWidget *button, gpointer window)
 {
+    if (selected != NULL) {
+        g_free (selected);
+        selected = NULL;
+    }
     gtk_widget_destroy (GTK_WIDGET (window));
 }
+
+/** \brief Handle Connect button signals.
+ * \param button The Connect button
+ * \param window Pointer to the rig selector window.
+ * 
+ * This function is called when the user clicks on the Connect button.
+ * It storest the name of the currently selected radio configuration and
+ * simply destroys the rig selector window and whereby control is returned
+ * to the main() function.
+ */
+static void connect (GtkWidget *button, gpointer window)
+{
+    
+    
+    
+    gtk_widget_destroy (GTK_WIDGET (window));
+}
+
+
+/** \brief Handle delete button signals */
+static void delete (GtkWidget *button, gpointer data)
+{
+    GtkTreeView *riglist;
+    GtkTreeSelection *sel;
+    GtkTreeModel *model;
+    GtkTreeIter   iter;
+    gboolean      havesel = FALSE;
+    gchar        *name,*fname;
+
+    
+    riglist = GTK_TREE_VIEW (data);
+    model = gtk_tree_view_get_model (riglist);
+    sel = gtk_tree_view_get_selection (riglist);
+    havesel = gtk_tree_selection_get_selected (sel, NULL, &iter);
+
+    if (havesel) {
+        gtk_tree_model_get (model, &iter, 0, &name, -1);
+        fname = g_strconcat (g_get_home_dir(), G_DIR_SEPARATOR_S,
+                             ".grig", G_DIR_SEPARATOR_S,
+                             name, ".grc", NULL);
+        g_free (name);
+        
+        // this one crashes no matter what... the same code works in gpredict
+        //gtk_list_store_remove (GTK_LIST_STORE (model), &iter);
+
+        /* delete .grc file and remove entry from riglist */
+        if (g_remove (fname)) {
+            grig_debug_local (RIG_DEBUG_ERR,
+                              _("%s:%s: Failed to delete %s"),
+                                __FILE__, __FUNCTION__, fname);
+        }
+        else {
+            grig_debug_local (RIG_DEBUG_VERBOSE,
+                              _("%s:%s: Removed %s"),
+                                __FILE__, __FUNCTION__, fname);
+        }
+        g_free (fname);
+    }
+}
+
+static void selection_changed (GtkTreeSelection *sel, gpointer data)
+{
+    GtkWidget    *window = GTK_WIDGET(data);
+    GtkWidget    *conbut,*editbut,*delbut;
+    GtkTreeView  *treeview;
+    GtkTreeModel *model;
+    GtkTreeIter   iter;
+    guint         id;
+    gboolean      havesel = FALSE;
+    
+    /* get tree view & co */
+    treeview = gtk_tree_selection_get_tree_view (sel);
+    havesel = gtk_tree_selection_get_selected (sel, &model, &iter);
+    gtk_tree_model_get (model, &iter, 3, &id, -1);
+    
+    /* get buttons */
+    delbut = GTK_WIDGET (g_object_get_data (G_OBJECT(window), "delbut"));
+    editbut = GTK_WIDGET (g_object_get_data (G_OBJECT(window), "editbut"));
+    conbut = GTK_WIDGET (g_object_get_data (G_OBJECT(window), "conbut"));
+    
+    /* Dummy can't be deleted or edited */
+    if (id == 1) {
+        /* disable delete and edit buttons */
+        gtk_widget_set_sensitive (delbut, FALSE);
+        gtk_widget_set_sensitive (editbut, FALSE);
+        
+        /* enable connect button */
+        gtk_widget_set_sensitive (conbut, TRUE);
+    }
+    else if (havesel) {
+        
+        /* enable all three buttons */
+        gtk_widget_set_sensitive (conbut, TRUE);
+        gtk_widget_set_sensitive (delbut, TRUE);
+        gtk_widget_set_sensitive (editbut, TRUE);
+    }
+    else {
+        /* disable all three buttons */
+        gtk_widget_set_sensitive (conbut, FALSE);
+        gtk_widget_set_sensitive (delbut, FALSE);
+        gtk_widget_set_sensitive (editbut, FALSE);
+    }
+}
+
+
+/** \brief Render CIV address. */
+static void render_civ (GtkTreeViewColumn *col,
+                        GtkCellRenderer   *renderer,
+                        GtkTreeModel      *model,
+                        GtkTreeIter       *iter,
+                        gpointer           column)
+{
+    guint    number;
+    gchar  *buff;
+    guint   coli = GPOINTER_TO_UINT (column);
+    
+    gtk_tree_model_get (model, iter, coli, &number, -1);
+
+    if (number > 0)
+        buff = g_strdup_printf ("0x%X", number);
+    else
+        buff = g_strdup_printf (" ");
+        
+    g_object_set (renderer, "text", buff, NULL);
+    g_free (buff);
+}
+
+/** \brief Render DTR or RTS columns address. */
+static void render_dtr_rts (GtkTreeViewColumn *col,
+                            GtkCellRenderer   *renderer,
+                            GtkTreeModel      *model,
+                            GtkTreeIter       *iter,
+                            gpointer           column)
+{
+    guint    number;
+    guint   coli = GPOINTER_TO_UINT (column);
+    
+    gtk_tree_model_get (model, iter, coli, &number, -1);
+
+    switch (number) {
+                        
+        case LINE_ON:
+            g_object_set (renderer, "text", "ON", NULL);
+            break;
+                            
+        case LINE_PTT:
+            g_object_set (renderer, "text", "PTT", NULL);
+            break;
+                            
+        case LINE_CW:
+            g_object_set (renderer, "text", "CW", NULL);
+            break;
+                            
+        default:
+            g_object_set (renderer, "text", "OFF", NULL);
+            break;
+        
+    }
+    
+}
+
