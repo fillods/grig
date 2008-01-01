@@ -455,18 +455,17 @@ static void connect (GtkWidget *button, gpointer window)
 /** \brief Handle delete button signals */
 static void delete (GtkWidget *button, gpointer data)
 {
-    GtkTreeView *riglist;
+    GtkTreeView *riglist = GTK_TREE_VIEW(data);;
     GtkTreeSelection *sel;
-    GtkTreeModel *model;
+    GtkTreeModel *model = gtk_tree_view_get_model (riglist);
+    GtkTreeModel *selmod;
     GtkTreeIter   iter;
     gboolean      havesel = FALSE;
     gchar        *name,*fname;
 
     
-    riglist = GTK_TREE_VIEW (data);
-    model = gtk_tree_view_get_model (riglist);
     sel = gtk_tree_view_get_selection (riglist);
-    havesel = gtk_tree_selection_get_selected (sel, NULL, &iter);
+    havesel = gtk_tree_selection_get_selected (sel, &selmod, &iter);
 
     if (havesel) {
         gtk_tree_model_get (model, &iter, 0, &name, -1);
@@ -475,8 +474,12 @@ static void delete (GtkWidget *button, gpointer data)
                              name, ".grc", NULL);
         g_free (name);
         
-        // this one crashes no matter what... the same code works in gpredict
-        //gtk_list_store_remove (GTK_LIST_STORE (model), &iter);
+        // gtk_list_store_remove crashes no matter what...
+        // the same code works in gpredict
+        name = gtk_tree_model_get_string_from_iter (model, &iter);
+        g_print ("COLS: %d / %s\n", gtk_tree_model_get_n_columns (model), name);
+        g_free (name);
+        //gtk_list_store_remove (GTK_LIST_STORE (selmod), &iter);
 
         /* delete .grc file and remove entry from riglist */
         if (g_remove (fname)) {
