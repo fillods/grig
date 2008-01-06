@@ -52,6 +52,7 @@ typedef struct {
     guint       civ;
     ctrl_stat_t dtr;
     ctrl_stat_t rts;
+    guint       version;   /*!< Configuration version, see grig-config.h */
 } radio_conf_t;
 
 

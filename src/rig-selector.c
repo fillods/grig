@@ -42,7 +42,7 @@
 /* private function declarations */
 static gint rig_selector_delete     (GtkWidget *, GdkEvent *, gpointer);
 static void rig_selector_destroy    (GtkWidget *, gpointer);
-static void new     (GtkWidget *, gpointer);
+static void add     (GtkWidget *, gpointer);
 static void delete  (GtkWidget *, gpointer);
 static void edit    (GtkWidget *, gpointer);
 static void cancel  (GtkWidget *, gpointer);
@@ -60,10 +60,11 @@ static void render_dtr_rts (GtkTreeViewColumn *col,
                             GtkTreeIter       *iter,
                             gpointer           column);
                                        
-static GtkWidget    *create_rig_list (void);
+static void create_rig_list (void);
 static GtkTreeModel *create_model (void);
 
 static gchar *selected = NULL;
+static GtkWidget *riglist;
 
 
 /** \brief Execute radio selector.
@@ -95,21 +96,19 @@ rig_selector_execute ()
     GtkWidget   *newbut;   /* New button */
     GtkWidget   *editbut;  /* Edit button */
     GtkWidget   *delbut;   /* delete button */
-    GtkWidget   *riglist;
     GtkWidget   *swin;
     GtkTooltips *tips;
     GtkTreeSelection *sel;
 
     
     /* radio list */
-    riglist = create_rig_list ();
+    create_rig_list ();
     swin = gtk_scrolled_window_new (NULL, NULL);
     gtk_container_add (GTK_CONTAINER (swin), riglist);
     gtk_widget_show_all (swin);
 
     sel = gtk_tree_view_get_selection (GTK_TREE_VIEW (riglist));
     gtk_tree_selection_set_mode (sel, GTK_SELECTION_SINGLE);
-    
     
     tips = gtk_tooltips_new ();
 
@@ -199,7 +198,11 @@ rig_selector_execute ()
     g_signal_connect (G_OBJECT (conbut), "clicked",
                       G_CALLBACK (connect), window);
     g_signal_connect (G_OBJECT (delbut), "clicked",
-                      G_CALLBACK (delete), riglist);
+                      G_CALLBACK (delete), NULL);
+    g_signal_connect (G_OBJECT (newbut), "clicked",
+                      G_CALLBACK (add), NULL);
+    g_signal_connect (G_OBJECT (editbut), "clicked",
+                      G_CALLBACK (edit), NULL);
     g_signal_connect (sel, "changed", G_CALLBACK(selection_changed), window);
     
     /* show window */
@@ -213,9 +216,8 @@ rig_selector_execute ()
 }
 
 
-static GtkWidget    *create_rig_list (void)
+static void create_rig_list (void)
 {
-    GtkWidget   *riglist;
     GtkTreeModel      *model;
     GtkCellRenderer   *renderer;
     GtkTreeViewColumn *column;
@@ -276,7 +278,6 @@ static GtkWidget    *create_rig_list (void)
                                              render_dtr_rts, GUINT_TO_POINTER(8), NULL);
     gtk_tree_view_insert_column (GTK_TREE_VIEW (riglist), column, -1);
 
-    return riglist;
 }
 
 
@@ -452,20 +453,22 @@ static void connect (GtkWidget *button, gpointer window)
 }
 
 
+
+
 /** \brief Handle delete button signals */
 static void delete (GtkWidget *button, gpointer data)
 {
-    GtkTreeView *riglist = GTK_TREE_VIEW(data);;
     GtkTreeSelection *sel;
-    GtkTreeModel *model = gtk_tree_view_get_model (riglist);
-    GtkTreeModel *selmod;
+    GtkTreeModel *model;
+    GtkTreeModel *newmodel;
     GtkTreeIter   iter;
     gboolean      havesel = FALSE;
     gchar        *name,*fname;
 
     
-    sel = gtk_tree_view_get_selection (riglist);
-    havesel = gtk_tree_selection_get_selected (sel, &selmod, &iter);
+    model = gtk_tree_view_get_model (GTK_TREE_VIEW (riglist));
+    sel = gtk_tree_view_get_selection (GTK_TREE_VIEW (riglist));
+    havesel = gtk_tree_selection_get_selected (sel, NULL, &iter);
 
     if (havesel) {
         gtk_tree_model_get (model, &iter, 0, &name, -1);
@@ -475,12 +478,11 @@ static void delete (GtkWidget *button, gpointer data)
         g_free (name);
         
         // gtk_list_store_remove crashes no matter what...
-        // the same code works in gpredict
-        name = gtk_tree_model_get_string_from_iter (model, &iter);
-        g_print ("COLS: %d / %s\n", gtk_tree_model_get_n_columns (model), name);
-        g_free (name);
-        //gtk_list_store_remove (GTK_LIST_STORE (selmod), &iter);
+        // the same code works in gpredict 
+        //gtk_list_store_remove (GTK_LIST_STORE (model), &iter);
+        gtk_list_store_clear (GTK_LIST_STORE (model));
 
+        
         /* delete .grc file and remove entry from riglist */
         if (g_remove (fname)) {
             grig_debug_local (RIG_DEBUG_ERR,
@@ -491,10 +493,25 @@ static void delete (GtkWidget *button, gpointer data)
             grig_debug_local (RIG_DEBUG_VERBOSE,
                               _("%s:%s: Removed %s"),
                                 __FILE__, __FUNCTION__, fname);
+                    
+
         }
         g_free (fname);
     }
 }
+
+
+static void add     (GtkWidget *button, gpointer data)
+{
+}
+
+
+static void edit    (GtkWidget *button, gpointer data)
+{
+}
+
+
+
 
 static void selection_changed (GtkTreeSelection *sel, gpointer data)
 {

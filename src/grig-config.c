@@ -164,8 +164,10 @@ check_rig_files ()
 		/* we are only interested in .rig files */
 		fpath = g_strconcat (dirname, G_DIR_SEPARATOR_S, fname, NULL);
 		if ((!g_file_test (fpath, G_FILE_TEST_IS_DIR)) &&
-			(g_strrstr (fname, ".rig"))) {
+			(g_strrstr (fname, ".grc"))) {
 
+            /* FIXME: check config version */
+            
 			grig_debug_local (RIG_DEBUG_VERBOSE,
 							  _("....%s OK"),
 							  fname);

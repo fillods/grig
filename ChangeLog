@@ -1,3 +1,9 @@
+2007-01-02; Alexandru Csete <oz9aec@gmail.com>
+
+    * src/radio-conf.[ch]:
+    Added data field for config version.
+ 
+
 2007-12-31; Alexandru Csete <oz9aec@gmail.com>
 
     * src/rig-selector.[ch]:

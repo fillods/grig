@@ -35,6 +35,7 @@
 #include "radio-conf.h"
 
 #define GROUP           "Radio"
+#define KEY_VER         "Version"
 #define KEY_MFG         "Company"
 #define KEY_MODEL       "Model"
 #define KEY_ID          "ID"
@@ -86,6 +87,7 @@ gboolean radio_conf_read (radio_conf_t *conf)
     conf->civ = g_key_file_get_integer (cfg, GROUP, KEY_CIV, NULL);
     conf->dtr = g_key_file_get_integer (cfg, GROUP, KEY_DTR, NULL);
     conf->rts = g_key_file_get_integer (cfg, GROUP, KEY_RTS, NULL);
+    conf->version = g_key_file_get_integer (cfg, GROUP, KEY_VER, NULL);
     
     g_key_file_free (cfg);
     
@@ -114,6 +116,7 @@ void radio_conf_save (radio_conf_t *conf)
     g_key_file_set_integer (cfg, GROUP, KEY_CIV, conf->civ);
     g_key_file_set_integer (cfg, GROUP, KEY_DTR, conf->dtr);
     g_key_file_set_integer (cfg, GROUP, KEY_RTS, conf->rts);
+    g_key_file_set_integer (cfg, GROUP, KEY_VER, conf->version);
     
     /* convert to text sdata */
     data = g_key_file_to_data (cfg, &len, NULL);

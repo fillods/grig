@@ -356,7 +356,7 @@ main (int argc, char *argv[])
 	/* At this point, configuration is OK. */
 
 
-    /* 1. prio: .radio file */
+    /* 1. prio: .grc file */
     
     /* 2. prio: -m or --model */
     
