@@ -41,9 +41,35 @@
 #include "rig-gui-ctrl2.h"
 #include "rig-gui-smeter.h"
 #include "rig-gui-lcd.h"
+#include "rig-gui-keypad.h"
 #include "rig-gui-levels.h"
 #include "rig-gui-vfo.h"
 #include "grig-menubar.h"
+
+
+static void
+rig_gui_freq_changed_cb(GtkWidget *widget, gpointer data)
+{
+	grig_keypad_disable(data);
+}
+
+static void
+rig_gui_keypad_enter_cb(GtkWidget * widget, gpointer data)
+{
+	rig_gui_lcd_begin_manual_entry();
+}
+
+static void
+rig_gui_keypad_clear_cb(GtkWidget * widget, gpointer data)
+{
+	rig_gui_lcd_clear_manual_entry();
+}
+
+static void
+rig_gui_keypad_num_cb(GtkWidget * widget, guint num)
+{
+	rig_gui_lcd_set_next_digit('0' + num);
+}
 
 
 
@@ -59,38 +85,77 @@ rig_gui_create ()
 {
 	GtkWidget *hbox;     /* the main container */
 	GtkWidget *vbox;
+	GtkWidget *keypadbox;
 	GtkWidget *lcdbox;
+	GtkWidget *lcd;
+	GtkWidget *keypad;
+
+
+	lcd = rig_gui_lcd_create();
+	keypad = grig_keypad_new();
+
+	/* horizontal box with keypad and vfo */
+
+	keypadbox = gtk_hbox_new(FALSE, 0);
+
+	gtk_box_pack_start (GTK_BOX (keypadbox), keypad,
+			    TRUE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX (keypadbox), rig_gui_vfo_create (),
+			    FALSE, FALSE, 0);
+
+
+
+	/* vertical box with lcd and keypad + vfo */
+
+	lcdbox = gtk_vbox_new (FALSE, 0);
+
+	gtk_box_pack_start (GTK_BOX (lcdbox), lcd,
+			    FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (lcdbox), keypadbox,
+			    FALSE, FALSE, 5);
+
 
 	/* create the main container */
+	/* from left to right: buttons, smeter, (lcd + keypad), ctrl2 */
+
 	hbox = gtk_hbox_new (FALSE, 5);
 
-	gtk_box_pack_start (GTK_BOX (hbox),  rig_gui_buttons_create (),
+	gtk_box_pack_start (GTK_BOX (hbox), rig_gui_buttons_create (),
 			    FALSE, FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (hbox), rig_gui_smeter_create (),
 			    FALSE, FALSE, 0);
-
-	lcdbox = gtk_vbox_new (FALSE, 0);
-	gtk_box_pack_start (GTK_BOX (lcdbox), rig_gui_lcd_create (),
-			    FALSE, FALSE, 0);
-	gtk_box_pack_start (GTK_BOX (lcdbox), rig_gui_vfo_create (),
-			    FALSE, TRUE, 0);
-
-
 	gtk_box_pack_start (GTK_BOX (hbox), lcdbox,
 			    FALSE, FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (hbox), rig_gui_ctrl2_create (),
 			    FALSE, FALSE, 0);
 
+
 	/* ceate main vertical box */
 	vbox = gtk_vbox_new (FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (vbox), grig_menubar_create (),
 			    FALSE, FALSE, 0);
-	gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 5);
 	gtk_box_pack_start (GTK_BOX (vbox), gtk_hseparator_new (), FALSE, FALSE, 0);
+
 /* 	gtk_box_pack_start (GTK_BOX (vbox), rig_gui_levels_create (), */
 /* 			    FALSE, FALSE, 5); */
 
+
+	/* keypad callbacks */
+
+	g_signal_connect(G_OBJECT(keypad), "grig-keypad-enter-pressed",
+		G_CALLBACK(rig_gui_keypad_enter_cb), NULL);
+
+	g_signal_connect(G_OBJECT(keypad), "grig-keypad-clear-pressed",
+		G_CALLBACK(rig_gui_keypad_clear_cb), NULL);
+
+	g_signal_connect(G_OBJECT(keypad), "grig-keypad-num-pressed",
+		G_CALLBACK(rig_gui_keypad_num_cb), NULL);
+
+	/* disable the keypad when the frequency has been set */
+	g_signal_connect (G_OBJECT (lcd), "freq-changed",
+			G_CALLBACK (rig_gui_freq_changed_cb), keypad);
+
 	return vbox;
 }
-
 

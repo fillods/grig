@@ -102,10 +102,13 @@ typedef struct {
 	GdkColor          bg;              /*!< Background color. */
 	GdkColor          fg;              /*!< Foreground color. */
 	gboolean          exposed;         /*!< Exposed flag. */
+	gboolean	  manual;	   /*!< Manual freq entry flag. */
+	gint		  digit;	   /*!< Current digit when in manual entry. */
 
 	vfo_t             vfo;             /*!< Current VFO. */
 	gdouble           freq1;           /*!< Main frequency value. */
 	gdouble           freq2;           /*!< Secondary frequency value. */
+	gdouble           freqm;           /*!< Manually entered frequency value. */
 	gchar             freqs1[9];       /*!< Frequency array. */
 	gint              rit;             /*!< Current RIT value. */
 	gchar             rits[4];         /*!< -9999 Hz but last digit not shown */
@@ -117,6 +120,8 @@ typedef struct {
 GtkWidget *rig_gui_lcd_create (void);
 void       rig_gui_lcd_set_freq_digits  (freq_t freq);
 void       rig_gui_lcd_set_rit_digits   (shortfreq_t freq);
-
+void	   rig_gui_lcd_begin_manual_entry  (void);
+void	   rig_gui_lcd_clear_manual_entry  (void);
+void	   rig_gui_lcd_set_next_digit  (char digit);
 
 #endif

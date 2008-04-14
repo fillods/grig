@@ -73,7 +73,7 @@ rig_gui_vfo_create ()
 	GtkWidget *bandbox;
 
 	/* VFO Frame */
-	vfobox = gtk_hbutton_box_new ();
+	vfobox = gtk_vbutton_box_new ();
 	gtk_button_box_set_layout (GTK_BUTTON_BOX (vfobox), GTK_BUTTONBOX_START);
 	gtk_container_add (GTK_CONTAINER (vfobox), rig_gui_vfo_create_toggle ());
 	gtk_container_add (GTK_CONTAINER (vfobox), rig_gui_vfo_create_split_button ());
@@ -81,16 +81,13 @@ rig_gui_vfo_create ()
 	gtk_container_add (GTK_CONTAINER (vfobox), rig_gui_vfo_create_xchg_button ());
 
 	/* BAND UP/DOWN */
+	/* XXX not yet implemented */
+/*
 	bandbox = gtk_hbutton_box_new ();
 	gtk_button_box_set_layout (GTK_BUTTON_BOX (bandbox), GTK_BUTTONBOX_END);
-	
+*/
 			    
-	/* horizontal box; this way we have the VFO button centered under the LCD */
-	hbox = gtk_hbox_new (FALSE, 0);
-	gtk_box_pack_start (GTK_BOX (hbox), vfobox, TRUE, FALSE, 0);
-	gtk_box_pack_end   (GTK_BOX (hbox), bandbox, FALSE, FALSE, 0);
-
-	return hbox;
+	return vfobox;
 }
 
 

@@ -149,8 +149,8 @@ rig_gui_smeter_create ()
 	/* create vertical box */
 	vbox = gtk_vbox_new (FALSE, 0);
 
-	gtk_box_pack_start (GTK_BOX (vbox), smeter.canvas, FALSE, FALSE, 5);
-	gtk_box_pack_start (GTK_BOX (vbox), hbox,  FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (vbox), smeter.canvas, FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (vbox), hbox,  FALSE, FALSE, 5);
 
 	/* start readback timer but only if service is available */
 	if (rig_data_has_get_strength ()) {
