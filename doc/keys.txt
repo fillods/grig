@@ -1,0 +1,8 @@
+Key Bindings:
+
+Arrow UP/DOWN: Increase/decrease frequency by tuning step
+
+INS: Enable keypad Entry
+DEL: Clear entry entry
+
+0..9 (also numpad): Enter freq digit
