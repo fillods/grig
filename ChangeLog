@@ -1,3 +1,14 @@
+2007-04-14; Alexandru Csete <oz9aec@gmail.com>
+
+    * src/rig-gui-keypad.[ch]:
+    * src/rig-gui-lcd.[ch]:
+    * src/rig-gui.c:
+    * src/rig-gui-smeter.c:
+    * src/rig-gui-vfo.c:
+    * src/Makefile.am:
+    Keypad support from Alessandro Zummo.
+
+
 2007-01-02; Alexandru Csete <oz9aec@gmail.com>
 
     * src/radio-conf.[ch]:
