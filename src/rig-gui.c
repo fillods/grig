@@ -47,6 +47,11 @@
 #include "grig-menubar.h"
 
 
+/* we keep this global so that we can enable and disable it at runtime */
+static GtkWidget *keypadbox;
+
+
+
 static void
 rig_gui_freq_changed_cb(GtkWidget *widget, gpointer data)
 {
@@ -85,7 +90,6 @@ rig_gui_create ()
 {
 	GtkWidget *hbox;     /* the main container */
 	GtkWidget *vbox;
-	GtkWidget *keypadbox;
 	GtkWidget *lcdbox;
 	GtkWidget *lcd;
 	GtkWidget *keypad;
@@ -102,7 +106,7 @@ rig_gui_create ()
 			    TRUE, TRUE, 0);
 	gtk_box_pack_start (GTK_BOX (keypadbox), rig_gui_vfo_create (),
 			    FALSE, FALSE, 0);
-
+    gtk_widget_show (keypadbox);
 
 
 	/* vertical box with lcd and keypad + vfo */
@@ -113,7 +117,7 @@ rig_gui_create ()
 			    FALSE, FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (lcdbox), keypadbox,
 			    FALSE, FALSE, 5);
-
+    gtk_widget_show (lcdbox);
 
 	/* create the main container */
 	/* from left to right: buttons, smeter, (lcd + keypad), ctrl2 */
@@ -128,7 +132,7 @@ rig_gui_create ()
 			    FALSE, FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (hbox), rig_gui_ctrl2_create (),
 			    FALSE, FALSE, 0);
-
+    gtk_widget_show (hbox);
 
 	/* ceate main vertical box */
 	vbox = gtk_vbox_new (FALSE, 0);
@@ -156,6 +160,8 @@ rig_gui_create ()
 	g_signal_connect (G_OBJECT (lcd), "freq-changed",
 			G_CALLBACK (rig_gui_freq_changed_cb), keypad);
 
+    gtk_widget_show (vbox);
+    
 	return vbox;
 }
 

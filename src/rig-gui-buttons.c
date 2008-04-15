@@ -123,7 +123,8 @@ rig_gui_buttons_create ()
 	gtk_quit_add (gtk_main_level (), rig_gui_buttons_timeout_stop,
 		      GUINT_TO_POINTER (timerid));
 
-
+    gtk_widget_show_all (vbox);
+    
 	return vbox;
 }
 

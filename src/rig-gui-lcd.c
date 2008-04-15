@@ -218,6 +218,8 @@ rig_gui_lcd_create ()
 	}
 #endif
 
+    gtk_widget_show_all (lcd.canvas);
+    
 	return lcd.canvas;
 }
 

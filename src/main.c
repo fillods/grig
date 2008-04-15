@@ -399,7 +399,7 @@ main (int argc, char *argv[])
 
 	/* add contents */
 	gtk_container_add (GTK_CONTAINER (grigapp), rig_gui_create ());
-	gtk_widget_show_all (grigapp);
+	gtk_widget_show (grigapp);
     
 	gtk_main ();
 

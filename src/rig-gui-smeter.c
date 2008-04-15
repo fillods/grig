@@ -163,6 +163,8 @@ rig_gui_smeter_create ()
 			      GUINT_TO_POINTER (timerid));
 	}
 
+    gtk_widget_show_all (vbox);
+    
 	return vbox;
 }
 
