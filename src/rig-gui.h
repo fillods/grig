@@ -33,5 +33,6 @@
 #define RIG_GUI_H 1
 
 GtkWidget *rig_gui_create (void);
+void rig_gui_show_keypad (gboolean *show);
 
 #endif

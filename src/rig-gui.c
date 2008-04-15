@@ -48,7 +48,7 @@
 
 
 /* we keep this global so that we can enable and disable it at runtime */
-static GtkWidget *keypadbox;
+static GtkWidget *keypadbox = NULL;
 
 
 
@@ -76,6 +76,18 @@ rig_gui_keypad_num_cb(GtkWidget * widget, guint num)
 	rig_gui_lcd_set_next_digit('0' + num);
 }
 
+
+void rig_gui_show_keypad (gboolean *show)
+{
+    if (keypadbox != NULL) {
+        if (show) {
+            gtk_widget_show_all (keypadbox);
+        }
+        else {
+            gtk_widget_hide_all (keypadbox);
+        }
+    }
+} 
 
 
 /** \brief Create rig control widgets.
