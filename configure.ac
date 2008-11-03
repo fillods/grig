@@ -20,7 +20,7 @@ if test "${ac_cv_c_compiler_gnu}" = "yes"; then
   CFLAGS="${CFLAGS} -Wall"
 fi
 
-pkg_modules="gtk+-2.0 >= 2.6.0 gthread-2.0 >= 2.6.0"
+pkg_modules="gtk+-2.0 >= 2.12.0 gthread-2.0 >= 2.14.0"
 PKG_CHECK_MODULES(PACKAGE, [$pkg_modules])
 AC_SUBST(PACKAGE_CFLAGS)
 AC_SUBST(PACKAGE_LIBS)
@@ -36,13 +36,13 @@ AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,
 
 
 dnl Check hamlib
-hamlib_modules="hamlib >= 1.2.5"
+hamlib_modules="hamlib >= 1.2.8"
 PKG_CHECK_MODULES(HAMLIB, [$hamlib_modules], [
   CFLAGS="$CFLAGS $HAMLIB_CFLAGS";
   LIBS="$LIBS $HAMLIB_LIBS";
 dnl  AC_DEFINE(WANT_HAMLIB, 1)
 ], [
-  AC_MSG_ERROR([Hamradio control libraries 1.2.5 or later not found...])
+  AC_MSG_ERROR([Hamradio control libraries 1.2.8 or later not found...])
 ])
 
 
