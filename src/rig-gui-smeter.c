@@ -248,7 +248,7 @@ rig_gui_smeter_timeout_exec  (gpointer data)
 	/* are we in RX or TX mode? */
 	if (rig_data_get_ptt () == RIG_PTT_OFF) {
 
-#ifdef SMETER_TEST
+#if SMETER_TEST
 		/* test s-meter with random numbers */
 		db = (gint) g_random_int_range (-100, 100);
 #else
@@ -269,7 +269,7 @@ rig_gui_smeter_timeout_exec  (gpointer data)
 
 			/* TX power */
 		case SMETER_TX_MODE_POWER:
-#ifdef SMETER_TEST
+#if SMETER_TEST
 			/* test s-meter with random numbers */
 			valf = (gfloat) g_random_double_range (0.8, 1.5);
 #else
@@ -289,7 +289,7 @@ rig_gui_smeter_timeout_exec  (gpointer data)
 
 			/* SWR */
 		case SMETER_TX_MODE_SWR:
-#ifdef SMETER_TEST
+#if SMETER_TEST
 			/* test s-meter with random numbers */
 			valf = (gfloat) g_random_double_range (0.1, 0.15);
 #else
@@ -299,7 +299,7 @@ rig_gui_smeter_timeout_exec  (gpointer data)
 
 			/* ALC */
 		case SMETER_TX_MODE_ALC:
-#ifdef SMETER_TEST
+#if SMETER_TEST
 			/* test s-meter with random numbers */
 			valf = (gfloat) g_random_double_range (-0.5, 0.3);
 #else

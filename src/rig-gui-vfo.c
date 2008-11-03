@@ -71,15 +71,24 @@ rig_gui_vfo_create ()
 	GtkWidget *hbox;
 	GtkWidget *vfobox;
 	GtkWidget *bandbox;
+    GtkWidget *grid;
 
 	/* VFO Frame */
-	vfobox = gtk_vbutton_box_new ();
+/*	vfobox = gtk_vbutton_box_new ();
 	gtk_button_box_set_layout (GTK_BUTTON_BOX (vfobox), GTK_BUTTONBOX_START);
 	gtk_container_add (GTK_CONTAINER (vfobox), rig_gui_vfo_create_toggle ());
 	gtk_container_add (GTK_CONTAINER (vfobox), rig_gui_vfo_create_split_button ());
 	gtk_container_add (GTK_CONTAINER (vfobox), rig_gui_vfo_create_eq_button ());
-	gtk_container_add (GTK_CONTAINER (vfobox), rig_gui_vfo_create_xchg_button ());
+	gtk_container_add (GTK_CONTAINER (vfobox), rig_gui_vfo_create_xchg_button ());*/
+    
+    grid = gtk_table_new (4, 2, TRUE);
+    gtk_table_attach_defaults (GTK_TABLE (grid), rig_gui_vfo_create_toggle (), 0, 1, 0, 1);
+    gtk_table_attach_defaults (GTK_TABLE (grid), rig_gui_vfo_create_split_button (), 1, 2, 0, 1);
+    gtk_table_attach_defaults (GTK_TABLE (grid), rig_gui_vfo_create_eq_button (), 0, 1, 1, 2);
+    gtk_table_attach_defaults (GTK_TABLE (grid), rig_gui_vfo_create_xchg_button (), 1, 2, 1, 2);
 
+    
+    
 	/* BAND UP/DOWN */
 	/* XXX not yet implemented */
 /*
@@ -87,7 +96,7 @@ rig_gui_vfo_create ()
 	gtk_button_box_set_layout (GTK_BUTTON_BOX (bandbox), GTK_BUTTONBOX_END);
 */
 			    
-	return vfobox;
+	return grid;
 }
 
 

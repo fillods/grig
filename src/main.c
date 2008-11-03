@@ -82,7 +82,7 @@ static gboolean pstat     = FALSE;   /*!< Enable power status button. */
 static gboolean ptt       = FALSE;   /*!< Enable PTT button. */
 static gboolean version   = FALSE;   /*!< Show version and exit. */
 static gboolean help      = FALSE;   /*!< Show help and exit. */
-static gchar    *rigcfg   = NULL;    /*!< .radio file name. */
+//static gchar    *rigcfg   = NULL;    /*!< .radio file name. */
 
 /* group those which take no arg */
 /** \brief Short options. */
@@ -361,7 +361,7 @@ main (int argc, char *argv[])
     /* 2. prio: -m or --model */
     
     /* 3. prio: run rig-selector */
-    g_print ("SELECT: %s\n", rig_selector_execute ());
+    //g_print ("SELECT: %s\n", rig_selector_execute ());
 
 	/* launch rig daemon and pass the relevant
 	   command line options

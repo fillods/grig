@@ -120,7 +120,6 @@ rig_gui_create ()
 			    FALSE, FALSE, 0);
     gtk_widget_show (keypadbox);
 
-
 	/* vertical box with lcd and keypad + vfo */
 
 	lcdbox = gtk_vbox_new (FALSE, 0);
@@ -172,7 +171,7 @@ rig_gui_create ()
 	g_signal_connect (G_OBJECT (lcd), "freq-changed",
 			G_CALLBACK (rig_gui_freq_changed_cb), keypad);
 
-    gtk_widget_show (vbox);
+    gtk_widget_show_all (vbox);
     
 	return vbox;
 }
