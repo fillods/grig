@@ -1,3 +1,9 @@
+2008-11-03; Alexandru Csete <oz9aec@gmail.com>
+
+    * configure.ac:
+    Updated Gtk+ and Hamlib requirements.
+
+
 2007-04-14; Alexandru Csete <oz9aec@gmail.com>
 
     * src/rig-gui-keypad.[ch]:

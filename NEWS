@@ -1,10 +1,10 @@
 GRIG 0.8.0 (TBD):
 
-* Configure connection settings using GUI instead of command line.
-* Use DTR or RTS as PTT device if rig has no CAT support but the device
-  supports it (e.g. Microham USB II).
-* Frequency entry via keypad (thanks to Alessandro Zummo).
+- Frequency entry via keypad (thanks to Alessandro Zummo).
+- Arrow UP/DOWN will change the frequency with the smallest step. This can be
+  used for tuning using external devices like the Powermate.
 * Support for VFO->MEM and MEM->VFO function.
+- Requires Gtk+ 2.12 and Hamlib 1.2.8
 
 
 GRIG 0.7.2:
