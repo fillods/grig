@@ -242,8 +242,8 @@ rig_daemon_check_rit      (RIG               *myrig,
 	shortfreq_t       sfreq;                   /* current RIT setting */
 
 	/* checkfor RIT availability */
-	has_get->rit = (myrig->caps->get_rit != NULL) ? TRUE : FALSE;
-	has_set->rit = (myrig->caps->set_rit != NULL) ? TRUE : FALSE;
+	has_get->rit = (myrig->caps->get_rit != NULL && myrig->state.max_rit) ? TRUE : FALSE;
+	has_set->rit = (myrig->caps->set_rit != NULL && myrig->state.max_rit) ? TRUE : FALSE;
 
 	if (has_get->rit) {
 		/* try to get RIT setting */
@@ -261,7 +261,7 @@ rig_daemon_check_rit      (RIG               *myrig,
 
 	if (has_get->rit || has_set->rit) {
 		/* get RIT range and tuning step */
-		get->ritmax = myrig->caps->max_rit;
+		get->ritmax = myrig->state.max_rit;
 		get->ritstep = s_Hz(10);
 
 	}
@@ -298,8 +298,8 @@ rig_daemon_check_xit      (RIG               *myrig,
 	shortfreq_t       sfreq;                   /* current XIT setting */
 
 	/* checkfor XIT availability */
-	has_get->xit = (myrig->caps->get_xit != NULL) ? TRUE : FALSE;
-	has_set->xit = (myrig->caps->set_xit != NULL) ? TRUE : FALSE;
+	has_get->xit = (myrig->caps->get_xit != NULL && myrig->state.max_xit) ? TRUE : FALSE;
+	has_set->xit = (myrig->caps->set_xit != NULL && myrig->state.max_xit) ? TRUE : FALSE;
 
 	if (has_get->xit) {
 		/* try to get RIT setting */
@@ -317,7 +317,7 @@ rig_daemon_check_xit      (RIG               *myrig,
 
 	if (has_get->xit || has_set->xit) {
 		/* get XIT range and tuning step */
-		get->xitmax = myrig->caps->max_xit;
+		get->xitmax = myrig->state.max_xit;
 		get->xitstep = s_Hz(10);
 	}
 	else {
@@ -654,7 +654,7 @@ rig_daemon_check_level     (RIG               *myrig,
 		retcode = rig_get_level (myrig, RIG_VFO_CURR, RIG_LEVEL_IF, &val);
 		if (retcode == RIG_OK) {
 			get->ifs = val.i;
-			get->ifsmax = myrig->caps->max_ifshift;
+			get->ifsmax = myrig->state.max_ifshift;
 			get->ifsstep = s_Hz(10);
 		}
 		else {
@@ -881,8 +881,8 @@ rig_daemon_check_level     (RIG               *myrig,
 	if (has_get->att || has_set->att) {
 		int i = 0;
 
-		while ((i < MAXDBLSTSIZ) && (myrig->caps->attenuator[i] != 0)) {
-			rig_data_set_att_data (i, myrig->caps->attenuator[i]);
+		while ((i < MAXDBLSTSIZ) && (myrig->state.attenuator[i] != 0)) {
+			rig_data_set_att_data (i, myrig->state.attenuator[i]);
 			i++;
 		}
 		
@@ -892,8 +892,8 @@ rig_daemon_check_level     (RIG               *myrig,
 	if (has_get->preamp || has_set->preamp) {
 		int i = 0;
 
-		while ((i < MAXDBLSTSIZ) && (myrig->caps->preamp[i] != 0)) {
-			rig_data_set_preamp_data (i, myrig->caps->preamp[i]);
+		while ((i < MAXDBLSTSIZ) && (myrig->state.preamp[i] != 0)) {
+			rig_data_set_preamp_data (i, myrig->state.preamp[i]);
 			i++;
 		}
 	}
