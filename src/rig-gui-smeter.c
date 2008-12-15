@@ -413,7 +413,7 @@ rig_gui_mode_selector_create  ()
 	*/
 	for (i = SMETER_TX_MODE_NONE; i < SMETER_TX_MODE_LAST; i++) {
 		if (rig_gui_smeter_has_tx_mode (i)) {
-			gtk_combo_box_append_text (GTK_COMBO_BOX (combo), TX_MODE_S[i]);
+			gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _(TX_MODE_S[i]));
 			index_to_mode[modes] = i;
 			modes++;
 		}

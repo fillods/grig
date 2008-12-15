@@ -80,7 +80,7 @@ static GtkActionEntry entries[] = {
 	{ "Spectrum", GTK_STOCK_JUMP_TO, N_("S_pectrum Scope"), NULL, N_("Show the spectrum scope"), NULL },
 
 	/* HelpMenu */
-	{ "About", GTK_STOCK_ABOUT, N_("_About Grig"), NULL, N_("Shouw about dialog"), G_CALLBACK (grig_about_run) },
+	{ "About", GTK_STOCK_ABOUT, N_("_About Grig"), NULL, N_("Show about dialog"), G_CALLBACK (grig_about_run) },
 };
 
 
@@ -167,9 +167,30 @@ grig_menubar_create ()
 	GtkActionGroup *actgrp;
 	GtkAccelGroup  *accgrp;
 	GError         *error;
+	gint           i;
 
 	/* create action group */
 	actgrp = gtk_action_group_new ("MenuActions");
+	/* i18n */
+	for (i=0; i<G_N_ELEMENTS (entries); i++) {
+		if (entries[i].label)
+			entries[i].label = _(entries[i].label);
+		if (entries[i].tooltip)
+			entries[i].tooltip = _(entries[i].tooltip);
+	}
+	for (i=0; i<G_N_ELEMENTS (radio_entries); i++) {
+		if (radio_entries[i].label)
+			radio_entries[i].label = _(radio_entries[i].label);
+		if (radio_entries[i].tooltip)
+			radio_entries[i].tooltip = _(radio_entries[i].tooltip);
+	}
+	for (i=0; i<G_N_ELEMENTS (toggle_entries); i++) {
+		if (toggle_entries[i].label)
+			toggle_entries[i].label = _(toggle_entries[i].label);
+		if (toggle_entries[i].tooltip)
+			toggle_entries[i].tooltip = _(toggle_entries[i].tooltip);
+	}
+
 	gtk_action_group_add_actions (actgrp, entries, G_N_ELEMENTS (entries), NULL);
 
 	/* debug level radio group */

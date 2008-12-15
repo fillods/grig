@@ -296,7 +296,7 @@ rig_gui_ctrl2_create_mode_selector   ()
 		if (rig_data_get_all_modes () & mode) {
 
 			gtk_combo_box_append_text (GTK_COMBO_BOX (combo),
-						   midx2str[i]);
+						   _(midx2str[i]));
 
 			midx2cidx[i] = index;
 			cidx2mode[index] = mode;
