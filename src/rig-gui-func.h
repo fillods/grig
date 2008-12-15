@@ -24,20 +24,11 @@
   
     You should have received a copy of the GNU General Public License
     along with this program; if not, visit http://www.fsf.org/
- 
- 
- 
- 
 */
-#ifndef GRIG_MENUBAR_H
-#define GRIG_MENUBAR_H 1
+#ifndef RIG_GUI_FUNC_H
+#define RIG_GUI_FUNC_H 1
 
-
-GtkWidget *grig_menubar_create (void);
-
-void grig_menubar_force_tx_item (gboolean val);
-void grig_menubar_force_rx_item (gboolean val);
-void grig_menubar_force_func_item (gboolean val);
-
+void rig_gui_func_create (void);
+void rig_gui_func_close  (void);
 
 #endif

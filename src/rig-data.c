@@ -1080,6 +1080,34 @@ rig_data_get_xitstep    ()
 }
 
 
+/***   FUNC  ***/
+int
+rig_data_has_set_func (setting_t func)
+{
+	return has_set.funcs[rig_setting2idx(func)];
+}
+
+
+int
+rig_data_has_get_func (setting_t func)
+{
+	return has_get.funcs[rig_setting2idx(func)];
+}
+
+
+void
+rig_data_set_func     (setting_t func, int status)
+{
+	set.funcs[rig_setting2idx(func)] = status;
+	new.funcs[rig_setting2idx(func)] = 1;
+}
+
+
+int
+rig_data_get_func     (setting_t func)
+{
+	return get.funcs[rig_setting2idx(func)];
+}
 
 /***   LOCK  ***/
 int

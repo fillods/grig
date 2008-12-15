@@ -114,6 +114,9 @@ typedef struct {
 	float           swr;       /*!< SWR. */
 	float           alc;       /*!< ALC. */
 
+	/* func's */
+	int             funcs[RIG_SETTING_MAX]; /*!< Func's */
+
 	/* write only fields */
 	int             vfo_op_toggle;  /*!< Toggle VFO */
 	int             vfo_op_copy;    /*!< Copy VFO */
@@ -177,6 +180,8 @@ typedef struct {
 	int         strength;
 	int         swr;
 	int         alc;
+
+	int         funcs[RIG_SETTING_MAX];
 } grig_cmd_avail_t;
 
 
@@ -422,6 +427,11 @@ float rig_data_get_comp     (void);
 void  rig_data_set_comp     (float comp);
 
 
+/* func */
+int   rig_data_has_get_func (setting_t func);
+int   rig_data_has_set_func (setting_t func);
+int   rig_data_get_func     (setting_t func);
+void  rig_data_set_func     (setting_t func, int status);
 
 /* LOCK */
 int  rig_data_has_set_lock (void);

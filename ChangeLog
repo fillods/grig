@@ -1,5 +1,14 @@
 2008-12-15; Stephane Fillod <fillods@users.sf.net>
 
+	* src/grig-menubar.[ch]:
+	* src/rig-gui-func.[ch]:
+	* src/Makefile.am:
+	* src/rig-daemon-check.c:
+	* src/rig-daemon.[ch]:
+	* src/rig-data.[ch]:
+	* po/POTFILES.in:
+	Special Function window.
+
 	* src/grig-menubar.c:
 	* src/rig-gui-ctrl2.c:
 	* src/rig-gui-message-window.c:

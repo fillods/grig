@@ -130,6 +130,9 @@ typedef enum {
 	RIG_CMD_VFO_COPY,      /*!< Executes RIG_OP_CPY. */
 	RIG_CMD_VFO_XCHG,      /*!< Executes RIG_OP_XCHG. */
 
+	RIG_CMD_SET_FUNC,      /*!< Command to set func. */
+	RIG_CMD_GET_FUNC,      /*!< Command to get func. */
+
 	RIG_CMD_NUMBER         /*!< Number of available commands. */
 } rig_cmd_t;
 

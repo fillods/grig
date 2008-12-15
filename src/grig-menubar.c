@@ -36,6 +36,7 @@
 #include "rig-gui-message-window.h"
 #include "rig-gui-rx.h"
 #include "rig-gui-tx.h"
+#include "rig-gui-func.h"
 #include "rig-state.h"
 #include "grig-debug.h"
 
@@ -50,6 +51,7 @@ static void  grig_menu_app_exit        (GtkWidget *, gpointer);
 static void  grig_menu_set_debug_level (GtkRadioAction *, gpointer);
 static void  rx_window_cb (GtkToggleAction *toggleaction, gpointer data);
 static void  tx_window_cb (GtkToggleAction *toggleaction, gpointer data);
+static void  func_window_cb (GtkToggleAction *toggleaction, gpointer data);
 
 
 /** \brief Regular menu items. */
@@ -100,7 +102,7 @@ static GtkToggleActionEntry toggle_entries[] =
 	{ "LevelsRX", NULL, N_("_RX Level Controls"), NULL, N_("Show receiver level controls"), G_CALLBACK (rx_window_cb) },
 	{ "LevelsTX", NULL, N_("_TX Level Controls"), NULL, N_("Show transmitter level controls"), G_CALLBACK (tx_window_cb) },
 	{ "Tones", NULL, N_("_DCS/CTCSS"), NULL, N_("Show DCS and CTCSS controls"), NULL },
-	{ "Func", GTK_STOCK_DIALOG_INFO, N_("_Special Functions"), NULL, N_("Radio specific functions"), NULL },
+	{ "Func", GTK_STOCK_DIALOG_INFO, N_("_Special Functions"), NULL, N_("Radio specific functions"), G_CALLBACK (func_window_cb) },
 };
 
 
@@ -135,8 +137,8 @@ static const char *menu_desc =
 "       <menuitem action='LevelsTX'/>"
 "       <separator/>"
 /* "       <menuitem action='Tones'/>" */
-/* "       <menuitem action='Func'/>" */
-/* "       <separator/>" */
+"       <menuitem action='Func'/>"
+"       <separator/>"
 "       <menuitem action='MsgWin'/>"
 "    </menu>"
 /* "    <menu action='ToolsMenu'>" */
@@ -262,7 +264,7 @@ grig_menu_set_debug_level (GtkRadioAction *action, gpointer data)
 
 /** \brief Show/hide RX controls
  *
- * This function is called when the user selects the "RX controls" menut item.
+ * This function is called when the user selects the "RX controls" menu item.
  * Depending on the state of the item (on/off) we have to either open or close
  * the CW controls window
  */
@@ -281,7 +283,7 @@ rx_window_cb (GtkToggleAction *toggleaction, gpointer user_data)
 
 /** \brief Show/hide TX controls
  *
- * This function is called when the user selects the "TX controls" menut item.
+ * This function is called when the user selects the "TX controls" menu item.
  * Depending on the state of the item (on/off) we have to either open or close
  * the CW controls window
  */
@@ -294,6 +296,25 @@ tx_window_cb (GtkToggleAction *toggleaction, gpointer user_data)
 	}
 	else {
 		rig_gui_tx_close ();
+	}
+}
+
+
+/** \brief Show/hide FUNC controls
+ *
+ * This function is called when the user selects the "Func controls" menu item.
+ * Depending on the state of the item (on/off) we have to either open or close
+ * the CW controls window
+ */
+static void
+func_window_cb (GtkToggleAction *toggleaction, gpointer user_data)
+{
+
+	if (gtk_toggle_action_get_active (toggleaction)) {
+		rig_gui_func_create ();
+	}
+	else {
+		rig_gui_func_close ();
 	}
 }
 
@@ -327,6 +348,23 @@ grig_menubar_force_rx_item (gboolean val)
 	GtkWidget *item = NULL;
 
 	item = gtk_ui_manager_get_widget (uimgr, "/GrigMenu/ViewMenu/LevelsRX");
+
+	if (item != NULL)
+		gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (item), val);
+}
+
+/** \bried Force FUNC menu item.
+ *
+ * This function can be used to force the FUNC controls menu item to
+ * TRUE or FALSE. This is useful when the FUNC controls window is closed
+ * without any menu action
+ */
+void
+grig_menubar_force_func_item (gboolean val)
+{
+	GtkWidget *item = NULL;
+
+	item = gtk_ui_manager_get_widget (uimgr, "/GrigMenu/ViewMenu/Func");
 
 	if (item != NULL)
 		gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (item), val);

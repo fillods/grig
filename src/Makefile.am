@@ -40,6 +40,7 @@ grig_SOURCES = \
 	rig-gui-smeter.c rig-gui-smeter.h \
 	rig-gui-smeter-conv.c rig-gui-smeter-conv.h \
 	rig-gui-tx.c rig-gui-tx.h \
+	rig-gui-func.c rig-gui-func.h \
 	rig-gui-vfo.c rig-gui-vfo.h \
 	rig-selector.c rig-selector.h \
 	rig-state.c rig-state.h \

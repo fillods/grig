@@ -923,6 +923,8 @@ rig_daemon_check_func     (RIG               *myrig,
 	int               retcode;                 /* Hamlib status code */
 	setting_t         hasfunc;                 /* available func settings */
 	int               val;                     /* generic value */
+	int               i;                       /* setting index */
+	setting_t         func;                    /* setting iterated */
 
 
 	/* get available read funcs
@@ -931,6 +933,11 @@ rig_daemon_check_func     (RIG               *myrig,
 
 	/* unmask bits */
 	has_get->lock    = ((hasfunc & RIG_FUNC_LOCK) ? 1 : 0);
+
+	for (i=0; i < RIG_SETTING_MAX; i++) {
+		func = rig_idx2setting(i);
+		has_get->funcs[i]  = rig_has_get_func(myrig, func) ? 1 : 0;
+	}
 
 	/* read values */
 	if (has_get->lock) {
@@ -946,6 +953,22 @@ rig_daemon_check_func     (RIG               *myrig,
 		}
 	}
 
+	for (i=0; i < RIG_SETTING_MAX; i++) {
+		func = rig_idx2setting(i);
+		if (has_get->funcs[i]) {
+			retcode = rig_get_func (myrig, RIG_VFO_CURR, func, &val);
+			if (retcode == RIG_OK) {
+				get->funcs[i] = val;
+			}
+			else {
+				/* send an error report */
+				grig_debug_local (RIG_DEBUG_ERR,
+						  _("%s: Could not get %s status"),
+						  __FUNCTION__,
+						  rig_strfunc(func));
+			}
+		}
+	}
 
 	/* get available write funcs */
 	hasfunc = rig_has_set_func (myrig, GRIG_FUNC_WR);
@@ -956,4 +979,8 @@ rig_daemon_check_func     (RIG               *myrig,
 	*/
 	has_set->lock  = ((hasfunc & RIG_FUNC_LOCK) ? 1 : 0);
 
+	for (i=0; i < RIG_SETTING_MAX; i++) {
+		func = rig_idx2setting(i);
+		has_set->funcs[i]  = rig_has_set_func(myrig, func) ? 1 : 0;
+	}
 }

@@ -276,7 +276,9 @@ static const rig_cmd_t DEF_RX_CYCLE[C_MAX_CMD_PER_CYCLE] = {
 	RIG_CMD_SET_NR,
 	RIG_CMD_GET_NR,
 	RIG_CMD_SET_NOTCH,
-	RIG_CMD_GET_NOTCH
+	RIG_CMD_GET_NOTCH,
+	RIG_CMD_SET_FUNC,
+	RIG_CMD_GET_FUNC
 };
 
 #endif
@@ -1120,6 +1122,8 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 {
 	int  retcode;
 	gint status = 0;
+	setting_t func;
+	int i;
 
 
 	switch (cmd) {
@@ -3178,6 +3182,65 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 			status = 1;
 		}
 		break;
+
+		/* set FUNC's status */
+	case RIG_CMD_SET_FUNC:
+
+		for (i = 0; i < RIG_SETTING_MAX; i++) {
+			func = rig_idx2setting(i);
+			if (has_set->funcs[i] && new->funcs[i]) {
+				retcode = rig_set_func (myrig,
+							RIG_VFO_CURR,
+							func,
+							set->funcs[i]);
+
+				if (retcode != RIG_OK) {
+					grig_debug_local (RIG_DEBUG_ERR,
+							  _("%s: Failed to execute RIG_CMD_SET_FUNC(%s):\n%s"),
+							  __FUNCTION__, rig_strfunc(func), ERR_TO_STR[abs(retcode)]);
+
+					rig_anomaly_raise (RIG_CMD_SET_FUNC);
+				}
+				
+				get->funcs[i] = set->funcs[i];
+				new->funcs[i] = 0;
+
+				status = 1;
+			}
+		}
+
+		break;
+
+		/* get FUNC's status */
+	case RIG_CMD_GET_FUNC:
+
+		for (i = 0; i < RIG_SETTING_MAX; i++) {
+			func = rig_idx2setting(i);
+			/* check whether command is available */
+			if (has_get->funcs[i]) {
+				int func_status;
+
+				/* try to execute command */
+				retcode = rig_get_func (myrig, RIG_VFO_CURR, func, &func_status);
+
+				/* raise anomaly if execution did not succeed */
+				if (retcode != RIG_OK) {
+					grig_debug_local (RIG_DEBUG_ERR,
+							  _("%s: Failed to execute RIG_CMD_GET_FUNC(%s):\n%s"),
+							  __FUNCTION__, rig_strfunc(func), ERR_TO_STR[abs(retcode)]);
+
+					rig_anomaly_raise (RIG_CMD_GET_FUNC);
+				}
+				else {
+					get->funcs[i] = func_status;
+				}
+
+				status = 1;
+			}
+		}
+
+		break;
+
 
 		/* bug in grig! */
 	default:
