@@ -203,6 +203,7 @@ rig_gui_ctrl2_create_agc_selector    ()
 	gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("Fast"));
 	gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("Medium"));
 	gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("Slow"));
+	gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("Auto"));
 
 	/* add tooltips when widget is realized */
 	g_signal_connect (combo, "realize",
@@ -230,6 +231,10 @@ rig_gui_ctrl2_create_agc_selector    ()
 
 	case RIG_AGC_SLOW:
 		gtk_combo_box_set_active (GTK_COMBO_BOX (combo), 4);
+		break;
+	
+	case RIG_AGC_AUTO:
+		gtk_combo_box_set_active (GTK_COMBO_BOX (combo), 5);
 		break;
 
 	default:
@@ -435,7 +440,11 @@ rig_gui_ctrl2_agc_cb   (GtkWidget *widget, gpointer data)
 	case 4:
 		rig_data_set_agc (RIG_AGC_SLOW);
 		break;
+	case 5:
+		rig_data_set_agc (RIG_AGC_AUTO);
+		break;
 
+	
 	default:
 		/* internal error; bug */
 		break;
@@ -600,6 +609,10 @@ rig_gui_ctrl2_update        (GtkWidget *widget, gpointer data)
 
 		case RIG_AGC_SLOW:
 			gtk_combo_box_set_active (GTK_COMBO_BOX (widget), 4);
+			break;
+
+		case RIG_AGC_AUTO:
+			gtk_combo_box_set_active (GTK_COMBO_BOX (widget), 5);
 			break;
 
 		default:
