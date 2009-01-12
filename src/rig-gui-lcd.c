@@ -1133,6 +1133,12 @@ rig_gui_lcd_begin_manual_entry  (void)
 	 */
 	if (lcd.manual) {
 
+		if (lcd.digit == 0) {
+			/* revert to previous freq if no digit has been entered */
+			rig_gui_lcd_clear_manual_entry();
+			return;
+		}
+
 		for (i = lcd.digit; i < 9; i++) {
 			rig_gui_lcd_set_next_digit('0');
 		}
