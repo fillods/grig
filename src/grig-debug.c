@@ -128,7 +128,7 @@ grig_debug_hamlib_cb    (enum rig_debug_level_e debug_level,
 	guint           i;
 
 
-	if (debug_level >= dbglvl)
+	if (debug_level > dbglvl)
 		return RIG_OK;
 
 
@@ -175,7 +175,7 @@ grig_debug_local    (enum rig_debug_level_e debug_level,
 	va_list     ap;
 
 
-	if (debug_level >= dbglvl)
+	if (debug_level > dbglvl)
 		return RIG_OK;
 
 
