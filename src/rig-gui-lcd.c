@@ -1518,6 +1518,10 @@ rig_gui_lcd_update_vfo ()
 		pango_layout_set_text (layout, _("SUB VFO"), -1);
 		break;
 
+	case RIG_VFO_MEM:
+		pango_layout_set_text (layout, _("MEM"), -1);
+		break;
+
 	default:
 		pango_layout_set_text (layout, _("VFO ?"), -1);
 		break;
