@@ -1,3 +1,8 @@
+2009-01-21; Alessandro Zummo <a.zummo@towertech.it>
+
+	* src/rig-gui-vfo.c:
+	Added memory/vfo button.
+
 2009-01-13; Alessandro Zummo <a.zummo@towertech.it>
 
 	* src/rig-gui-lcd.c:

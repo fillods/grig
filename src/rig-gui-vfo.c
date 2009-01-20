@@ -49,11 +49,13 @@ static GtkWidget *rig_gui_vfo_create_toggle       (void);
 static GtkWidget *rig_gui_vfo_create_eq_button    (void);
 static GtkWidget *rig_gui_vfo_create_xchg_button  (void);
 static GtkWidget *rig_gui_vfo_create_split_button (void);
+static GtkWidget *rig_gui_vfo_create_mem_button (void);
 
 static void rig_gui_vfo_toggle_cb  (GtkWidget *, gpointer);
 static void rig_gui_vfo_eq_cb      (GtkWidget *, gpointer);
 static void rig_gui_vfo_xchg_cb    (GtkWidget *, gpointer);
 static void rig_gui_vfo_split_cb   (GtkWidget *, gpointer);
+static void rig_gui_vfo_memory_cb  (GtkWidget *, gpointer);
 
 /* MEM Frame */
 
@@ -68,10 +70,11 @@ static void rig_gui_vfo_split_cb   (GtkWidget *, gpointer);
 GtkWidget *
 rig_gui_vfo_create ()
 {
-	GtkWidget *hbox;
+/*	GtkWidget *hbox;
 	GtkWidget *vfobox;
 	GtkWidget *bandbox;
-    GtkWidget *grid;
+*/
+	GtkWidget *grid;
 
 	/* VFO Frame */
 /*	vfobox = gtk_vbutton_box_new ();
@@ -81,13 +84,12 @@ rig_gui_vfo_create ()
 	gtk_container_add (GTK_CONTAINER (vfobox), rig_gui_vfo_create_eq_button ());
 	gtk_container_add (GTK_CONTAINER (vfobox), rig_gui_vfo_create_xchg_button ());*/
     
-    grid = gtk_table_new (4, 2, TRUE);
-    gtk_table_attach_defaults (GTK_TABLE (grid), rig_gui_vfo_create_toggle (), 0, 1, 0, 1);
-    gtk_table_attach_defaults (GTK_TABLE (grid), rig_gui_vfo_create_split_button (), 1, 2, 0, 1);
-    gtk_table_attach_defaults (GTK_TABLE (grid), rig_gui_vfo_create_eq_button (), 0, 1, 1, 2);
-    gtk_table_attach_defaults (GTK_TABLE (grid), rig_gui_vfo_create_xchg_button (), 1, 2, 1, 2);
-
-    
+	grid = gtk_table_new (4, 3, TRUE);
+	gtk_table_attach_defaults (GTK_TABLE (grid), rig_gui_vfo_create_toggle (), 0, 1, 0, 1);
+	gtk_table_attach_defaults (GTK_TABLE (grid), rig_gui_vfo_create_split_button (), 1, 2, 0, 1);
+	gtk_table_attach_defaults (GTK_TABLE (grid), rig_gui_vfo_create_eq_button (), 0, 1, 1, 2);
+	gtk_table_attach_defaults (GTK_TABLE (grid), rig_gui_vfo_create_xchg_button (),	1, 2, 1, 2);
+	gtk_table_attach_defaults (GTK_TABLE (grid), rig_gui_vfo_create_mem_button (), 0, 1, 2, 3);
     
 	/* BAND UP/DOWN */
 	/* XXX not yet implemented */
@@ -95,7 +97,6 @@ rig_gui_vfo_create ()
 	bandbox = gtk_hbutton_box_new ();
 	gtk_button_box_set_layout (GTK_BUTTON_BOX (bandbox), GTK_BUTTONBOX_END);
 */
-			    
 	return grid;
 }
 
@@ -163,6 +164,11 @@ rig_gui_vfo_toggle_cb (GtkWidget *widget, gpointer data)
 	else if (rig_data_has_set_vfo () &&
                  rig_data_has_get_vfo ()) {
 
+		/* do not toggle in memory mode */
+		/* XXX disable other VFO buttons? */
+		if (rig_data_get_vfo() == RIG_VFO_MEM)
+			return;
+
                 /* do we have VFO A and B? */
                 if (rig_data_get_vfos() & (RIG_VFO_A | RIG_VFO_B)) {
                         
@@ -202,6 +208,23 @@ rig_gui_vfo_toggle_cb (GtkWidget *widget, gpointer data)
 
 }
 
+static void
+rig_gui_vfo_memory_cb(GtkWidget *widget, gpointer data)
+{
+	if (rig_data_has_set_vfo() && rig_data_has_get_vfo()) {
+
+	        if (rig_data_get_vfo() != RIG_VFO_MEM) {
+			g_object_set_data(G_OBJECT(widget),
+				"vfo", (gpointer) rig_data_get_vfo());
+
+ 			rig_data_set_vfo(RIG_VFO_MEM);
+
+		} else {
+ 			rig_data_set_vfo((vfo_t) g_object_get_data(G_OBJECT(widget),
+						"vfo"));
+		}
+	}
+}
 
 /**** A=B button ****/
 
@@ -372,10 +395,6 @@ rig_gui_vfo_create_split_button ()
 	gint         sigid;
 
 	
-	/* Create button widget.
-           The label will be "A<->B" if the rig has VFO_A and VFO_B
-           or Main<->Sub if the rig has those two.
-        */
 	button = gtk_toggle_button_new_with_label (_("Split"));
 	tips = gtk_tooltips_new ();
 	gtk_tooltips_set_tip (tips, button,
@@ -403,18 +422,34 @@ rig_gui_vfo_create_split_button ()
 	return button;
 }
 
+static GtkWidget *
+rig_gui_vfo_create_mem_button()
+{
+	GtkWidget   *button;
 
+	button = gtk_button_new_with_label(_("M / V"));
+	gtk_tooltips_set_tip(gtk_tooltips_new(), button,
+			      _("Toggle between memory and VFO"), NULL);
 
+        /* Disable control if the rig has no memory vfo */
+        if (!(rig_data_get_vfos() & RIG_VFO_MEM))  {
+		gtk_widget_set_sensitive(button, FALSE);
+	}
+
+	g_object_set_data(G_OBJECT(button), "vfo", (gpointer) RIG_VFO_VFO);
+
+	g_signal_connect(G_OBJECT (button), "pressed",
+			G_CALLBACK (rig_gui_vfo_memory_cb), NULL);
+	return button;
+}
 
 static void
 rig_gui_vfo_split_cb (GtkWidget *widget, gpointer data)
 {
-
 	if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget))) {
 		rig_data_set_split (TRUE);
 	}
 	else {
 		rig_data_set_split (FALSE);
 	}
-
 }
