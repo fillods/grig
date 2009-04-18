@@ -34,24 +34,26 @@
 
 
 
-
+/** \brief Possibilities for using DTR and CTS lines. */
 typedef enum {
-    LINE_OFF = 0,
-    LINE_ON,
-    LINE_PTT,
-    LINE_CW
+    LINE_OFF = 0,   /*!< Turn line permanently OFF */
+    LINE_ON,        /*!< Turn line permanently ON */
+    LINE_PTT,       /*!< Use line for set PTT */
+    LINE_CW         /*!< Use line for sending CW */
 } ctrl_stat_t;
 
+
+/** \brief Radio configuration structure. */
 typedef struct {
-    gchar      *name;
-    gchar      *company;
-    gchar      *model;
-    guint       id;
-    gchar      *port;
-    guint       speed;
-    guint       civ;
-    ctrl_stat_t dtr;
-    ctrl_stat_t rts;
+    gchar      *name;      /*!< Configuration name */
+    gchar      *company;   /*!< Rig manufacturer */
+    gchar      *model;     /*!< Rig model */
+    guint       id;        /*!< Hamlib ID of rig */
+    gchar      *port;      /*!< Port rig is attached to */
+    guint       speed;     /*!< Serial speed */
+    guint       civ;       /*!< CI-V address for icoms */
+    ctrl_stat_t dtr;       /*!< DTR line usage */
+    ctrl_stat_t rts;       /*!< RTS line usage */
     guint       version;   /*!< Configuration version, see grig-config.h */
 } radio_conf_t;
 
