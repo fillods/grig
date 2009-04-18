@@ -70,34 +70,34 @@ static void rig_gui_vfo_memory_cb  (GtkWidget *, gpointer);
 GtkWidget *
 rig_gui_vfo_create ()
 {
-/*	GtkWidget *hbox;
-	GtkWidget *vfobox;
-	GtkWidget *bandbox;
+/*    GtkWidget *hbox;
+    GtkWidget *vfobox;
+    GtkWidget *bandbox;
 */
-	GtkWidget *grid;
+    GtkWidget *grid;
 
-	/* VFO Frame */
-/*	vfobox = gtk_vbutton_box_new ();
-	gtk_button_box_set_layout (GTK_BUTTON_BOX (vfobox), GTK_BUTTONBOX_START);
-	gtk_container_add (GTK_CONTAINER (vfobox), rig_gui_vfo_create_toggle ());
-	gtk_container_add (GTK_CONTAINER (vfobox), rig_gui_vfo_create_split_button ());
-	gtk_container_add (GTK_CONTAINER (vfobox), rig_gui_vfo_create_eq_button ());
-	gtk_container_add (GTK_CONTAINER (vfobox), rig_gui_vfo_create_xchg_button ());*/
+    /* VFO Frame */
+/*    vfobox = gtk_vbutton_box_new ();
+    gtk_button_box_set_layout (GTK_BUTTON_BOX (vfobox), GTK_BUTTONBOX_START);
+    gtk_container_add (GTK_CONTAINER (vfobox), rig_gui_vfo_create_toggle ());
+    gtk_container_add (GTK_CONTAINER (vfobox), rig_gui_vfo_create_split_button ());
+    gtk_container_add (GTK_CONTAINER (vfobox), rig_gui_vfo_create_eq_button ());
+    gtk_container_add (GTK_CONTAINER (vfobox), rig_gui_vfo_create_xchg_button ());*/
     
-	grid = gtk_table_new (4, 3, TRUE);
-	gtk_table_attach_defaults (GTK_TABLE (grid), rig_gui_vfo_create_toggle (), 0, 1, 0, 1);
-	gtk_table_attach_defaults (GTK_TABLE (grid), rig_gui_vfo_create_split_button (), 1, 2, 0, 1);
-	gtk_table_attach_defaults (GTK_TABLE (grid), rig_gui_vfo_create_eq_button (), 0, 1, 1, 2);
-	gtk_table_attach_defaults (GTK_TABLE (grid), rig_gui_vfo_create_xchg_button (),	1, 2, 1, 2);
-	gtk_table_attach_defaults (GTK_TABLE (grid), rig_gui_vfo_create_mem_button (), 0, 1, 2, 3);
+    grid = gtk_table_new (4, 3, TRUE);
+    gtk_table_attach_defaults (GTK_TABLE (grid), rig_gui_vfo_create_toggle (), 0, 1, 0, 1);
+    gtk_table_attach_defaults (GTK_TABLE (grid), rig_gui_vfo_create_split_button (), 1, 2, 0, 1);
+    gtk_table_attach_defaults (GTK_TABLE (grid), rig_gui_vfo_create_eq_button (), 0, 1, 1, 2);
+    gtk_table_attach_defaults (GTK_TABLE (grid), rig_gui_vfo_create_xchg_button (),    1, 2, 1, 2);
+    gtk_table_attach_defaults (GTK_TABLE (grid), rig_gui_vfo_create_mem_button (), 0, 1, 2, 3);
     
-	/* BAND UP/DOWN */
-	/* XXX not yet implemented */
+    /* BAND UP/DOWN */
+    /* XXX not yet implemented */
 /*
-	bandbox = gtk_hbutton_box_new ();
-	gtk_button_box_set_layout (GTK_BUTTON_BOX (bandbox), GTK_BUTTONBOX_END);
+    bandbox = gtk_hbutton_box_new ();
+    gtk_button_box_set_layout (GTK_BUTTON_BOX (bandbox), GTK_BUTTONBOX_END);
 */
-	return grid;
+    return grid;
 }
 
 
@@ -107,48 +107,41 @@ rig_gui_vfo_create ()
 static GtkWidget *
 rig_gui_vfo_create_toggle ()
 {
-	GtkWidget   *button;
-	GtkTooltips *tips;
-	gint         sigid;
-	gint         vfos;
-	
-	/* Create button widget.
+    GtkWidget   *button;
+    gint         sigid;
+    gint         vfos;
+    
+    /* Create button widget.
            The label will be "A/B" if the rig has VFO_A and VFO_B
            or Main/Sub if the rig has those two.
         */
-	vfos = rig_data_get_vfos ();
-	if (vfos & RIG_VFO_MAIN) {
-		button = gtk_button_new_with_label (_("Main / Sub"));
-		tips = gtk_tooltips_new ();
-		gtk_tooltips_set_tip (tips, button,
-				      _("Toggle active VFO"),
-				      _("Toggle between the two available VFOs"));
-	}
-	else {
-		button = gtk_button_new_with_label (_("A / B"));
-		tips = gtk_tooltips_new ();
-		gtk_tooltips_set_tip (tips, button,
-				      _("Toggle VFO"),
-				      _("Toggle between the two available VFOs"));
-	}
+    vfos = rig_data_get_vfos ();
+    if (vfos & RIG_VFO_MAIN) {
+        button = gtk_button_new_with_label (_("Main / Sub"));
+        gtk_widget_set_tooltip_text (button, _("Toggle active VFO"));
+    }
+    else {
+        button = gtk_button_new_with_label (_("A / B"));
+        gtk_widget_set_tooltip_text (button, _("Toggle between available VFOs"));
+    }
 
 
         /* Disable control if the rig has no capability of
            either setting a specific VFO or to toggle
         */
-	if (!(rig_data_has_vfo_op_toggle () ||
+    if (!(rig_data_has_vfo_op_toggle () ||
               (rig_data_has_set_vfo () && rig_data_has_get_vfo ())) ){
-		gtk_widget_set_sensitive (button, FALSE);
-	}
+        gtk_widget_set_sensitive (button, FALSE);
+    }
 
 
-	/* connect "toggle" signal */
-	sigid = g_signal_connect (G_OBJECT (button), "pressed",
-				  G_CALLBACK (rig_gui_vfo_toggle_cb),
-				  NULL);
+    /* connect "toggle" signal */
+    sigid = g_signal_connect (G_OBJECT (button), "pressed",
+                  G_CALLBACK (rig_gui_vfo_toggle_cb),
+                  NULL);
 
 
-	return button;
+    return button;
 }
 
 
@@ -158,16 +151,16 @@ static void
 rig_gui_vfo_toggle_cb (GtkWidget *widget, gpointer data)
 {
 
-	if (rig_data_has_vfo_op_toggle ()) {
-		rig_data_vfo_op_toggle ();
-	}
-	else if (rig_data_has_set_vfo () &&
+    if (rig_data_has_vfo_op_toggle ()) {
+        rig_data_vfo_op_toggle ();
+    }
+    else if (rig_data_has_set_vfo () &&
                  rig_data_has_get_vfo ()) {
 
-		/* do not toggle in memory mode */
-		/* XXX disable other VFO buttons? */
-		if (rig_data_get_vfo() == RIG_VFO_MEM)
-			return;
+        /* do not toggle in memory mode */
+        /* XXX disable other VFO buttons? */
+        if (rig_data_get_vfo() == RIG_VFO_MEM)
+            return;
 
                 /* do we have VFO A and B? */
                 if (rig_data_get_vfos() & (RIG_VFO_A | RIG_VFO_B)) {
@@ -194,16 +187,16 @@ rig_gui_vfo_toggle_cb (GtkWidget *widget, gpointer data)
                 /* it's a bug, because button should be disabled */
                 else {
                         grig_debug_local (RIG_DEBUG_BUG,
-					  "%s: VFO_TOGGLE button should have been disabled "\
-					  "(neither A/B nor MAIN/SUB)\n", __FUNCTION__);
+                      "%s: VFO_TOGGLE button should have been disabled "\
+                      "(neither A/B nor MAIN/SUB)\n", __FUNCTION__);
                 }
-	}
+    }
 
         /* it's a bug, because button should be disabled */
         else {
-		grig_debug_local (RIG_DEBUG_BUG,
-				  "%s: VFO_TOGGLE button should have been disabled "\
-				  "(no way to toggle)\n", __FUNCTION__);
+        grig_debug_local (RIG_DEBUG_BUG,
+                  "%s: VFO_TOGGLE button should have been disabled "\
+                  "(no way to toggle)\n", __FUNCTION__);
         }
 
 }
@@ -211,19 +204,19 @@ rig_gui_vfo_toggle_cb (GtkWidget *widget, gpointer data)
 static void
 rig_gui_vfo_memory_cb(GtkWidget *widget, gpointer data)
 {
-	if (rig_data_has_set_vfo() && rig_data_has_get_vfo()) {
+    if (rig_data_has_set_vfo() && rig_data_has_get_vfo()) {
 
-	        if (rig_data_get_vfo() != RIG_VFO_MEM) {
-			g_object_set_data(G_OBJECT(widget),
-				"vfo", (gpointer) rig_data_get_vfo());
+            if (rig_data_get_vfo() != RIG_VFO_MEM) {
+            g_object_set_data(G_OBJECT(widget),
+                "vfo", (gpointer) rig_data_get_vfo());
 
- 			rig_data_set_vfo(RIG_VFO_MEM);
+             rig_data_set_vfo(RIG_VFO_MEM);
 
-		} else {
- 			rig_data_set_vfo((vfo_t) g_object_get_data(G_OBJECT(widget),
-						"vfo"));
-		}
-	}
+        } else {
+             rig_data_set_vfo((vfo_t) g_object_get_data(G_OBJECT(widget),
+                        "vfo"));
+        }
+    }
 }
 
 /**** A=B button ****/
@@ -231,48 +224,39 @@ rig_gui_vfo_memory_cb(GtkWidget *widget, gpointer data)
 static GtkWidget *
 rig_gui_vfo_create_eq_button ()
 {
-	GtkWidget   *button;
-	GtkTooltips *tips;
-	gint         sigid;
-	gint         vfos;
-	
-	/* Create button widget.
+    GtkWidget   *button;
+    gint         sigid;
+    gint         vfos;
+    
+    /* Create button widget.
            The label will be "A=B" if the rig has VFO_A and VFO_B
            or Main=Sub if the rig has those two.
         */
-	vfos = rig_data_get_vfos ();
-	if (vfos & RIG_VFO_MAIN) {
-		button = gtk_button_new_with_label (_("Main = Sub"));
-		tips = gtk_tooltips_new ();
-		gtk_tooltips_set_tip (tips, button,
-				      _("Set Main VFO = Sub VFO"),
-				      NULL);
-	}
-	else {
-		button = gtk_button_new_with_label (_("A = B"));
-		tips = gtk_tooltips_new ();
-		gtk_tooltips_set_tip (tips, button,
-				      _("Set VFO A = VFO B"),
-				      NULL);
-	}
-
-
+    vfos = rig_data_get_vfos ();
+    if (vfos & RIG_VFO_MAIN) {
+        button = gtk_button_new_with_label (_("Main = Sub"));
+        gtk_widget_set_tooltip_text (button,_("Set Main VFO = Sub VFO"));
+    }
+    else {
+        button = gtk_button_new_with_label (_("A = B"));
+        gtk_widget_set_tooltip_text (button, _("Set VFO B = VFO A"));
+    }
         /* Disable control if the rig has no capability of
            either setting a specific VFO or to toggle
         */
-	if (!(rig_data_has_vfo_op_toggle () ||
+    if (!(rig_data_has_vfo_op_toggle () ||
               (rig_data_has_set_vfo () && rig_data_has_get_vfo ())) ){
-		gtk_widget_set_sensitive (button, FALSE);
-	}
+        gtk_widget_set_sensitive (button, FALSE);
+    }
 
 
-	/* connect "toggle" signal */
-	sigid = g_signal_connect (G_OBJECT (button), "pressed",
-				  G_CALLBACK (rig_gui_vfo_eq_cb),
-				  NULL);
+    /* connect "toggle" signal */
+    sigid = g_signal_connect (G_OBJECT (button), "pressed",
+                  G_CALLBACK (rig_gui_vfo_eq_cb),
+                  NULL);
 
 
-	return button;
+    return button;
 }
 
 
@@ -282,23 +266,23 @@ static void
 rig_gui_vfo_eq_cb (GtkWidget *widget, gpointer data)
 {
 
-	if (rig_data_has_vfo_op_copy ()) {
-		rig_data_vfo_op_copy ();
-	}
-	else if (rig_data_has_set_vfo () &&
+    if (rig_data_has_vfo_op_copy ()) {
+        rig_data_vfo_op_copy ();
+    }
+    else if (rig_data_has_set_vfo () &&
                  rig_data_has_get_vfo ()) {
 
-		grig_debug_local (RIG_DEBUG_BUG,
-				  "%s: VFO COPY without RIG_OP_COPY not imlemented\n",
-				  __FUNCTION__);
+        grig_debug_local (RIG_DEBUG_BUG,
+                  "%s: VFO COPY without RIG_OP_COPY not imlemented\n",
+                  __FUNCTION__);
 
-	}
+    }
 
         /* it's a bug, because button should be disabled */
         else {
-		grig_debug_local (RIG_DEBUG_BUG,
-				  "%s: VFO_EQ button should have been disabled "\
-				  "(no way to equalise)\n", __FUNCTION__);
+        grig_debug_local (RIG_DEBUG_BUG,
+                  "%s: VFO_EQ button should have been disabled "\
+                  "(no way to equalise)\n", __FUNCTION__);
         }
 
 }
@@ -310,48 +294,41 @@ rig_gui_vfo_eq_cb (GtkWidget *widget, gpointer data)
 static GtkWidget *
 rig_gui_vfo_create_xchg_button ()
 {
-	GtkWidget   *button;
-	GtkTooltips *tips;
-	gint         sigid;
-	gint         vfos;
-	
-	/* Create button widget.
+    GtkWidget   *button;
+    gint         sigid;
+    gint         vfos;
+    
+    /* Create button widget.
            The label will be "A<->B" if the rig has VFO_A and VFO_B
            or Main<->Sub if the rig has those two.
         */
-	vfos = rig_data_get_vfos ();
-	if (vfos & RIG_VFO_MAIN) {
-		button = gtk_button_new_with_label (_("Main\302\253\302\273Sub"));
-		tips = gtk_tooltips_new ();
-		gtk_tooltips_set_tip (tips, button,
-				      _("Exchange Main and sub VFOs"),
-				      NULL);
-	}
-	else {
-		button = gtk_button_new_with_label (_("A\302\253\302\273B"));
-		tips = gtk_tooltips_new ();
-		gtk_tooltips_set_tip (tips, button,
-				      _("Exchange VFO A and B"),
-				      NULL);
-	}
+    vfos = rig_data_get_vfos ();
+    if (vfos & RIG_VFO_MAIN) {
+        button = gtk_button_new_with_label (_("Main\302\253\302\273Sub"));
+        gtk_widget_set_tooltip_text (button, _("Exchange Main and sub VFOs"));
+    }
+    else {
+        button = gtk_button_new_with_label (_("A\302\253\302\273B"));
+        gtk_widget_set_tooltip_text (button, _("Exchange VFO A and B"));
+    }
 
 
         /* Disable control if the rig has no capability of
            either setting a specific VFO or to toggle
         */
-	if (!(rig_data_has_vfo_op_xchg () ||
+    if (!(rig_data_has_vfo_op_xchg () ||
               (rig_data_has_set_vfo () && rig_data_has_get_vfo ())) ){
-		gtk_widget_set_sensitive (button, FALSE);
-	}
+        gtk_widget_set_sensitive (button, FALSE);
+    }
 
 
-	/* connect "toggle" signal */
-	sigid = g_signal_connect (G_OBJECT (button), "pressed",
-				  G_CALLBACK (rig_gui_vfo_xchg_cb),
-				  NULL);
+    /* connect "toggle" signal */
+    sigid = g_signal_connect (G_OBJECT (button), "pressed",
+                  G_CALLBACK (rig_gui_vfo_xchg_cb),
+                  NULL);
 
 
-	return button;
+    return button;
 }
 
 
@@ -361,23 +338,23 @@ static void
 rig_gui_vfo_xchg_cb (GtkWidget *widget, gpointer data)
 {
 
-	if (rig_data_has_vfo_op_xchg ()) {
-		rig_data_vfo_op_xchg ();
-	}
-	else if (rig_data_has_set_vfo () &&
+    if (rig_data_has_vfo_op_xchg ()) {
+        rig_data_vfo_op_xchg ();
+    }
+    else if (rig_data_has_set_vfo () &&
                  rig_data_has_get_vfo ()) {
 
-		grig_debug_local (RIG_DEBUG_BUG,
-				  "%s: VFO XCHG without RIG_OP_XCHG not imlemented\n",
-				  __FUNCTION__);
+        grig_debug_local (RIG_DEBUG_BUG,
+                  "%s: VFO XCHG without RIG_OP_XCHG not imlemented\n",
+                  __FUNCTION__);
 
-	}
+    }
 
         /* it's a bug, because button should be disabled */
         else {
-		grig_debug_local (RIG_DEBUG_BUG,
-				  "%s: VFO_XCHG button should have been disabled "\
-				  "(no way to exchange)\n", __FUNCTION__);
+        grig_debug_local (RIG_DEBUG_BUG,
+                  "%s: VFO_XCHG button should have been disabled "\
+                  "(no way to exchange)\n", __FUNCTION__);
         }
 
 }
@@ -390,66 +367,61 @@ rig_gui_vfo_xchg_cb (GtkWidget *widget, gpointer data)
 static GtkWidget *
 rig_gui_vfo_create_split_button ()
 {
-	GtkWidget   *button;
-	GtkTooltips *tips;
-	gint         sigid;
+    GtkWidget   *button;
+    gint         sigid;
 
-	
-	button = gtk_toggle_button_new_with_label (_("Split"));
-	tips = gtk_tooltips_new ();
-	gtk_tooltips_set_tip (tips, button,
-			      _("Toggle split mode operation"),
-			      NULL);
+    
+    button = gtk_toggle_button_new_with_label (_("Split"));
+    gtk_widget_set_tooltip_text (button, _("Toggle split mode operation"));
 
-	/* set button status before we do anything else */
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button),
-				      rig_data_get_split ());
+    /* set button status before we do anything else */
+    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button),
+                      rig_data_get_split ());
 
         /* Disable control if the rig has no capability of
            either setting a specific VFO or to toggle
         */
-	if (!(rig_data_has_set_split ()))  {
-		gtk_widget_set_sensitive (button, FALSE);
-	}
+    if (!(rig_data_has_set_split ()))  {
+        gtk_widget_set_sensitive (button, FALSE);
+    }
 
 
-	/* connect "toggle" signal */
-	sigid = g_signal_connect (G_OBJECT (button), "toggled",
-				  G_CALLBACK (rig_gui_vfo_split_cb),
-				  NULL);
+    /* connect "toggle" signal */
+    sigid = g_signal_connect (G_OBJECT (button), "toggled",
+                  G_CALLBACK (rig_gui_vfo_split_cb),
+                  NULL);
 
 
-	return button;
+    return button;
 }
 
 static GtkWidget *
 rig_gui_vfo_create_mem_button()
 {
-	GtkWidget   *button;
+    GtkWidget   *button;
 
-	button = gtk_button_new_with_label(_("M / V"));
-	gtk_tooltips_set_tip(gtk_tooltips_new(), button,
-			      _("Toggle between memory and VFO"), NULL);
+    button = gtk_button_new_with_label(_("M / V"));
+    gtk_widget_set_tooltip_text (button, _("Toggle between memory and VFO"));
 
-        /* Disable control if the rig has no memory vfo */
-        if (!(rig_data_get_vfos() & RIG_VFO_MEM))  {
-		gtk_widget_set_sensitive(button, FALSE);
-	}
+    /* Disable control if the rig has no memory vfo */
+    if (!(rig_data_get_vfos() & RIG_VFO_MEM))  {
+        gtk_widget_set_sensitive(button, FALSE);
+    }
 
-	g_object_set_data(G_OBJECT(button), "vfo", (gpointer) RIG_VFO_VFO);
+    g_object_set_data(G_OBJECT(button), "vfo", (gpointer) RIG_VFO_VFO);
 
-	g_signal_connect(G_OBJECT (button), "pressed",
-			G_CALLBACK (rig_gui_vfo_memory_cb), NULL);
-	return button;
+    g_signal_connect(G_OBJECT (button), "pressed",
+            G_CALLBACK (rig_gui_vfo_memory_cb), NULL);
+    return button;
 }
 
 static void
 rig_gui_vfo_split_cb (GtkWidget *widget, gpointer data)
 {
-	if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget))) {
-		rig_data_set_split (TRUE);
-	}
-	else {
-		rig_data_set_split (FALSE);
-	}
+    if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget))) {
+        rig_data_set_split (TRUE);
+    }
+    else {
+        rig_data_set_split (FALSE);
+    }
 }
