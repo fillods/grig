@@ -47,16 +47,10 @@
 GtkWidget *
 rig_gui_levels_create ()
 {
-	GtkWidget *expander;
-	GtkTooltips *tips;
-	
-	expander = gtk_expander_new (_("Level Controls"));
+    GtkWidget *expander;
 
-	/* add tooltips */
-	tips = gtk_tooltips_new ();
-	gtk_tooltips_set_tip (tips, expander,
-			      _("Show/hide level controls"),
-			      _("Show/hide level controls"));
+    expander = gtk_expander_new (_("Level Controls"));
+    gtk_widget_set_tooltip_text (expander, _("Show/hide level controls"));
 
-	return expander;
+    return expander;
 }

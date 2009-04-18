@@ -40,9 +40,9 @@
 
 
 static char *labels[] = {
-	"0", "1", "2",
-	"3", "4", "5",
-	"6", "7", "8", "9",
+    "0", "1", "2",
+    "3", "4", "5",
+    "6", "7", "8", "9",
 };
 
 /* private function prototypes */
@@ -57,73 +57,73 @@ static GtkWidget *rig_gui_keypad_create_clear(void);
 static void
 rig_gui_keypad_enter_cb(GtkWidget * widget, gpointer data)
 {
-	GrigKeypad *self = data;
+    GrigKeypad *self = data;
 
-	if (self->enabled)
-		grig_keypad_disable(self);
-	else
-		grig_keypad_enable(self);
+    if (self->enabled)
+        grig_keypad_disable(self);
+    else
+        grig_keypad_enable(self);
 
-	g_signal_emit_by_name(self, "grig-keypad-enter-pressed");
+    g_signal_emit_by_name(self, "grig-keypad-enter-pressed");
 }
 
 static void
 rig_gui_keypad_clear_cb(GtkWidget * widget, gpointer data)
 {
-	GrigKeypad *self = data;
+    GrigKeypad *self = data;
 
-	grig_keypad_disable(self);
-	g_signal_emit_by_name(self, "grig-keypad-clear-pressed");
+    grig_keypad_disable(self);
+    g_signal_emit_by_name(self, "grig-keypad-clear-pressed");
 }
 
 static void
 rig_gui_keypad_num_cb(GtkWidget * widget, gpointer data)
 {
-	GrigKeypad *self = data;
+    GrigKeypad *self = data;
 
-	gint num = GPOINTER_TO_INT(g_object_get_data
-				(G_OBJECT(widget), "number"));
+    gint num = GPOINTER_TO_INT(g_object_get_data
+                (G_OBJECT(widget), "number"));
 
-	g_signal_emit_by_name(self, "grig-keypad-num-pressed", num);
+    g_signal_emit_by_name(self, "grig-keypad-num-pressed", num);
 }
 
 static gint
 rig_gui_keypad_key_press_cb(GtkWidget * widget, GdkEventKey *e, gpointer data)
 {
-	GrigKeypad *self = data;
+    GrigKeypad *self = data;
 
-	if (e->type != GDK_KEY_PRESS)
-		return FALSE;
+    if (e->type != GDK_KEY_PRESS)
+        return FALSE;
 
-	if (e->keyval == GDK_Insert) {
-		rig_gui_keypad_enter_cb(widget, data);
-		return TRUE;
-	}
+    if (e->keyval == GDK_Insert) {
+        rig_gui_keypad_enter_cb(widget, data);
+        return TRUE;
+    }
 
-	if (!self->enabled)
-		return FALSE;
+    if (!self->enabled)
+        return FALSE;
 
-	if (e->keyval >= '0' && e->keyval <= '9') {
-		g_signal_emit_by_name(self, "grig-keypad-num-pressed",
-			e->keyval - '0');
-
-		return TRUE;
-	}
-    
-    /* numeric keypad */
-    if (e->keyval >= GDK_KP_0 && e->keyval <= GDK_KP_9) {
+    if (e->keyval >= '0' && e->keyval <= '9') {
         g_signal_emit_by_name(self, "grig-keypad-num-pressed",
-                              e->keyval - GDK_KP_0);
+            e->keyval - '0');
 
         return TRUE;
     }
 
-	if (e->keyval == GDK_Delete) {
-		rig_gui_keypad_clear_cb(widget, data);
-		return TRUE;
-	}
+    /* numeric keypad */
+    if (e->keyval >= GDK_KP_0 && e->keyval <= GDK_KP_9) {
+        g_signal_emit_by_name(self, "grig-keypad-num-pressed",
+                                e->keyval - GDK_KP_0);
 
-	return FALSE;
+        return TRUE;
+    }
+
+    if (e->keyval == GDK_Delete) {
+        rig_gui_keypad_clear_cb(widget, data);
+        return TRUE;
+    }
+
+    return FALSE;
 }
 
 /* class */
@@ -131,104 +131,104 @@ rig_gui_keypad_key_press_cb(GtkWidget * widget, GdkEventKey *e, gpointer data)
 GtkWidget *
 grig_keypad_new(void)
 {
-	return GTK_WIDGET(g_object_new(GRIG_KEYPAD_TYPE, NULL));
+    return GTK_WIDGET(g_object_new(GRIG_KEYPAD_TYPE, NULL));
 }
 
 static void
 grig_keypad_init(GrigKeypad * self)
 {
-	gint i, j;
+    gint i, j;
 
 
-	self->enabled = FALSE;
+    self->enabled = FALSE;
 
-	gtk_table_resize(GTK_TABLE(self), 3, 4);
-	gtk_table_set_homogeneous(GTK_TABLE(self), TRUE);
+    gtk_table_resize(GTK_TABLE(self), 3, 4);
+    gtk_table_set_homogeneous(GTK_TABLE(self), TRUE);
 
-	/* create buttons 1 - 9 */
-	for (i = 0; i < 3; i++) {
-		for (j = 0; j < 3; j++) {
+    /* create buttons 1 - 9 */
+    for (i = 0; i < 3; i++) {
+        for (j = 0; j < 3; j++) {
 
-			gint index = (3 * i) + j + 1;
+            gint index = (3 * i) + j + 1;
 
-			self->buttons[index] =
-				rig_gui_keypad_create_button(index, self);
+            self->buttons[index] =
+                rig_gui_keypad_create_button(index, self);
 
-			gtk_table_attach_defaults(GTK_TABLE(self),
-						  self->buttons[index], j,
-						  j + 1, i, i + 1);
+            gtk_table_attach_defaults(GTK_TABLE(self),
+                            self->buttons[index], j,
+                            j + 1, i, i + 1);
 
-			gtk_widget_set_sensitive(self->buttons[index], FALSE);
-		}
-	}
+            gtk_widget_set_sensitive(self->buttons[index], FALSE);
+        }
+    }
 
-	/* create CLR, 0, ENT */
-	self->buttons[0] = rig_gui_keypad_create_button(0, self);
-	self->clear = rig_gui_keypad_create_clear();
-	self->enter = rig_gui_keypad_create_enter();
+    /* create CLR, 0, ENT */
+    self->buttons[0] = rig_gui_keypad_create_button(0, self);
+    self->clear = rig_gui_keypad_create_clear();
+    self->enter = rig_gui_keypad_create_enter();
 
-	gtk_widget_set_sensitive(self->buttons[0], FALSE);
-	gtk_widget_set_sensitive(self->clear, FALSE);
-
-
-	/* attach CLR, 0, ENT */
-	gtk_table_attach_defaults(GTK_TABLE(self), self->clear, 0, 1, 3, 4);
-
-	gtk_table_attach_defaults(GTK_TABLE(self),
-				  self->buttons[0], 1, 2, 3, 4);
-
-	gtk_table_attach_defaults(GTK_TABLE(self), self->enter, 2, 3, 3, 4);
+    gtk_widget_set_sensitive(self->buttons[0], FALSE);
+    gtk_widget_set_sensitive(self->clear, FALSE);
 
 
-	/* create new signals */
-	/* XXX maybe this should go in class_init? */
-	g_signal_new("grig-keypad-enter-pressed", GTK_TYPE_WIDGET,
-		     G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION, 0, NULL,
-		     NULL, g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
+    /* attach CLR, 0, ENT */
+    gtk_table_attach_defaults(GTK_TABLE(self), self->clear, 0, 1, 3, 4);
 
-	g_signal_new("grig-keypad-clear-pressed", GTK_TYPE_WIDGET,
-		     G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION, 0, NULL,
-		     NULL, g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
+    gtk_table_attach_defaults(GTK_TABLE(self),
+                    self->buttons[0], 1, 2, 3, 4);
 
-	g_signal_new("grig-keypad-num-pressed", GTK_TYPE_WIDGET,
-		     G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION, 0, NULL,
-		     NULL, g_cclosure_marshal_VOID__UINT, G_TYPE_NONE, 1,
-		     G_TYPE_UINT);
+    gtk_table_attach_defaults(GTK_TABLE(self), self->enter, 2, 3, 3, 4);
 
 
-	/* connect signal handlers */
-	g_signal_connect(G_OBJECT(self->enter), "pressed",
-			 G_CALLBACK(rig_gui_keypad_enter_cb), self);
+    /* create new signals */
+    /* XXX maybe this should go in class_init? */
+    g_signal_new("grig-keypad-enter-pressed", GTK_TYPE_WIDGET,
+                G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION, 0, NULL,
+                NULL, g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
 
-	g_signal_connect(G_OBJECT(self->clear), "pressed",
-			 G_CALLBACK(rig_gui_keypad_clear_cb), self);
+    g_signal_new("grig-keypad-clear-pressed", GTK_TYPE_WIDGET,
+                G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION, 0, NULL,
+                NULL, g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
+
+    g_signal_new("grig-keypad-num-pressed", GTK_TYPE_WIDGET,
+                G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION, 0, NULL,
+                NULL, g_cclosure_marshal_VOID__UINT, G_TYPE_NONE, 1,
+                G_TYPE_UINT);
 
 
-	gtk_key_snooper_install(rig_gui_keypad_key_press_cb, self);
+    /* connect signal handlers */
+    g_signal_connect(G_OBJECT(self->enter), "pressed",
+                G_CALLBACK(rig_gui_keypad_enter_cb), self);
+
+    g_signal_connect(G_OBJECT(self->clear), "pressed",
+                G_CALLBACK(rig_gui_keypad_clear_cb), self);
+
+
+    gtk_key_snooper_install(rig_gui_keypad_key_press_cb, self);
 }
 
 GType
 grig_keypad_get_type(void)
 {
-	static GType grig_keypad_type = 0;
+    static GType grig_keypad_type = 0;
 
-	if (!grig_keypad_type) {
+    if (!grig_keypad_type) {
 
-		static const GTypeInfo grig_keypad_info = {
-			sizeof(GrigKeypadClass),
-			NULL, NULL, NULL, NULL, NULL,
-			sizeof(GrigKeypad),
-			0,
-			(GInstanceInitFunc) grig_keypad_init,
-		};
+        static const GTypeInfo grig_keypad_info = {
+            sizeof(GrigKeypadClass),
+            NULL, NULL, NULL, NULL, NULL,
+            sizeof(GrigKeypad),
+            0,
+            (GInstanceInitFunc) grig_keypad_init,
+        };
 
-		grig_keypad_type = g_type_register_static(GTK_TYPE_TABLE,
-							  "GrigKeypad",
-							  &grig_keypad_info,
-							  0);
-	}
+        grig_keypad_type = g_type_register_static(GTK_TYPE_TABLE,
+                                "GrigKeypad",
+                                &grig_keypad_info,
+                                0);
+    }
 
-	return grig_keypad_type;
+    return grig_keypad_type;
 }
 
 /* exported functions */
@@ -237,31 +237,31 @@ grig_keypad_get_type(void)
 void
 grig_keypad_enable(GrigKeypad * self)
 {
-	gint i;
+    gint i;
 
-	for (i = 0; i < 10; i++) {
-		gtk_widget_set_sensitive(self->buttons[i], TRUE);
-	}
+    for (i = 0; i < 10; i++) {
+        gtk_widget_set_sensitive(self->buttons[i], TRUE);
+    }
 
-	gtk_widget_set_sensitive(self->clear, TRUE);
+    gtk_widget_set_sensitive(self->clear, TRUE);
 
-	self->enabled = TRUE;
+    self->enabled = TRUE;
 }
 
 /* disables everything but ENT */
 void
 grig_keypad_disable(GrigKeypad * self)
 {
-	gint i;
+    gint i;
 
-	for (i = 0; i < 10; i++) {
-		gtk_widget_set_sensitive(self->buttons[i], FALSE);
-	}
+    for (i = 0; i < 10; i++) {
+        gtk_widget_set_sensitive(self->buttons[i], FALSE);
+    }
 
-	gtk_widget_set_sensitive(self->clear, FALSE);
-	gtk_widget_set_sensitive(self->enter, TRUE);
+    gtk_widget_set_sensitive(self->clear, FALSE);
+    gtk_widget_set_sensitive(self->enter, TRUE);
 
-	self->enabled = FALSE;
+    self->enabled = FALSE;
 }
 
 /* internal functions */
@@ -269,42 +269,38 @@ grig_keypad_disable(GrigKeypad * self)
 static GtkWidget *
 rig_gui_keypad_create_button(gint num, GrigKeypad *self)
 {
-	GtkWidget *button;
+    GtkWidget *button;
 
-	button = gtk_button_new_with_label(labels[num]);
+    button = gtk_button_new_with_label(labels[num]);
 
-	g_object_set_data(G_OBJECT(button), "number", GINT_TO_POINTER(num));
+    g_object_set_data(G_OBJECT(button), "number", GINT_TO_POINTER(num));
 
-	g_signal_connect(G_OBJECT(button), "pressed",
-			 G_CALLBACK(rig_gui_keypad_num_cb), self);
+    g_signal_connect(G_OBJECT(button), "pressed",
+                G_CALLBACK(rig_gui_keypad_num_cb), self);
 
-	return button;
+    return button;
 }
 
 static GtkWidget *
 rig_gui_keypad_create_enter(void)
 {
-	GtkWidget *button;
-	GtkTooltips *tips;
+    GtkWidget *button;
 
-	button = gtk_button_new_with_label(_("ENT"));
+    button = gtk_button_new_with_label(_("ENT"));
+    gtk_widget_set_tooltip_text (button,
+                                  _("Begin manual frequency entry mode"));
 
-	tips = gtk_tooltips_new();
-	gtk_tooltips_set_tip(tips, button,
-			     _("Begin manual frequency entry mode"), NULL);
-	return button;
+    return button;
 }
 
 static GtkWidget *
 rig_gui_keypad_create_clear(void)
 {
-	GtkWidget *button;
-	GtkTooltips *tips;
+    GtkWidget *button;
 
-	button = gtk_button_new_with_label(_("CLR"));
+    button = gtk_button_new_with_label(_("CLR"));
+    gtk_widget_set_tooltip_text (button,
+                                _("Clear manual frequency entry mode"));
 
-	tips = gtk_tooltips_new();
-	gtk_tooltips_set_tip(tips, button,
-			     _("Clear manual frequency entry mode"), NULL);
-	return button;
+    return button;
 }
