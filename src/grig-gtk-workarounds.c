@@ -45,68 +45,6 @@
 #include "grig-gtk-workarounds.h"
 
 
-static void set_combo_tooltip (GtkWidget *combo, gpointer text);
-
-
-
-
-/** \brief Create and set tooltips for GtkComboBox.
- *  \param combo The GtkComboBox widget.
- *  \param text  Pointer to the desired tooltip text.
- *
- * This function creates and sets the tooltips for the specified widget.
- * The interfaceis implemented such that this function can be connected
- * directly to the \a realized signal of the GtkComboBox.
- *
- * Actually, this function only loops over all the children of the GtkComboBox
- * and calls the set_combo_tooltip internal function.
- *
- * \note This works only if the funcion is actually used as callback fo the
- *       \a realized signal og the GtkComboBox.
- *
- * \note This great trick has been pointed out by Matthias Clasen, he has done the
- *       the same for the filter combo in the new GtkFileChooser
- *       ref: gtkfilechooserdefault.c:3151 in Gtk+ 2.5.5
- */
-void
-grig_set_combo_tooltips (GtkWidget *combo, gpointer text)
-{
-
-	/* for each child in the container call the internal
-	   function which actually creates the tooltips.
-	*/
-	gtk_container_forall (GTK_CONTAINER (combo),
-			      set_combo_tooltip,
-			      text);
-
-}
-
-
-/** \brief Create and set tooltips for GtkComboBox.
- *  \param text  Pointer to the desired tooltip text.
- *
- * This function creates and sets the tooltips for the specified widget.
- * This function is called by the \a grig_set_combo_tooltips function which
- * is must be used as callback for the "realized" signal of the GtkComboBox.
- */
-static void
-set_combo_tooltip (GtkWidget *combo, gpointer text)
-{
-
-	/* if current child is a button we have BINGO! */
-	if (GTK_IS_BUTTON (combo)) {
-
-		GtkTooltips *tips;
-
-		tips = gtk_tooltips_new ();
-
-		gtk_tooltips_set_tip (tips, combo,
-				      (gchar *) text,
-				      NULL);
-	}
-
-}
-
 
 
 /** \brief Create a horizontal pixmap button.

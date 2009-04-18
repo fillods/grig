@@ -31,7 +31,7 @@
 #ifndef GRIG_GTK_WORKAROUNDS_H
 #define GRIG_GTK_WORKAROUNDS_H 1
 
-void grig_set_combo_tooltips (GtkWidget *combo, gpointer text);
+
 
 GtkWidget *grig_hpixmap_button (const gchar *file,
                                 const gchar *text,
