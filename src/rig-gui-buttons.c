@@ -46,11 +46,11 @@
  * are attached to the widgets.
  */
 typedef enum rig_gui_buttons_e {
-	RIG_GUI_POWER_BUTTON = 1,   /*!< The Power button */
-	RIG_GUI_PTT_BUTTON,         /*!< The PTT button */
-	RIG_GUI_LOCK_BUTTON,        /*!< Lock dial function */
-	RIG_GUI_ATT_SELECTOR,       /*!< Attenuator selector. */
-	RIG_GUI_PREAMP_SELECTOR     /*!< Preamp selector. */
+    RIG_GUI_POWER_BUTTON = 1,   /*!< The Power button */
+    RIG_GUI_PTT_BUTTON,         /*!< The PTT button */
+    RIG_GUI_LOCK_BUTTON,        /*!< Lock dial function */
+    RIG_GUI_ATT_SELECTOR,       /*!< Attenuator selector. */
+    RIG_GUI_PREAMP_SELECTOR     /*!< Preamp selector. */
 } rig_gui_buttons_t;
 
 
@@ -89,43 +89,43 @@ static void rig_gui_buttons_update        (GtkWidget *, gpointer);
 GtkWidget *
 rig_gui_buttons_create ()
 {
-	GtkWidget *vbox;    /* container */
-	guint timerid;
+    GtkWidget *vbox;    /* container */
+    guint timerid;
 
-	/* create vertical box and add widgets */
-	vbox = gtk_vbox_new (FALSE, 0);
+    /* create vertical box and add widgets */
+    vbox = gtk_vbox_new (FALSE, 0);
 
-	/* add controls */
-	gtk_box_pack_start (GTK_BOX (vbox),
-			    rig_gui_buttons_create_power_button (),
-			    FALSE, FALSE, 0);
-	gtk_box_pack_start (GTK_BOX (vbox),
-			    rig_gui_buttons_create_ptt_button (),
-			    FALSE, FALSE, 0);
-	gtk_box_pack_start (GTK_BOX (vbox),
-			    rig_gui_buttons_create_lock_button (),
-			    FALSE, FALSE, 0);
+    /* add controls */
+    gtk_box_pack_start (GTK_BOX (vbox),
+                rig_gui_buttons_create_power_button (),
+                FALSE, FALSE, 0);
+    gtk_box_pack_start (GTK_BOX (vbox),
+                rig_gui_buttons_create_ptt_button (),
+                FALSE, FALSE, 0);
+    gtk_box_pack_start (GTK_BOX (vbox),
+                rig_gui_buttons_create_lock_button (),
+                FALSE, FALSE, 0);
 
-	gtk_box_pack_end   (GTK_BOX (vbox),
-			    rig_gui_buttons_create_preamp_selector (),
-			    FALSE, FALSE, 0);
+    gtk_box_pack_end   (GTK_BOX (vbox),
+                rig_gui_buttons_create_preamp_selector (),
+                FALSE, FALSE, 0);
 
-	gtk_box_pack_end   (GTK_BOX (vbox),
-			    rig_gui_buttons_create_att_selector (),
-			    FALSE, FALSE, 0);
+    gtk_box_pack_end   (GTK_BOX (vbox),
+                rig_gui_buttons_create_att_selector (),
+                FALSE, FALSE, 0);
 
-	/* start readback timer */
-	timerid = g_timeout_add (RIG_GUI_BUTTONS_DEF_TVAL,
-				 rig_gui_buttons_timeout_exec,
-				 vbox);
+    /* start readback timer */
+    timerid = g_timeout_add (RIG_GUI_BUTTONS_DEF_TVAL,
+                    rig_gui_buttons_timeout_exec,
+                    vbox);
 
-	/* register timer_stop function at exit */
-	gtk_quit_add (gtk_main_level (), rig_gui_buttons_timeout_stop,
-		      GUINT_TO_POINTER (timerid));
+    /* register timer_stop function at exit */
+    gtk_quit_add (gtk_main_level (), rig_gui_buttons_timeout_stop,
+                GUINT_TO_POINTER (timerid));
 
     gtk_widget_show_all (vbox);
-    
-	return vbox;
+
+    return vbox;
 }
 
 
@@ -140,44 +140,39 @@ rig_gui_buttons_create ()
 static GtkWidget *
 rig_gui_buttons_create_power_button    ()
 {
-	GtkWidget   *button;
-	GtkTooltips *tips;
-	powerstat_t  pstat;
-	gint         sigid;
-	
-	/* create button widget */
-	button = gtk_toggle_button_new_with_label (_("Power"));
-	tips = gtk_tooltips_new ();
-	gtk_tooltips_set_tip (tips, button,
-			      _("Power status"),
-			      _("Turn the radio ON or OFF"));
+    GtkWidget   *button;
+    powerstat_t  pstat;
+    gint         sigid;
 
-	/* set correct state */
-	pstat = rig_data_get_pstat ();
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button), 
-				      pstat ? TRUE : FALSE);
+    /* create button widget */
+    button = gtk_toggle_button_new_with_label (_("Power"));
+    gtk_widget_set_tooltip_text (button, _("Power status"));
 
-	if (!rig_data_has_set_pstat ()) {
-		gtk_widget_set_sensitive (button, FALSE);
-	}
+    /* set correct state */
+    pstat = rig_data_get_pstat ();
+    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button), 
+                        pstat ? TRUE : FALSE);
 
+    if (!rig_data_has_set_pstat ()) {
+        gtk_widget_set_sensitive (button, FALSE);
+    }
 
-	/* connect "toggle" signal */
-	sigid = g_signal_connect (G_OBJECT (button), "toggled",
-				  G_CALLBACK (rig_gui_buttons_power_cb),
-				  NULL);
+    /* connect "toggle" signal */
+    sigid = g_signal_connect (G_OBJECT (button), "toggled",
+                    G_CALLBACK (rig_gui_buttons_power_cb),
+                    NULL);
 
-	/* set handler ID */
-	g_object_set_data (G_OBJECT (button),
-			   HANDLER_ID_KEY,
-			   GINT_TO_POINTER (sigid));
+    /* set handler ID */
+    g_object_set_data (G_OBJECT (button),
+                HANDLER_ID_KEY,
+                GINT_TO_POINTER (sigid));
 
-	/* set widget ID */
-	g_object_set_data (G_OBJECT (button),
-			   WIDGET_ID_KEY,
-			   GUINT_TO_POINTER (RIG_GUI_POWER_BUTTON));
+    /* set widget ID */
+    g_object_set_data (G_OBJECT (button),
+                WIDGET_ID_KEY,
+                GUINT_TO_POINTER (RIG_GUI_POWER_BUTTON));
 
-	return button;
+    return button;
 }
 
 
@@ -190,43 +185,39 @@ rig_gui_buttons_create_power_button    ()
 static GtkWidget *
 rig_gui_buttons_create_ptt_button    ()
 {
-	GtkWidget   *button;
-	GtkTooltips *tips;
-	ptt_t        ptt;
-	gint         sigid;
-	
-	/* create button widget */
-	button = gtk_toggle_button_new_with_label (_("PTT"));
-	tips = gtk_tooltips_new ();
-	gtk_tooltips_set_tip (tips, button,
-			      _("Push To Talk"),
-			      _("Switch between receive and transmit mode"));
+    GtkWidget   *button;
+    ptt_t        ptt;
+    gint         sigid;
 
-	/* set correct state */
-	ptt = rig_data_get_ptt ();
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button), 
-				      ptt ? TRUE : FALSE);
+    /* create button widget */
+    button = gtk_toggle_button_new_with_label (_("PTT"));
+    gtk_widget_set_tooltip_text (button, _("Push to talk"));
 
-	if (!rig_data_has_set_ptt ()) {
-		gtk_widget_set_sensitive (button, FALSE);
-	}
+    /* set correct state */
+    ptt = rig_data_get_ptt ();
+    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button), 
+                        ptt ? TRUE : FALSE);
 
-	/* connect "toggle" signal */
-	sigid = g_signal_connect (G_OBJECT (button), "toggled",
-				  G_CALLBACK (rig_gui_buttons_ptt_cb),
-				  NULL);
+    if (!rig_data_has_set_ptt ()) {
+        gtk_widget_set_sensitive (button, FALSE);
+    }
 
-	/* set handler ID */
-	g_object_set_data (G_OBJECT (button),
-			   HANDLER_ID_KEY,
-			   GINT_TO_POINTER (sigid));
+    /* connect "toggle" signal */
+    sigid = g_signal_connect (G_OBJECT (button), "toggled",
+                    G_CALLBACK (rig_gui_buttons_ptt_cb),
+                    NULL);
 
-	/* set widget ID */
-	g_object_set_data (G_OBJECT (button),
-			     WIDGET_ID_KEY,
-			     GUINT_TO_POINTER (RIG_GUI_PTT_BUTTON));
+    /* set handler ID */
+    g_object_set_data (G_OBJECT (button),
+                HANDLER_ID_KEY,
+                GINT_TO_POINTER (sigid));
 
-	return button;
+    /* set widget ID */
+    g_object_set_data (G_OBJECT (button),
+                    WIDGET_ID_KEY,
+                    GUINT_TO_POINTER (RIG_GUI_PTT_BUTTON));
+
+    return button;
 }
 
 
@@ -239,43 +230,39 @@ rig_gui_buttons_create_ptt_button    ()
 static GtkWidget *
 rig_gui_buttons_create_lock_button    ()
 {
-	GtkWidget   *button;
-	GtkTooltips *tips;
-	int          status;
-	gint         sigid;
-	
-	/* create button widget */
-	button = gtk_toggle_button_new_with_label (_("Lock"));
-	tips = gtk_tooltips_new ();
-	gtk_tooltips_set_tip (tips, button,
-			      _("Lock tuning dial"),
-			      _("Lock the main tuning dial on the radio panel"));
+    GtkWidget   *button;
+    int          status;
+    gint         sigid;
 
-	/* set correct state */
-	status = rig_data_get_lock ();
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button), 
-				      status ? TRUE : FALSE);
+    /* create button widget */
+    button = gtk_toggle_button_new_with_label (_("Lock"));
+    gtk_widget_set_tooltip_text (button, _("Lock tuning dial"));
 
-	if (!rig_data_has_set_lock ()) {
-		gtk_widget_set_sensitive (button, FALSE);
-	}
+    /* set correct state */
+    status = rig_data_get_lock ();
+    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button), 
+                        status ? TRUE : FALSE);
 
-	/* connect "toggle" signal */
-	sigid = g_signal_connect (G_OBJECT (button), "toggled",
-				  G_CALLBACK (rig_gui_buttons_lock_cb),
-				  NULL);
+    if (!rig_data_has_set_lock ()) {
+        gtk_widget_set_sensitive (button, FALSE);
+    }
 
-	/* set handler ID */
-	g_object_set_data (G_OBJECT (button),
-			   HANDLER_ID_KEY,
-			   GINT_TO_POINTER (sigid));
+    /* connect "toggle" signal */
+    sigid = g_signal_connect (G_OBJECT (button), "toggled",
+                    G_CALLBACK (rig_gui_buttons_lock_cb),
+                    NULL);
 
-	/* set widget ID */
-	g_object_set_data (G_OBJECT (button),
-			     WIDGET_ID_KEY,
-			     GUINT_TO_POINTER (RIG_GUI_LOCK_BUTTON));
+    /* set handler ID */
+    g_object_set_data (G_OBJECT (button),
+                HANDLER_ID_KEY,
+                GINT_TO_POINTER (sigid));
 
-	return button;
+    /* set widget ID */
+    g_object_set_data (G_OBJECT (button),
+                    WIDGET_ID_KEY,
+                    GUINT_TO_POINTER (RIG_GUI_LOCK_BUTTON));
+
+    return button;
 }
 
 
@@ -286,59 +273,56 @@ rig_gui_buttons_create_lock_button    ()
 static GtkWidget *
 rig_gui_buttons_create_att_selector    ()
 {
-	GtkWidget *att;
-	gint       i = 0;
-	gchar     *text;
-	gint       sigid;
+    GtkWidget *att;
+    gint       i = 0;
+    gchar     *text;
+    gint       sigid;
 
-	att = gtk_combo_box_new_text ();
-              
-	/* add ATT OFF ie. 0 dB */
-	gtk_combo_box_append_text (GTK_COMBO_BOX (att), _("ATT OFF"));
+    att = gtk_combo_box_new_text ();
+                
+    /* add ATT OFF ie. 0 dB */
+    gtk_combo_box_append_text (GTK_COMBO_BOX (att), _("ATT OFF"));
 
-	/* note: MAXDBLSTSIZ is defined in hamlib; it is the max size of the
-	   ATT and preamp arrays.
-	*/
-	while ((i < MAXDBLSTSIZ) && rig_data_get_att_data (i)) {
+    /* note: MAXDBLSTSIZ is defined in hamlib; it is the max size of the
+        ATT and preamp arrays.
+    */
+    while ((i < MAXDBLSTSIZ) && rig_data_get_att_data (i)) {
 
-		text = g_strdup_printf ("-%d dB", rig_data_get_att_data (i));
-		gtk_combo_box_append_text (GTK_COMBO_BOX (att), text);
-		g_free (text);
-		i++;
-	}
+        text = g_strdup_printf ("-%d dB", rig_data_get_att_data (i));
+        gtk_combo_box_append_text (GTK_COMBO_BOX (att), text);
+        g_free (text);
+        i++;
+    }
 
-	/* get current ATT value; remember that -1 => ATT OFF
-	   which is the 0th element in the combo box list.
-	*/
-	i = rig_data_get_att_index (rig_data_get_att ()) + 1;
-	gtk_combo_box_set_active (GTK_COMBO_BOX (att), i);
+    /* get current ATT value; remember that -1 => ATT OFF
+        which is the 0th element in the combo box list.
+    */
+    i = rig_data_get_att_index (rig_data_get_att ()) + 1;
+    gtk_combo_box_set_active (GTK_COMBO_BOX (att), i);
 
-	if (!rig_data_has_set_att ()) {
-		gtk_widget_set_sensitive (att, FALSE);
-	}
+    if (!rig_data_has_set_att ()) {
+        gtk_widget_set_sensitive (att, FALSE);
+    }
 
-	/* add tooltips when widget is realized */
-	g_signal_connect (att, "realize",
-			  G_CALLBACK (grig_set_combo_tooltips),
-			  _("Attenuator Level"));
+    gtk_widget_set_tooltip_text (att, _("Attenuator level"));
 
-	/* connect 'changed' signal */
-	sigid = g_signal_connect (G_OBJECT (att), "changed",
-				  G_CALLBACK (rig_gui_buttons_att_cb),
-				  NULL);
-	
-	/* set handler ID */
-	g_object_set_data (G_OBJECT (att),
-			   HANDLER_ID_KEY,
-			   GINT_TO_POINTER (sigid));
+    /* connect 'changed' signal */
+    sigid = g_signal_connect (G_OBJECT (att), "changed",
+                    G_CALLBACK (rig_gui_buttons_att_cb),
+                    NULL);
 
-	/* set widget ID */
-	g_object_set_data (G_OBJECT (att),
-			   WIDGET_ID_KEY,
-			   GUINT_TO_POINTER (RIG_GUI_ATT_SELECTOR));
-	
+    /* set handler ID */
+    g_object_set_data (G_OBJECT (att),
+                HANDLER_ID_KEY,
+                GINT_TO_POINTER (sigid));
 
-	return att;
+    /* set widget ID */
+    g_object_set_data (G_OBJECT (att),
+                WIDGET_ID_KEY,
+                GUINT_TO_POINTER (RIG_GUI_ATT_SELECTOR));
+
+
+    return att;
 }
 
 
@@ -349,59 +333,56 @@ rig_gui_buttons_create_att_selector    ()
 static GtkWidget *
 rig_gui_buttons_create_preamp_selector    ()
 {
-	GtkWidget *preamp;
-	gint       i = 0;
-	gchar     *text;
-	gint       sigid;
+    GtkWidget *preamp;
+    gint       i = 0;
+    gchar     *text;
+    gint       sigid;
 
-	preamp = gtk_combo_box_new_text ();
-              
-	/* add ATT OFF ie. 0 dB */
-	gtk_combo_box_append_text (GTK_COMBO_BOX (preamp), _("PREAMP OFF"));
+    preamp = gtk_combo_box_new_text ();
+                
+    /* add ATT OFF ie. 0 dB */
+    gtk_combo_box_append_text (GTK_COMBO_BOX (preamp), _("PREAMP OFF"));
 
-	/* note: MAXDBLSTSIZ is defined in hamlib; it is the max size of the
-	   ATT and preamp arrays.
-	*/
-	while ((i < MAXDBLSTSIZ) && rig_data_get_preamp_data (i)) {
+    /* note: MAXDBLSTSIZ is defined in hamlib; it is the max size of the
+        ATT and preamp arrays.
+    */
+    while ((i < MAXDBLSTSIZ) && rig_data_get_preamp_data (i)) {
 
-		text = g_strdup_printf ("%d dB", rig_data_get_preamp_data (i));
-		gtk_combo_box_append_text (GTK_COMBO_BOX (preamp), text);
-		g_free (text);
-		i++;
-	}
+        text = g_strdup_printf ("%d dB", rig_data_get_preamp_data (i));
+        gtk_combo_box_append_text (GTK_COMBO_BOX (preamp), text);
+        g_free (text);
+        i++;
+    }
 
-	/* get current preamp value; remember that -1 => PREAMP OFF
-	   which is the 0th element in the combo box list.
-	*/
-	i = rig_data_get_preamp_index (rig_data_get_preamp ()) + 1;
-	gtk_combo_box_set_active (GTK_COMBO_BOX (preamp), i);
+    /* get current preamp value; remember that -1 => PREAMP OFF
+        which is the 0th element in the combo box list.
+    */
+    i = rig_data_get_preamp_index (rig_data_get_preamp ()) + 1;
+    gtk_combo_box_set_active (GTK_COMBO_BOX (preamp), i);
 
-	if (!rig_data_has_set_preamp ()) {
-		gtk_widget_set_sensitive (preamp, FALSE);
-	}
+    if (!rig_data_has_set_preamp ()) {
+        gtk_widget_set_sensitive (preamp, FALSE);
+    }
 
-	/* add tooltips when widget is realized */
-	g_signal_connect (preamp, "realize",
-			  G_CALLBACK (grig_set_combo_tooltips),
-			  _("Preamp Level"));
+    gtk_widget_set_tooltip_text (preamp, _("Preamp level"));
 
-	/* connect 'changed' signal */
-	sigid = g_signal_connect (G_OBJECT (preamp), "changed",
-				  G_CALLBACK (rig_gui_buttons_preamp_cb),
-				  NULL);
+    /* connect 'changed' signal */
+    sigid = g_signal_connect (G_OBJECT (preamp), "changed",
+                    G_CALLBACK (rig_gui_buttons_preamp_cb),
+                    NULL);
 
-	/* set handler ID */
-	g_object_set_data (G_OBJECT (preamp),
-			   HANDLER_ID_KEY,
-			   GINT_TO_POINTER (sigid));
+    /* set handler ID */
+    g_object_set_data (G_OBJECT (preamp),
+                HANDLER_ID_KEY,
+                GINT_TO_POINTER (sigid));
 
-	/* set widget ID */
-	g_object_set_data (G_OBJECT (preamp),
-			   WIDGET_ID_KEY,
-			   GUINT_TO_POINTER (RIG_GUI_PREAMP_SELECTOR));
-	
+    /* set widget ID */
+    g_object_set_data (G_OBJECT (preamp),
+                WIDGET_ID_KEY,
+                GUINT_TO_POINTER (RIG_GUI_PREAMP_SELECTOR));
 
-	return preamp;
+
+    return preamp;
 }
 
 
@@ -417,12 +398,12 @@ static void
 rig_gui_buttons_power_cb (GtkWidget *widget, gpointer data)
 {
 
-	if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget))) {
-		rig_data_set_pstat (RIG_POWER_ON);
-	}
-	else {
-		rig_data_set_pstat (RIG_POWER_OFF);
-	}
+    if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget))) {
+        rig_data_set_pstat (RIG_POWER_ON);
+    }
+    else {
+        rig_data_set_pstat (RIG_POWER_OFF);
+    }
 }
 
 
@@ -437,12 +418,12 @@ static void
 rig_gui_buttons_ptt_cb   (GtkWidget *widget, gpointer data)
 {
 
-	if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget))) {
-		rig_data_set_ptt (RIG_PTT_ON);
-	}
-	else {
-		rig_data_set_ptt (RIG_PTT_OFF);
-	}
+    if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget))) {
+        rig_data_set_ptt (RIG_PTT_ON);
+    }
+    else {
+        rig_data_set_ptt (RIG_PTT_OFF);
+    }
 
 }
 
@@ -458,12 +439,12 @@ static void
 rig_gui_buttons_lock_cb   (GtkWidget *widget, gpointer data)
 {
 
-	if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget))) {
-		rig_data_set_lock (1);
-	}
-	else {
-		rig_data_set_lock (0);
-	}
+    if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget))) {
+        rig_data_set_lock (1);
+    }
+    else {
+        rig_data_set_lock (0);
+    }
 
 }
 
@@ -479,15 +460,13 @@ rig_gui_buttons_lock_cb   (GtkWidget *widget, gpointer data)
 static void
 rig_gui_buttons_att_cb   (GtkWidget *widget, gpointer data)
 {
-	gint index;
+    gint index;
 
-	/* get selected item */
-	index = gtk_combo_box_get_active (GTK_COMBO_BOX (widget));
+    /* get selected item */
+    index = gtk_combo_box_get_active (GTK_COMBO_BOX (widget));
 
-	/* convert it and send to rig-data */
-	rig_data_set_att (rig_data_get_att_data (index-1));
-
-
+    /* convert it and send to rig-data */
+    rig_data_set_att (rig_data_get_att_data (index-1));
 }
 
 
@@ -502,15 +481,13 @@ rig_gui_buttons_att_cb   (GtkWidget *widget, gpointer data)
 static void
 rig_gui_buttons_preamp_cb   (GtkWidget *widget, gpointer data)
 {
-	gint index;
+    gint index;
 
-	/* get selected item */
-	index = gtk_combo_box_get_active (GTK_COMBO_BOX (widget));
+    /* get selected item */
+    index = gtk_combo_box_get_active (GTK_COMBO_BOX (widget));
 
-	/* convert it and send to rig-data */
-	rig_data_set_preamp (rig_data_get_preamp_data (index-1));
-
-
+    /* convert it and send to rig-data */
+    rig_data_set_preamp (rig_data_get_preamp_data (index-1));
 }
 
 
@@ -530,12 +507,12 @@ static gint
 rig_gui_buttons_timeout_exec  (gpointer vbox)
 {
 
-	/* update each child widget of the container */
-	gtk_container_foreach (GTK_CONTAINER (vbox),
-			       rig_gui_buttons_update,
-			       NULL);
+    /* update each child widget of the container */
+    gtk_container_foreach (GTK_CONTAINER (vbox),
+                    rig_gui_buttons_update,
+                    NULL);
 
-	return TRUE;
+    return TRUE;
 }
 
 
@@ -552,9 +529,9 @@ static gint
 rig_gui_buttons_timeout_stop  (gpointer timer)
 {
 
-	g_source_remove (GPOINTER_TO_UINT (timer));
+    g_source_remove (GPOINTER_TO_UINT (timer));
 
-	return TRUE;
+    return TRUE;
 }
 
 
@@ -580,107 +557,107 @@ rig_gui_buttons_timeout_stop  (gpointer timer)
 static void
 rig_gui_buttons_update        (GtkWidget *widget, gpointer data)
 {
-	guint id;
-	gint  handler;
-	powerstat_t pstat;
-	ptt_t       ptt;
-	int         attidx;
+    guint id;
+    gint  handler;
+    powerstat_t pstat;
+    ptt_t       ptt;
+    int         attidx;
 
-	/* get widget id */
-	id = GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (widget), WIDGET_ID_KEY));
+    /* get widget id */
+    id = GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (widget), WIDGET_ID_KEY));
 
-	switch (id) {
+    switch (id) {
 
-		/* power button */
-	case RIG_GUI_POWER_BUTTON:
-		
-		/* get power status */
-		pstat = rig_data_get_pstat ();
+        /* power button */
+    case RIG_GUI_POWER_BUTTON:
+        
+        /* get power status */
+        pstat = rig_data_get_pstat ();
 
-		/* get signal handler ID */
-		handler = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (widget), 
-							      HANDLER_ID_KEY));
+        /* get signal handler ID */
+        handler = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (widget), 
+                                    HANDLER_ID_KEY));
 
-		/* block the signal handler */
-		g_signal_handler_block (G_OBJECT (widget), handler);
+        /* block the signal handler */
+        g_signal_handler_block (G_OBJECT (widget), handler);
 
-		/* set widget state */
-		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (widget), 
-					      pstat ? TRUE : FALSE);
-		
-		/* unblock signal handler */
-		g_signal_handler_unblock (G_OBJECT (widget), handler);
+        /* set widget state */
+        gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (widget), 
+                            pstat ? TRUE : FALSE);
+        
+        /* unblock signal handler */
+        g_signal_handler_unblock (G_OBJECT (widget), handler);
 
-		break;
+        break;
 
-		/* ptt button */
-	case RIG_GUI_PTT_BUTTON:
-		
-		/* get PTT status */
-		ptt = rig_data_get_ptt ();
+        /* ptt button */
+    case RIG_GUI_PTT_BUTTON:
+        
+        /* get PTT status */
+        ptt = rig_data_get_ptt ();
 
-		/* get signal handler ID */
-		handler = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (widget), 
-							      HANDLER_ID_KEY));
+        /* get signal handler ID */
+        handler = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (widget), 
+                                    HANDLER_ID_KEY));
 
-		/* block the signal handler */
-		g_signal_handler_block (G_OBJECT (widget), handler);
+        /* block the signal handler */
+        g_signal_handler_block (G_OBJECT (widget), handler);
 
-		/* set widget state */
-		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (widget), 
-					      ptt ? TRUE : FALSE);
-		
-		/* unblock signal handler */
-		g_signal_handler_unblock (G_OBJECT (widget), handler);
+        /* set widget state */
+        gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (widget), 
+                            ptt ? TRUE : FALSE);
+        
+        /* unblock signal handler */
+        g_signal_handler_unblock (G_OBJECT (widget), handler);
 
-		break;
+        break;
 
-		/* ATT selector */
-	case RIG_GUI_ATT_SELECTOR:
+        /* ATT selector */
+    case RIG_GUI_ATT_SELECTOR:
 
-		/* get signal handler ID */
-		handler = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (widget), 
-							      HANDLER_ID_KEY));
-			
-		/* block the signal handler */
-		g_signal_handler_block (G_OBJECT (widget), handler);
+        /* get signal handler ID */
+        handler = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (widget), 
+                                    HANDLER_ID_KEY));
+            
+        /* block the signal handler */
+        g_signal_handler_block (G_OBJECT (widget), handler);
 
-		/* get current ATT value; remember that -1 => ATT OFF
-		   which is the 0th element in the combo box list.
-		*/
-		attidx = rig_data_get_att_index (rig_data_get_att ()) + 1;
-		gtk_combo_box_set_active (GTK_COMBO_BOX (widget), attidx);
-			
-		/* unblock signal handler */
-		g_signal_handler_unblock (G_OBJECT (widget), handler);
+        /* get current ATT value; remember that -1 => ATT OFF
+            which is the 0th element in the combo box list.
+        */
+        attidx = rig_data_get_att_index (rig_data_get_att ()) + 1;
+        gtk_combo_box_set_active (GTK_COMBO_BOX (widget), attidx);
+            
+        /* unblock signal handler */
+        g_signal_handler_unblock (G_OBJECT (widget), handler);
 
-		break;
+        break;
 
-		/* PREAMP selector */
-	case RIG_GUI_PREAMP_SELECTOR:
+        /* PREAMP selector */
+    case RIG_GUI_PREAMP_SELECTOR:
 
-		/* get signal handler ID */
-		handler = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (widget), 
-							      HANDLER_ID_KEY));
-			
-		/* block the signal handler */
-		g_signal_handler_block (G_OBJECT (widget), handler);
+        /* get signal handler ID */
+        handler = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (widget), 
+                                    HANDLER_ID_KEY));
+            
+        /* block the signal handler */
+        g_signal_handler_block (G_OBJECT (widget), handler);
 
-		/* get current preamp value; remember that -1 => ATT OFF
-		   which is the 0th element in the combo box list.
-		*/
-		attidx = rig_data_get_preamp_index (rig_data_get_preamp ()) + 1;
-		gtk_combo_box_set_active (GTK_COMBO_BOX (widget), attidx);
-			
-		/* unblock signal handler */
-		g_signal_handler_unblock (G_OBJECT (widget), handler);
+        /* get current preamp value; remember that -1 => ATT OFF
+            which is the 0th element in the combo box list.
+        */
+        attidx = rig_data_get_preamp_index (rig_data_get_preamp ()) + 1;
+        gtk_combo_box_set_active (GTK_COMBO_BOX (widget), attidx);
+            
+        /* unblock signal handler */
+        g_signal_handler_unblock (G_OBJECT (widget), handler);
 
-		break;
+        break;
 
 
-	default:
-		break;
+    default:
+        break;
 
-	}
+    }
 
 }
