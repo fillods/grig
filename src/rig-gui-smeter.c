@@ -71,20 +71,20 @@ static GdkPixmap *buffer;
 
 /** \brief TX mode strings used for optionmenu */
 static const gchar *TX_MODE_S[] = {
-	N_("None"),
-	N_("Power"),
-	N_("SWR"),
-	N_("ALC")
+    N_("None"),
+    N_("Power"),
+    N_("SWR"),
+    N_("ALC")
 };
 
 
 /** \brief TX scale strings used for optionmenu */
 static const gchar *TX_SCALE_S[] = {
-	N_("0..5"),
-	N_("0..10"),
-	N_("0..50"),
-	N_("0..100"),
-	N_("0..500")
+    N_("0..5"),
+    N_("0..10"),
+    N_("0..50"),
+    N_("0..100"),
+    N_("0..500")
 };
 
 
@@ -122,50 +122,50 @@ static gboolean rig_gui_smeter_has_tx_mode (guint);
 GtkWidget *
 rig_gui_smeter_create ()
 {
-	GtkWidget *vbox;
-	GtkWidget *hbox;
-	guint      timerid;
+    GtkWidget *vbox;
+    GtkWidget *hbox;
+    guint      timerid;
 
 
-	/* initialize some data */
-	smeter.value     = convert_db_to_angle (-54, DB_TO_ANGLE_MODE_POLY);
-	smeter.lastvalue = smeter.value;
-	smeter.tval      = RIG_GUI_SMETER_DEF_TVAL;
-	smeter.falloff   = RIG_GUI_SMETER_DEF_FALLOFF;
-	smeter.txmode    = SMETER_TX_MODE_NONE;
-	smeter.scale     = SMETER_SCALE_100;
-	smeter.exposed   = FALSE;
+    /* initialize some data */
+    smeter.value     = convert_db_to_angle (-54, DB_TO_ANGLE_MODE_POLY);
+    smeter.lastvalue = smeter.value;
+    smeter.tval      = RIG_GUI_SMETER_DEF_TVAL;
+    smeter.falloff   = RIG_GUI_SMETER_DEF_FALLOFF;
+    smeter.txmode    = SMETER_TX_MODE_NONE;
+    smeter.scale     = SMETER_SCALE_100;
+    smeter.exposed   = FALSE;
 
-	/* create horizontal box containing selectors */
-	hbox = gtk_hbox_new (TRUE, 0);
-	gtk_box_pack_start_defaults (GTK_BOX (hbox), rig_gui_scale_selector_create ());
-	gtk_box_pack_start_defaults (GTK_BOX (hbox), rig_gui_mode_selector_create ());
-
-
-	/* create cnvas */
-	rig_gui_smeter_create_canvas ();
+    /* create horizontal box containing selectors */
+    hbox = gtk_hbox_new (TRUE, 0);
+    gtk_box_pack_start (GTK_BOX (hbox), rig_gui_scale_selector_create (), TRUE, TRUE, 0);
+    gtk_box_pack_start (GTK_BOX (hbox), rig_gui_mode_selector_create (), TRUE, TRUE, 0);
 
 
-	/* create vertical box */
-	vbox = gtk_vbox_new (FALSE, 0);
+    /* create cnvas */
+    rig_gui_smeter_create_canvas ();
 
-	gtk_box_pack_start (GTK_BOX (vbox), smeter.canvas, FALSE, FALSE, 0);
-	gtk_box_pack_start (GTK_BOX (vbox), hbox,  FALSE, FALSE, 5);
 
-	/* start readback timer but only if service is available */
-	if (rig_data_has_get_strength ()) {
-		timerid = g_timeout_add (RIG_GUI_SMETER_DEF_TVAL,
-					 rig_gui_smeter_timeout_exec,
-					 NULL);
+    /* create vertical box */
+    vbox = gtk_vbox_new (FALSE, 0);
 
-		/* register timer_stop function at exit */
-		gtk_quit_add (gtk_main_level (), rig_gui_smeter_timeout_stop,
-			      GUINT_TO_POINTER (timerid));
-	}
+    gtk_box_pack_start (GTK_BOX (vbox), smeter.canvas, FALSE, FALSE, 0);
+    gtk_box_pack_start (GTK_BOX (vbox), hbox,  FALSE, FALSE, 5);
+
+    /* start readback timer but only if service is available */
+    if (rig_data_has_get_strength ()) {
+        timerid = g_timeout_add (RIG_GUI_SMETER_DEF_TVAL,
+                     rig_gui_smeter_timeout_exec,
+                     NULL);
+
+        /* register timer_stop function at exit */
+        gtk_quit_add (gtk_main_level (), rig_gui_smeter_timeout_stop,
+                  GUINT_TO_POINTER (timerid));
+    }
 
     gtk_widget_show_all (vbox);
     
-	return vbox;
+    return vbox;
 }
 
 
@@ -179,7 +179,7 @@ rig_gui_smeter_create ()
 smeter_tx_mode_t
 rig_gui_smeter_get_tx_mode ()
 {
-	return smeter.txmode;
+    return smeter.txmode;
 }
 
 
@@ -197,28 +197,28 @@ rig_gui_smeter_get_tx_mode ()
 static void
 rig_gui_smeter_create_canvas ()
 {
-	gchar             *fname;
+    gchar             *fname;
 
-	/* create canvas */
-	smeter.canvas = gtk_drawing_area_new ();
-	gtk_widget_set_size_request (smeter.canvas, 160, 80);
+    /* create canvas */
+    smeter.canvas = gtk_drawing_area_new ();
+    gtk_widget_set_size_request (smeter.canvas, 160, 80);
 
-	/* connect expose handler which will take care of adding
-	   contents.
-	*/
-	g_signal_connect (G_OBJECT (smeter.canvas), "expose_event",  
-			  G_CALLBACK (rig_gui_smeter_expose_cb), NULL);	
+    /* connect expose handler which will take care of adding
+       contents.
+    */
+    g_signal_connect (G_OBJECT (smeter.canvas), "expose_event",  
+              G_CALLBACK (rig_gui_smeter_expose_cb), NULL);    
 
-	/* create background pixmap and add it to canvas */
-	//fname = g_strconcat (PACKAGE_PIXMAPS_DIR, G_DIR_SEPARATOR_S,
-	//		     "smeter.png", NULL);
-	fname = pixmap_file_name ("smeter.png");
-	smeter.pixbuf = gdk_pixbuf_new_from_file (fname, NULL);
-	g_free (fname);
+    /* create background pixmap and add it to canvas */
+    //fname = g_strconcat (PACKAGE_PIXMAPS_DIR, G_DIR_SEPARATOR_S,
+    //             "smeter.png", NULL);
+    fname = pixmap_file_name ("smeter.png");
+    smeter.pixbuf = gdk_pixbuf_new_from_file (fname, NULL);
+    g_free (fname);
 
-	/* get initial cordinates */
-	convert_angle_to_rect (smeter.value, &coor);
-					       
+    /* get initial cordinates */
+    convert_angle_to_rect (smeter.value, &coor);
+                           
 }
 
 
@@ -237,140 +237,140 @@ rig_gui_smeter_create_canvas ()
 static gint 
 rig_gui_smeter_timeout_exec  (gpointer data)
 {
-	gfloat             rdang;          /* angle obtained from rig-data */
-	gint               db   = -54;     /* signal strength from hamlib */
-	gfloat             valf = 0.0;     /* RF power, SWR or ALC from hamlib */
-	gfloat             maxdelta;
-	gfloat             delta;
+    gfloat             rdang;          /* angle obtained from rig-data */
+    gint               db   = -54;     /* signal strength from hamlib */
+    gfloat             valf = 0.0;     /* RF power, SWR or ALC from hamlib */
+    gfloat             maxdelta;
+    gfloat             delta;
 
 
 
-	/* are we in RX or TX mode? */
-	if (rig_data_get_ptt () == RIG_PTT_OFF) {
+    /* are we in RX or TX mode? */
+    if (rig_data_get_ptt () == RIG_PTT_OFF) {
 
 #if SMETER_TEST
-		/* test s-meter with random numbers */
-		db = (gint) g_random_int_range (-100, 100);
+        /* test s-meter with random numbers */
+        db = (gint) g_random_int_range (-100, 100);
 #else
-		/* get current value from rig-data */
-		db = rig_data_get_strength ();
+        /* get current value from rig-data */
+        db = rig_data_get_strength ();
 #endif
 
-		rdang = convert_db_to_angle (db, DB_TO_ANGLE_MODE_POLY);
+        rdang = convert_db_to_angle (db, DB_TO_ANGLE_MODE_POLY);
 
-		delta = fabs (rdang - smeter.value);
-	}
-	else {
+        delta = fabs (rdang - smeter.value);
+    }
+    else {
 
-		/* get TX reading according to selected
-		   meter mode (power/swr/alc)
-		*/
-		switch (smeter.txmode) {
+        /* get TX reading according to selected
+           meter mode (power/swr/alc)
+        */
+        switch (smeter.txmode) {
 
-			/* TX power */
-		case SMETER_TX_MODE_POWER:
+            /* TX power */
+        case SMETER_TX_MODE_POWER:
 #if SMETER_TEST
-			/* test s-meter with random numbers */
-			valf = (gfloat) g_random_double_range (0.8, 1.5);
+            /* test s-meter with random numbers */
+            valf = (gfloat) g_random_double_range (0.8, 1.5);
 #else
-			valf = rig_data_get_power ();
+            valf = rig_data_get_power ();
 
-			/* now, valf corresponds to the scale of the rig,
-			   that is, 1.0 = PMAX(rig). We need to scale this
-			   value according to the current scale, ie
+            /* now, valf corresponds to the scale of the rig,
+               that is, 1.0 = PMAX(rig). We need to scale this
+               value according to the current scale, ie
 
-			        valf *= PMAX(rig) / PMAX(scale)
+                    valf *= PMAX(rig) / PMAX(scale)
 
-			   FIXME: we should use power2mW
-			*/
-			valf *= rig_data_get_max_rfpwr () / scale_to_power[smeter.scale];
+               FIXME: we should use power2mW
+            */
+            valf *= rig_data_get_max_rfpwr () / scale_to_power[smeter.scale];
 #endif
-			break;
+            break;
 
-			/* SWR */
-		case SMETER_TX_MODE_SWR:
+            /* SWR */
+        case SMETER_TX_MODE_SWR:
 #if SMETER_TEST
-			/* test s-meter with random numbers */
-			valf = (gfloat) g_random_double_range (0.1, 0.15);
+            /* test s-meter with random numbers */
+            valf = (gfloat) g_random_double_range (0.1, 0.15);
 #else
-			valf = rig_data_get_swr ();
+            valf = rig_data_get_swr ();
 #endif
-			break;
+            break;
 
-			/* ALC */
-		case SMETER_TX_MODE_ALC:
+            /* ALC */
+        case SMETER_TX_MODE_ALC:
 #if SMETER_TEST
-			/* test s-meter with random numbers */
-			valf = (gfloat) g_random_double_range (-0.5, 0.3);
+            /* test s-meter with random numbers */
+            valf = (gfloat) g_random_double_range (-0.5, 0.3);
 #else
-			valf = rig_data_get_alc ();
+            valf = rig_data_get_alc ();
 #endif
-			break;
+            break;
 
-		default:
-			valf = 0.0;
-			break;
-		}
+        default:
+            valf = 0.0;
+            break;
+        }
 
-		/* scale value, if necessary;
-		   1.0 corresponds to 100 on the meter
-		*/
+        /* scale value, if necessary;
+           1.0 corresponds to 100 on the meter
+        */
 
-		rdang = convert_valf_to_angle (valf);
+        rdang = convert_valf_to_angle (valf);
 
-		delta = fabs (rdang - smeter.value);
-	}
+        delta = fabs (rdang - smeter.value);
+    }
 
-	/* is there a significant change? */
-	if (delta > 0.1) {
+    /* is there a significant change? */
+    if (delta > 0.1) {
 
-		/* calculate max delta = deg/sec * sec  */
-		maxdelta = smeter.falloff * (smeter.tval * 0.001);
-		
-		smeter.lastvalue = smeter.value;
-			
-		/* check whether the delta is less than what the falloff allows */
-		if (delta < maxdelta) {
-			smeter.value = rdang;
-		}
+        /* calculate max delta = deg/sec * sec  */
+        maxdelta = smeter.falloff * (smeter.tval * 0.001);
+        
+        smeter.lastvalue = smeter.value;
+            
+        /* check whether the delta is less than what the falloff allows */
+        if (delta < maxdelta) {
+            smeter.value = rdang;
+        }
 
-		/* otherwise use maxdelta */
-		else {
-			if (rdang > smeter.value) {
-				smeter.value += maxdelta;
-			}
-			else {
-				smeter.value -= maxdelta;
-			}
-		}
+        /* otherwise use maxdelta */
+        else {
+            if (rdang > smeter.value) {
+                smeter.value += maxdelta;
+            }
+            else {
+                smeter.value -= maxdelta;
+            }
+        }
 
-		/* update widget */
-		convert_angle_to_rect (smeter.value, &coor);
+        /* update widget */
+        convert_angle_to_rect (smeter.value, &coor);
  
-		/* checkwhether s-meter is visible */
-		if (smeter.exposed) {
+        /* checkwhether s-meter is visible */
+        if (smeter.exposed) {
 
-			/* raw background pixmap */
-			gdk_draw_pixbuf (GDK_DRAWABLE (buffer), NULL, smeter.pixbuf,
-					 0, 0, 0, 0, -1, -1, GDK_RGB_DITHER_NONE, 0, 0);
+            /* raw background pixmap */
+            gdk_draw_pixbuf (GDK_DRAWABLE (buffer), NULL, smeter.pixbuf,
+                     0, 0, 0, 0, -1, -1, GDK_RGB_DITHER_NONE, 0, 0);
 
-			/* draw needle */
-			gdk_draw_line (GDK_DRAWABLE (buffer), smeter.gc,
-				       coor.x1, coor.y1, coor.x2, coor.y2);
+            /* draw needle */
+            gdk_draw_line (GDK_DRAWABLE (buffer), smeter.gc,
+                       coor.x1, coor.y1, coor.x2, coor.y2);
 
-			/* draw border around the meter */
-			gdk_draw_rectangle (GDK_DRAWABLE (buffer), smeter.gc,
-					    FALSE, 0, 0, 160, 80);
+            /* draw border around the meter */
+            gdk_draw_rectangle (GDK_DRAWABLE (buffer), smeter.gc,
+                        FALSE, 0, 0, 160, 80);
 
-			/* copy offscreen buffer to visible widget */
-			gdk_draw_drawable (GDK_DRAWABLE (smeter.canvas->window), smeter.gc,
-					   GDK_DRAWABLE (buffer),
-					   0, 0, 0, 0, -1, -1);
-		}
-	}
+            /* copy offscreen buffer to visible widget */
+            gdk_draw_drawable (GDK_DRAWABLE (smeter.canvas->window), smeter.gc,
+                       GDK_DRAWABLE (buffer),
+                       0, 0, 0, 0, -1, -1);
+        }
+    }
 
 
-	return TRUE;
+    return TRUE;
 }
 
 
@@ -387,9 +387,9 @@ static gint
 rig_gui_smeter_timeout_stop  (gpointer timer)
 {
 
-	g_source_remove (GPOINTER_TO_UINT (timer));
+    g_source_remove (GPOINTER_TO_UINT (timer));
 
-	return TRUE;
+    return TRUE;
 }
 
 
@@ -402,43 +402,39 @@ rig_gui_smeter_timeout_stop  (gpointer timer)
 static GtkWidget *
 rig_gui_mode_selector_create  ()
 {
-	GtkWidget *combo;
-	guint i;
-	guint modes = 0;
+    GtkWidget *combo;
+    guint i;
+    guint modes = 0;
 
-	combo = gtk_combo_box_new_text ();
+    combo = gtk_combo_box_new_text ();
 
-	/* Add entries to combo box; but only if rig supports it
-	   Also fill index_to_mode conversion table.
-	*/
-	for (i = SMETER_TX_MODE_NONE; i < SMETER_TX_MODE_LAST; i++) {
-		if (rig_gui_smeter_has_tx_mode (i)) {
-			gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _(TX_MODE_S[i]));
-			index_to_mode[modes] = i;
-			modes++;
-		}
-	}
+    /* Add entries to combo box; but only if rig supports it
+       Also fill index_to_mode conversion table.
+    */
+    for (i = SMETER_TX_MODE_NONE; i < SMETER_TX_MODE_LAST; i++) {
+        if (rig_gui_smeter_has_tx_mode (i)) {
+            gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _(TX_MODE_S[i]));
+            index_to_mode[modes] = i;
+            modes++;
+        }
+    }
 
-	/* if the conversion array is not filled we must add
-	   a last element containing -1
-	*/
-	if (modes < SMETER_TX_MODE_LAST) {
-		index_to_mode[modes] = -1;
-	}
+    /* if the conversion array is not filled we must add
+       a last element containing -1
+    */
+    if (modes < SMETER_TX_MODE_LAST) {
+        index_to_mode[modes] = -1;
+    }
 
-	gtk_combo_box_set_active (GTK_COMBO_BOX (combo), SMETER_TX_MODE_NONE);
+    gtk_combo_box_set_active (GTK_COMBO_BOX (combo), SMETER_TX_MODE_NONE);
+    gtk_widget_set_tooltip_text (combo, _("Select TX mode for the meter"));
 
-	/* add tooltips when widget is realized */
-	g_signal_connect (combo, "realize",
-			  G_CALLBACK (grig_set_combo_tooltips),
-			  _("Select TX mode for the meter"));
+    /* connect changed signal */
+    g_signal_connect (G_OBJECT (combo), "changed",
+              G_CALLBACK (rig_gui_smeter_mode_cb),
+              NULL);
 
-	/* connect changed signal */
-	g_signal_connect (G_OBJECT (combo), "changed",
-			  G_CALLBACK (rig_gui_smeter_mode_cb),
-			  NULL);
-
-	return combo;
+    return combo;
 }
 
 
@@ -451,42 +447,38 @@ rig_gui_mode_selector_create  ()
 static GtkWidget *
 rig_gui_scale_selector_create ()
 {
-	GtkWidget *combo;
-	guint i;
+    GtkWidget *combo;
+    guint i;
 
-	combo = gtk_combo_box_new_text ();
+    combo = gtk_combo_box_new_text ();
 
-	/* Add entries to combo box */
-	for (i = SMETER_SCALE_5; i < SMETER_SCALE_LAST; i++) {
-		gtk_combo_box_append_text (GTK_COMBO_BOX (combo), TX_SCALE_S[i]);
-	}
+    /* Add entries to combo box */
+    for (i = SMETER_SCALE_5; i < SMETER_SCALE_LAST; i++) {
+        gtk_combo_box_append_text (GTK_COMBO_BOX (combo), TX_SCALE_S[i]);
+    }
 
-	/* connect changed signal */
-	g_signal_connect (G_OBJECT (combo), "changed",
-			  G_CALLBACK (rig_gui_smeter_scale_cb),
-			  NULL);
+    /* connect changed signal */
+    g_signal_connect (G_OBJECT (combo), "changed",
+              G_CALLBACK (rig_gui_smeter_scale_cb),
+              NULL);
 
-	/* set default scale */
-	if (rig_data_get_max_rfpwr () <= 5.0) {
-		gtk_combo_box_set_active (GTK_COMBO_BOX (combo), SMETER_SCALE_5);
-	}
-	else if (rig_data_get_max_rfpwr () <= 10.0) {
-		gtk_combo_box_set_active (GTK_COMBO_BOX (combo), SMETER_SCALE_10);
-	}
-	else if (rig_data_get_max_rfpwr () <= 100.0) {
-		gtk_combo_box_set_active (GTK_COMBO_BOX (combo), SMETER_SCALE_100);
-	}
-	else {
-		gtk_combo_box_set_active (GTK_COMBO_BOX (combo), SMETER_SCALE_500);
-	}
+    /* set default scale */
+    if (rig_data_get_max_rfpwr () <= 5.0) {
+        gtk_combo_box_set_active (GTK_COMBO_BOX (combo), SMETER_SCALE_5);
+    }
+    else if (rig_data_get_max_rfpwr () <= 10.0) {
+        gtk_combo_box_set_active (GTK_COMBO_BOX (combo), SMETER_SCALE_10);
+    }
+    else if (rig_data_get_max_rfpwr () <= 100.0) {
+        gtk_combo_box_set_active (GTK_COMBO_BOX (combo), SMETER_SCALE_100);
+    }
+    else {
+        gtk_combo_box_set_active (GTK_COMBO_BOX (combo), SMETER_SCALE_500);
+    }
 
-	/* add tooltips when widget is realized */
-	g_signal_connect (combo, "realize",
-			  G_CALLBACK (grig_set_combo_tooltips),
-			  _("Select TX meter scale"));
+    gtk_widget_set_tooltip_text (combo, _("Select TX meter scale"));
 
-
-	return combo;
+    return combo;
 }
 
 
@@ -501,15 +493,15 @@ rig_gui_scale_selector_create ()
 static void
 rig_gui_smeter_mode_cb   (GtkWidget *widget, gpointer data)
 {
-	gint index;
+    gint index;
 
-	/* get selected item */
-	index = gtk_combo_box_get_active (GTK_COMBO_BOX (widget));
+    /* get selected item */
+    index = gtk_combo_box_get_active (GTK_COMBO_BOX (widget));
 
-	/* store the mode if value is self-consistent */
-	if ((index > -1) && (index < SMETER_TX_MODE_LAST)) {
-		smeter.txmode = index;
-	}
+    /* store the mode if value is self-consistent */
+    if ((index > -1) && (index < SMETER_TX_MODE_LAST)) {
+        smeter.txmode = index;
+    }
 
 }
 
@@ -525,15 +517,15 @@ rig_gui_smeter_mode_cb   (GtkWidget *widget, gpointer data)
 static void
 rig_gui_smeter_scale_cb   (GtkWidget *widget, gpointer data)
 {
-	gint index;
+    gint index;
 
-	/* get selected item */
-	index = gtk_combo_box_get_active (GTK_COMBO_BOX (widget));
+    /* get selected item */
+    index = gtk_combo_box_get_active (GTK_COMBO_BOX (widget));
 
-	/* store the mode if value is self-consistent */
-	if ((index > -1) && (index < SMETER_SCALE_LAST)) {
-		smeter.scale = index;
-	}
+    /* store the mode if value is self-consistent */
+    if ((index > -1) && (index < SMETER_SCALE_LAST)) {
+        smeter.scale = index;
+    }
 
 }
 
@@ -550,48 +542,48 @@ rig_gui_smeter_scale_cb   (GtkWidget *widget, gpointer data)
  */ 
 static gboolean
 rig_gui_smeter_expose_cb   (GtkWidget      *widget,
-			    GdkEventExpose *event,
-			    gpointer        data)
+                GdkEventExpose *event,
+                gpointer        data)
 {
-	GdkColor color;
+    GdkColor color;
 
-	/* draw background pixmap */
-	gdk_draw_pixbuf (GDK_DRAWABLE (widget->window), NULL, smeter.pixbuf,
-			 0, 0, 0, 0, -1, -1, GDK_RGB_DITHER_NONE, 0, 0);
+    /* draw background pixmap */
+    gdk_draw_pixbuf (GDK_DRAWABLE (widget->window), NULL, smeter.pixbuf,
+             0, 0, 0, 0, -1, -1, GDK_RGB_DITHER_NONE, 0, 0);
 
-	/* 0x3b3428 scaled to 3x16 bits */
-	color.red = 257*0x5B;
-	color.green = 257*0x54;
-	color.blue = 257*0x48;
+    /* 0x3b3428 scaled to 3x16 bits */
+    color.red = 257*0x5B;
+    color.green = 257*0x54;
+    color.blue = 257*0x48;
 
-	/* finalize the graphics context */
-	smeter.gc = gdk_gc_new (GDK_DRAWABLE (widget->window));
-	gdk_gc_set_rgb_fg_color (smeter.gc, &color);
-	gdk_gc_set_rgb_bg_color (smeter.gc, &color);
-	gdk_gc_set_line_attributes (smeter.gc, 2,
-				    GDK_LINE_SOLID,
-				    GDK_CAP_ROUND,
-				    GDK_JOIN_ROUND);
-				    
-	/* draw needle */
-	gdk_draw_line (GDK_DRAWABLE (widget->window), smeter.gc,
-		       coor.x1, coor.y1, coor.x2, coor.y2);
+    /* finalize the graphics context */
+    smeter.gc = gdk_gc_new (GDK_DRAWABLE (widget->window));
+    gdk_gc_set_rgb_fg_color (smeter.gc, &color);
+    gdk_gc_set_rgb_bg_color (smeter.gc, &color);
+    gdk_gc_set_line_attributes (smeter.gc, 2,
+                    GDK_LINE_SOLID,
+                    GDK_CAP_ROUND,
+                    GDK_JOIN_ROUND);
+                    
+    /* draw needle */
+    gdk_draw_line (GDK_DRAWABLE (widget->window), smeter.gc,
+               coor.x1, coor.y1, coor.x2, coor.y2);
 
-	/* draw border around the meter */
-	gdk_draw_rectangle (GDK_DRAWABLE (widget->window), smeter.gc,
-			    FALSE, 0, 0, 160, 80);
+    /* draw border around the meter */
+    gdk_draw_rectangle (GDK_DRAWABLE (widget->window), smeter.gc,
+                FALSE, 0, 0, 160, 80);
 
-	/* initialize offscreen buffer */
-	buffer = gdk_pixmap_new (GDK_DRAWABLE (smeter.canvas->window),
-				 160, 80, -1);
+    /* initialize offscreen buffer */
+    buffer = gdk_pixmap_new (GDK_DRAWABLE (smeter.canvas->window),
+                 160, 80, -1);
 
-	/* indicate that widget is ready to 
-	   be used
-	*/
-	smeter.exposed = TRUE;
+    /* indicate that widget is ready to 
+       be used
+    */
+    smeter.exposed = TRUE;
 
 
-	return TRUE;
+    return TRUE;
 }
 
 
@@ -604,35 +596,35 @@ rig_gui_smeter_expose_cb   (GtkWidget      *widget,
 static gboolean
 rig_gui_smeter_has_tx_mode (guint mode)
 {
-	switch (mode) {
+    switch (mode) {
 
-		/* NONE is always enabled */
-	case SMETER_TX_MODE_NONE:
-		return TRUE;
-		break;
+        /* NONE is always enabled */
+    case SMETER_TX_MODE_NONE:
+        return TRUE;
+        break;
 
-		/* RF power */
-	case SMETER_TX_MODE_POWER:
-		return rig_data_has_get_power ();
-		break;
+        /* RF power */
+    case SMETER_TX_MODE_POWER:
+        return rig_data_has_get_power ();
+        break;
 
-		/* SWR */
-	case SMETER_TX_MODE_SWR:
-		return rig_data_has_get_swr ();
-		break;
+        /* SWR */
+    case SMETER_TX_MODE_SWR:
+        return rig_data_has_get_swr ();
+        break;
 
-		/* ALC */
-	case SMETER_TX_MODE_ALC:
-		return rig_data_has_get_alc ();
-		break;
+        /* ALC */
+    case SMETER_TX_MODE_ALC:
+        return rig_data_has_get_alc ();
+        break;
 
-	default:
-		return FALSE;
-		break;
-	}
+    default:
+        return FALSE;
+        break;
+    }
 
 
-	return FALSE;
+    return FALSE;
 }
 
 
