@@ -5,12 +5,12 @@ INCLUDES = \
 	-DG_DISABLE_DEPRECATED \
 	-DGDK_DISABLE_DEPRECATED \
 	-DGDK_PIXBUF_DISABLE_DEPRECATED \
-	-DDATADIR=\""$(datadir)"\" \
+	-DGTK_DISABLE_DEPRECATED \
+    -DDATADIR=\""$(datadir)"\" \
 	-DPACKAGE_DATA_DIR=\""$(datadir)/grig"\" \
 	-DPACKAGE_PIXMAPS_DIR=\""$(datadir)/pixmaps/grig"\" \
 	-DPACKAGE_LOCALE_DIR=\""$(datadir)/locale"\"
-##	@PACKAGE_CFLAGS@
-##	-DGTK_DISABLE_DEPRECATED \
+
 
 bin_PROGRAMS = grig
 
