@@ -49,9 +49,9 @@
  * are attached to the widgets.
  */
 typedef enum rig_gui_ctrl2_e {
-	RIG_GUI_MODE_SELECTOR = 1,  /*!< The mode selector */
-	RIG_GUI_FILTER_SELECTOR,    /*!< The filter/passband width selector */
-	RIG_GUI_AGC_SELECTOR        /*!< The AGC selector */
+    RIG_GUI_MODE_SELECTOR = 1,  /*!< The mode selector */
+    RIG_GUI_FILTER_SELECTOR,    /*!< The filter/passband width selector */
+    RIG_GUI_AGC_SELECTOR        /*!< The AGC selector */
 } rig_gui_ctrl2_t;
 
 
@@ -82,43 +82,43 @@ gint midx2cidx[16] = {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
 
 /** \brief Table to convert mode index to string */
 const gchar *midx2str[16] = {
-	N_("AM"),
-	N_("CW"),
-	N_("USB"),
-	N_("LSB"),
-	N_("RTTY"),
-	N_("FM Narrow"),
-	N_("FM Wide"),
-	N_("CW Rev"),
-	N_("RTTY Rev"),
-	N_("AM Synch"),
-	N_("Pkt (LSB)"),
-	N_("Pkt (USB)"),
-	N_("Pkt (FM)"),
-	N_("ECUSB"),
-	N_("ECLSB"),
-	N_("FAX")
+    N_("AM"),
+    N_("CW"),
+    N_("USB"),
+    N_("LSB"),
+    N_("RTTY"),
+    N_("FM Narrow"),
+    N_("FM Wide"),
+    N_("CW Rev"),
+    N_("RTTY Rev"),
+    N_("AM Synch"),
+    N_("Pkt (LSB)"),
+    N_("Pkt (USB)"),
+    N_("Pkt (FM)"),
+    N_("ECUSB"),
+    N_("ECLSB"),
+    N_("FAX")
 };
 
 
 /** \brief Table to convert combo box index to hamlib mode. */
 gint cidx2mode[16] = {
-	RIG_MODE_NONE,
-	RIG_MODE_NONE,
-	RIG_MODE_NONE,
-	RIG_MODE_NONE,
-	RIG_MODE_NONE,
-	RIG_MODE_NONE,
-	RIG_MODE_NONE,
-	RIG_MODE_NONE,
-	RIG_MODE_NONE,
-	RIG_MODE_NONE,
-	RIG_MODE_NONE,
-	RIG_MODE_NONE,
-	RIG_MODE_NONE,
-	RIG_MODE_NONE,
-	RIG_MODE_NONE,
-	RIG_MODE_NONE
+    RIG_MODE_NONE,
+    RIG_MODE_NONE,
+    RIG_MODE_NONE,
+    RIG_MODE_NONE,
+    RIG_MODE_NONE,
+    RIG_MODE_NONE,
+    RIG_MODE_NONE,
+    RIG_MODE_NONE,
+    RIG_MODE_NONE,
+    RIG_MODE_NONE,
+    RIG_MODE_NONE,
+    RIG_MODE_NONE,
+    RIG_MODE_NONE,
+    RIG_MODE_NONE,
+    RIG_MODE_NONE,
+    RIG_MODE_NONE
 };
 
 
@@ -146,35 +146,35 @@ static void rig_gui_ctrl2_update        (GtkWidget *, gpointer);
 GtkWidget *
 rig_gui_ctrl2_create ()
 {
-	GtkWidget *vbox;    /* container */
-	guint timerid;
+    GtkWidget *vbox;    /* container */
+    guint timerid;
 
-	/* create vertical box and add widgets */
-	vbox = gtk_vbox_new (FALSE, 0);
+    /* create vertical box and add widgets */
+    vbox = gtk_vbox_new (FALSE, 0);
 
-	/* add controls */
-	gtk_box_pack_start   (GTK_BOX (vbox),
-			      rig_gui_ctrl2_create_mode_selector (),
-			      FALSE, FALSE, 0);
-	gtk_box_pack_start   (GTK_BOX (vbox),
-			      rig_gui_ctrl2_create_filter_selector (),
-			      FALSE, FALSE, 0);
-	gtk_box_pack_start   (GTK_BOX (vbox),
-			      rig_gui_ctrl2_create_agc_selector (),
-			      FALSE, FALSE, 0);
+    /* add controls */
+    gtk_box_pack_start   (GTK_BOX (vbox),
+                    rig_gui_ctrl2_create_mode_selector (),
+                    FALSE, FALSE, 0);
+    gtk_box_pack_start   (GTK_BOX (vbox),
+                    rig_gui_ctrl2_create_filter_selector (),
+                    FALSE, FALSE, 0);
+    gtk_box_pack_start   (GTK_BOX (vbox),
+                    rig_gui_ctrl2_create_agc_selector (),
+                    FALSE, FALSE, 0);
 
-	/* start readback timer */
-	timerid = g_timeout_add (RIG_GUI_CTRL2_DEF_TVAL,
-				 rig_gui_ctrl2_timeout_exec,
-				 vbox);
+    /* start readback timer */
+    timerid = g_timeout_add (RIG_GUI_CTRL2_DEF_TVAL,
+                    rig_gui_ctrl2_timeout_exec,
+                    vbox);
 
-	/* register timer_stop function at exit */
-	gtk_quit_add (gtk_main_level (), rig_gui_ctrl2_timeout_stop,
-		      GUINT_TO_POINTER (timerid));
+    /* register timer_stop function at exit */
+    gtk_quit_add (gtk_main_level (), rig_gui_ctrl2_timeout_stop,
+                GUINT_TO_POINTER (timerid));
 
     gtk_widget_show_all (vbox);
 
-	return vbox;
+    return vbox;
 }
 
 
@@ -190,74 +190,71 @@ rig_gui_ctrl2_create ()
 static GtkWidget *
 rig_gui_ctrl2_create_agc_selector    ()
 {
-	GtkWidget         *combo;
-	gint               sigid;
-	
+    GtkWidget         *combo;
+    gint               sigid;
 
-	/* create and initialize widget */
-	combo = gtk_combo_box_new_text ();
 
-	/* FIXME: Hamlib does also have 'user' */
-	gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("AGC OFF"));
-	gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("Super Fast"));
-	gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("Fast"));
-	gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("Medium"));
-	gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("Slow"));
-	gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("Auto"));
+    /* create and initialize widget */
+    combo = gtk_combo_box_new_text ();
 
-	/* add tooltips when widget is realized */
-	g_signal_connect (combo, "realize",
-			  G_CALLBACK (grig_set_combo_tooltips),
-			  _("Automatic Gain Control Level"));
+    /* FIXME: Hamlib does also have 'user' */
+    gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("AGC OFF"));
+    gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("Super Fast"));
+    gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("Fast"));
+    gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("Medium"));
+    gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("Slow"));
+    gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("Auto"));
 
-	/* select current level */
-	switch (rig_data_get_agc ()) {
+    gtk_widget_set_tooltip_text (combo, _("Automatic Gain Control Level"));
 
-	case RIG_AGC_OFF:
-		gtk_combo_box_set_active (GTK_COMBO_BOX (combo), 0);
-		break;
+    /* select current level */
+    switch (rig_data_get_agc ()) {
 
-	case RIG_AGC_SUPERFAST:
-		gtk_combo_box_set_active (GTK_COMBO_BOX (combo), 1);
-		break;
+    case RIG_AGC_OFF:
+        gtk_combo_box_set_active (GTK_COMBO_BOX (combo), 0);
+        break;
 
-	case RIG_AGC_FAST:
-		gtk_combo_box_set_active (GTK_COMBO_BOX (combo), 2);
-		break;
+    case RIG_AGC_SUPERFAST:
+        gtk_combo_box_set_active (GTK_COMBO_BOX (combo), 1);
+        break;
 
-	case RIG_AGC_MEDIUM:
-		gtk_combo_box_set_active (GTK_COMBO_BOX (combo), 3);
-		break;
+    case RIG_AGC_FAST:
+        gtk_combo_box_set_active (GTK_COMBO_BOX (combo), 2);
+        break;
 
-	case RIG_AGC_SLOW:
-		gtk_combo_box_set_active (GTK_COMBO_BOX (combo), 4);
-		break;
-	
-	case RIG_AGC_AUTO:
-		gtk_combo_box_set_active (GTK_COMBO_BOX (combo), 5);
-		break;
+    case RIG_AGC_MEDIUM:
+        gtk_combo_box_set_active (GTK_COMBO_BOX (combo), 3);
+        break;
 
-	default:
-		gtk_combo_box_set_active (GTK_COMBO_BOX (combo), -1);
-		break;
-	}
+    case RIG_AGC_SLOW:
+        gtk_combo_box_set_active (GTK_COMBO_BOX (combo), 4);
+        break;
 
-	/* connect 'changed' signal */
-	sigid = g_signal_connect (G_OBJECT (combo), "changed",
-				  G_CALLBACK (rig_gui_ctrl2_agc_cb),
-				  NULL);
+    case RIG_AGC_AUTO:
+        gtk_combo_box_set_active (GTK_COMBO_BOX (combo), 5);
+        break;
 
-	/* set widget ID */
-	g_object_set_data (G_OBJECT (combo),
-			   WIDGET_ID_KEY,
-			   GUINT_TO_POINTER (RIG_GUI_AGC_SELECTOR));
+    default:
+        gtk_combo_box_set_active (GTK_COMBO_BOX (combo), -1);
+        break;
+    }
 
-	/* set handler ID */
-	g_object_set_data (G_OBJECT (combo),
-			   HANDLER_ID_KEY,
-			   GINT_TO_POINTER (sigid));
+    /* connect 'changed' signal */
+    sigid = g_signal_connect (G_OBJECT (combo), "changed",
+                    G_CALLBACK (rig_gui_ctrl2_agc_cb),
+                    NULL);
 
-	return combo;
+    /* set widget ID */
+    g_object_set_data (G_OBJECT (combo),
+                WIDGET_ID_KEY,
+                GUINT_TO_POINTER (RIG_GUI_AGC_SELECTOR));
+
+    /* set handler ID */
+    g_object_set_data (G_OBJECT (combo),
+                HANDLER_ID_KEY,
+                GINT_TO_POINTER (sigid));
+
+    return combo;
 }
 
 
@@ -282,59 +279,56 @@ rig_gui_ctrl2_create_agc_selector    ()
 static GtkWidget *
 rig_gui_ctrl2_create_mode_selector   ()
 {
-	GtkWidget   *combo;
-	gint         sigid;
-	gint         index = 0;
-	gint         i,mode;
+    GtkWidget   *combo;
+    gint         sigid;
+    gint         index = 0;
+    gint         i,mode;
 
-	/* create and initialize widget */
-	combo = gtk_combo_box_new_text ();
+    /* create and initialize widget */
+    combo = gtk_combo_box_new_text ();
 
-	/* loop over all modes */
-	for (i = 0; i < 16; i++) {
-		
-		mode = 1 << i;
+    /* loop over all modes */
+    for (i = 0; i < 16; i++) {
+        
+        mode = 1 << i;
 
-		/* if this mode is supported, add entry to combo box,
-		   store indices and increment combo box index
-		*/
-		if (rig_data_get_all_modes () & mode) {
+        /* if this mode is supported, add entry to combo box,
+            store indices and increment combo box index
+        */
+        if (rig_data_get_all_modes () & mode) {
 
-			gtk_combo_box_append_text (GTK_COMBO_BOX (combo),
-						   _(midx2str[i]));
+            gtk_combo_box_append_text (GTK_COMBO_BOX (combo),
+                            _(midx2str[i]));
 
-			midx2cidx[i] = index;
-			cidx2mode[index] = mode;
-			index++;
-		}
-	}
-	
+            midx2cidx[i] = index;
+            cidx2mode[index] = mode;
+            index++;
+        }
+    }
 
-	/* set current mode */
-	gtk_combo_box_set_active (GTK_COMBO_BOX (combo),
-				  midx2cidx[rig_utils_mode_to_index (rig_data_get_mode ())]);
 
-	/* add tooltips when widget is realized */
-	g_signal_connect (combo, "realize",
-			  G_CALLBACK (grig_set_combo_tooltips),
-			  _("Communication Mode"));
+    /* set current mode */
+    gtk_combo_box_set_active (GTK_COMBO_BOX (combo),
+                    midx2cidx[rig_utils_mode_to_index (rig_data_get_mode ())]);
 
-	/* connect 'changed' signal */
-	sigid = g_signal_connect (G_OBJECT (combo), "changed",
-				  G_CALLBACK (rig_gui_ctrl2_mode_cb),
-				  NULL);
+    gtk_widget_set_tooltip_text (combo, _("Communication mode"));
 
-	/* set widget ID */
-	g_object_set_data (G_OBJECT (combo),
-			   WIDGET_ID_KEY,
-			   GUINT_TO_POINTER (RIG_GUI_MODE_SELECTOR));
+    /* connect 'changed' signal */
+    sigid = g_signal_connect (G_OBJECT (combo), "changed",
+                    G_CALLBACK (rig_gui_ctrl2_mode_cb),
+                    NULL);
 
-	/* set handler ID */
-	g_object_set_data (G_OBJECT (combo),
-			   HANDLER_ID_KEY,
-			   GINT_TO_POINTER (sigid));
+    /* set widget ID */
+    g_object_set_data (G_OBJECT (combo),
+                WIDGET_ID_KEY,
+                GUINT_TO_POINTER (RIG_GUI_MODE_SELECTOR));
 
-	return combo;
+    /* set handler ID */
+    g_object_set_data (G_OBJECT (combo),
+                HANDLER_ID_KEY,
+                GINT_TO_POINTER (sigid));
+
+    return combo;
 }
 
 
@@ -348,60 +342,57 @@ rig_gui_ctrl2_create_mode_selector   ()
 static GtkWidget *
 rig_gui_ctrl2_create_filter_selector ()
 {
-	GtkWidget   *combo;
-	gint         sigid;
-	
+    GtkWidget   *combo;
+    gint         sigid;
 
-	/* create and initialize widget */
-	combo = gtk_combo_box_new_text ();
 
-	/* Add items */
-	gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("Wide"));
-	gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("Normal"));
-	gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("Narrow"));
-	gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("[User]"));
+    /* create and initialize widget */
+    combo = gtk_combo_box_new_text ();
 
-	/* set current passband width */
-	switch (rig_data_get_pbwidth ()) {
+    /* Add items */
+    gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("Wide"));
+    gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("Normal"));
+    gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("Narrow"));
+    gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("[User]"));
 
-	case RIG_DATA_PB_WIDE:
-		gtk_combo_box_set_active (GTK_COMBO_BOX (combo), 0);
-		break;
+    /* set current passband width */
+    switch (rig_data_get_pbwidth ()) {
 
-	case RIG_DATA_PB_NORMAL:
-		gtk_combo_box_set_active (GTK_COMBO_BOX (combo), 1);
-		break;
+    case RIG_DATA_PB_WIDE:
+        gtk_combo_box_set_active (GTK_COMBO_BOX (combo), 0);
+        break;
 
-	case RIG_DATA_PB_NARROW:
-		gtk_combo_box_set_active (GTK_COMBO_BOX (combo), 2);
-		break;
+    case RIG_DATA_PB_NORMAL:
+        gtk_combo_box_set_active (GTK_COMBO_BOX (combo), 1);
+        break;
 
-	default:
-		gtk_combo_box_set_active (GTK_COMBO_BOX (combo), 3);
-		break;
-	}
+    case RIG_DATA_PB_NARROW:
+        gtk_combo_box_set_active (GTK_COMBO_BOX (combo), 2);
+        break;
 
-	/* add tooltips when widget is realized */
-	g_signal_connect (combo, "realize",
-			  G_CALLBACK (grig_set_combo_tooltips),
-			  _("Passband Width"));
+    default:
+        gtk_combo_box_set_active (GTK_COMBO_BOX (combo), 3);
+        break;
+    }
 
-	/* connect 'changed' signal */
-	sigid = g_signal_connect (G_OBJECT (combo), "changed",
-				  G_CALLBACK (rig_gui_ctrl2_filter_cb),
-				  NULL);
+    gtk_widget_set_tooltip_text (combo, _("Passband Width"));
 
-	/* set widget ID */
-	g_object_set_data (G_OBJECT (combo),
-			     WIDGET_ID_KEY,
-			     GUINT_TO_POINTER (RIG_GUI_FILTER_SELECTOR));
+    /* connect 'changed' signal */
+    sigid = g_signal_connect (G_OBJECT (combo), "changed",
+                    G_CALLBACK (rig_gui_ctrl2_filter_cb),
+                    NULL);
 
-	/* set handler ID */
-	g_object_set_data (G_OBJECT (combo),
-			     HANDLER_ID_KEY,
-			     GINT_TO_POINTER (sigid));
+    /* set widget ID */
+    g_object_set_data (G_OBJECT (combo),
+                    WIDGET_ID_KEY,
+                    GUINT_TO_POINTER (RIG_GUI_FILTER_SELECTOR));
 
-	return combo;
+    /* set handler ID */
+    g_object_set_data (G_OBJECT (combo),
+                    HANDLER_ID_KEY,
+                    GINT_TO_POINTER (sigid));
+
+    return combo;
 }
 
 
@@ -419,36 +410,36 @@ static void
 rig_gui_ctrl2_agc_cb   (GtkWidget *widget, gpointer data)
 {
 
-	switch (gtk_combo_box_get_active (GTK_COMBO_BOX (widget))) {
+    switch (gtk_combo_box_get_active (GTK_COMBO_BOX (widget))) {
 
-	case 0:
-		rig_data_set_agc (RIG_AGC_OFF);
-		break;
+    case 0:
+        rig_data_set_agc (RIG_AGC_OFF);
+        break;
 
-	case 1:
-		rig_data_set_agc (RIG_AGC_SUPERFAST);
-		break;
+    case 1:
+        rig_data_set_agc (RIG_AGC_SUPERFAST);
+        break;
 
-	case 2:
-		rig_data_set_agc (RIG_AGC_FAST);
-		break;
+    case 2:
+        rig_data_set_agc (RIG_AGC_FAST);
+        break;
 
-	case 3:
-		rig_data_set_agc (RIG_AGC_MEDIUM);
-		break;
+    case 3:
+        rig_data_set_agc (RIG_AGC_MEDIUM);
+        break;
 
-	case 4:
-		rig_data_set_agc (RIG_AGC_SLOW);
-		break;
-	case 5:
-		rig_data_set_agc (RIG_AGC_AUTO);
-		break;
+    case 4:
+        rig_data_set_agc (RIG_AGC_SLOW);
+        break;
+    case 5:
+        rig_data_set_agc (RIG_AGC_AUTO);
+        break;
 
-	
-	default:
-		/* internal error; bug */
-		break;
-	}
+
+    default:
+        /* internal error; bug */
+        break;
+    }
 
 }
 
@@ -465,15 +456,13 @@ rig_gui_ctrl2_agc_cb   (GtkWidget *widget, gpointer data)
 static void
 rig_gui_ctrl2_mode_cb   (GtkWidget *widget, gpointer data)
 {
-	gint index;
+    gint index;
 
-	/* get selected item */
-	index = gtk_combo_box_get_active (GTK_COMBO_BOX (widget));
+    /* get selected item */
+    index = gtk_combo_box_get_active (GTK_COMBO_BOX (widget));
 
-	/* convert it and send to rig-data */
-	rig_data_set_mode (cidx2mode[index]);
-
-
+    /* convert it and send to rig-data */
+    rig_data_set_mode (cidx2mode[index]);
 }
 
 
@@ -490,17 +479,16 @@ rig_gui_ctrl2_mode_cb   (GtkWidget *widget, gpointer data)
 static void
 rig_gui_ctrl2_filter_cb   (GtkWidget *widget, gpointer data)
 {
-	gint index;
+    gint index;
 
-	/* get selected item */
-	index = gtk_combo_box_get_active (GTK_COMBO_BOX (widget));
+    /* get selected item */
+    index = gtk_combo_box_get_active (GTK_COMBO_BOX (widget));
 
-	if (index > 2)
-		index = 1;
+    if (index > 2)
+        index = 1;
 
-	/* send it to rig-data */
-	rig_data_set_pbwidth (index);
-
+    /* send it to rig-data */
+    rig_data_set_pbwidth (index);
 
 }
 
@@ -520,12 +508,12 @@ static gint
 rig_gui_ctrl2_timeout_exec  (gpointer vbox)
 {
 
-	/* update each child widget of the container */
-	gtk_container_foreach (GTK_CONTAINER (vbox),
-			       rig_gui_ctrl2_update,
-			       NULL);
+    /* update each child widget of the container */
+    gtk_container_foreach (GTK_CONTAINER (vbox),
+                    rig_gui_ctrl2_update,
+                    NULL);
 
-	return TRUE;
+    return TRUE;
 }
 
 
@@ -542,9 +530,9 @@ static gint
 rig_gui_ctrl2_timeout_stop  (gpointer timer)
 {
 
-	g_source_remove (GPOINTER_TO_UINT (timer));
+    g_source_remove (GPOINTER_TO_UINT (timer));
 
-	return TRUE;
+    return TRUE;
 }
 
 
@@ -566,116 +554,116 @@ rig_gui_ctrl2_timeout_stop  (gpointer timer)
 static void
 rig_gui_ctrl2_update        (GtkWidget *widget, gpointer data)
 {
-	guint id;
-	gint  handler;
+    guint id;
+    gint  handler;
 
 
-	/* get widget id */
-	id = GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (widget), WIDGET_ID_KEY));
+    /* get widget id */
+    id = GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (widget), WIDGET_ID_KEY));
 
-	switch (id) {
+    switch (id) {
 
 
-		/* agc selector */
-	case RIG_GUI_AGC_SELECTOR:
+        /* agc selector */
+    case RIG_GUI_AGC_SELECTOR:
 
-		/* get signal handler ID */
-		handler = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (widget), HANDLER_ID_KEY));
+        /* get signal handler ID */
+        handler = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (widget), HANDLER_ID_KEY));
 
-		/* block the signal handler */
-		g_signal_handler_block (G_OBJECT (widget), handler);
+        /* block the signal handler */
+        g_signal_handler_block (G_OBJECT (widget), handler);
 
-		/* select current level; because we don't support all available AGC
-		   settings (like RIG_AGC_USER), we need to handle each supported
-		   case individually.
-		*/
-		switch (rig_data_get_agc ()) {
+        /* select current level; because we don't support all available AGC
+            settings (like RIG_AGC_USER), we need to handle each supported
+            case individually.
+        */
+        switch (rig_data_get_agc ()) {
 
-		case RIG_AGC_OFF:
-			gtk_combo_box_set_active (GTK_COMBO_BOX (widget), 0);
-			break;
+        case RIG_AGC_OFF:
+            gtk_combo_box_set_active (GTK_COMBO_BOX (widget), 0);
+            break;
 
-		case RIG_AGC_SUPERFAST:
-			gtk_combo_box_set_active (GTK_COMBO_BOX (widget), 1);
-			break;
+        case RIG_AGC_SUPERFAST:
+            gtk_combo_box_set_active (GTK_COMBO_BOX (widget), 1);
+            break;
 
-		case RIG_AGC_FAST:
-			gtk_combo_box_set_active (GTK_COMBO_BOX (widget), 2);
-			break;
+        case RIG_AGC_FAST:
+            gtk_combo_box_set_active (GTK_COMBO_BOX (widget), 2);
+            break;
 
-		case RIG_AGC_MEDIUM:
-			gtk_combo_box_set_active (GTK_COMBO_BOX (widget), 3);
-			break;
+        case RIG_AGC_MEDIUM:
+            gtk_combo_box_set_active (GTK_COMBO_BOX (widget), 3);
+            break;
 
-		case RIG_AGC_SLOW:
-			gtk_combo_box_set_active (GTK_COMBO_BOX (widget), 4);
-			break;
+        case RIG_AGC_SLOW:
+            gtk_combo_box_set_active (GTK_COMBO_BOX (widget), 4);
+            break;
 
-		case RIG_AGC_AUTO:
-			gtk_combo_box_set_active (GTK_COMBO_BOX (widget), 5);
-			break;
+        case RIG_AGC_AUTO:
+            gtk_combo_box_set_active (GTK_COMBO_BOX (widget), 5);
+            break;
 
-		default:
-			gtk_combo_box_set_active (GTK_COMBO_BOX (widget), -1);
-			break;
-		}
-		
-		/* unblock signal handler */
-		g_signal_handler_unblock (G_OBJECT (widget), handler);
+        default:
+            gtk_combo_box_set_active (GTK_COMBO_BOX (widget), -1);
+            break;
+        }
+        
+        /* unblock signal handler */
+        g_signal_handler_unblock (G_OBJECT (widget), handler);
 
-		break;
+        break;
 
-		/* mode selector */
-	case RIG_GUI_MODE_SELECTOR:
+        /* mode selector */
+    case RIG_GUI_MODE_SELECTOR:
 
-		/* get signal handler ID */
-		handler = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (widget), HANDLER_ID_KEY));
+        /* get signal handler ID */
+        handler = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (widget), HANDLER_ID_KEY));
 
-		/* block the signal handler */
-		g_signal_handler_block (G_OBJECT (widget), handler);
+        /* block the signal handler */
+        g_signal_handler_block (G_OBJECT (widget), handler);
 
-		/* set current mode */
-		gtk_combo_box_set_active (GTK_COMBO_BOX (widget),
-					  midx2cidx[rig_utils_mode_to_index (rig_data_get_mode ())]);
-		
-		/* unblock signal handler */
-		g_signal_handler_unblock (G_OBJECT (widget), handler);
+        /* set current mode */
+        gtk_combo_box_set_active (GTK_COMBO_BOX (widget),
+                        midx2cidx[rig_utils_mode_to_index (rig_data_get_mode ())]);
+        
+        /* unblock signal handler */
+        g_signal_handler_unblock (G_OBJECT (widget), handler);
 
-		break;
+        break;
 
-		/* filter selector */
-	case RIG_GUI_FILTER_SELECTOR:
+        /* filter selector */
+    case RIG_GUI_FILTER_SELECTOR:
 
-		/* get signal handler ID */
-		handler = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (widget), HANDLER_ID_KEY));
+        /* get signal handler ID */
+        handler = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (widget), HANDLER_ID_KEY));
 
-		/* block the signal handler */
-		g_signal_handler_block (G_OBJECT (widget), handler);
+        /* block the signal handler */
+        g_signal_handler_block (G_OBJECT (widget), handler);
 
-		/* set current passband width */
-		switch (rig_data_get_pbwidth ()) {
+        /* set current passband width */
+        switch (rig_data_get_pbwidth ()) {
 
-		case RIG_DATA_PB_WIDE:
-			gtk_combo_box_set_active (GTK_COMBO_BOX (widget), 0);
-			break;
+        case RIG_DATA_PB_WIDE:
+            gtk_combo_box_set_active (GTK_COMBO_BOX (widget), 0);
+            break;
 
-		case RIG_DATA_PB_NARROW:
-			gtk_combo_box_set_active (GTK_COMBO_BOX (widget), 2);
-			break;
+        case RIG_DATA_PB_NARROW:
+            gtk_combo_box_set_active (GTK_COMBO_BOX (widget), 2);
+            break;
 
-		default:
-			gtk_combo_box_set_active (GTK_COMBO_BOX (widget), 1);
-			break;
-		}
-		
-		/* unblock signal handler */
-		g_signal_handler_unblock (G_OBJECT (widget), handler);
+        default:
+            gtk_combo_box_set_active (GTK_COMBO_BOX (widget), 1);
+            break;
+        }
+        
+        /* unblock signal handler */
+        g_signal_handler_unblock (G_OBJECT (widget), handler);
 
-		break;
+        break;
 
-	default:
-		break;
+    default:
+        break;
 
-	}
+    }
 
 }
