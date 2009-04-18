@@ -54,6 +54,8 @@ typedef struct {
     guint       civ;       /*!< CI-V address for icoms */
     ctrl_stat_t dtr;       /*!< DTR line usage */
     ctrl_stat_t rts;       /*!< RTS line usage */
+    gboolean    ptt;       /*!< Set/get PTT via CAT */
+    gboolean    pow;       /*!< Set/get power on/off via CAT */
     guint       version;   /*!< Configuration version, see grig-config.h */
 } radio_conf_t;
 

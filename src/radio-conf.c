@@ -44,6 +44,8 @@
 #define KEY_CIV         "CIV"
 #define KEY_DTR         "DTR"
 #define KEY_RTS         "RTS"
+#define KEY_PTT         "PTT"
+#define KEY_POW         "POW"
 
 
 /** \brief REad radio configuration.
@@ -79,6 +81,7 @@ gboolean radio_conf_read (radio_conf_t *conf)
     g_free (fname);
     
     /* read parameters */
+    /* FIXME error checking */
     conf->company = g_key_file_get_string (cfg, GROUP, KEY_MFG, NULL);
     conf->model = g_key_file_get_string (cfg, GROUP, KEY_MODEL, NULL);
     conf->id = g_key_file_get_integer (cfg, GROUP, KEY_ID, NULL);
@@ -87,6 +90,8 @@ gboolean radio_conf_read (radio_conf_t *conf)
     conf->civ = g_key_file_get_integer (cfg, GROUP, KEY_CIV, NULL);
     conf->dtr = g_key_file_get_integer (cfg, GROUP, KEY_DTR, NULL);
     conf->rts = g_key_file_get_integer (cfg, GROUP, KEY_RTS, NULL);
+    conf->ptt = g_key_file_get_boolean (cfg, GROUP, KEY_PTT, NULL);
+    conf->pow = g_key_file_get_boolean (cfg, GROUP, KEY_POW, NULL);
     conf->version = g_key_file_get_integer (cfg, GROUP, KEY_VER, NULL);
     
     g_key_file_free (cfg);
@@ -116,6 +121,8 @@ void radio_conf_save (radio_conf_t *conf)
     g_key_file_set_integer (cfg, GROUP, KEY_CIV, conf->civ);
     g_key_file_set_integer (cfg, GROUP, KEY_DTR, conf->dtr);
     g_key_file_set_integer (cfg, GROUP, KEY_RTS, conf->rts);
+    g_key_file_set_boolean (cfg, GROUP, KEY_PTT, conf->ptt);
+    g_key_file_set_boolean (cfg, GROUP, KEY_POW, conf->pow);
     g_key_file_set_integer (cfg, GROUP, KEY_VER, conf->version);
     
     /* convert to text sdata */
