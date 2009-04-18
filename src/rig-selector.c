@@ -97,7 +97,6 @@ rig_selector_execute ()
     GtkWidget   *editbut;  /* Edit button */
     GtkWidget   *delbut;   /* delete button */
     GtkWidget   *swin;
-    GtkTooltips *tips;
     GtkTreeSelection *sel;
 
     
@@ -110,44 +109,40 @@ rig_selector_execute ()
     sel = gtk_tree_view_get_selection (GTK_TREE_VIEW (riglist));
     gtk_tree_selection_set_mode (sel, GTK_SELECTION_SINGLE);
     
-    tips = gtk_tooltips_new ();
-
     /* connect button */
     conbut = gtk_button_new_from_stock (GTK_STOCK_CONNECT);
     gtk_widget_set_sensitive (conbut, FALSE);
-    gtk_tooltips_set_tip (tips, conbut,
-                          _("Connect to the selected radio."),
-                          _("Grig will attempt to establish connection to the "
+    gtk_widget_set_tooltip_text (conbut,
+                          _("Connect to the selected radio."
+                            "Grig will attempt to establish connection to the "
                             "selected radio using the specified settings. If "
                             "the connection is successful, the main application "
                             "window will be loaded."));
     
     /* cancel button */
     cancbut = gtk_button_new_from_stock (GTK_STOCK_CANCEL);
-    gtk_tooltips_set_tip (tips, cancbut,
-                          _("Cancel radio selection."),
+    gtk_widget_set_tooltip_text (cancbut,
                           _("Cancel radio selection. This will end grig."));
     
     /* add button */
     newbut = gtk_button_new_from_stock (GTK_STOCK_ADD);
-    gtk_tooltips_set_tip (tips, newbut,
-                          _("Add a new radio to the list."),
-                          _("A new configuration window will be shown allowing "
+    gtk_widget_set_tooltip_text (newbut,
+                          _("Add a new radio to the list."
+                            "A new configuration window will be shown allowing "
                             "you to select a radio and specify the connection "
                             "settings."));
     
     /* delete button */
     delbut = gtk_button_new_from_stock (GTK_STOCK_DELETE);
     gtk_widget_set_sensitive (delbut, FALSE);
-    gtk_tooltips_set_tip (tips, delbut,
-                          _("Delete the currently selected radio."), NULL);
+    gtk_widget_set_tooltip_text (delbut,
+                          _("Delete the currently selected radio."));
     
     /* edit button */
     editbut = gtk_button_new_from_stock (GTK_STOCK_EDIT);
     gtk_widget_set_sensitive (editbut, FALSE);
-    gtk_tooltips_set_tip (tips, editbut,
-                          _("Edit the settings for the currently selected radio."),
-                            NULL);
+    gtk_widget_set_tooltip_text (editbut,
+                          _("Edit the settings for the currently selected radio."));
     
     /* button box*/
     butbox1 = gtk_hbutton_box_new ();
@@ -503,11 +498,13 @@ static void delete (GtkWidget *button, gpointer data)
 
 static void add     (GtkWidget *button, gpointer data)
 {
+    g_print ("TO BE IMPLEMENTED\n");
 }
 
 
 static void edit    (GtkWidget *button, gpointer data)
 {
+    g_print ("TO BE IMPLEMENTED\n");
 }
 
 
@@ -527,6 +524,16 @@ static void selection_changed (GtkTreeSelection *sel, gpointer data)
     treeview = gtk_tree_selection_get_tree_view (sel);
     havesel = gtk_tree_selection_get_selected (sel, &model, &iter);
     gtk_tree_model_get (model, &iter, 3, &id, -1);
+    
+    /* set selection */
+    if (selected) {
+        g_free (selected);
+        selected = NULL;
+    }
+    if (havesel) {
+        gtk_tree_model_get (model, &iter, 0, &selected, -1);
+        g_print ("SEELCTED: %s\n", selected);
+    }
     
     /* get buttons */
     delbut = GTK_WIDGET (g_object_get_data (G_OBJECT(window), "delbut"));
