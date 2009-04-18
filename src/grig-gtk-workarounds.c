@@ -59,7 +59,6 @@ grig_hpixmap_button (const gchar *file, const gchar *text, const gchar *tooltip)
     GtkWidget *image;
     GtkWidget *box;
     gchar     *path;
-    GtkTooltips *tips;
 
     path = pixmap_file_name (file);
     image = gtk_image_new_from_file (path);
@@ -70,11 +69,8 @@ grig_hpixmap_button (const gchar *file, const gchar *text, const gchar *tooltip)
         gtk_box_pack_start (GTK_BOX (box), gtk_label_new (text), TRUE, TRUE, 0);
 
     button = gtk_button_new ();
+    gtk_widget_set_tooltip_text (button, tooltip);
     gtk_container_add (GTK_CONTAINER (button), box);
-
-    tips = gtk_tooltips_new ();
-    gtk_tooltips_set_tip (tips, button, tooltip, NULL);
-
 
     return button;
 }
@@ -94,8 +90,8 @@ grig_vpixmap_button (const gchar *file, const gchar *text, const gchar *tooltip)
     GtkWidget *image;
     GtkWidget *box;
     gchar     *path;
-    GtkTooltips *tips;
 
+    
     path = pixmap_file_name (file);
     image = gtk_image_new_from_file (path);
     g_free (path);
@@ -105,11 +101,8 @@ grig_vpixmap_button (const gchar *file, const gchar *text, const gchar *tooltip)
         gtk_box_pack_start (GTK_BOX (box), gtk_label_new (text), TRUE, TRUE, 0);
 
     button = gtk_button_new ();
+    gtk_widget_set_tooltip_text (button, tooltip);
     gtk_container_add (GTK_CONTAINER (button), box);
-
-    tips = gtk_tooltips_new ();
-    gtk_tooltips_set_tip (tips, button, tooltip, NULL);
-
 
     return button;
 }
@@ -126,7 +119,6 @@ grig_hstock_button (const gchar *stock_id, const gchar *text, const gchar *toolt
     GtkWidget *button;
     GtkWidget *image;
     GtkWidget *box;
-    GtkTooltips *tips;
     
 
     image = gtk_image_new_from_stock (stock_id, GTK_ICON_SIZE_BUTTON);
@@ -136,11 +128,8 @@ grig_hstock_button (const gchar *stock_id, const gchar *text, const gchar *toolt
         gtk_box_pack_start (GTK_BOX (box), gtk_label_new (text), TRUE, TRUE, 0);
 
     button = gtk_button_new ();
+    gtk_widget_set_tooltip_text (button, tooltip);
     gtk_container_add (GTK_CONTAINER (button), box);
-
-    tips = gtk_tooltips_new ();
-    gtk_tooltips_set_tip (tips, button, tooltip, NULL);
-
 
     return button;
 }
