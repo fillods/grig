@@ -4,6 +4,8 @@ GRIG 0.8.0 (TBD):
 - Arrow UP/DOWN will change the frequency with the smallest step. This can be
   used for tuning using external devices like the Powermate.
 * Support for VFO->MEM and MEM->VFO function.
+- Fixed crash that occurs when mouse is clicked between MHz and kHz digits.
+  Reported as Ubuntu bug 517816.
 - Requires Gtk+ 2.12 and Hamlib 1.2.8
 
 

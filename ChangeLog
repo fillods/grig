@@ -1,7 +1,15 @@
+2010-02-05; Alexandru Csete <oz9aec@gmail.com>
+
+    * src/rig-gui-lcd.c:
+    Fix crash that occurs when mouse is clicked between MHz and kHz digits.
+    Reported as Ubuntu bug 517816.
+
+
 2009-01-21; Alessandro Zummo <a.zummo@towertech.it>
 
 	* src/rig-gui-vfo.c:
 	Added memory/vfo button.
+
 
 2009-01-13; Alessandro Zummo <a.zummo@towertech.it>
 
@@ -9,10 +17,12 @@
 	Do not clear frequency if user hits return and
 	the new freq has not been entered.
 
+
 2009-01-13; Alessandro Zummo <a.zummo@towertech.it>
 
 	* src/grig-debug.c:
 	Fixed debug levels
+
 
 2008-12-15; Stephane Fillod <fillods@users.sf.net>
 
