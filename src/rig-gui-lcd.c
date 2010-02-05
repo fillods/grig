@@ -816,7 +816,7 @@ static event_object_t
 rig_gui_lcd_get_event_object (GdkEvent *event)
 {
 	guint x,y;    /* coordinates */
-	guint i;
+    gint i;
 
 	x = (guint) ((GdkEventButton*)event)->x;
 	y = (guint) ((GdkEventButton*)event)->y;
