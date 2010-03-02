@@ -389,6 +389,9 @@ rig_daemon_check_mode     (RIG               *myrig,
 			/* store modes */
 			get->allmodes |= myrig->state.rx_range_list[i].modes;
 
+			/* store antennas */
+			get->allantennas |= myrig->state.rx_range_list[i].ant;
+
 			/* if we have not yet found a mode      AND
 			   this list is good for current mode   AND
 			   the current frequency is within this range

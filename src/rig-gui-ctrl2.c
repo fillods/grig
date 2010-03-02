@@ -51,7 +51,8 @@
 typedef enum rig_gui_ctrl2_e {
     RIG_GUI_MODE_SELECTOR = 1,  /*!< The mode selector */
     RIG_GUI_FILTER_SELECTOR,    /*!< The filter/passband width selector */
-    RIG_GUI_AGC_SELECTOR        /*!< The AGC selector */
+    RIG_GUI_AGC_SELECTOR,       /*!< The AGC selector */
+    RIG_GUI_ANTENNA_SELECTOR    /*!< The antenna selector */
 } rig_gui_ctrl2_t;
 
 
@@ -126,10 +127,12 @@ gint cidx2mode[16] = {
 static GtkWidget *rig_gui_ctrl2_create_agc_selector    (void);
 static GtkWidget *rig_gui_ctrl2_create_mode_selector   (void);
 static GtkWidget *rig_gui_ctrl2_create_filter_selector (void);
+static GtkWidget *rig_gui_ctrl2_create_antenna_selector (void);
 
 static void rig_gui_ctrl2_agc_cb      (GtkWidget *, gpointer);
 static void rig_gui_ctrl2_mode_cb     (GtkWidget *, gpointer);
 static void rig_gui_ctrl2_filter_cb   (GtkWidget *, gpointer);
+static void rig_gui_ctrl2_antenna_cb  (GtkWidget *, gpointer);
 
 static gint rig_gui_ctrl2_timeout_exec  (gpointer);
 static gint rig_gui_ctrl2_timeout_stop  (gpointer);
@@ -137,11 +140,11 @@ static void rig_gui_ctrl2_update        (GtkWidget *, gpointer);
 
 
 
-/** \brief Create mode, filter and agc buttons.
+/** \brief Create mode, filter, agc, and antenna buttons.
  *  \return a composite widget containing the controls.
  *
  * This function creates the widgets which are used to select the
- * mode, bandwidth and AGC.
+ * mode, bandwidth, AGC, and antenna.
  */
 GtkWidget *
 rig_gui_ctrl2_create ()
@@ -161,6 +164,9 @@ rig_gui_ctrl2_create ()
                     FALSE, FALSE, 0);
     gtk_box_pack_start   (GTK_BOX (vbox),
                     rig_gui_ctrl2_create_agc_selector (),
+                    FALSE, FALSE, 0);
+    gtk_box_pack_start   (GTK_BOX (vbox),
+                    rig_gui_ctrl2_create_antenna_selector (),
                     FALSE, FALSE, 0);
 
     /* start readback timer */
@@ -395,6 +401,83 @@ rig_gui_ctrl2_create_filter_selector ()
     return combo;
 }
 
+/** \brief Create antenna selector.
+ *  \return The antenna selector widget.
+ *
+ * This function creates the widget used to select the current antenna.
+ * The numerical values for the different antenna is not linear
+ * (1, 2, 3, 4, ...). They are defined as individual bits in a
+ * 16 bit integer (1, 2, 4, 8, ...). Thus, to convert between
+ * hamlib mode and combo box index we use the following relations:
+ *
+ *        index = rint[log(mode)/log(2)]
+ *        mode  = 1 << index
+ *
+ * These conversions are done using dedicated functions in the
+ * rig-utils package.
+ *
+ * \bug Grig does not implement the RIG_ANT_NONE antenna.
+ */
+static GtkWidget *
+rig_gui_ctrl2_create_antenna_selector   ()
+{
+	GtkWidget   *combo;
+	gint         sigid;
+	gint         index = 0;
+	gint         i,antenna;
+	gchar        antstr[16];
+
+	/* create and initialize widget */
+	combo = gtk_combo_box_new_text ();
+
+	/* loop over all antennas */
+	for (i = 0; i < 8; i++) {
+		
+		antenna = 1 << i;
+
+		/* if this antenna is supported, add entry to combo box,
+		   store indices and increment combo box index
+		*/
+		if (rig_data_get_all_antennas () & antenna) {
+
+			snprintf(antstr, sizeof(antstr)-1, _("ANT %d"), i+1);
+
+			gtk_combo_box_append_text (GTK_COMBO_BOX (combo),
+						   antstr);
+
+			midx2cidx[i] = index;
+			cidx2mode[index] = antenna;
+			index++;
+		}
+	}
+	
+
+	/* set current antenna */
+	gtk_combo_box_set_active (GTK_COMBO_BOX (combo),
+				  midx2cidx[rig_utils_mode_to_index (rig_data_get_antenna ())]);
+
+	/* add tooltips when widget is realized */
+    gtk_widget_set_tooltip_text (combo, _("Antenna Port"));
+
+	/* connect 'changed' signal */
+	sigid = g_signal_connect (G_OBJECT (combo), "changed",
+				  G_CALLBACK (rig_gui_ctrl2_antenna_cb),
+				  NULL);
+
+	/* set widget ID */
+	g_object_set_data (G_OBJECT (combo),
+			   WIDGET_ID_KEY,
+			   GUINT_TO_POINTER (RIG_GUI_ANTENNA_SELECTOR));
+
+	/* set handler ID */
+	g_object_set_data (G_OBJECT (combo),
+			   HANDLER_ID_KEY,
+			   GINT_TO_POINTER (sigid));
+
+	return combo;
+}
+
+
 
 
 /** \brief Select AGC delay.
@@ -467,8 +550,6 @@ rig_gui_ctrl2_mode_cb   (GtkWidget *widget, gpointer data)
 
 
 
-
-
 /** \brief Select passband width.
  *  \param widget The widget which received the signal.
  *  \param data   User data, always NULL.
@@ -489,6 +570,28 @@ rig_gui_ctrl2_filter_cb   (GtkWidget *widget, gpointer data)
 
     /* send it to rig-data */
     rig_data_set_pbwidth (index);
+
+}
+
+/** \brief Select antenna.
+ *  \param widget The widget which received the signal.
+ *  \param data   User data, always NULL.
+ *
+ * This function is called when the user selects a new antenna.
+ * It acquires the selected menu item, converts it to hamlib antenna type
+ * and sends the new antenna to the rig-data component.
+ */
+static void
+rig_gui_ctrl2_antenna_cb   (GtkWidget *widget, gpointer data)
+{
+	gint index;
+
+	/* get selected item */
+	index = gtk_combo_box_get_active (GTK_COMBO_BOX (widget));
+
+	/* convert it and send to rig-data */
+	rig_data_set_antenna (cidx2mode[index]);
+
 
 }
 
@@ -660,6 +763,24 @@ rig_gui_ctrl2_update        (GtkWidget *widget, gpointer data)
         g_signal_handler_unblock (G_OBJECT (widget), handler);
 
         break;
+
+		/* antenna selector */
+	case RIG_GUI_ANTENNA_SELECTOR:
+
+		/* get signal handler ID */
+		handler = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (widget), HANDLER_ID_KEY));
+
+		/* block the signal handler */
+		g_signal_handler_block (G_OBJECT (widget), handler);
+
+		/* set current antenna */
+		gtk_combo_box_set_active (GTK_COMBO_BOX (widget),
+					  midx2cidx[rig_utils_mode_to_index (rig_data_get_antenna ())]);
+		
+		/* unblock signal handler */
+		g_signal_handler_unblock (G_OBJECT (widget), handler);
+
+		break;
 
     default:
         break;

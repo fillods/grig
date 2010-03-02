@@ -87,6 +87,7 @@ typedef struct {
 	int              att;      /*!< Attenuator. */
 	int              preamp;   /*!< Pre-amplifier. */
 	split_t          split;    /*!< Spit ON/OFF. */
+	ant_t            antenna;  /*!< Antenna. */
 
 	/* R/W levels */
 	float           afg;       /*!< AF gain */
@@ -133,6 +134,7 @@ typedef struct {
 	shortfreq_t     ifsmax;    /*!< Absolute max IF shift. */
 	shortfreq_t     ifsstep;   /*!< Smallest IF shift step. */
 	int             allmodes;  /*!< Bit field of all supported modes. */
+	int             allantennas;/*!< Bit field of all supported antennas. */
 } grig_settings_t;
 
 
@@ -154,6 +156,7 @@ typedef struct {
 	int         vfo_op_toggle;
 	int         vfo_op_copy;
 	int         vfo_op_xchg;
+	int         antenna;
 
 	/* R/W levels */
 	int         afg;       /*!< AF gain */
@@ -224,6 +227,7 @@ int  rig_data_get_preamp_index (int data);
 int  rig_data_get_vfos         (void);
 void rig_data_set_vfos         (int);
 int  rig_data_get_all_modes    (void);
+int  rig_data_get_all_antennas (void);
 
 
 /* FIXME: group functions accoring to functionality */
@@ -241,6 +245,7 @@ void rig_data_set_att     (int);
 void rig_data_set_preamp  (int);
 void rig_data_set_split   (int);
 void rig_data_set_max_rfpwr (float);
+void rig_data_set_antenna   (ant_t);
 
 
 #define rig_data_set_freq1(x) (rig_data_set_freq(1,x))
@@ -270,6 +275,7 @@ shortfreq_t      rig_data_get_xitmax   (void);
 shortfreq_t      rig_data_get_xitstep  (void);
 int              rig_data_get_split    (void);
 float            rig_data_get_max_rfpwr (void);
+ant_t            rig_data_get_antenna   (void);
 
 
 /* has_get functions */

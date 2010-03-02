@@ -431,6 +431,20 @@ rig_data_set_preamp     (int preamp)
 }
 
 
+/** \brief Set antenna.
+ *  \param antenna The new antenna.
+ *
+ * This function sets the targeted antenna to antenna.
+ */
+void
+rig_data_set_antenna    (ant_t antenna)
+{
+	set.antenna = antenna;
+	get.antenna = antenna;
+	new.antenna = 1;
+}
+
+
 /** \brief Get power status.
  *  \return The current power status.
  *
@@ -695,6 +709,17 @@ rig_data_set_alc      (float alc)
 {
 	set.alc = alc;
 	new.alc = TRUE;
+}
+
+/** \brief Get current antenna.
+ *  \return The current antenna.
+ *
+ * This function returns the current antenna.
+ */
+ant_t
+rig_data_get_antenna    ()
+{
+	return get.antenna;
 }
 
 
@@ -1299,6 +1324,14 @@ int
 rig_data_get_all_modes    ()
 {
 	return get.allmodes;
+}
+
+
+/** \brief Get the antenna bitfield */
+int
+rig_data_get_all_antennas    ()
+{
+	return get.allantennas;
 }
 
 
