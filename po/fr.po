@@ -2,13 +2,13 @@
 # Copyright (C) 2001-2008 Alexandru Csete <csete@users.sourceforge.net>
 # This file is distributed under the same license as the grig package.
 #
-# Stéphane Fillod <fillods@users.sf.net>, 2008.
+# Stéphane Fillod <fillods@users.sf.net>, 2008-2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: fr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-12-07 22:58+0100\n"
-"PO-Revision-Date: 2008-12-06 21:20+0100\n"
+"POT-Creation-Date: 2010-03-02 22:30+0100\n"
+"PO-Revision-Date: 2010-03-02 22:32+0100\n"
 "Last-Translator: Stéphane Fillod <fillods@users.sf.net>\n"
 "Language-Team: French <debian-l10n-french@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
@@ -16,9 +16,9 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n>1;\n"
 
-#: ../src/grig-about.c:54
+#: ../src/grig-about.c:58
 msgid ""
-"Copyright (C) 2001-2007 Alexandru Csete <alex@oz9aec.dk>\n"
+"Copyright (C) 2001-2009 Alexandru Csete OZ9AEC>\n"
 "\n"
 "Grig is free software; you can redistribute it and/or modify\n"
 "it under the terms of the GNU General Public License as published\n"
@@ -41,19 +41,19 @@ msgid ""
 "USA.\n"
 msgstr ""
 
-#: ../src/grig-about.c:87 ../src/rig-gui-message-window.c:704
+#: ../src/grig-about.c:91 ../src/rig-gui-message-window.c:707
 msgid "Grig"
 msgstr "Grig"
 
-#: ../src/grig-about.c:90
+#: ../src/grig-about.c:94
 msgid "Copyright (C) 2001-2007 Alexandru Csete OZ9AEC"
 msgstr "Copyright (C) 2001-2007 Alexandru Csete OZ9AEC"
 
-#: ../src/grig-about.c:94
+#: ../src/grig-about.c:98
 msgid "Grig Website"
-msgstr ""
+msgstr "Site web Grig"
 
-#: ../src/grig-about.c:104
+#: ../src/grig-about.c:108
 msgid "translator-credits"
 msgstr ""
 
@@ -97,7 +97,7 @@ msgstr ""
 msgid "HAMLIB"
 msgstr "HAMLIB"
 
-#: ../src/grig-debug.c:60 ../src/rig-gui-message-window.c:502
+#: ../src/grig-debug.c:60 ../src/rig-gui-message-window.c:505
 msgid "GRIG"
 msgstr "GRIG"
 
@@ -229,9 +229,8 @@ msgid "_About Grig"
 msgstr "_A propos de Grig"
 
 #: ../src/grig-menubar.c:85
-#, fuzzy
 msgid "Show about dialog"
-msgstr "Montre les infos à propos de la radio"
+msgstr "Montre la fenêtre à propos"
 
 #: ../src/grig-menubar.c:91
 msgid "_No Debug"
@@ -307,11 +306,11 @@ msgstr ""
 
 #: ../src/grig-menubar.c:105
 msgid "_Special Functions"
-msgstr ""
+msgstr "Fonctions _Spéciales"
 
 #: ../src/grig-menubar.c:105
 msgid "Radio specific functions"
-msgstr ""
+msgstr "Fonctions spécifiques radio"
 
 #: ../src/grig-menubar.c:217
 #, c-format
@@ -814,12 +813,12 @@ msgid ""
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:1674 ../src/rig-daemon-check.c:406
+#: ../src/rig-daemon.c:1674 ../src/rig-daemon-check.c:409
 #, c-format
 msgid "%s: Found frequency range for mode %d"
 msgstr ""
 
-#: ../src/rig-daemon.c:1677 ../src/rig-daemon-check.c:409
+#: ../src/rig-daemon.c:1677 ../src/rig-daemon-check.c:412
 #, c-format
 msgid "%s: %.0f...(%.0f)...%.0f kHz"
 msgstr ""
@@ -1243,326 +1242,353 @@ msgstr ""
 msgid "%s: Can not find VFO list for this backend! Bug in backend?"
 msgstr ""
 
-#: ../src/rig-daemon-check.c:427
+#: ../src/rig-daemon-check.c:430
 #, c-format
 msgid "%s: Can not find frequency range for this mode (%d)! Bug in backend?"
 msgstr ""
 
-#: ../src/rig-daemon-check.c:515
+#: ../src/rig-daemon-check.c:518
 #, c-format
 msgid "%s: Could not get RF power"
 msgstr ""
 
-#: ../src/rig-daemon-check.c:530
+#: ../src/rig-daemon-check.c:533
 #, c-format
 msgid "%s: Maximum RF power is %.3f watts"
 msgstr ""
 
-#: ../src/rig-daemon-check.c:542
+#: ../src/rig-daemon-check.c:545
 #, c-format
 msgid "%s: Could not get signal strength"
 msgstr ""
 
-#: ../src/rig-daemon-check.c:557
+#: ../src/rig-daemon-check.c:560
 #, c-format
 msgid "%s: Could not get SWR"
 msgstr ""
 
-#: ../src/rig-daemon-check.c:570
+#: ../src/rig-daemon-check.c:573
 #, c-format
 msgid "%s: Could not get ALC"
 msgstr ""
 
-#: ../src/rig-daemon-check.c:583
+#: ../src/rig-daemon-check.c:586
 #, c-format
 msgid "%s: Could not get AGC"
 msgstr ""
 
-#: ../src/rig-daemon-check.c:596
+#: ../src/rig-daemon-check.c:599
 #, c-format
 msgid "%s: Could not get ATT"
 msgstr ""
 
-#: ../src/rig-daemon-check.c:609
+#: ../src/rig-daemon-check.c:612
 #, c-format
 msgid "%s: Could not get PREAMP"
 msgstr ""
 
-#: ../src/rig-daemon-check.c:622
+#: ../src/rig-daemon-check.c:625
 #, c-format
 msgid "%s: Could not get AF"
 msgstr ""
 
-#: ../src/rig-daemon-check.c:635
+#: ../src/rig-daemon-check.c:638
 #, c-format
 msgid "%s: Could not get RF"
 msgstr ""
 
-#: ../src/rig-daemon-check.c:648
+#: ../src/rig-daemon-check.c:651
 #, c-format
 msgid "%s: Could not get SQL"
 msgstr ""
 
-#: ../src/rig-daemon-check.c:663
+#: ../src/rig-daemon-check.c:666
 #, c-format
 msgid "%s: Could not get IF shift"
 msgstr ""
 
-#: ../src/rig-daemon-check.c:676
+#: ../src/rig-daemon-check.c:679
 #, c-format
 msgid "%s: Could not get APF"
 msgstr ""
 
-#: ../src/rig-daemon-check.c:689
+#: ../src/rig-daemon-check.c:692
 #, c-format
 msgid "%s: Could not get NR"
 msgstr ""
 
-#: ../src/rig-daemon-check.c:702
+#: ../src/rig-daemon-check.c:705
 #, c-format
 msgid "%s: Could not get NOTCH"
 msgstr ""
 
-#: ../src/rig-daemon-check.c:715
+#: ../src/rig-daemon-check.c:718
 #, c-format
 msgid "%s: Could not get PBT IN"
 msgstr ""
 
-#: ../src/rig-daemon-check.c:728
+#: ../src/rig-daemon-check.c:731
 #, c-format
 msgid "%s: Could not get PBT OUT"
 msgstr ""
 
-#: ../src/rig-daemon-check.c:741
+#: ../src/rig-daemon-check.c:744
 #, c-format
 msgid "%s: Could not get CW pitch"
 msgstr ""
 
-#: ../src/rig-daemon-check.c:754
+#: ../src/rig-daemon-check.c:757
 #, c-format
 msgid "%s: Could not get CW speed"
 msgstr ""
 
-#: ../src/rig-daemon-check.c:767
+#: ../src/rig-daemon-check.c:770
 #, c-format
 msgid "%s: Could not get break-in delay"
 msgstr ""
 
-#: ../src/rig-daemon-check.c:780
+#: ../src/rig-daemon-check.c:783
 #, c-format
 msgid "%s: Could not get balance"
 msgstr ""
 
-#: ../src/rig-daemon-check.c:793
+#: ../src/rig-daemon-check.c:796
 #, c-format
 msgid "%s: Could not get VOX delay"
 msgstr ""
 
-#: ../src/rig-daemon-check.c:806
+#: ../src/rig-daemon-check.c:809
 #, c-format
 msgid "%s: Could not get VOX gain"
 msgstr ""
 
-#: ../src/rig-daemon-check.c:819
+#: ../src/rig-daemon-check.c:822
 #, c-format
 msgid "%s: Could not get anti-vox"
 msgstr ""
 
-#: ../src/rig-daemon-check.c:832
+#: ../src/rig-daemon-check.c:835
 #, c-format
 msgid "%s: Could not get compression level"
 msgstr ""
 
-#: ../src/rig-daemon-check.c:845
+#: ../src/rig-daemon-check.c:848
 #, c-format
 msgid "%s: Could not get MIC gain"
 msgstr ""
 
-#: ../src/rig-daemon-check.c:951
+#: ../src/rig-daemon-check.c:954
 #, c-format
 msgid "%s: Could not get LOCK status"
 msgstr ""
 
-#: ../src/rig-daemon-check.c:966
+#: ../src/rig-daemon-check.c:969
 #, c-format
 msgid "%s: Could not get %s status"
 msgstr ""
 
 #. bug
-#: ../src/rig-data.c:358 ../src/rig-data.c:536
+#: ../src/rig-data.c:358 ../src/rig-data.c:550
 #, c-format
 msgid "%s: Invalid target: %d\n"
 msgstr ""
 
 #. create button widget
-#: ../src/rig-gui-buttons.c:149 ../src/rig-gui-smeter.c:75
+#: ../src/rig-gui-buttons.c:148 ../src/rig-gui-smeter.c:75
 msgid "Power"
 msgstr ""
 
-#: ../src/rig-gui-buttons.c:152
+#: ../src/rig-gui-buttons.c:149
 msgid "Power status"
 msgstr ""
 
-#: ../src/rig-gui-buttons.c:153
-msgid "Turn the radio ON or OFF"
-msgstr ""
-
 #. create button widget
-#: ../src/rig-gui-buttons.c:199
+#: ../src/rig-gui-buttons.c:193
 msgid "PTT"
 msgstr "PTT"
 
-#: ../src/rig-gui-buttons.c:202
-msgid "Push To Talk"
-msgstr ""
-
-#: ../src/rig-gui-buttons.c:203
-msgid "Switch between receive and transmit mode"
+#: ../src/rig-gui-buttons.c:194
+msgid "Push to talk"
 msgstr ""
 
 #. create button widget
-#: ../src/rig-gui-buttons.c:248
+#: ../src/rig-gui-buttons.c:238
 msgid "Lock"
 msgstr "Lock"
 
-#: ../src/rig-gui-buttons.c:251
+#: ../src/rig-gui-buttons.c:239
 msgid "Lock tuning dial"
 msgstr ""
 
-#: ../src/rig-gui-buttons.c:252
-msgid "Lock the main tuning dial on the radio panel"
-msgstr ""
-
 #. add ATT OFF ie. 0 dB
-#: ../src/rig-gui-buttons.c:297
+#: ../src/rig-gui-buttons.c:284
 msgid "ATT OFF"
 msgstr ""
 
-#: ../src/rig-gui-buttons.c:323
-msgid "Attenuator Level"
-msgstr ""
+#: ../src/rig-gui-buttons.c:307
+msgid "Attenuator level"
+msgstr "Niveau atténuateur"
 
 #. add ATT OFF ie. 0 dB
-#: ../src/rig-gui-buttons.c:360
+#: ../src/rig-gui-buttons.c:344
 msgid "PREAMP OFF"
 msgstr ""
 
-#: ../src/rig-gui-buttons.c:386
-msgid "Preamp Level"
-msgstr ""
-
-#: ../src/rig-gui-ctrl2.c:85
-msgid "AM"
-msgstr ""
+#: ../src/rig-gui-buttons.c:367
+msgid "Preamp level"
+msgstr "Niveau préampli"
 
 #: ../src/rig-gui-ctrl2.c:86
-msgid "CW"
-msgstr ""
+msgid "AM"
+msgstr "AM"
 
 #: ../src/rig-gui-ctrl2.c:87
+msgid "CW"
+msgstr "CW"
+
+#: ../src/rig-gui-ctrl2.c:88
 msgid "USB"
 msgstr ""
 
-#: ../src/rig-gui-ctrl2.c:88
+#: ../src/rig-gui-ctrl2.c:89
 msgid "LSB"
 msgstr ""
 
-#: ../src/rig-gui-ctrl2.c:89
-msgid "RTTY"
-msgstr ""
-
 #: ../src/rig-gui-ctrl2.c:90
+msgid "RTTY"
+msgstr "RTTY"
+
+#: ../src/rig-gui-ctrl2.c:91
 msgid "FM Narrow"
 msgstr "FM Etroit"
 
-#: ../src/rig-gui-ctrl2.c:91
+#: ../src/rig-gui-ctrl2.c:92
 msgid "FM Wide"
 msgstr "FM Large"
 
-#: ../src/rig-gui-ctrl2.c:92
+#: ../src/rig-gui-ctrl2.c:93
 msgid "CW Rev"
 msgstr ""
 
-#: ../src/rig-gui-ctrl2.c:93
+#: ../src/rig-gui-ctrl2.c:94
 msgid "RTTY Rev"
 msgstr ""
 
-#: ../src/rig-gui-ctrl2.c:94
+#: ../src/rig-gui-ctrl2.c:95
 msgid "AM Synch"
 msgstr ""
 
-#: ../src/rig-gui-ctrl2.c:95
+#: ../src/rig-gui-ctrl2.c:96
 msgid "Pkt (LSB)"
 msgstr ""
 
-#: ../src/rig-gui-ctrl2.c:96
+#: ../src/rig-gui-ctrl2.c:97
 msgid "Pkt (USB)"
 msgstr ""
 
-#: ../src/rig-gui-ctrl2.c:97
+#: ../src/rig-gui-ctrl2.c:98
 msgid "Pkt (FM)"
 msgstr ""
 
-#: ../src/rig-gui-ctrl2.c:98
+#: ../src/rig-gui-ctrl2.c:99
 msgid "ECUSB"
 msgstr ""
 
-#: ../src/rig-gui-ctrl2.c:99
+#: ../src/rig-gui-ctrl2.c:100
 msgid "ECLSB"
 msgstr ""
 
-#: ../src/rig-gui-ctrl2.c:100
+#: ../src/rig-gui-ctrl2.c:101
 msgid "FAX"
 msgstr ""
 
 #. FIXME: Hamlib does also have 'user'
-#: ../src/rig-gui-ctrl2.c:201
+#: ../src/rig-gui-ctrl2.c:207
 msgid "AGC OFF"
 msgstr "Hors CAG"
 
-#: ../src/rig-gui-ctrl2.c:202
+#: ../src/rig-gui-ctrl2.c:208
 msgid "Super Fast"
 msgstr "Super Rapide"
 
-#: ../src/rig-gui-ctrl2.c:203
+#: ../src/rig-gui-ctrl2.c:209
 msgid "Fast"
 msgstr "Rapide"
 
-#: ../src/rig-gui-ctrl2.c:204
+#: ../src/rig-gui-ctrl2.c:210
 msgid "Medium"
 msgstr "Moyen"
 
-#: ../src/rig-gui-ctrl2.c:205
+#: ../src/rig-gui-ctrl2.c:211
 msgid "Slow"
 msgstr "Lent"
 
-#: ../src/rig-gui-ctrl2.c:210
+#: ../src/rig-gui-ctrl2.c:212
+msgid "Auto"
+msgstr ""
+
+#: ../src/rig-gui-ctrl2.c:214
 msgid "Automatic Gain Control Level"
 msgstr "Niveau de Contrôle Automatique de Gain"
 
-#: ../src/rig-gui-ctrl2.c:315
-msgid "Communication Mode"
-msgstr "Mode de Communication"
+#: ../src/rig-gui-ctrl2.c:320
+msgid "Communication mode"
+msgstr "Mode de communication"
 
 #. Add items
-#: ../src/rig-gui-ctrl2.c:354
+#: ../src/rig-gui-ctrl2.c:359
 msgid "Wide"
 msgstr "Large"
 
-#: ../src/rig-gui-ctrl2.c:355
+#: ../src/rig-gui-ctrl2.c:360
 msgid "Normal"
 msgstr "Normal"
 
-#: ../src/rig-gui-ctrl2.c:356
+#: ../src/rig-gui-ctrl2.c:361
 msgid "Narrow"
 msgstr "Etroit"
 
-#: ../src/rig-gui-ctrl2.c:357
+#: ../src/rig-gui-ctrl2.c:362
 msgid "[User]"
 msgstr "[Utilisateur]"
 
-#: ../src/rig-gui-ctrl2.c:382
+#: ../src/rig-gui-ctrl2.c:384
 msgid "Passband Width"
+msgstr ""
+
+#: ../src/rig-gui-ctrl2.c:443
+#, c-format
+msgid "ANT %d"
+msgstr ""
+
+#. add tooltips when widget is realized
+#: ../src/rig-gui-ctrl2.c:460
+msgid "Antenna Port"
+msgstr ""
+
+#: ../src/rig-gui-func.c:82
+#, c-format
+msgid "%s: FUNC window already visible."
+msgstr ""
+
+#. create dialog window
+#: ../src/rig-gui-func.c:93
+#, c-format
+msgid "%s (Special Functions)"
+msgstr "%s (Fonctions Spéciales)"
+
+#: ../src/rig-gui-func.c:160
+#, c-format
+msgid "%s: FUNC window is not visible."
+msgstr ""
+
+#: ../src/rig-gui-func.c:185 ../src/rig-gui-rx.c:242 ../src/rig-gui-tx.c:238
+#, c-format
+msgid "%s:%d: Invalid level %d"
+msgstr ""
+
+#: ../src/rig-gui-func.c:227 ../src/rig-gui-rx.c:507 ../src/rig-gui-tx.c:463
+msgid "Rig has no support."
 msgstr ""
 
 #. create dialog and add hbox
@@ -1710,44 +1736,48 @@ msgid "<b>SET</b>"
 msgstr ""
 
 #. set text: kHz
-#: ../src/rig-gui-lcd.c:1420
+#: ../src/rig-gui-lcd.c:1426
 msgid "kHz"
 msgstr ""
 
 #. set text: RIT
-#: ../src/rig-gui-lcd.c:1445
+#: ../src/rig-gui-lcd.c:1451
 msgid "RIT"
 msgstr ""
 
-#: ../src/rig-gui-lcd.c:1496
+#: ../src/rig-gui-lcd.c:1502
 msgid "VFO A"
 msgstr ""
 
-#: ../src/rig-gui-lcd.c:1500
+#: ../src/rig-gui-lcd.c:1506
 msgid "VFO B"
 msgstr ""
 
-#: ../src/rig-gui-lcd.c:1504
+#: ../src/rig-gui-lcd.c:1510
 msgid "VFO C"
 msgstr ""
 
-#: ../src/rig-gui-lcd.c:1508
+#: ../src/rig-gui-lcd.c:1514
 msgid "MAIN VFO"
 msgstr ""
 
-#: ../src/rig-gui-lcd.c:1512
+#: ../src/rig-gui-lcd.c:1518
 msgid "SUB VFO"
 msgstr ""
 
-#: ../src/rig-gui-lcd.c:1516
+#: ../src/rig-gui-lcd.c:1522
+msgid "MEM"
+msgstr ""
+
+#: ../src/rig-gui-lcd.c:1526
 msgid "VFO ?"
 msgstr ""
 
-#: ../src/rig-gui-levels.c:53
+#: ../src/rig-gui-levels.c:52
 msgid "Level Controls"
-msgstr ""
+msgstr "Contrôle Niveaux"
 
-#: ../src/rig-gui-levels.c:58 ../src/rig-gui-levels.c:59
+#: ../src/rig-gui-levels.c:53
 msgid "Show/hide level controls"
 msgstr ""
 
@@ -1757,15 +1787,15 @@ msgstr ""
 
 #: ../src/rig-gui-message-window.c:66
 msgid "Source"
-msgstr ""
+msgstr "Source"
 
 #: ../src/rig-gui-message-window.c:67
 msgid "Level"
-msgstr ""
+msgstr "Niveau"
 
 #: ../src/rig-gui-message-window.c:68
 msgid "Message"
-msgstr ""
+msgstr "Message"
 
 #: ../src/rig-gui-message-window.c:79
 msgid "BUG"
@@ -1786,62 +1816,62 @@ msgstr ""
 #. create dialog window; we use "fake" stock responses to catch user
 #. button clicks (save_as and pause)
 #.
-#: ../src/rig-gui-message-window.c:160
+#: ../src/rig-gui-message-window.c:163
 msgid "Grig Message Window"
 msgstr ""
 
 #. create file chooser dialog
-#: ../src/rig-gui-message-window.c:424
+#: ../src/rig-gui-message-window.c:427
 msgid "Open Debug File"
 msgstr ""
 
-#: ../src/rig-gui-message-window.c:493
+#: ../src/rig-gui-message-window.c:496
 msgid "SYS"
 msgstr ""
 
-#: ../src/rig-gui-message-window.c:503
+#: ../src/rig-gui-message-window.c:506
 msgid "Log file seems corrupt"
 msgstr ""
 
-#: ../src/rig-gui-message-window.c:526
+#: ../src/rig-gui-message-window.c:529
 #, c-format
 msgid "%s:%d: Error open debug log (%s)"
 msgstr ""
 
-#: ../src/rig-gui-message-window.c:698
+#: ../src/rig-gui-message-window.c:701
 msgid "Hamlib"
 msgstr ""
 
-#: ../src/rig-gui-message-window.c:710
+#: ../src/rig-gui-message-window.c:713
 msgid "Other"
 msgstr ""
 
-#: ../src/rig-gui-message-window.c:720
+#: ../src/rig-gui-message-window.c:723
 msgid "Bugs"
 msgstr ""
 
-#: ../src/rig-gui-message-window.c:726
+#: ../src/rig-gui-message-window.c:729
 msgid "Errors"
 msgstr ""
 
-#: ../src/rig-gui-message-window.c:732
+#: ../src/rig-gui-message-window.c:735
 msgid "Warning"
 msgstr ""
 
-#: ../src/rig-gui-message-window.c:738
+#: ../src/rig-gui-message-window.c:741
 msgid "Verbose"
 msgstr ""
 
-#: ../src/rig-gui-message-window.c:744
+#: ../src/rig-gui-message-window.c:747
 msgid "Trace"
 msgstr ""
 
-#: ../src/rig-gui-message-window.c:757
+#: ../src/rig-gui-message-window.c:760
 msgid "<b>Total</b>"
-msgstr ""
+msgstr "<b>Total</b>"
 
 #. frame around the table
-#: ../src/rig-gui-message-window.c:782
+#: ../src/rig-gui-message-window.c:785
 msgid " Summary "
 msgstr ""
 
@@ -1854,16 +1884,11 @@ msgstr ""
 #: ../src/rig-gui-rx.c:108
 #, c-format
 msgid "%s (RX Levels)"
-msgstr ""
+msgstr "%s (Niveaux RX)"
 
 #: ../src/rig-gui-rx.c:172
 #, c-format
 msgid "%s: RX window is not visible."
-msgstr ""
-
-#: ../src/rig-gui-rx.c:242 ../src/rig-gui-tx.c:238
-#, c-format
-msgid "%s:%d: Invalid level %d"
 msgstr ""
 
 #: ../src/rig-gui-rx.c:284
@@ -1910,10 +1935,6 @@ msgstr ""
 msgid "Balance"
 msgstr ""
 
-#: ../src/rig-gui-rx.c:507 ../src/rig-gui-tx.c:463
-msgid "Rig has no support."
-msgstr ""
-
 #: ../src/rig-gui-smeter.c:74
 msgid "None"
 msgstr "Aucun"
@@ -1946,11 +1967,11 @@ msgstr ""
 msgid "0..500"
 msgstr ""
 
-#: ../src/rig-gui-smeter.c:434
+#: ../src/rig-gui-smeter.c:430
 msgid "Select TX mode for the meter"
 msgstr "Sélectionne le mode de mesure en émission"
 
-#: ../src/rig-gui-smeter.c:486
+#: ../src/rig-gui-smeter.c:479
 msgid "Select TX meter scale"
 msgstr "Sélectionne l'échelle de mesure en émission"
 
@@ -1963,7 +1984,7 @@ msgstr ""
 #: ../src/rig-gui-tx.c:109
 #, c-format
 msgid "%s (TX Levels)"
-msgstr ""
+msgstr "%s (Niveaux TX)"
 
 #: ../src/rig-gui-tx.c:176
 #, c-format
@@ -2006,64 +2027,64 @@ msgstr ""
 msgid "Main / Sub"
 msgstr ""
 
-#: ../src/rig-gui-vfo.c:123
+#: ../src/rig-gui-vfo.c:121
 msgid "Toggle active VFO"
 msgstr ""
 
-#: ../src/rig-gui-vfo.c:124 ../src/rig-gui-vfo.c:131
-msgid "Toggle between the two available VFOs"
-msgstr ""
-
-#: ../src/rig-gui-vfo.c:127
+#: ../src/rig-gui-vfo.c:124
 msgid "A / B"
 msgstr ""
 
-#: ../src/rig-gui-vfo.c:130
-msgid "Toggle VFO"
+#: ../src/rig-gui-vfo.c:125
+msgid "Toggle between available VFOs"
 msgstr ""
 
-#: ../src/rig-gui-vfo.c:222
+#: ../src/rig-gui-vfo.c:237
 msgid "Main = Sub"
 msgstr ""
 
-#: ../src/rig-gui-vfo.c:225
+#: ../src/rig-gui-vfo.c:238
 msgid "Set Main VFO = Sub VFO"
 msgstr ""
 
-#: ../src/rig-gui-vfo.c:229
+#: ../src/rig-gui-vfo.c:241
 msgid "A = B"
 msgstr ""
 
-#: ../src/rig-gui-vfo.c:232
-msgid "Set VFO A = VFO B"
+#: ../src/rig-gui-vfo.c:242
+msgid "Set VFO B = VFO A"
 msgstr ""
 
-#: ../src/rig-gui-vfo.c:301
+#: ../src/rig-gui-vfo.c:307
 msgid "Main«»Sub"
 msgstr ""
 
-#: ../src/rig-gui-vfo.c:304
+#: ../src/rig-gui-vfo.c:308
 msgid "Exchange Main and sub VFOs"
 msgstr ""
 
-#: ../src/rig-gui-vfo.c:308
+#: ../src/rig-gui-vfo.c:311
 msgid "A«»B"
 msgstr ""
 
-#: ../src/rig-gui-vfo.c:311
+#: ../src/rig-gui-vfo.c:312
 msgid "Exchange VFO A and B"
 msgstr ""
 
-#. Create button widget.
-#. The label will be "A<->B" if the rig has VFO_A and VFO_B
-#. or Main<->Sub if the rig has those two.
-#.
-#: ../src/rig-gui-vfo.c:379
+#: ../src/rig-gui-vfo.c:374
 msgid "Split"
 msgstr ""
 
-#: ../src/rig-gui-vfo.c:382
+#: ../src/rig-gui-vfo.c:375
 msgid "Toggle split mode operation"
+msgstr ""
+
+#: ../src/rig-gui-vfo.c:403
+msgid "M / V"
+msgstr ""
+
+#: ../src/rig-gui-vfo.c:404
+msgid "Toggle between memory and VFO"
 msgstr ""
 
 #. file chooser dialog
