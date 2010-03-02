@@ -88,7 +88,7 @@ grig_about_run ()
 
 
     dialog = gtk_about_dialog_new ();
-    gtk_about_dialog_set_name (GTK_ABOUT_DIALOG (dialog), _("Grig"));
+    gtk_about_dialog_set_program_name (GTK_ABOUT_DIALOG (dialog), _("Grig"));
     gtk_about_dialog_set_version (GTK_ABOUT_DIALOG (dialog), VERSION);
     gtk_about_dialog_set_copyright (GTK_ABOUT_DIALOG (dialog),
                     _("Copyright (C) 2001-2007 Alexandru Csete OZ9AEC"));

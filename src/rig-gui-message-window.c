@@ -147,8 +147,11 @@ rig_gui_message_window_init  ()
 
 
 		hbox = gtk_hbox_new (FALSE, 10);
-		gtk_box_pack_start_defaults (GTK_BOX (hbox),
-					     create_message_list ());
+		gtk_box_pack_start (GTK_BOX (hbox),
+					     create_message_list (),
+					     TRUE,
+					     TRUE,
+					     0);
 
 		gtk_box_pack_start (GTK_BOX (hbox),
 				    create_message_summary (),
