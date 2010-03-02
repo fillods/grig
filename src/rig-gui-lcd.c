@@ -920,7 +920,7 @@ rig_gui_lcd_calc_dim    ()
 	for (i=0; i<6; i++)
 		lcd.digits[i].y = (lcd.height - lcd.dlh)/2;
 
-	for (i=6; i<13; i++)
+	for (i=6; i<12; i++)
 		lcd.digits[i].y = lcd.digits[1].y + (lcd.dlh-lcd.dsh)-1;
 
 	lcd.others[0].x = lcd.digits[2].x + lcd.dlw;
