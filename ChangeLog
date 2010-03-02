@@ -1,3 +1,21 @@
+2010-03-02; Stephane Fillod <fillods@users.sf.net>
+
+	* src/rig-gui-message-window.c:
+	* src/grig-about.c:
+	Replace deprecated calls since Gtk 2.14
+
+	* src/rig-daemon-check.c:
+	* src/rig-data.[ch]:
+	* src/rig-gui-ctrl2.c:
+	Added antenna control.
+
+	* src/rig-gui-lcd.c:
+	Fix buffer access out-of-bounds, found by cppcheck.
+
+	* po/fr.po:
+	Misc update.
+
+
 2010-02-05; Alexandru Csete <oz9aec@gmail.com>
 
     * src/rig-gui-lcd.c:
