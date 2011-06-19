@@ -993,6 +993,8 @@ rig_gui_lcd_set_freq_digits  (freq_t freq)
 		}
 	}
 
+	g_free(str);
+
 	if (changed)
 		g_signal_emit_by_name(lcd.canvas, "freq-changed");
 }

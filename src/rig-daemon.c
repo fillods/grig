@@ -529,6 +529,7 @@ rig_daemon_start       (int          rigid,
 				  _("%s: Init failed; Hamlib returned NULL!"),
 				  __FUNCTION__);
 
+		g_free (rigport);
 		return 1;
 	}
 
@@ -593,9 +594,10 @@ rig_daemon_start       (int          rigid,
 
 		/* send error report */
 		grig_debug_local (RIG_DEBUG_ERR,
-				  _("%s: Failed to open rig port %s (permissions?)"),
+				  _("%s: Failed to open rig port %s: %s (permissions?)"),
 				  __FUNCTION__,
-				  myrig->state.rigport.pathname);
+				  myrig->state.rigport.pathname,
+				  rigerror(retcode));
 
 		rig_cleanup (myrig);
 		return 1;
