@@ -103,7 +103,7 @@ with ;; so you can also import the log file into a spread sheet for further anal
 .PP
 Grig @VERSION@ supports the most commonly used CAT command implemented by hamlib. These
 include frequency, mode, filter and various level settings. Please note that not all
-features have been thoroughly tested since I don't have access to any modern high-end
+features have been thoroughly tested since I don't have access to any modern high\-end
 radios. Therefore, comments regarding success or failure in using grig will be highly
 appreciated.
 
@@ -111,11 +111,11 @@ appreciated.
 .TP
 Buffer Overflow in Radio
 By default, grig tries to execute rig commands as fast as possible in order to
-achieve an almost real-time remote control experience. This strategy has turned out
+achieve an almost real\-time remote control experience. This strategy has turned out
 to cause problems with some radios, probably because these radios acknowledge the
 reception of a command before executing them, whereby the next command will be sent
 before the previous one has terminated. To avoid any possible buffer overflow
-in these situations, one can try to experiment with the -D or --delay command line
+in these situations, one can try to experiment with the \-D or \-\-delay command line
 argument, which will put the specified delay in between each executed command. The
 default value is 10 milliseconds and the smallest possible value is 1 millisecond
 (if one specifies 0 millisecond on the command line, the default value will be
@@ -124,11 +124,11 @@ If you find a value which is better for your radio than the default value, pleas
 let us know about it.
 .TP
 Daemon Never Starts on FreeBSD
-There have been reports on that the new, thread-based daemon process is never
-started on FreeBSD, while the old, timeout-based daemon worked fine. It is therefore
+There have been reports on that the new, thread\-based daemon process is never
+started on FreeBSD, while the old, timeout\-based daemon worked fine. It is therefore
 possible to choose the two ways to run the daemon process. The default is the new
-thread based daemon, but if you use FreeBSD and nothing seems to work after start-up
-you can select the timout-based daemon with the -n or --nothread command line option.
+thread based daemon, but if you use FreeBSD and nothing seems to work after start\-up
+you can select the timout\-based daemon with the \-n or \-\-nothread command line option.
 .TP
 Connection Settings
 Once you have started grig you can not change the radio settings (model, device,
@@ -149,17 +149,17 @@ definitely appreciate your input.
 The situation gets even more complicated due to the fact that different radios
 behave in a different ways when they are powered OFF; some of them will continue to
 respond to remote commands, while others will not. Even the same radio, like the
-FT-817, can behave differently depending on whether it is powered from internal
+FT\-817, can behave differently depending on whether it is powered from internal
 batteries or external power supply.
 Grig tries to handle this mess by suspending all rig commands while in power OFF
 state. Only the power ON command will be sent to the rig.
 By default, the power status control is disabled and must explicitly be enabled
-using the -P or --enable-pwr command line switch.
+using the \-P or \-\-enable\-pwr command line switch.
 .TP
 PTT Control
 Similar to the power state, the PTT has caused strange behaviour on some radios.
-Consequently, it has been disabled by default but can be enabled using the -p or
---enable-ptt command line aguments.
+Consequently, it has been disabled by default but can be enabled using the \-p or
+\-\-enable\-ptt command line aguments.
 
 .SH "AUTHOR"
 Written by Alexandru Csete, OZ9AEC.
