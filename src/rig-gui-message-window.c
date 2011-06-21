@@ -256,8 +256,6 @@ add_debug_message (const gchar *datetime,
 {
 	guint        total;     /* totalt number of messages */
 	gchar       *str;       /* string to show message count */
-	guint        numlines;  /* the number of lines in the message */
-	guint        i;
 	GtkTreeIter  item;      /* new item added to the list store */
 
 

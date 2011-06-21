@@ -246,7 +246,7 @@ manage_debug_message (debug_msg_src_t source,
 	//struct timeval tval;
 	//struct timezone tzone;
 	time_t t;
-	gint x;
+	//gint x;
 	GTimeVal tval;
 
 	/* get the time */

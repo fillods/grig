@@ -455,7 +455,6 @@ static void delete (GtkWidget *button, gpointer data)
 {
     GtkTreeSelection *sel;
     GtkTreeModel *model;
-    GtkTreeModel *newmodel;
     GtkTreeIter   iter;
     gboolean      havesel = FALSE;
     gchar        *name,*fname;
