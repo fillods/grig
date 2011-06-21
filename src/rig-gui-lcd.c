@@ -96,6 +96,7 @@
  */
 typedef enum {
 	EVENT_OBJECT_NONE = -1,      /*!< No object. */
+	EVENT_OBJECT_FREQ_1G,       /*!< 1 GHz frequency digit. */
 	EVENT_OBJECT_FREQ_100M,     /*!< 100 MHz frequency digit. */
 	EVENT_OBJECT_FREQ_10M,      /*!< 10 MHz frequency digit. */
 	EVENT_OBJECT_FREQ_1M,       /*!< 1 MHz frequency digit. */
@@ -164,7 +165,7 @@ rig_gui_lcd_create ()
 	rig_gui_lcd_calc_dim ();
 
 	/* clear freqs buffers */
-	for (i=0; i<9; i++) {
+	for (i=0; i<10; i++) {
 		lcd.freqs1[i] = 'X';
 	}
 
@@ -400,7 +401,7 @@ rig_gui_lcd_expose_cb   (GtkWidget      *widget,
 
 
 	/* force digit update by clearing internal string buffer */
-	for (i=0; i<9; i++) {
+	for (i=0; i<10; i++) {
 		lcd.freqs1[i] = 'X';
 	}
 	rig_gui_lcd_set_freq_digits (lcd.freq1);
@@ -501,9 +502,9 @@ rig_gui_lcd_handle_event     (GtkWidget *widget,
 		else if (object > EVENT_OBJECT_FREQ_1) {
 
 			/* RIT/XIT event;
-			   object is in the range 9..11
+			   object is in the range 10..12
 			*/
-			power = 12 - object;
+			power = 13 - object;
 			deltar = pow (10, power);
 
 			if (deltar < rig_data_get_ritstep ()) {
@@ -543,7 +544,7 @@ rig_gui_lcd_handle_event     (GtkWidget *widget,
 				   not 0-terminated; it's just a byte array!
 				*/
 				str = g_strdup_printf ("%5d", lcd.rit);
-				str[object-8] = '0';
+				str[object-9] = '0';
 
 				newrit = (freq_t) g_strtod (str, NULL);
 
@@ -585,10 +586,10 @@ rig_gui_lcd_handle_event     (GtkWidget *widget,
 		}  /* else if object > EVENT_OBJECT_FREQ_1 */
 
 		else {  /* frequency event;
-                   object is in the range 0..8 with
-                   0 corresponding to 100 MHz
+                   object is in the range 0..9 with
+                   0 corresponding to 1 GHz
                 */
-			power = 8 - object;
+			power = 9 - object;
 			deltaf = pow (10, power);
 
 			if (deltaf < rig_data_get_fstep ()) {
@@ -623,7 +624,7 @@ rig_gui_lcd_handle_event     (GtkWidget *widget,
 				   WARNING: don't use lcd.freqs1 because it is
 				   not 0-terminated; it's just a byte array!
 				*/
-				str = g_strdup_printf ("%9.0f", lcd.freq1);
+				str = g_strdup_printf ("%10.0f", lcd.freq1);
 				str[object] = '0';
 
 				newfreq = (freq_t) g_strtod (str, NULL);
@@ -677,9 +678,9 @@ rig_gui_lcd_handle_event     (GtkWidget *widget,
 		else if (object > EVENT_OBJECT_FREQ_1) {
 
 			/* RIT/XIT event;
-			   object is in the range 9..11
+			   object is in the range 10..12
 			*/
-			power = 12 - object;
+			power = 13 - object;
 			deltar = pow (10, power);
 
 			if (deltar < rig_data_get_ritstep ()) {
@@ -736,10 +737,10 @@ rig_gui_lcd_handle_event     (GtkWidget *widget,
 		}
 
 		else {	/* frequency event
-                   object is in the range 0..8 with
-                   0 corresponding to 100 MHz
+                   object is in the range 0..9 with
+                   0 corresponding to 1 GHz
                 */
-			power = 8 - object;
+			power = 9 - object;
 			deltaf = pow (10, power);
 
 			if (deltaf < rig_data_get_fstep ()) {
@@ -829,9 +830,9 @@ rig_gui_lcd_get_event_object (GdkEvent *event)
 
 	/* check x */
 	if ((x < lcd.digits[0].x)                                     || 
-	    (x > lcd.digits[11].x+lcd.dsw)                            ||
-	    ((x > lcd.digits[8].x+lcd.dsw) && (x < lcd.digits[9].x))  ||
-	    ((x > lcd.digits[9].x+lcd.dsw) && (x < lcd.digits[10].x)))   {
+	    (x > lcd.digits[12].x+lcd.dsw)                            ||
+	    ((x > lcd.digits[9].x+lcd.dsw) && (x < lcd.digits[10].x))  ||
+	    ((x > lcd.digits[10].x+lcd.dsw) && (x < lcd.digits[11].x)))   {
 		
 		return EVENT_OBJECT_NONE;
 	}
@@ -842,7 +843,7 @@ rig_gui_lcd_get_event_object (GdkEvent *event)
 		   are changed more often.
 		*/
 		/* small digits */
-		for (i=11; i>5; i--) {
+		for (i=12; i>6; i--) {
 			
 			if ((x > lcd.digits[i].x) && (x < lcd.digits[i].x+lcd.dsw)) {
 				return i;
@@ -851,7 +852,7 @@ rig_gui_lcd_get_event_object (GdkEvent *event)
 		}
 		
 		/* then try large digits */
-		for (i=5; i>=0; i--) {
+		for (i=6; i>=0; i--) {
 			
 			if ((x > lcd.digits[i].x) && (x < lcd.digits[i].x+lcd.dlw)) {
 				return i;
@@ -897,7 +898,7 @@ rig_gui_lcd_calc_dim    ()
 	lcd.csw = gdk_pixbuf_get_width  (digits_small[12]);
 
 	/* calculate drawing area dimensions */
-	lcd.width = 6*lcd.dlw + 2*lcd.clw + 8*lcd.dsw + lcd.csw + 2*LCD_MARGIN;
+	lcd.width = 7*lcd.dlw + 3*lcd.clw + 8*lcd.dsw + lcd.csw + 2*LCD_MARGIN;
 	lcd.height = 80;
 
 	/* calculate screen position for each digit; this will ease the
@@ -905,27 +906,28 @@ rig_gui_lcd_calc_dim    ()
 	*/
 	/* VFO digits */
 	lcd.digits[0].x = LCD_MARGIN / 2;
-	lcd.digits[1].x = lcd.digits[0].x + lcd.dlw;
+	lcd.digits[1].x = lcd.digits[0].x + lcd.clw + lcd.dlw;
 	lcd.digits[2].x = lcd.digits[1].x + lcd.dlw;
-	lcd.digits[3].x = lcd.digits[2].x + lcd.clw + lcd.dlw;   /**/
-	lcd.digits[4].x = lcd.digits[3].x + lcd.dlw;
+	lcd.digits[3].x = lcd.digits[2].x + lcd.dlw;
+	lcd.digits[4].x = lcd.digits[3].x + lcd.clw + lcd.dlw;   /**/
 	lcd.digits[5].x = lcd.digits[4].x + lcd.dlw;
-	lcd.digits[6].x = lcd.digits[5].x + lcd.clw + lcd.dlw;   /**/
-	lcd.digits[7].x = lcd.digits[6].x + lcd.dsw;
+	lcd.digits[6].x = lcd.digits[5].x + lcd.dlw;
+	lcd.digits[7].x = lcd.digits[6].x + lcd.clw + lcd.dlw;   /**/
 	lcd.digits[8].x = lcd.digits[7].x + lcd.dsw;
-	lcd.digits[9].x = lcd.digits[8].x + 4*lcd.dsw; /**/
-	lcd.digits[10].x = lcd.digits[9].x + lcd.csw + lcd.dsw;   /**/
-	lcd.digits[11].x = lcd.digits[10].x + lcd.dsw;
+	lcd.digits[9].x = lcd.digits[8].x + lcd.dsw;
+	lcd.digits[10].x = lcd.digits[9].x + 4*lcd.dsw; /**/
+	lcd.digits[11].x = lcd.digits[10].x + lcd.csw + lcd.dsw;   /**/
+	lcd.digits[12].x = lcd.digits[11].x + lcd.dsw;
 	
-	for (i=0; i<6; i++)
+	for (i=0; i<7; i++)
 		lcd.digits[i].y = (lcd.height - lcd.dlh)/2;
 
-	for (i=6; i<12; i++)
+	for (i=7; i<13; i++)
 		lcd.digits[i].y = lcd.digits[1].y + (lcd.dlh-lcd.dsh)-1;
 
-	lcd.others[0].x = lcd.digits[2].x + lcd.dlw;
-	lcd.others[1].x = lcd.digits[5].x + lcd.dlw;
-	lcd.others[2].x = lcd.digits[9].x + lcd.dsw;
+	lcd.others[0].x = lcd.digits[3].x + lcd.dlw;
+	lcd.others[1].x = lcd.digits[6].x + lcd.dlw;
+	lcd.others[2].x = lcd.digits[10].x + lcd.dsw;
 
 	lcd.others[0].y = (lcd.height - lcd.dlh)/2;
 	lcd.others[1].y = (lcd.height - lcd.dlh)/2;
@@ -942,7 +944,7 @@ rig_gui_lcd_calc_dim    ()
  * The frequency is received in hamlib format (float) and converted to a
  * string with 9 digits. If the frequency is less than 1 GHz the obtained
  * resolution will be 1 Hz, while for frequenciesabove 1 GHz the resolution
- * will be 1 kHz.
+ * will be 1 kHz
  *
  * \note The function is optimized in the sense that before drawing of each digit
  * it is checked whether the new digit is different from the one already beeing
@@ -967,21 +969,21 @@ rig_gui_lcd_set_freq_digits  (freq_t freq)
 		return;
 
 	/* saturate frequency */
-	if (freq >= GHz(1))
-		freq = MHz(999.999999);
+	if (freq >= GHz(10))
+		freq = MHz(9999.999999);
 
 	/* store the new frequency for later use */
 	lcd.freq1 = freq;
 
 	/* convert frequency to string */
-	str = g_strdup_printf ("%9.0f", freq);
+	str = g_strdup_printf ("%10.0f", freq);
 
 	/* for each digit check whether the new digit is different from the one
 	   already beeing displayed; if yes, draw the new digit, otherwise do
 	   nothing.
 	*/
 
-	for (i=0; i<9; i++) {
+	for (i=0; i<10; i++) {
 
 		if (str[i] != lcd.freqs1[i]) {
 
@@ -1008,84 +1010,84 @@ rig_gui_lcd_draw_digit(gint position, char digit)
 
 		case '0':
 			gdk_draw_pixbuf (GDK_DRAWABLE (lcd.canvas->window), NULL,
-                                 (i < 6) ? digits_normal[0] : digits_small[0],
+                                 (i < 7) ? digits_normal[0] : digits_small[0],
                                  0, 0, lcd.digits[i].x, lcd.digits[i].y, -1, -1,
                                  GDK_RGB_DITHER_NONE, 0, 0);
 			break;
 
 		case '1':
 			gdk_draw_pixbuf (GDK_DRAWABLE (lcd.canvas->window), NULL,
-                                 (i < 6) ? digits_normal[1] : digits_small[1],
+                                 (i < 7) ? digits_normal[1] : digits_small[1],
                                  0, 0, lcd.digits[i].x, lcd.digits[i].y, -1, -1,
                                  GDK_RGB_DITHER_NONE, 0, 0);
 		break;
 
 		case '2':
 			gdk_draw_pixbuf (GDK_DRAWABLE (lcd.canvas->window), NULL,
-                                 (i < 6) ? digits_normal[2] : digits_small[2],
+                                 (i < 7) ? digits_normal[2] : digits_small[2],
                                  0, 0, lcd.digits[i].x, lcd.digits[i].y, -1, -1,
                                  GDK_RGB_DITHER_NONE, 0, 0);
 		break;
 
 		case '3':
 			gdk_draw_pixbuf (GDK_DRAWABLE (lcd.canvas->window), NULL,
-                                 (i < 6) ? digits_normal[3] : digits_small[3],
+                                 (i < 7) ? digits_normal[3] : digits_small[3],
                                  0, 0, lcd.digits[i].x, lcd.digits[i].y, -1, -1,
                                  GDK_RGB_DITHER_NONE, 0, 0);
 		break;
 
 		case '4':
 			gdk_draw_pixbuf (GDK_DRAWABLE (lcd.canvas->window), NULL,
-                                 (i < 6) ? digits_normal[4] : digits_small[4],
+                                 (i < 7) ? digits_normal[4] : digits_small[4],
                                  0, 0, lcd.digits[i].x, lcd.digits[i].y, -1, -1,
                                  GDK_RGB_DITHER_NONE, 0, 0);
 		break;
 
 		case '5':
 			gdk_draw_pixbuf (GDK_DRAWABLE (lcd.canvas->window), NULL,
-                                 (i < 6) ? digits_normal[5] : digits_small[5],
+                                 (i < 7) ? digits_normal[5] : digits_small[5],
                                  0, 0, lcd.digits[i].x, lcd.digits[i].y, -1, -1,
                                  GDK_RGB_DITHER_NONE, 0, 0);
 		break;
 
 		case '6':
 			gdk_draw_pixbuf (GDK_DRAWABLE (lcd.canvas->window), NULL,
-                                 (i < 6) ? digits_normal[6] : digits_small[6],
+                                 (i < 7) ? digits_normal[6] : digits_small[6],
                                  0, 0, lcd.digits[i].x, lcd.digits[i].y, -1, -1,
                                  GDK_RGB_DITHER_NONE, 0, 0);
 		break;
 
 		case '7':
 			gdk_draw_pixbuf (GDK_DRAWABLE (lcd.canvas->window), NULL,
-                                 (i < 6) ? digits_normal[7] : digits_small[7],
+                                 (i < 7) ? digits_normal[7] : digits_small[7],
                                  0, 0, lcd.digits[i].x, lcd.digits[i].y, -1, -1,
                                  GDK_RGB_DITHER_NONE, 0, 0);
 		break;
 
 		case '8':
 			gdk_draw_pixbuf (GDK_DRAWABLE (lcd.canvas->window), NULL,
-                                 (i < 6) ? digits_normal[8] : digits_small[8],
+                                 (i < 7) ? digits_normal[8] : digits_small[8],
                                  0, 0, lcd.digits[i].x, lcd.digits[i].y, -1, -1,
                                  GDK_RGB_DITHER_NONE, 0, 0);
 		break;
 
 		case '9':
 			gdk_draw_pixbuf (GDK_DRAWABLE (lcd.canvas->window), NULL,
-                                 (i < 6) ? digits_normal[9] : digits_small[9],
+                                 (i < 7) ? digits_normal[9] : digits_small[9],
                                  0, 0, lcd.digits[i].x, lcd.digits[i].y, -1, -1,
                                  GDK_RGB_DITHER_NONE, 0, 0);
 		break;
 
 		case ' ':
 			gdk_draw_pixbuf (GDK_DRAWABLE (lcd.canvas->window), NULL,
-                                 (i < 6) ? digits_normal[10] : digits_small[10],
+                                 (i < 7) ? digits_normal[10] : digits_small[10],
                                  0, 0, lcd.digits[i].x, lcd.digits[i].y, -1, -1,
                                  GDK_RGB_DITHER_NONE, 0, 0);
 		break;
 
 		case '-':
 			gdk_draw_pixbuf (GDK_DRAWABLE (lcd.canvas->window), NULL,
-                                 (i < 6) ? digits_normal[11] : digits_small[11],
+                                 (i < 7) ? digits_normal[11] : digits_small[11],
                                  0, 0, lcd.digits[i].x, lcd.digits[i].y, -1, -1,
                                  GDK_RGB_DITHER_NONE, 0, 0);
 		break;
@@ -1105,7 +1107,7 @@ rig_gui_lcd_set_next_digit(char n)
 	if (!lcd.manual)
 		return;
 
-	lcd.freqm += pow(10, 8 - lcd.digit) * (n - '0');
+	lcd.freqm += pow(10, 9 - lcd.digit) * (n - '0');
 
 	rig_gui_lcd_draw_digit(lcd.digit, n);
 
@@ -1113,7 +1115,7 @@ rig_gui_lcd_set_next_digit(char n)
 	lcd.digit++;
 
 	/* check if this is the last digit and set the freq */
-	if (lcd.digit == 9) {
+	if (lcd.digit == 10) {
 		rig_data_set_freq(1, lcd.freqm);
 		rig_gui_lcd_set_freq_digits(lcd.freqm);
 
@@ -1141,7 +1143,7 @@ rig_gui_lcd_begin_manual_entry  (void)
 			return;
 		}
 
-		for (i = lcd.digit; i < 9; i++) {
+		for (i = lcd.digit; i < 10; i++) {
 			rig_gui_lcd_set_next_digit('0');
 		}
 
@@ -1152,10 +1154,10 @@ rig_gui_lcd_begin_manual_entry  (void)
 	lcd.digit = 0;
 	lcd.freqm = 0;
 
-	for (i = 0; i < 9; i++) {
+	for (i = 0; i < 10; i++) {
 
 		gdk_draw_pixbuf (GDK_DRAWABLE(lcd.canvas->window), NULL,
-			(i < 6) ? digits_normal[11] : digits_small[11],
+			(i < 7) ? digits_normal[11] : digits_small[11],
 			0, 0, lcd.digits[i].x, lcd.digits[i].y, -1, -1,
 			GDK_RGB_DITHER_NONE, 0, 0);
 	}
@@ -1176,7 +1178,7 @@ rig_gui_lcd_clear_manual_entry  (void)
 	lcd.manual = FALSE;
 
 	/* force digit update by clearing internal string buffer */
-	for (i = 0; i < 9; i++) {
+	for (i = 0; i < 10; i++) {
 		lcd.freqs1[i] = 'X';
 	}
 
@@ -1236,14 +1238,14 @@ rig_gui_lcd_set_rit_digits   (shortfreq_t freq)
         case ' ':
             gdk_draw_pixbuf (GDK_DRAWABLE (lcd.canvas->window), NULL,
                              digits_small[10], 0, 0,
-                             lcd.digits[9].x - lcd.dsw, lcd.digits[9].y,
+                             lcd.digits[10].x - lcd.dsw, lcd.digits[10].y,
                              -1, -1, GDK_RGB_DITHER_NONE, 0, 0);
             break;
 
         case '-':
             gdk_draw_pixbuf (GDK_DRAWABLE (lcd.canvas->window), NULL,
                              digits_small[11], 0, 0,
-                             lcd.digits[9].x - lcd.dsw, lcd.digits[9].y,
+                             lcd.digits[10].x - lcd.dsw, lcd.digits[10].y,
                              -1, -1, GDK_RGB_DITHER_NONE, 0, 0);
             break;
 
@@ -1267,61 +1269,61 @@ rig_gui_lcd_set_rit_digits   (shortfreq_t freq)
 			case '0':
 			case ' ':
 				gdk_draw_pixbuf (GDK_DRAWABLE (lcd.canvas->window), NULL, digits_small[0],
-                                 0, 0, lcd.digits[i+8].x, lcd.digits[i+8].y, -1, -1,
+                                 0, 0, lcd.digits[i+9].x, lcd.digits[i+9].y, -1, -1,
                                  GDK_RGB_DITHER_NONE, 0, 0);
 				break;
 
 			case '1':
 				gdk_draw_pixbuf (GDK_DRAWABLE (lcd.canvas->window), NULL, digits_small[1],
-                                 0, 0, lcd.digits[i+8].x, lcd.digits[i+8].y, -1, -1,
+                                 0, 0, lcd.digits[i+9].x, lcd.digits[i+9].y, -1, -1,
                                  GDK_RGB_DITHER_NONE, 0, 0);
 				break;
 
 			case '2':
 				gdk_draw_pixbuf (GDK_DRAWABLE (lcd.canvas->window), NULL, digits_small[2],
-                                 0, 0, lcd.digits[i+8].x, lcd.digits[i+8].y, -1, -1,
+                                 0, 0, lcd.digits[i+9].x, lcd.digits[i+9].y, -1, -1,
                                  GDK_RGB_DITHER_NONE, 0, 0);
 				break;
 
 			case '3':
 				gdk_draw_pixbuf (GDK_DRAWABLE (lcd.canvas->window), NULL, digits_small[3],
-                                 0, 0, lcd.digits[i+8].x, lcd.digits[i+8].y, -1, -1,
+                                 0, 0, lcd.digits[i+9].x, lcd.digits[i+9].y, -1, -1,
                                  GDK_RGB_DITHER_NONE, 0, 0);
 				break;
 
 			case '4':
 				gdk_draw_pixbuf (GDK_DRAWABLE (lcd.canvas->window), NULL, digits_small[4],
-                                 0, 0, lcd.digits[i+8].x, lcd.digits[i+8].y, -1, -1,
+                                 0, 0, lcd.digits[i+9].x, lcd.digits[i+9].y, -1, -1,
                                  GDK_RGB_DITHER_NONE, 0, 0);
 				break;
 
 			case '5':
 				gdk_draw_pixbuf (GDK_DRAWABLE (lcd.canvas->window), NULL, digits_small[5],
-                                 0, 0, lcd.digits[i+8].x, lcd.digits[i+8].y, -1, -1,
+                                 0, 0, lcd.digits[i+9].x, lcd.digits[i+9].y, -1, -1,
                                  GDK_RGB_DITHER_NONE, 0, 0);
 				break;
 
 			case '6':
 				gdk_draw_pixbuf (GDK_DRAWABLE (lcd.canvas->window), NULL, digits_small[6],
-                                 0, 0, lcd.digits[i+8].x, lcd.digits[i+8].y, -1, -1,
+                                 0, 0, lcd.digits[i+9].x, lcd.digits[i+9].y, -1, -1,
                                  GDK_RGB_DITHER_NONE, 0, 0);
 				break;
 
 			case '7':
 				gdk_draw_pixbuf (GDK_DRAWABLE (lcd.canvas->window), NULL, digits_small[7],
-                                 0, 0, lcd.digits[i+8].x, lcd.digits[i+8].y, -1, -1,
+                                 0, 0, lcd.digits[i+9].x, lcd.digits[i+9].y, -1, -1,
                                  GDK_RGB_DITHER_NONE, 0, 0);
 				break;
 
 			case '8':
 				gdk_draw_pixbuf (GDK_DRAWABLE (lcd.canvas->window), NULL, digits_small[8],
-                                 0, 0, lcd.digits[i+8].x, lcd.digits[i+8].y, -1, -1,
+                                 0, 0, lcd.digits[i+9].x, lcd.digits[i+9].y, -1, -1,
                                  GDK_RGB_DITHER_NONE, 0, 0);
 				break;
 
 			case '9':
 				gdk_draw_pixbuf (GDK_DRAWABLE (lcd.canvas->window), NULL, digits_small[9],
-                                 0, 0, lcd.digits[i+8].x, lcd.digits[i+8].y, -1, -1,
+                                 0, 0, lcd.digits[i+9].x, lcd.digits[i+9].y, -1, -1,
                                  GDK_RGB_DITHER_NONE, 0, 0);
 				break;
 
@@ -1436,15 +1438,15 @@ rig_gui_lcd_draw_text        ()
 	/* draw text; frequency */
 	gdk_draw_layout (lcd.canvas->window,
                      lcd.gc1,
-                     lcd.digits[8].x + lcd.dsw + 5,
-                     lcd.digits[8].y + lcd.dsh - h,
+                     lcd.digits[9].x + lcd.dsw + 5,
+                     lcd.digits[9].y + lcd.dsh - h,
                      layout);
 
 	/* draw text; rit */
 	gdk_draw_layout (lcd.canvas->window,
                      lcd.gc1,
-                     lcd.digits[11].x + lcd.dsw + 5,
-                     lcd.digits[11].y + lcd.dsh - h,
+                     lcd.digits[12].x + lcd.dsw + 5,
+                     lcd.digits[12].y + lcd.dsh - h,
                      layout);
 
 	rig_gui_lcd_update_vfo ();
@@ -1461,7 +1463,7 @@ rig_gui_lcd_draw_text        ()
 	/* draw text; RIT */
 	gdk_draw_layout (lcd.canvas->window,
                      lcd.gc1,
-                     lcd.digits[10].x,
+                     lcd.digits[11].x,
                      lcd.digits[0].y - h,
                      layout);
 
@@ -1540,7 +1542,7 @@ rig_gui_lcd_update_vfo ()
 	gdk_draw_rectangle (GDK_DRAWABLE (lcd.canvas->window),
                         lcd.gc2,
                         TRUE,
-                        lcd.digits[4].x,
+                        lcd.digits[5].x,
                         lcd.digits[0].y - h,
                         2*w,
                         h);
@@ -1549,7 +1551,7 @@ rig_gui_lcd_update_vfo ()
 	/* draw text */
 	gdk_draw_layout (lcd.canvas->window,
                      lcd.gc1,
-                     lcd.digits[4].x,
+                     lcd.digits[5].x,
                      lcd.digits[0].y - h,
                      layout);
 

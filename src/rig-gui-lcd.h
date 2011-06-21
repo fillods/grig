@@ -91,7 +91,7 @@ typedef struct {
 	GdkGC            *gc2;             /*!< Graphics context (inverted). */
 	guint             width;           /*!< Canvas width. */
 	guint             height;          /*!< Canvas height. */
-	lcd_coor_t        digits[12];      /*!< Starting points for all digits. */
+	lcd_coor_t        digits[13];      /*!< Starting points for all digits. */
 	lcd_coor_t        others[5];       /*!< Starting points for other elements. */
 	guint             dlw;             /*!< Width of large digits. */
 	guint             dlh;             /*!< Height of large digits. */
@@ -109,7 +109,7 @@ typedef struct {
 	gdouble           freq1;           /*!< Main frequency value. */
 	gdouble           freq2;           /*!< Secondary frequency value. */
 	gdouble           freqm;           /*!< Manually entered frequency value. */
-	gchar             freqs1[9];       /*!< Frequency array. */
+	gchar             freqs1[10];      /*!< Frequency array. */
 	gint              rit;             /*!< Current RIT value. */
 	gchar             rits[4];         /*!< -9999 Hz but last digit not shown */
 	gint              xit;             /*!< Current XIT value. */

@@ -1,3 +1,20 @@
+2011-06-21; Nirgal Vourgère <contact_hamlin@niral.com>
+
+	* src/grig-debug.c:
+	* src/rig-data.c:
+	* rig-gui-message-window.c:
+	* src/rig-selector.c:
+	Removed a bunch of unused vars
+
+	* doc/man/grig.1.in:
+	Escaped addtionnal '-' in man file
+
+	* po/POTFILES.in:
+	Added extra files containing strings to translate
+
+	* src/rig-gui-lcd.[ch]:
+	Added an extra gigahertz digit in lcd display
+
 2010-03-02; Stephane Fillod <fillods@users.sf.net>
 
 	* src/rig-gui-message-window.c:
