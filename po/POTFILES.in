@@ -6,6 +6,7 @@ src/grig-config.c
 src/grig-debug.c
 src/grig-gtk-workarounds.c
 src/grig-menubar.c
+src/key-press-handler.c
 src/main.c
 src/rig-anomaly.c
 src/rig-daemon.c
@@ -16,6 +17,8 @@ src/rig-gui.c
 src/rig-gui-ctrl2.c
 src/rig-gui-func.c
 src/rig-gui-info.c
+src/rig-gui-info-data.h
+src/rig-gui-keypad.c
 src/rig-gui-lcd.c
 src/rig-gui-levels.c
 src/rig-gui-message-window.c
@@ -24,5 +27,6 @@ src/rig-gui-smeter.c
 src/rig-gui-smeter-conv.c
 src/rig-gui-tx.c
 src/rig-gui-vfo.c
+src/rig-selector.c
 src/rig-state.c
 src/rig-utils.c
