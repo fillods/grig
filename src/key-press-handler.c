@@ -79,8 +79,8 @@ snooper (GtkWidget *grab_widget, GdkEventKey *event, gpointer func_data)
 
     switch (event->keyval) {
 
-        /* Arrow Up: Increase frequency with lowest step */
-    case GDK_Up:
+        /* Arrow Right: Increase frequency with lowest step */
+    case GDK_Right:
 
         if (event->type == GDK_KEY_PRESS) {
             freq = rig_data_get_freq (1) + rig_data_get_fstep ();
@@ -92,8 +92,8 @@ snooper (GtkWidget *grab_widget, GdkEventKey *event, gpointer func_data)
         stop_processing = TRUE;
         break;
 
-        /* Arrow Down: Descrease frequency with lowest step */
-    case GDK_Down:
+        /* Arrow Left: Descrease frequency with lowest step */
+    case GDK_Left:
 
         if (event->type == GDK_KEY_PRESS) {
             freq = rig_data_get_freq (1) - rig_data_get_fstep ();

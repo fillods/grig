@@ -1,4 +1,10 @@
-2011-06-21; Nirgal Vourgère <contact_hamlin@niral.com>
+2011-06-21; Nirgal Vourgère <contact_hamlib@niral.com>
+
+	* NEWS:
+	* src/key-press-handler.c:
+	Now using left/right arrows rather than up/down for freq change
+
+2011-06-21; Nirgal Vourgère <contact_hamlib@niral.com>
 
 	* src/grig-debug.c:
 	* src/rig-data.c:

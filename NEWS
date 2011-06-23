@@ -1,8 +1,8 @@
 GRIG 0.8.0 (TBD):
 
 - Frequency entry via keypad (thanks to Alessandro Zummo).
-- Arrow UP/DOWN will change the frequency with the smallest step. This can be
-  used for tuning using external devices like the Powermate.
+- Arrow LEFT/RIGHT will change the frequency with the smallest step. This can
+  be used for tuning using external devices like the Powermate.
 * Support for VFO->MEM and MEM->VFO function.
 - Fixed crash that occurs when mouse is clicked between MHz and kHz digits.
   Reported as Ubuntu bug 517816.
