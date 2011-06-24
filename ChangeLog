@@ -1,3 +1,8 @@
+2011-06-24; Stephane Fillod <fillods@users.sf.net>
+
+	* src/rig-gui-lcd.c:
+	Fix VFO indicator not being repainted after window minimization
+
 2011-06-21; Nirgal Vourgère <contact_hamlib@nirgal.com>
 
 	* NEWS:

@@ -358,9 +358,9 @@ rig_gui_lcd_load_digits (const gchar *name)
  *  \param event  The event.
  *  \param data   User data; always NULL.
  * 
- * This function is called when the rawing area widget is finalized
- * and exposed. Itis used to finish the initialization of those
- * parameters, which need attributes rom visible widgets.
+ * This function is called when the drawing area widget is finalized
+ * and exposed. It is used to finish the initialization of those
+ * parameters, which need attributes from visible widgets.
  *
  * \bug canvas height is hadcoded according to smeter height.
  *
@@ -436,6 +436,10 @@ rig_gui_lcd_expose_cb   (GtkWidget      *widget,
 	/* draw text */
 	rig_gui_lcd_draw_text ();
 
+	/* force VFO update by clearing internal vfo state */
+	lcd.vfo = RIG_VFO_NONE;
+	rig_gui_lcd_update_vfo ();
+
 	/* indicate that widget is ready to 
 	   be used
 	*/
@@ -484,7 +488,7 @@ rig_gui_lcd_handle_event     (GtkWidget *widget,
 	/* in case of expose-event call the expose event handler */
 	switch (event->type) {
 
-		/* drawing area hss been exposed */
+		/* drawing area has been exposed */
 	case GDK_EXPOSE:
 		return rig_gui_lcd_expose_cb (widget, (GdkEventExpose *) event, data);
 		break;
