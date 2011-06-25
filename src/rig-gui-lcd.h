@@ -92,7 +92,7 @@ typedef struct {
 	guint             width;           /*!< Canvas width. */
 	guint             height;          /*!< Canvas height. */
 	lcd_coor_t        digits[13];      /*!< Starting points for all digits. */
-	lcd_coor_t        others[5];       /*!< Starting points for other elements. */
+	lcd_coor_t        dots[2];       /*!< Starting points for dots. */
 	guint             dlw;             /*!< Width of large digits. */
 	guint             dlh;             /*!< Height of large digits. */
 	guint             clw;             /*!< Width of large separator. */

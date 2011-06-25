@@ -412,19 +412,15 @@ rig_gui_lcd_expose_cb   (GtkWidget      *widget,
 	}
 	rig_gui_lcd_set_rit_digits (lcd.rit);
 
-	/* large dots */
-    /* 	gdk_draw_pixbuf (GDK_DRAWABLE (widget->window), NULL, digits_normal[12], */
-    /* 			 0, 0, lcd.others[0].x, lcd.others[0].y, -1, -1, */
-    /* 			 GDK_RGB_DITHER_NONE, 0, 0); */
-
+	/* large dot */
 	gdk_draw_pixbuf (GDK_DRAWABLE (widget->window), NULL, digits_normal[12],
-                     0, 0, lcd.others[1].x, lcd.others[1].y, -1, -1,
-                     GDK_RGB_DITHER_NONE, 0, 0);
+	                 0, 0, lcd.dots[0].x, lcd.dots[0].y, -1, -1,
+	                 GDK_RGB_DITHER_NONE, 0, 0);
 
 	/* small dot */
 	gdk_draw_pixbuf (GDK_DRAWABLE (widget->window), NULL, digits_small[12],
-                     0, 0, lcd.others[2].x, lcd.others[2].y, -1, -1,
-                     GDK_RGB_DITHER_NONE, 0, 0);
+	                 0, 0, lcd.dots[1].x, lcd.dots[1].y, -1, -1,
+	                 GDK_RGB_DITHER_NONE, 0, 0);
 
 
 
@@ -929,13 +925,11 @@ rig_gui_lcd_calc_dim    ()
 	for (i=7; i<13; i++)
 		lcd.digits[i].y = lcd.digits[1].y + (lcd.dlh-lcd.dsh)-1;
 
-	lcd.others[0].x = lcd.digits[3].x + lcd.dlw;
-	lcd.others[1].x = lcd.digits[6].x + lcd.dlw;
-	lcd.others[2].x = lcd.digits[10].x + lcd.dsw;
+	lcd.dots[0].x = lcd.digits[6].x + lcd.dlw;
+	lcd.dots[1].x = lcd.digits[10].x + lcd.dsw;
 
-	lcd.others[0].y = (lcd.height - lcd.dlh)/2;
-	lcd.others[1].y = (lcd.height - lcd.dlh)/2;
-	lcd.others[2].y = lcd.digits[1].y + (lcd.dlh-lcd.dsh)-1;
+	lcd.dots[0].y = (lcd.height - lcd.dlh)/2;
+	lcd.dots[1].y = lcd.digits[1].y + (lcd.dlh-lcd.dsh)-1;
 
 
 }
