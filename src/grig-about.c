@@ -68,9 +68,9 @@ const gchar license[] = N_("Copyright (C) 2001-2009 Alexandru Csete OZ9AEC>\n\n"
                     "along with this program; if not, you can find a copy on the FSF\n"\
                     "website http://www.fsf.org/ or you can write to the\n\n"
                     "Free Software Foundation, Inc.\n"\
-                    "59 Temple Place - Suite 330\n"
+                    "51 Franklin Street - Fifth Floor\n"
                     "Boston\n"\
-                    "MA 02111-1307\n"
+                    "MA 02110-1301\n"
                     "USA.\n");
 
 
