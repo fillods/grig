@@ -1008,97 +1008,65 @@ rig_gui_lcd_set_freq_digits  (freq_t freq)
 static void
 rig_gui_lcd_draw_digit(gint position, char digit)
 {
-	gint i = position;
+	gint ipixmap; /* index in pixmap */
 
 	switch (digit) {
 
-		case '0':
-			gdk_draw_pixbuf (GDK_DRAWABLE (lcd.canvas->window), NULL,
-                                 (i < 7) ? digits_normal[0] : digits_small[0],
-                                 0, 0, lcd.digits[i].x, lcd.digits[i].y, -1, -1,
-                                 GDK_RGB_DITHER_NONE, 0, 0);
-			break;
-
-		case '1':
-			gdk_draw_pixbuf (GDK_DRAWABLE (lcd.canvas->window), NULL,
-                                 (i < 7) ? digits_normal[1] : digits_small[1],
-                                 0, 0, lcd.digits[i].x, lcd.digits[i].y, -1, -1,
-                                 GDK_RGB_DITHER_NONE, 0, 0);
+	case '0':
+		ipixmap = 0;
 		break;
 
-		case '2':
-			gdk_draw_pixbuf (GDK_DRAWABLE (lcd.canvas->window), NULL,
-                                 (i < 7) ? digits_normal[2] : digits_small[2],
-                                 0, 0, lcd.digits[i].x, lcd.digits[i].y, -1, -1,
-                                 GDK_RGB_DITHER_NONE, 0, 0);
+	case '1':
+		ipixmap = 1;
 		break;
 
-		case '3':
-			gdk_draw_pixbuf (GDK_DRAWABLE (lcd.canvas->window), NULL,
-                                 (i < 7) ? digits_normal[3] : digits_small[3],
-                                 0, 0, lcd.digits[i].x, lcd.digits[i].y, -1, -1,
-                                 GDK_RGB_DITHER_NONE, 0, 0);
+	case '2':
+		ipixmap = 2;
 		break;
 
-		case '4':
-			gdk_draw_pixbuf (GDK_DRAWABLE (lcd.canvas->window), NULL,
-                                 (i < 7) ? digits_normal[4] : digits_small[4],
-                                 0, 0, lcd.digits[i].x, lcd.digits[i].y, -1, -1,
-                                 GDK_RGB_DITHER_NONE, 0, 0);
+	case '3':
+		ipixmap = 3;
 		break;
 
-		case '5':
-			gdk_draw_pixbuf (GDK_DRAWABLE (lcd.canvas->window), NULL,
-                                 (i < 7) ? digits_normal[5] : digits_small[5],
-                                 0, 0, lcd.digits[i].x, lcd.digits[i].y, -1, -1,
-                                 GDK_RGB_DITHER_NONE, 0, 0);
+	case '4':
+		ipixmap = 4;
 		break;
 
-		case '6':
-			gdk_draw_pixbuf (GDK_DRAWABLE (lcd.canvas->window), NULL,
-                                 (i < 7) ? digits_normal[6] : digits_small[6],
-                                 0, 0, lcd.digits[i].x, lcd.digits[i].y, -1, -1,
-                                 GDK_RGB_DITHER_NONE, 0, 0);
+	case '5':
+		ipixmap = 5;
 		break;
 
-		case '7':
-			gdk_draw_pixbuf (GDK_DRAWABLE (lcd.canvas->window), NULL,
-                                 (i < 7) ? digits_normal[7] : digits_small[7],
-                                 0, 0, lcd.digits[i].x, lcd.digits[i].y, -1, -1,
-                                 GDK_RGB_DITHER_NONE, 0, 0);
+	case '6':
+		ipixmap = 6;
 		break;
 
-		case '8':
-			gdk_draw_pixbuf (GDK_DRAWABLE (lcd.canvas->window), NULL,
-                                 (i < 7) ? digits_normal[8] : digits_small[8],
-                                 0, 0, lcd.digits[i].x, lcd.digits[i].y, -1, -1,
-                                 GDK_RGB_DITHER_NONE, 0, 0);
+	case '7':
+		ipixmap = 7;
 		break;
 
-		case '9':
-			gdk_draw_pixbuf (GDK_DRAWABLE (lcd.canvas->window), NULL,
-                                 (i < 7) ? digits_normal[9] : digits_small[9],
-                                 0, 0, lcd.digits[i].x, lcd.digits[i].y, -1, -1,
-                                 GDK_RGB_DITHER_NONE, 0, 0);
+	case '8':
+		ipixmap = 8;
 		break;
 
-		case ' ':
-			gdk_draw_pixbuf (GDK_DRAWABLE (lcd.canvas->window), NULL,
-                                 (i < 7) ? digits_normal[10] : digits_small[10],
-                                 0, 0, lcd.digits[i].x, lcd.digits[i].y, -1, -1,
-                                 GDK_RGB_DITHER_NONE, 0, 0);
+	case '9':
+		ipixmap = 9;
 		break;
 
-		case '-':
-			gdk_draw_pixbuf (GDK_DRAWABLE (lcd.canvas->window), NULL,
-                                 (i < 7) ? digits_normal[11] : digits_small[11],
-                                 0, 0, lcd.digits[i].x, lcd.digits[i].y, -1, -1,
-                                 GDK_RGB_DITHER_NONE, 0, 0);
+	case ' ':
+		ipixmap = 10;
 		break;
 
-		default: /* critical error */
-			break;
+	case '-':
+		ipixmap = 11;
+		break;
+
+	default: /* critical error */
+		return;
 	}
+	gdk_draw_pixbuf (GDK_DRAWABLE (lcd.canvas->window), NULL,
+	                 (position < 7) ? digits_normal[ipixmap] : digits_small[ipixmap],
+	                 0, 0, lcd.digits[position].x, lcd.digits[position].y, -1, -1,
+	                 GDK_RGB_DITHER_NONE, 0, 0);
 }
 
 void
