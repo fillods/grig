@@ -7,16 +7,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-02 22:30+0100\n"
+"POT-Creation-Date: 2011-06-26 01:56+0200\n"
 "PO-Revision-Date: 2010-03-02 22:32+0100\n"
 "Last-Translator: Stéphane Fillod <fillods@users.sf.net>\n"
 "Language-Team: French <debian-l10n-french@lists.debian.org>\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n>1;\n"
 
-#: ../src/grig-about.c:58
+#: src/grig-about.c:58
 msgid ""
 "Copyright (C) 2001-2009 Alexandru Csete OZ9AEC>\n"
 "\n"
@@ -35,333 +36,329 @@ msgid ""
 "website http://www.fsf.org/ or you can write to the\n"
 "\n"
 "Free Software Foundation, Inc.\n"
-"59 Temple Place - Suite 330\n"
+"51 Franklin Street - Fifth Floor\n"
 "Boston\n"
-"MA 02111-1307\n"
+"MA 02110-1301\n"
 "USA.\n"
 msgstr ""
 
-#: ../src/grig-about.c:91 ../src/rig-gui-message-window.c:707
+#: src/grig-about.c:91 src/rig-gui-message-window.c:705
 msgid "Grig"
 msgstr "Grig"
 
-#: ../src/grig-about.c:94
+#: src/grig-about.c:94
+#, fuzzy
 msgid "Copyright (C) 2001-2007 Alexandru Csete OZ9AEC"
 msgstr "Copyright (C) 2001-2007 Alexandru Csete OZ9AEC"
 
-#: ../src/grig-about.c:98
+#: src/grig-about.c:98
 msgid "Grig Website"
 msgstr "Site web Grig"
 
-#: ../src/grig-about.c:108
+#: src/grig-about.c:108
 msgid "translator-credits"
 msgstr ""
 
-#: ../src/grig-config.c:68
+#: src/grig-config.c:68
 msgid "Checking GRIG configuration."
 msgstr ""
 
-#: ../src/grig-config.c:106
+#: src/grig-config.c:106
 #, c-format
 msgid "..Configuration directory: %s"
 msgstr ""
 
-#: ../src/grig-config.c:107 ../src/rig-gui-message-window.c:80
+#: src/grig-config.c:107 src/rig-gui-message-window.c:80
 msgid "ERROR"
 msgstr "ERREUR"
 
-#: ../src/grig-config.c:107
+#: src/grig-config.c:107
 msgid "OK"
 msgstr "OK"
 
-#: ../src/grig-config.c:147
+#: src/grig-config.c:147
 msgid "..Radio config files:"
 msgstr ""
 
-#: ../src/grig-config.c:155
+#: src/grig-config.c:155
 #, c-format
 msgid "%s: %s"
 msgstr "%s: %s"
 
-#: ../src/grig-config.c:172
+#: src/grig-config.c:172
 #, c-format
 msgid "....%s OK"
 msgstr "....%s OK"
 
-#. static GIOChannel *logfile  = NULL;
-#: ../src/grig-debug.c:60 ../src/rig-gui-message-window.c:78
+#: src/grig-debug.c:60 src/rig-gui-message-window.c:78
 msgid "NONE"
 msgstr ""
 
-#: ../src/grig-debug.c:60
+#: src/grig-debug.c:60
 msgid "HAMLIB"
 msgstr "HAMLIB"
 
-#: ../src/grig-debug.c:60 ../src/rig-gui-message-window.c:505
+#: src/grig-debug.c:60 src/rig-gui-message-window.c:503
 msgid "GRIG"
 msgstr "GRIG"
 
-#: ../src/grig-debug.c:89
+#: src/grig-debug.c:89
 #, c-format
 msgid "%s: Debug handler initialised."
 msgstr ""
 
-#: ../src/grig-debug.c:106
+#: src/grig-debug.c:106
 #, c-format
 msgid "%s: Shutting down debug handler."
 msgstr ""
 
-#: ../src/grig-menubar.c:59
+#: src/grig-menubar.c:59
 msgid "_Radio"
 msgstr "_Radio"
 
-#: ../src/grig-menubar.c:60
+#: src/grig-menubar.c:60
 msgid "_Settings"
 msgstr "_Paramètres"
 
-#: ../src/grig-menubar.c:61
+#: src/grig-menubar.c:61
 msgid "_View"
 msgstr "_Vue"
 
-#: ../src/grig-menubar.c:62
+#: src/grig-menubar.c:62
 msgid "_Tools"
 msgstr "_Outils"
 
-#: ../src/grig-menubar.c:63
+#: src/grig-menubar.c:63
 msgid "_Help"
 msgstr "_Aide"
 
-#. FileMenu
-#: ../src/grig-menubar.c:66
+#: src/grig-menubar.c:66
 msgid "_Info"
 msgstr "_Info"
 
-#: ../src/grig-menubar.c:66
+#: src/grig-menubar.c:66
 msgid "Show info about radio"
 msgstr "Montre les infos à propos de la radio"
 
-#: ../src/grig-menubar.c:67
+#: src/grig-menubar.c:67
 msgid "St_op daemon"
 msgstr "A_rrête le démon"
 
-#: ../src/grig-menubar.c:67
+#: src/grig-menubar.c:67
 msgid "Stop the Grig daemon"
 msgstr "Arrête le démon Grig"
 
-#: ../src/grig-menubar.c:68
+#: src/grig-menubar.c:68
 msgid "St_art daemon"
 msgstr "_Démarre le démon"
 
-#: ../src/grig-menubar.c:68
+#: src/grig-menubar.c:68
 msgid "Start the Grig daemon"
 msgstr "Démarre le démon Grig"
 
-#: ../src/grig-menubar.c:69
+#: src/grig-menubar.c:69
 msgid "_Save State"
 msgstr "_Sauve l'Etat"
 
-#: ../src/grig-menubar.c:69
+#: src/grig-menubar.c:69
 msgid "Save the state of the rig to a file"
 msgstr "Sauvegarde l'état de la radio dans un fichier"
 
-#: ../src/grig-menubar.c:70
+#: src/grig-menubar.c:70
 msgid "_Load State"
 msgstr "_Charge Etat"
 
-#: ../src/grig-menubar.c:70
+#: src/grig-menubar.c:70
 msgid "Load the state of the rig from a file"
 msgstr "Charge l'état de la radio depuis un fichier"
 
-#: ../src/grig-menubar.c:71
+#: src/grig-menubar.c:71
 msgid "E_xit"
 msgstr "_Quitter"
 
-#: ../src/grig-menubar.c:71
+#: src/grig-menubar.c:71
 msgid "Exit the program"
 msgstr "Quitte le programme"
 
-#. SettingsMenu
-#: ../src/grig-menubar.c:74
+#: src/grig-menubar.c:74
 msgid "_Debug Level"
 msgstr "Niveau de _Debug"
 
-#: ../src/grig-menubar.c:74
+#: src/grig-menubar.c:74
 msgid "Set Hamlib debug level"
 msgstr "Positionne le niveau de debug Hamlib"
 
-#. ViewMenu
-#: ../src/grig-menubar.c:77
+#: src/grig-menubar.c:77
 msgid "Message _Window"
 msgstr "_Fenêtre de Message"
 
-#: ../src/grig-menubar.c:77
+#: src/grig-menubar.c:77
 msgid "Show window with debug messages"
 msgstr "Montre la fenêtre des messages de debug"
 
-#. ToolsMenu
-#: ../src/grig-menubar.c:80
+#: src/grig-menubar.c:80
 msgid "_SW Memory"
 msgstr ""
 
-#: ../src/grig-menubar.c:80
+#: src/grig-menubar.c:80
 msgid "Software Memory Mamager"
 msgstr ""
 
-#: ../src/grig-menubar.c:81
+#: src/grig-menubar.c:81
 msgid "_Band Map"
 msgstr ""
 
-#: ../src/grig-menubar.c:81
+#: src/grig-menubar.c:81
 msgid "Show the band map"
 msgstr ""
 
-#: ../src/grig-menubar.c:82
+#: src/grig-menubar.c:82
 msgid "S_pectrum Scope"
 msgstr ""
 
-#: ../src/grig-menubar.c:82
+#: src/grig-menubar.c:82
 msgid "Show the spectrum scope"
 msgstr ""
 
-#. HelpMenu
-#: ../src/grig-menubar.c:85
+#: src/grig-menubar.c:85
 msgid "_About Grig"
 msgstr "_A propos de Grig"
 
-#: ../src/grig-menubar.c:85
+#: src/grig-menubar.c:85
+#, fuzzy
 msgid "Show about dialog"
 msgstr "Montre la fenêtre à propos"
 
-#: ../src/grig-menubar.c:91
+#: src/grig-menubar.c:91
 msgid "_No Debug"
 msgstr "_Aucun Debug"
 
-#: ../src/grig-menubar.c:91
+#: src/grig-menubar.c:91
 msgid "Don't show any debug mesages"
 msgstr ""
 
-#: ../src/grig-menubar.c:92
+#: src/grig-menubar.c:92
 msgid "_Bug"
 msgstr "_Bug"
 
-#: ../src/grig-menubar.c:92
+#: src/grig-menubar.c:92
 msgid "Show error messages caused by possible bugs"
 msgstr ""
 
-#: ../src/grig-menubar.c:93
+#: src/grig-menubar.c:93
 msgid "_Error"
 msgstr "_Erreur"
 
-#: ../src/grig-menubar.c:93
+#: src/grig-menubar.c:93
 msgid "Show run-time error messages"
 msgstr ""
 
-#: ../src/grig-menubar.c:94
+#: src/grig-menubar.c:94
 msgid "_Warning"
 msgstr "_Mise en garde"
 
-#: ../src/grig-menubar.c:94
+#: src/grig-menubar.c:94
 msgid "Show warnings"
 msgstr ""
 
-#: ../src/grig-menubar.c:95
+#: src/grig-menubar.c:95
 msgid "_Verbose"
 msgstr "_Verbeux"
 
-#: ../src/grig-menubar.c:95
+#: src/grig-menubar.c:95
 msgid "Verbose reporting"
 msgstr ""
 
-#: ../src/grig-menubar.c:96
+#: src/grig-menubar.c:96
 msgid "_Trace"
 msgstr "_Trace"
 
-#: ../src/grig-menubar.c:96
+#: src/grig-menubar.c:96
 msgid "Trace everything"
 msgstr ""
 
-#: ../src/grig-menubar.c:102
+#: src/grig-menubar.c:102
 msgid "_RX Level Controls"
 msgstr "Contrôle Niveaux _RX"
 
-#: ../src/grig-menubar.c:102
+#: src/grig-menubar.c:102
 msgid "Show receiver level controls"
 msgstr ""
 
-#: ../src/grig-menubar.c:103
+#: src/grig-menubar.c:103
 msgid "_TX Level Controls"
 msgstr "Contrôle Niveaux _TX"
 
-#: ../src/grig-menubar.c:103
+#: src/grig-menubar.c:103
 msgid "Show transmitter level controls"
 msgstr ""
 
-#: ../src/grig-menubar.c:104
+#: src/grig-menubar.c:104
 msgid "_DCS/CTCSS"
 msgstr "_DCS/CTCSS"
 
-#: ../src/grig-menubar.c:104
+#: src/grig-menubar.c:104
 msgid "Show DCS and CTCSS controls"
 msgstr ""
 
-#: ../src/grig-menubar.c:105
+#: src/grig-menubar.c:105
 msgid "_Special Functions"
 msgstr "Fonctions _Spéciales"
 
-#: ../src/grig-menubar.c:105
+#: src/grig-menubar.c:105
 msgid "Radio specific functions"
 msgstr "Fonctions spécifiques radio"
 
-#: ../src/grig-menubar.c:217
+#: src/grig-menubar.c:217
 #, c-format
 msgid "Failed to build menubar: %s"
 msgstr ""
 
-#: ../src/main.c:170
-#, c-format
+#: src/key-press-handler.c:57
+msgid "Initialising key press handler"
+msgstr ""
+
+#: src/key-press-handler.c:67
+msgid "Closing key press handler"
+msgstr ""
+
+#: src/main.c:170
 msgid "Grig can not find some necessary data files.\n"
 msgstr ""
 
-#: ../src/main.c:171
-#, c-format
+#: src/main.c:171
 msgid "This usually means that your installation is incomplete.\n"
 msgstr ""
 
-#: ../src/main.c:172 ../src/main.c:349
-#, c-format
+#: src/main.c:172 src/main.c:349
 msgid "Sorry... but I can not continue..."
 msgstr ""
 
-#: ../src/main.c:347
-#, c-format
+#: src/main.c:347
 msgid "Grig configuration check failed!\n"
 msgstr ""
 
-#: ../src/main.c:348
-#, c-format
+#: src/main.c:348
 msgid "This usually means that your configuration is broken.\n"
 msgstr ""
 
-#: ../src/main.c:351
-#, c-format
+#: src/main.c:351
 msgid "Proposed solutions:\n"
 msgstr ""
 
-#. construct title
-#: ../src/main.c:438
+#: src/main.c:438
 #, c-format
 msgid "GRIG: %s %s"
 msgstr "GRIG: %s %s"
 
-#: ../src/main.c:483
+#: src/main.c:483
 #, c-format
 msgid ""
 "Received signal %d\n"
 "Trying clean exit..."
 msgstr ""
 
-#: ../src/main.c:559
-#, c-format
+#: src/main.c:559
 msgid ""
 "Usage: grig [OPTION]...\n"
 "\n"
@@ -369,96 +366,78 @@ msgstr ""
 "Utilisation: grig [OPTION]...\n"
 "\n"
 
-#: ../src/main.c:560
-#, c-format
+#: src/main.c:560
 msgid "  -m, --model=ID              select radio model number; see --list\n"
 msgstr ""
 
-#: ../src/main.c:562
-#, c-format
+#: src/main.c:562
 msgid "  -r, --rig-file=DEVICE       set device of the radio, eg. /dev/ttyS0\n"
 msgstr ""
 
-#: ../src/main.c:564
-#, c-format
+#: src/main.c:564
 msgid "  -s, --speed=BAUD            set transfer rate (serial port only)\n"
 msgstr ""
 
-#: ../src/main.c:566
-#, c-format
+#: src/main.c:566
 msgid "  -c, --civaddr=ID            set CI-V address (decimal, ICOM only)\n"
 msgstr ""
 
-#: ../src/main.c:568
-#, c-format
+#: src/main.c:568
 msgid ""
 "  -C, --set-conf=param=val    set config parameter (same as in rigctl)\n"
 msgstr ""
 
-#: ../src/main.c:570
-#, c-format
+#: src/main.c:570
 msgid "  -d, --debug=LEVEL           set hamlib debug level (0..5)\n"
 msgstr ""
 
-#: ../src/main.c:572
-#, c-format
+#: src/main.c:572
 msgid "  -D, --delay=val             set delay between commands in msec\n"
 msgstr ""
 
-#: ../src/main.c:574
-#, c-format
+#: src/main.c:574
 msgid "  -n, --nothread              start daemon without using threads\n"
 msgstr ""
 
-#: ../src/main.c:576
-#, c-format
+#: src/main.c:576
 msgid "  -l, --list                  list supported radios and exit\n"
 msgstr ""
 
-#: ../src/main.c:578
-#, c-format
+#: src/main.c:578
 msgid "  -p, --enable-ptt            enable PTT button\n"
 msgstr ""
 
-#: ../src/main.c:580
-#, c-format
+#: src/main.c:580
 msgid "  -P, --enable-pwr            enable POWER button\n"
 msgstr ""
 
-#: ../src/main.c:582
-#, c-format
+#: src/main.c:582
 msgid "  -h, --help                  show this help message and exit\n"
 msgstr ""
 
-#: ../src/main.c:584
-#, c-format
+#: src/main.c:584
 msgid "  -v, --version               show version information and exit\n"
 msgstr ""
 
-#: ../src/main.c:587
-#, c-format
+#: src/main.c:587
 msgid "Example:"
 msgstr "Exemple:"
 
-#: ../src/main.c:589
-#, c-format
+#: src/main.c:589
 msgid ""
 "Start grig using YAESU FT-990 connected to the first serial port, using 4800 "
 "baud and debug level set to warning:"
 msgstr ""
 
-#: ../src/main.c:595
-#, c-format
+#: src/main.c:595
 msgid "or if you prefer the long options:"
 msgstr ""
 
-#: ../src/main.c:600
-#, c-format
+#: src/main.c:600
 msgid "It is usually enough to specify the model ID and the DEVICE."
 msgstr ""
 
-#: ../src/main.c:603
-#, c-format
+#: src/main.c:603
 msgid ""
 "If you start grig without any options it will use the Dummy backend and set "
 "the debug level to RIG_DEBUG_NONE. If you don't specify the transfer rate "
@@ -466,1647 +445,2076 @@ msgid ""
 "if you specify a value, it can be overridden by the backend."
 msgstr ""
 
-#: ../src/main.c:613
-#, c-format
+#: src/main.c:613
 msgid "Debug levels:"
 msgstr ""
 
-#: ../src/main.c:615
-#, c-format
+#: src/main.c:615
 msgid "   0    No debug, keep quiet.\n"
 msgstr ""
 
-#: ../src/main.c:616
-#, c-format
+#: src/main.c:616
 msgid "   1    Serious bug.\n"
 msgstr ""
 
-#: ../src/main.c:617
-#, c-format
+#: src/main.c:617
 msgid "   2    Error case (e.g. protocol, memory allocation).\n"
 msgstr ""
 
-#: ../src/main.c:618
-#, c-format
+#: src/main.c:618
 msgid "   3    Warnings.\n"
 msgstr ""
 
-#: ../src/main.c:619
-#, c-format
+#: src/main.c:619
 msgid "   4    Verbose information.\n"
 msgstr ""
 
-#: ../src/main.c:620
-#, c-format
+#: src/main.c:620
 msgid "   5    Trace.\n"
 msgstr ""
 
-#: ../src/main.c:632
+#: src/main.c:632
 #, c-format
 msgid "grig %s\n"
 msgstr "grig %s\n"
 
-#: ../src/main.c:633
-#, c-format
+#: src/main.c:633
 msgid "Graphical User Interface for the Hamradio Control Libraries."
 msgstr ""
 
-#: ../src/main.c:636
-#, c-format
+#: src/main.c:636
+#, fuzzy
 msgid "Copyright (C)  2001-2007  Alexandru Csete."
 msgstr "Copyright (C)  2001-2007  Alexandru Csete."
 
-#: ../src/main.c:638
-#, c-format
+#: src/main.c:638
 msgid "This is free software; see the source for copying conditions. "
 msgstr ""
 
-#: ../src/main.c:640
-#, c-format
+#: src/main.c:640
 msgid ""
 "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
 "PARTICULAR PURPOSE."
 msgstr ""
 
-#: ../src/rig-daemon.c:397
+#: src/rig-daemon.c:397
 msgid "No error"
 msgstr ""
 
-#: ../src/rig-daemon.c:398
+#: src/rig-daemon.c:398
 msgid "Invalid parameter"
 msgstr ""
 
-#: ../src/rig-daemon.c:399
+#: src/rig-daemon.c:399
 msgid "Invalid configuration"
 msgstr ""
 
-#: ../src/rig-daemon.c:400
+#: src/rig-daemon.c:400
 msgid "Memory shortage"
 msgstr ""
 
-#: ../src/rig-daemon.c:401
+#: src/rig-daemon.c:401
 msgid "Function not implemented"
 msgstr ""
 
-#: ../src/rig-daemon.c:402
+#: src/rig-daemon.c:402
 msgid "Communication timed out"
 msgstr ""
 
-#: ../src/rig-daemon.c:403
+#: src/rig-daemon.c:403
 msgid "I/O error"
 msgstr ""
 
-#: ../src/rig-daemon.c:404
+#: src/rig-daemon.c:404
 msgid "Internal Hamlib error :-("
 msgstr ""
 
-#: ../src/rig-daemon.c:405
+#: src/rig-daemon.c:405
 msgid "Protocol error"
 msgstr ""
 
-#: ../src/rig-daemon.c:406
+#: src/rig-daemon.c:406
 msgid "Command rejected"
 msgstr ""
 
-#: ../src/rig-daemon.c:407
+#: src/rig-daemon.c:407
 msgid "Command performed, but arg truncated"
 msgstr ""
 
-#: ../src/rig-daemon.c:408
+#: src/rig-daemon.c:408
 msgid "Function not available"
 msgstr ""
 
-#: ../src/rig-daemon.c:409
+#: src/rig-daemon.c:409
 msgid "VFO not targetable"
 msgstr ""
 
-#: ../src/rig-daemon.c:410
+#: src/rig-daemon.c:410
 msgid "BUS error"
 msgstr ""
 
-#: ../src/rig-daemon.c:411
+#: src/rig-daemon.c:411
 msgid "Collision on the bus"
 msgstr ""
 
-#: ../src/rig-daemon.c:412
+#: src/rig-daemon.c:412
 msgid "NULL RIG handle or invalid pointer param"
 msgstr ""
 
-#: ../src/rig-daemon.c:413
+#: src/rig-daemon.c:413
 msgid "Invalid VFO"
 msgstr ""
 
-#: ../src/rig-daemon.c:414
+#: src/rig-daemon.c:414
 msgid "Argument out of domain"
 msgstr ""
 
-#: ../src/rig-daemon.c:478
+#: src/rig-daemon.c:478
 #, c-format
 msgid "%s entered"
 msgstr ""
 
-#: ../src/rig-daemon.c:520
+#: src/rig-daemon.c:520
 #, c-format
 msgid "%s: Initializing rig (id=%d)"
 msgstr ""
 
-#: ../src/rig-daemon.c:529
+#: src/rig-daemon.c:529
 #, c-format
 msgid "%s: Init failed; Hamlib returned NULL!"
 msgstr ""
 
-#: ../src/rig-daemon.c:562
+#: src/rig-daemon.c:563
 #, c-format
 msgid "%s: Setting conf param (%s,%s)..."
 msgstr ""
 
-#: ../src/rig-daemon.c:571
+#: src/rig-daemon.c:572
 #, c-format
 msgid "%s: Set conf OK"
 msgstr ""
 
-#: ../src/rig-daemon.c:576
+#: src/rig-daemon.c:577
 #, c-format
 msgid "%s: Set conf failed (%d)"
 msgstr ""
 
-#: ../src/rig-daemon.c:596
+#: src/rig-daemon.c:597
 #, c-format
-msgid "%s: Failed to open rig port %s (permissions?)"
+msgid "%s: Failed to open rig port %s: %s (permissions?)"
 msgstr ""
 
-#: ../src/rig-daemon.c:606
+#: src/rig-daemon.c:608
 #, c-format
 msgid "%s: Init successfull, executing post-init"
 msgstr ""
 
-#: ../src/rig-daemon.c:613
+#: src/rig-daemon.c:615
 #, c-format
 msgid "%s: Starting rig daemon"
 msgstr ""
 
-#: ../src/rig-daemon.c:632
+#: src/rig-daemon.c:634
 #, c-format
 msgid "%s: Daemon timeout started, ID: %d"
 msgstr ""
 
-#: ../src/rig-daemon.c:647
+#: src/rig-daemon.c:649
 #, c-format
 msgid "%s: Failed to start daemon thread"
 msgstr ""
 
-#: ../src/rig-daemon.c:650
+#: src/rig-daemon.c:652
 #, c-format
 msgid "%s: Error %d: %s"
 msgstr ""
 
-#: ../src/rig-daemon.c:660
+#: src/rig-daemon.c:662
 #, c-format
 msgid "%s: Daemon thread started"
 msgstr ""
 
-#: ../src/rig-daemon.c:686
+#: src/rig-daemon.c:688
 #, c-format
 msgid "%s: Sending stop signal to rig daemon"
 msgstr ""
 
-#: ../src/rig-daemon.c:720
+#: src/rig-daemon.c:722
 #, c-format
 msgid "%s: Cleaning up rig"
 msgstr ""
 
-#: ../src/rig-daemon.c:792
+#: src/rig-daemon.c:794
 #, c-format
 msgid "%s: GET bits: %d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d"
 msgstr ""
 
-#: ../src/rig-daemon.c:815
+#: src/rig-daemon.c:817
 #, c-format
 msgid "%s: SET bits: %d%d%d%d%d%d%d%d%d%d%d%d%dXXX"
 msgstr ""
 
-#. send a debug message
-#: ../src/rig-daemon.c:869
+#: src/rig-daemon.c:871
 #, c-format
 msgid "%s started."
 msgstr ""
 
-#. send a debug message
-#: ../src/rig-daemon.c:967
+#: src/rig-daemon.c:969
 #, c-format
 msgid "%s stopped"
 msgstr ""
 
-#. send a debug message
-#: ../src/rig-daemon.c:1013
+#: src/rig-daemon.c:1015
 #, c-format
 msgid "%s called."
 msgstr ""
 
-#: ../src/rig-daemon.c:1148
+#: src/rig-daemon.c:1150
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_GET_FREQ_1:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:1175
+#: src/rig-daemon.c:1177
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_SET_FREQ_1:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:1232 ../src/rig-daemon.c:1300
+#: src/rig-daemon.c:1234 src/rig-daemon.c:1302
 #, c-format
 msgid "%s: I can't figure out available VFOs (got %d)"
 msgstr ""
 
-#: ../src/rig-daemon.c:1245
+#: src/rig-daemon.c:1247
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_GET_FREQ_2:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:1313
+#: src/rig-daemon.c:1315
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_SET_FREQ_2:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:1342
+#: src/rig-daemon.c:1344
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_GET_RIT:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:1369
+#: src/rig-daemon.c:1371
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_SET_RIT:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:1398
+#: src/rig-daemon.c:1400
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_GET_XIT:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:1425
+#: src/rig-daemon.c:1427
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_SET_XIT:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:1454
+#: src/rig-daemon.c:1456
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_GET_VFO:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:1481
+#: src/rig-daemon.c:1483
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_SET_VFO:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:1510
+#: src/rig-daemon.c:1512
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_GET_PSTAT:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:1537
+#: src/rig-daemon.c:1539
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_SET_PSTAT:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:1566
+#: src/rig-daemon.c:1568
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_GET_PTT:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:1593
+#: src/rig-daemon.c:1595
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_SET_PTT:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:1623
+#: src/rig-daemon.c:1625
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_GET_MODE:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:1674 ../src/rig-daemon-check.c:409
+#: src/rig-daemon.c:1676 src/rig-daemon-check.c:409
 #, c-format
 msgid "%s: Found frequency range for mode %d"
 msgstr ""
 
-#: ../src/rig-daemon.c:1677 ../src/rig-daemon-check.c:412
+#: src/rig-daemon.c:1679 src/rig-daemon-check.c:412
 #, c-format
 msgid "%s: %.0f...(%.0f)...%.0f kHz"
 msgstr ""
 
-#: ../src/rig-daemon.c:1696
+#: src/rig-daemon.c:1698
 #, c-format
 msgid "%s: Can not find frequency range for this mode (%d)!Bug in backend?"
 msgstr ""
 
-#: ../src/rig-daemon.c:1769
+#: src/rig-daemon.c:1771
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_SET_MODE:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:1803
+#: src/rig-daemon.c:1805
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_GET_AGC:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:1833
+#: src/rig-daemon.c:1835
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_SET_AGC:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:1861
+#: src/rig-daemon.c:1863
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_GET_ATT:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:1889
+#: src/rig-daemon.c:1891
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_SET_ATT:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:1917
+#: src/rig-daemon.c:1919
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_GET_PREAMP:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:1947
+#: src/rig-daemon.c:1949
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_SET_PREAMP:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:1975
+#: src/rig-daemon.c:1977
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_GET_STRENGTH:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:2004
+#: src/rig-daemon.c:2006
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_SET_POWER:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:2032
+#: src/rig-daemon.c:2034
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_GET_POWER:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:2059
+#: src/rig-daemon.c:2061
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_GET_SWR:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:2086
+#: src/rig-daemon.c:2088
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_GET_ALC:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:2115
+#: src/rig-daemon.c:2117
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_SET_ALC:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:2140
+#: src/rig-daemon.c:2142
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_SET_LOCK:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:2167
+#: src/rig-daemon.c:2169
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_GET_LOCK:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:2191
+#: src/rig-daemon.c:2193
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_VFO_TOGGLE:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:2214
+#: src/rig-daemon.c:2216
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_VFO_COPY:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:2237
+#: src/rig-daemon.c:2239
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_VFO_XCHG:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:2259
+#: src/rig-daemon.c:2261
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_SET_SPLIT:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:2280
+#: src/rig-daemon.c:2282
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_GET_SPLIT:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:2305
+#: src/rig-daemon.c:2307
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_SET_AF:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:2330
+#: src/rig-daemon.c:2332
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_GET_AF:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:2356
+#: src/rig-daemon.c:2358
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_SET_RF:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:2381
+#: src/rig-daemon.c:2383
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_GET_RF:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:2407
+#: src/rig-daemon.c:2409
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_SET_SQL:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:2432
+#: src/rig-daemon.c:2434
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_GET_SQL:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:2458
+#: src/rig-daemon.c:2460
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_SET_IFS:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:2483
+#: src/rig-daemon.c:2485
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_GET_IFS:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:2509
+#: src/rig-daemon.c:2511
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_SET_APF:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:2534
+#: src/rig-daemon.c:2536
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_GET_APF:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:2560
+#: src/rig-daemon.c:2562
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_SET_NR:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:2585
+#: src/rig-daemon.c:2587
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_GET_NR:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:2611
+#: src/rig-daemon.c:2613
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_SET_NOTCH:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:2636
+#: src/rig-daemon.c:2638
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_GET_NOTCH:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:2662
+#: src/rig-daemon.c:2664
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_SET_PBT_IN:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:2687
+#: src/rig-daemon.c:2689
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_GET_PBT_IN:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:2713
+#: src/rig-daemon.c:2715
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_SET_PBT_OUT:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:2738
+#: src/rig-daemon.c:2740
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_GET_PBT_OUT:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:2764
+#: src/rig-daemon.c:2766
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_SET_CW_PITCH:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:2789
+#: src/rig-daemon.c:2791
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_GET_CW_PITCH:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:2815
+#: src/rig-daemon.c:2817
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_SET_KEYSPD:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:2840
+#: src/rig-daemon.c:2842
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_GET_KEYSPD:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:2866
+#: src/rig-daemon.c:2868
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_SET_BKINDEL:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:2891
+#: src/rig-daemon.c:2893
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_GET_BKINDEL:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:2917
+#: src/rig-daemon.c:2919
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_SET_BALANCE:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:2942
+#: src/rig-daemon.c:2944
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_GET_BALANCE:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:2968
+#: src/rig-daemon.c:2970
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_SET_VOXDEL:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:2993
+#: src/rig-daemon.c:2995
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_GET_VOXDEL:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:3019
+#: src/rig-daemon.c:3021
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_SET_VOXGAIN:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:3044
+#: src/rig-daemon.c:3046
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_GET_VOXGAIN:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:3070
+#: src/rig-daemon.c:3072
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_SET_ANTIVOX:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:3095
+#: src/rig-daemon.c:3097
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_GET_ANTIVOX:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:3121
+#: src/rig-daemon.c:3123
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_SET_MICGAIN:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:3146
+#: src/rig-daemon.c:3148
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_GET_MICGAIN:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:3173
+#: src/rig-daemon.c:3175
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_GET_COMP:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:3199
+#: src/rig-daemon.c:3201
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_SET_FUNC(%s):\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:3229
+#: src/rig-daemon.c:3231
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_GET_FUNC(%s):\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-daemon.c:3248
+#: src/rig-daemon.c:3250
 #, c-format
 msgid "%s: Unknown command %d (grig bug)"
 msgstr ""
 
-#: ../src/rig-daemon.c:3341
+#: src/rig-daemon.c:3343
 #, c-format
 msgid "%s: %d"
 msgstr ""
 
-#: ../src/rig-daemon-check.c:157
+#: src/rig-daemon-check.c:157
 #, c-format
 msgid "%s: Can not find VFO list for this backend! Bug in backend?"
 msgstr ""
 
-#: ../src/rig-daemon-check.c:430
+#: src/rig-daemon-check.c:430
 #, c-format
 msgid "%s: Can not find frequency range for this mode (%d)! Bug in backend?"
 msgstr ""
 
-#: ../src/rig-daemon-check.c:518
+#: src/rig-daemon-check.c:518
 #, c-format
 msgid "%s: Could not get RF power"
 msgstr ""
 
-#: ../src/rig-daemon-check.c:533
+#: src/rig-daemon-check.c:533
 #, c-format
 msgid "%s: Maximum RF power is %.3f watts"
 msgstr ""
 
-#: ../src/rig-daemon-check.c:545
+#: src/rig-daemon-check.c:545
 #, c-format
 msgid "%s: Could not get signal strength"
 msgstr ""
 
-#: ../src/rig-daemon-check.c:560
+#: src/rig-daemon-check.c:560
 #, c-format
 msgid "%s: Could not get SWR"
 msgstr ""
 
-#: ../src/rig-daemon-check.c:573
+#: src/rig-daemon-check.c:573
 #, c-format
 msgid "%s: Could not get ALC"
 msgstr ""
 
-#: ../src/rig-daemon-check.c:586
+#: src/rig-daemon-check.c:586
 #, c-format
 msgid "%s: Could not get AGC"
 msgstr ""
 
-#: ../src/rig-daemon-check.c:599
+#: src/rig-daemon-check.c:599
 #, c-format
 msgid "%s: Could not get ATT"
 msgstr ""
 
-#: ../src/rig-daemon-check.c:612
+#: src/rig-daemon-check.c:612
 #, c-format
 msgid "%s: Could not get PREAMP"
 msgstr ""
 
-#: ../src/rig-daemon-check.c:625
+#: src/rig-daemon-check.c:625
 #, c-format
 msgid "%s: Could not get AF"
 msgstr ""
 
-#: ../src/rig-daemon-check.c:638
+#: src/rig-daemon-check.c:638
 #, c-format
 msgid "%s: Could not get RF"
 msgstr ""
 
-#: ../src/rig-daemon-check.c:651
+#: src/rig-daemon-check.c:651
 #, c-format
 msgid "%s: Could not get SQL"
 msgstr ""
 
-#: ../src/rig-daemon-check.c:666
+#: src/rig-daemon-check.c:666
 #, c-format
 msgid "%s: Could not get IF shift"
 msgstr ""
 
-#: ../src/rig-daemon-check.c:679
+#: src/rig-daemon-check.c:679
 #, c-format
 msgid "%s: Could not get APF"
 msgstr ""
 
-#: ../src/rig-daemon-check.c:692
+#: src/rig-daemon-check.c:692
 #, c-format
 msgid "%s: Could not get NR"
 msgstr ""
 
-#: ../src/rig-daemon-check.c:705
+#: src/rig-daemon-check.c:705
 #, c-format
 msgid "%s: Could not get NOTCH"
 msgstr ""
 
-#: ../src/rig-daemon-check.c:718
+#: src/rig-daemon-check.c:718
 #, c-format
 msgid "%s: Could not get PBT IN"
 msgstr ""
 
-#: ../src/rig-daemon-check.c:731
+#: src/rig-daemon-check.c:731
 #, c-format
 msgid "%s: Could not get PBT OUT"
 msgstr ""
 
-#: ../src/rig-daemon-check.c:744
+#: src/rig-daemon-check.c:744
 #, c-format
 msgid "%s: Could not get CW pitch"
 msgstr ""
 
-#: ../src/rig-daemon-check.c:757
+#: src/rig-daemon-check.c:757
 #, c-format
 msgid "%s: Could not get CW speed"
 msgstr ""
 
-#: ../src/rig-daemon-check.c:770
+#: src/rig-daemon-check.c:770
 #, c-format
 msgid "%s: Could not get break-in delay"
 msgstr ""
 
-#: ../src/rig-daemon-check.c:783
+#: src/rig-daemon-check.c:783
 #, c-format
 msgid "%s: Could not get balance"
 msgstr ""
 
-#: ../src/rig-daemon-check.c:796
+#: src/rig-daemon-check.c:796
 #, c-format
 msgid "%s: Could not get VOX delay"
 msgstr ""
 
-#: ../src/rig-daemon-check.c:809
+#: src/rig-daemon-check.c:809
 #, c-format
 msgid "%s: Could not get VOX gain"
 msgstr ""
 
-#: ../src/rig-daemon-check.c:822
+#: src/rig-daemon-check.c:822
 #, c-format
 msgid "%s: Could not get anti-vox"
 msgstr ""
 
-#: ../src/rig-daemon-check.c:835
+#: src/rig-daemon-check.c:835
 #, c-format
 msgid "%s: Could not get compression level"
 msgstr ""
 
-#: ../src/rig-daemon-check.c:848
+#: src/rig-daemon-check.c:848
 #, c-format
 msgid "%s: Could not get MIC gain"
 msgstr ""
 
-#: ../src/rig-daemon-check.c:954
+#: src/rig-daemon-check.c:954
 #, c-format
 msgid "%s: Could not get LOCK status"
 msgstr ""
 
-#: ../src/rig-daemon-check.c:969
+#: src/rig-daemon-check.c:969
 #, c-format
 msgid "%s: Could not get %s status"
 msgstr ""
 
-#. bug
-#: ../src/rig-data.c:358 ../src/rig-data.c:550
+#: src/rig-data.c:352 src/rig-data.c:544
 #, c-format
 msgid "%s: Invalid target: %d\n"
 msgstr ""
 
-#. create button widget
-#: ../src/rig-gui-buttons.c:148 ../src/rig-gui-smeter.c:75
+#: src/rig-gui-buttons.c:148 src/rig-gui-smeter.c:75
 msgid "Power"
 msgstr ""
 
-#: ../src/rig-gui-buttons.c:149
+#: src/rig-gui-buttons.c:149
 msgid "Power status"
 msgstr ""
 
-#. create button widget
-#: ../src/rig-gui-buttons.c:193
+#: src/rig-gui-buttons.c:193
 msgid "PTT"
 msgstr "PTT"
 
-#: ../src/rig-gui-buttons.c:194
+#: src/rig-gui-buttons.c:194
 msgid "Push to talk"
 msgstr ""
 
-#. create button widget
-#: ../src/rig-gui-buttons.c:238
+#: src/rig-gui-buttons.c:238
 msgid "Lock"
 msgstr "Lock"
 
-#: ../src/rig-gui-buttons.c:239
+#: src/rig-gui-buttons.c:239
 msgid "Lock tuning dial"
 msgstr ""
 
-#. add ATT OFF ie. 0 dB
-#: ../src/rig-gui-buttons.c:284
+#: src/rig-gui-buttons.c:284
 msgid "ATT OFF"
 msgstr ""
 
-#: ../src/rig-gui-buttons.c:307
+#: src/rig-gui-buttons.c:307
+#, fuzzy
 msgid "Attenuator level"
 msgstr "Niveau atténuateur"
 
-#. add ATT OFF ie. 0 dB
-#: ../src/rig-gui-buttons.c:344
+#: src/rig-gui-buttons.c:344
 msgid "PREAMP OFF"
 msgstr ""
 
-#: ../src/rig-gui-buttons.c:367
+#: src/rig-gui-buttons.c:367
+#, fuzzy
 msgid "Preamp level"
 msgstr "Niveau préampli"
 
-#: ../src/rig-gui-ctrl2.c:86
+#: src/rig-gui-ctrl2.c:86 src/rig-gui-info-data.h:172
 msgid "AM"
 msgstr "AM"
 
-#: ../src/rig-gui-ctrl2.c:87
+#: src/rig-gui-ctrl2.c:87 src/rig-gui-info-data.h:165
+#: src/rig-gui-info-data.h:173
 msgid "CW"
 msgstr "CW"
 
-#: ../src/rig-gui-ctrl2.c:88
+#: src/rig-gui-ctrl2.c:88 src/rig-gui-info-data.h:174
 msgid "USB"
 msgstr ""
 
-#: ../src/rig-gui-ctrl2.c:89
+#: src/rig-gui-ctrl2.c:89 src/rig-gui-info-data.h:175
 msgid "LSB"
 msgstr ""
 
-#: ../src/rig-gui-ctrl2.c:90
+#: src/rig-gui-ctrl2.c:90 src/rig-gui-info-data.h:176
 msgid "RTTY"
 msgstr "RTTY"
 
-#: ../src/rig-gui-ctrl2.c:91
+#: src/rig-gui-ctrl2.c:91
 msgid "FM Narrow"
 msgstr "FM Etroit"
 
-#: ../src/rig-gui-ctrl2.c:92
+#: src/rig-gui-ctrl2.c:92
 msgid "FM Wide"
 msgstr "FM Large"
 
-#: ../src/rig-gui-ctrl2.c:93
+#: src/rig-gui-ctrl2.c:93
 msgid "CW Rev"
 msgstr ""
 
-#: ../src/rig-gui-ctrl2.c:94
+#: src/rig-gui-ctrl2.c:94
 msgid "RTTY Rev"
 msgstr ""
 
-#: ../src/rig-gui-ctrl2.c:95
+#: src/rig-gui-ctrl2.c:95
 msgid "AM Synch"
 msgstr ""
 
-#: ../src/rig-gui-ctrl2.c:96
+#: src/rig-gui-ctrl2.c:96
 msgid "Pkt (LSB)"
 msgstr ""
 
-#: ../src/rig-gui-ctrl2.c:97
+#: src/rig-gui-ctrl2.c:97
 msgid "Pkt (USB)"
 msgstr ""
 
-#: ../src/rig-gui-ctrl2.c:98
+#: src/rig-gui-ctrl2.c:98
 msgid "Pkt (FM)"
 msgstr ""
 
-#: ../src/rig-gui-ctrl2.c:99
+#: src/rig-gui-ctrl2.c:99
 msgid "ECUSB"
 msgstr ""
 
-#: ../src/rig-gui-ctrl2.c:100
+#: src/rig-gui-ctrl2.c:100
 msgid "ECLSB"
 msgstr ""
 
-#: ../src/rig-gui-ctrl2.c:101
+#: src/rig-gui-ctrl2.c:101 src/rig-gui-info-data.h:187
 msgid "FAX"
 msgstr ""
 
-#. FIXME: Hamlib does also have 'user'
-#: ../src/rig-gui-ctrl2.c:207
+#: src/rig-gui-ctrl2.c:207
 msgid "AGC OFF"
 msgstr "Hors CAG"
 
-#: ../src/rig-gui-ctrl2.c:208
+#: src/rig-gui-ctrl2.c:208
 msgid "Super Fast"
 msgstr "Super Rapide"
 
-#: ../src/rig-gui-ctrl2.c:209
+#: src/rig-gui-ctrl2.c:209
 msgid "Fast"
 msgstr "Rapide"
 
-#: ../src/rig-gui-ctrl2.c:210
+#: src/rig-gui-ctrl2.c:210
 msgid "Medium"
 msgstr "Moyen"
 
-#: ../src/rig-gui-ctrl2.c:211
+#: src/rig-gui-ctrl2.c:211
 msgid "Slow"
 msgstr "Lent"
 
-#: ../src/rig-gui-ctrl2.c:212
+#: src/rig-gui-ctrl2.c:212
 msgid "Auto"
 msgstr ""
 
-#: ../src/rig-gui-ctrl2.c:214
+#: src/rig-gui-ctrl2.c:214
 msgid "Automatic Gain Control Level"
 msgstr "Niveau de Contrôle Automatique de Gain"
 
-#: ../src/rig-gui-ctrl2.c:320
+#: src/rig-gui-ctrl2.c:320
+#, fuzzy
 msgid "Communication mode"
 msgstr "Mode de communication"
 
-#. Add items
-#: ../src/rig-gui-ctrl2.c:359
+#: src/rig-gui-ctrl2.c:359
 msgid "Wide"
 msgstr "Large"
 
-#: ../src/rig-gui-ctrl2.c:360
+#: src/rig-gui-ctrl2.c:360
 msgid "Normal"
 msgstr "Normal"
 
-#: ../src/rig-gui-ctrl2.c:361
+#: src/rig-gui-ctrl2.c:361
 msgid "Narrow"
 msgstr "Etroit"
 
-#: ../src/rig-gui-ctrl2.c:362
+#: src/rig-gui-ctrl2.c:362
 msgid "[User]"
 msgstr "[Utilisateur]"
 
-#: ../src/rig-gui-ctrl2.c:384
+#: src/rig-gui-ctrl2.c:384
 msgid "Passband Width"
 msgstr ""
 
-#: ../src/rig-gui-ctrl2.c:443
+#: src/rig-gui-ctrl2.c:443
 #, c-format
 msgid "ANT %d"
 msgstr ""
 
-#. add tooltips when widget is realized
-#: ../src/rig-gui-ctrl2.c:460
+#: src/rig-gui-ctrl2.c:460
 msgid "Antenna Port"
 msgstr ""
 
-#: ../src/rig-gui-func.c:82
+#: src/rig-gui-func.c:82
 #, c-format
 msgid "%s: FUNC window already visible."
 msgstr ""
 
-#. create dialog window
-#: ../src/rig-gui-func.c:93
+#: src/rig-gui-func.c:93
 #, c-format
 msgid "%s (Special Functions)"
 msgstr "%s (Fonctions Spéciales)"
 
-#: ../src/rig-gui-func.c:160
+#: src/rig-gui-func.c:160
 #, c-format
 msgid "%s: FUNC window is not visible."
 msgstr ""
 
-#: ../src/rig-gui-func.c:185 ../src/rig-gui-rx.c:242 ../src/rig-gui-tx.c:238
+#: src/rig-gui-func.c:185 src/rig-gui-rx.c:242 src/rig-gui-tx.c:238
 #, c-format
 msgid "%s:%d: Invalid level %d"
 msgstr ""
 
-#: ../src/rig-gui-func.c:227 ../src/rig-gui-rx.c:507 ../src/rig-gui-tx.c:463
+#: src/rig-gui-func.c:227 src/rig-gui-rx.c:507 src/rig-gui-tx.c:463
 msgid "Rig has no support."
 msgstr ""
 
-#. create dialog and add hbox
-#: ../src/rig-gui-info.c:115
+#: src/rig-gui-info.c:115
 msgid "Radio Info"
 msgstr "Info Radio"
 
-#: ../src/rig-gui-info.c:250
+#: src/rig-gui-info.c:250
 msgid "RIT:"
 msgstr ""
 
-#: ../src/rig-gui-info.c:270
+#: src/rig-gui-info.c:270
 msgid "XIT:"
 msgstr ""
 
-#: ../src/rig-gui-info.c:289
+#: src/rig-gui-info.c:289
 msgid "IF-SHIFT:"
 msgstr ""
 
-#: ../src/rig-gui-info.c:308
+#: src/rig-gui-info.c:308
 msgid "Max. Offsets"
 msgstr ""
 
-#: ../src/rig-gui-info.c:346
+#: src/rig-gui-info.c:346
 msgid "<b>LEVEL</b>"
 msgstr ""
 
-#: ../src/rig-gui-info.c:356 ../src/rig-gui-info.c:987
+#: src/rig-gui-info.c:356 src/rig-gui-info.c:987
 msgid "<b>READ</b>"
 msgstr ""
 
-#: ../src/rig-gui-info.c:364 ../src/rig-gui-info.c:995
+#: src/rig-gui-info.c:364 src/rig-gui-info.c:995
 msgid "<b>WRITE</b>"
 msgstr ""
 
-#. add READ label to row i+1
-#. add WRITE label to row i+1
-#. add READ label to row i+1
-#. add WRITE label to row i+1
-#. add READ label to row i+1
-#: ../src/rig-gui-info.c:392 ../src/rig-gui-info.c:401
-#: ../src/rig-gui-info.c:1023 ../src/rig-gui-info.c:1032
-#: ../src/rig-gui-info.c:1110
+#: src/rig-gui-info.c:392 src/rig-gui-info.c:401 src/rig-gui-info.c:1023
+#: src/rig-gui-info.c:1032 src/rig-gui-info.c:1110
 msgid "-"
 msgstr ""
 
-#: ../src/rig-gui-info.c:397 ../src/rig-gui-info.c:406
-#: ../src/rig-gui-info.c:1028 ../src/rig-gui-info.c:1037
-#: ../src/rig-gui-info.c:1115
+#: src/rig-gui-info.c:397 src/rig-gui-info.c:406 src/rig-gui-info.c:1028
+#: src/rig-gui-info.c:1037 src/rig-gui-info.c:1115
 msgid "X"
 msgstr ""
 
-#. connection type
-#: ../src/rig-gui-info.c:442
+#: src/rig-gui-info.c:442
 msgid "Port Type:"
 msgstr ""
 
-#: ../src/rig-gui-info.c:460 ../src/rig-gui-info.c:489
-#: ../src/rig-gui-info.c:518 ../src/rig-gui-info.c:632
-#: ../src/rig-gui-info.c:667
+#: src/rig-gui-info.c:460 src/rig-gui-info.c:489 src/rig-gui-info.c:518
+#: src/rig-gui-info.c:632 src/rig-gui-info.c:667
 msgid "Unknown"
 msgstr ""
 
-#. DCD
-#: ../src/rig-gui-info.c:471
+#: src/rig-gui-info.c:471
 msgid "DCD Type:"
 msgstr ""
 
-#. PTT
-#: ../src/rig-gui-info.c:500
+#: src/rig-gui-info.c:500
 msgid "PTT Type:"
 msgstr ""
 
-#. serial speed
-#: ../src/rig-gui-info.c:529
+#: src/rig-gui-info.c:529
 msgid "Serial Speed:"
 msgstr ""
 
-#: ../src/rig-gui-info.c:540
+#: src/rig-gui-info.c:540
 #, c-format
 msgid "%d..%d baud"
 msgstr ""
 
-#: ../src/rig-gui-info.c:547 ../src/rig-gui-info.c:574
-#: ../src/rig-gui-info.c:601 ../src/rig-gui-info.c:636
-#: ../src/rig-gui-info.c:671
+#: src/rig-gui-info.c:547 src/rig-gui-info.c:574 src/rig-gui-info.c:601
+#: src/rig-gui-info.c:636 src/rig-gui-info.c:671 src/rig-gui-info-data.h:67
+#: src/rig-gui-info-data.h:68 src/rig-gui-info-data.h:69
+#: src/rig-gui-info-data.h:103
 msgid "N/A"
 msgstr ""
 
-#. data bits
-#: ../src/rig-gui-info.c:558
+#: src/rig-gui-info.c:558
 msgid "Data bits:"
 msgstr ""
 
-#. stop bits
-#: ../src/rig-gui-info.c:585
+#: src/rig-gui-info.c:585
 msgid "Stop bits:"
 msgstr ""
 
-#. serial parity
-#: ../src/rig-gui-info.c:612
+#: src/rig-gui-info.c:612
 msgid "Parity:"
 msgstr ""
 
-#. serial handshake
-#: ../src/rig-gui-info.c:647
+#: src/rig-gui-info.c:647
 msgid "Handshake:"
 msgstr ""
 
-#. frame
-#: ../src/rig-gui-info.c:683
+#: src/rig-gui-info.c:683
 msgid "Interface"
 msgstr ""
 
-#: ../src/rig-gui-info.c:720
+#: src/rig-gui-info.c:720
 msgid "<b>STEP</b>"
 msgstr ""
 
-#: ../src/rig-gui-info.c:730
+#: src/rig-gui-info.c:730
 msgid "<b>MODES</b>"
 msgstr ""
 
-#: ../src/rig-gui-info.c:845
+#: src/rig-gui-info.c:845
 msgid "PREAMP:"
 msgstr ""
 
-#: ../src/rig-gui-info.c:893
+#: src/rig-gui-info.c:893
 msgid "ATT:"
 msgstr ""
 
-#: ../src/rig-gui-info.c:939
+#: src/rig-gui-info.c:939
 msgid "Front End"
 msgstr ""
 
-#: ../src/rig-gui-info.c:977
+#: src/rig-gui-info.c:977
 msgid "<b>FUNCTION</b>"
 msgstr ""
 
-#: ../src/rig-gui-info.c:1071
+#: src/rig-gui-info.c:1071
 msgid "<b>VFO OP</b>"
 msgstr ""
 
-#: ../src/rig-gui-info.c:1081
+#: src/rig-gui-info.c:1081
 msgid "<b>SET</b>"
 msgstr ""
 
-#. set text: kHz
-#: ../src/rig-gui-lcd.c:1426
+#: src/rig-gui-info-data.h:44
+msgid "PREAMP"
+msgstr ""
+
+#: src/rig-gui-info-data.h:45
+#, fuzzy
+msgid "ATT"
+msgstr "PTT"
+
+#: src/rig-gui-info-data.h:46 src/rig-gui-info-data.h:82
+msgid "VOX"
+msgstr ""
+
+#: src/rig-gui-info-data.h:47
+msgid "AF"
+msgstr ""
+
+#: src/rig-gui-info-data.h:48
+msgid "RF"
+msgstr ""
+
+#: src/rig-gui-info-data.h:49 src/rig-gui-info-data.h:99
+msgid "SQL"
+msgstr ""
+
+#: src/rig-gui-info-data.h:50
+msgid "IF"
+msgstr ""
+
+#: src/rig-gui-info-data.h:51 src/rig-gui-info-data.h:90 src/rig-gui-rx.c:412
+msgid "APF"
+msgstr ""
+
+#: src/rig-gui-info-data.h:52 src/rig-gui-info-data.h:88
+msgid "NR"
+msgstr ""
+
+#: src/rig-gui-info-data.h:53
+msgid "PBT_IN"
+msgstr ""
+
+#: src/rig-gui-info-data.h:54
+msgid "PBT_OUT"
+msgstr ""
+
+#: src/rig-gui-info-data.h:55
+msgid "CWPITCH"
+msgstr ""
+
+#: src/rig-gui-info-data.h:56
+msgid "RFPOWER"
+msgstr ""
+
+#: src/rig-gui-info-data.h:57
+msgid "MICGAIN"
+msgstr ""
+
+#: src/rig-gui-info-data.h:58
+msgid "KEYSPD"
+msgstr ""
+
+#: src/rig-gui-info-data.h:59
+msgid "NOTCHF"
+msgstr ""
+
+#: src/rig-gui-info-data.h:60
+msgid "COMP"
+msgstr ""
+
+#: src/rig-gui-info-data.h:61
+#, fuzzy
+msgid "AGC"
+msgstr "Hors CAG"
+
+#: src/rig-gui-info-data.h:62
+msgid "BKINDL"
+msgstr ""
+
+#: src/rig-gui-info-data.h:63
+msgid "BALANCE"
+msgstr ""
+
+#: src/rig-gui-info-data.h:64
+msgid "METER"
+msgstr ""
+
+#: src/rig-gui-info-data.h:65
+msgid "VOXGAIN"
+msgstr ""
+
+#: src/rig-gui-info-data.h:66
+msgid "ANTIVOX"
+msgstr ""
+
+#: src/rig-gui-info-data.h:70
+msgid "RAWSTR"
+msgstr ""
+
+#: src/rig-gui-info-data.h:71
+msgid "SQLSTAT"
+msgstr ""
+
+#: src/rig-gui-info-data.h:72 src/rig-gui-smeter.c:76
+msgid "SWR"
+msgstr ""
+
+#: src/rig-gui-info-data.h:73 src/rig-gui-smeter.c:77 src/rig-gui-tx.c:347
+msgid "ALC"
+msgstr ""
+
+#: src/rig-gui-info-data.h:74
+msgid "STRENGTH"
+msgstr ""
+
+#: src/rig-gui-info-data.h:79
+msgid "FAST AGC"
+msgstr ""
+
+#: src/rig-gui-info-data.h:80
+msgid "NB"
+msgstr ""
+
+#: src/rig-gui-info-data.h:81 src/rig-gui-tx.c:388
+msgid "COMPR"
+msgstr ""
+
+#: src/rig-gui-info-data.h:83
+msgid "TONE"
+msgstr ""
+
+#: src/rig-gui-info-data.h:84
+#, fuzzy
+msgid "CTCSS"
+msgstr "_DCS/CTCSS"
+
+#: src/rig-gui-info-data.h:85
+msgid "SEMI BK"
+msgstr ""
+
+#: src/rig-gui-info-data.h:86
+msgid "FULL BK"
+msgstr ""
+
+#: src/rig-gui-info-data.h:87
+msgid "ANF"
+msgstr ""
+
+#: src/rig-gui-info-data.h:89
+msgid "AIP"
+msgstr ""
+
+#: src/rig-gui-info-data.h:91
+msgid "MON"
+msgstr ""
+
+#: src/rig-gui-info-data.h:92
+msgid "MAN NOTCH"
+msgstr ""
+
+#: src/rig-gui-info-data.h:93
+msgid "RNF"
+msgstr ""
+
+#: src/rig-gui-info-data.h:94
+msgid "AUTO RO"
+msgstr ""
+
+#: src/rig-gui-info-data.h:95
+msgid "LOCK"
+msgstr ""
+
+#: src/rig-gui-info-data.h:96
+msgid "MUTE"
+msgstr ""
+
+#: src/rig-gui-info-data.h:97
+msgid "VOICE SCAN"
+msgstr ""
+
+#: src/rig-gui-info-data.h:98
+msgid "REV TRX"
+msgstr ""
+
+#: src/rig-gui-info-data.h:100
+#, fuzzy
+msgid "ABM"
+msgstr "AM"
+
+#: src/rig-gui-info-data.h:101
+msgid "BEAT CANC"
+msgstr ""
+
+#: src/rig-gui-info-data.h:102
+msgid "MAN BC"
+msgstr ""
+
+#: src/rig-gui-info-data.h:104
+msgid "AFC"
+msgstr ""
+
+#: src/rig-gui-info-data.h:105
+msgid "SATMODE"
+msgstr ""
+
+#: src/rig-gui-info-data.h:106
+msgid "SCOPE"
+msgstr ""
+
+#: src/rig-gui-info-data.h:107
+msgid "RESUME"
+msgstr ""
+
+#: src/rig-gui-info-data.h:108
+msgid "TBURST"
+msgstr ""
+
+#: src/rig-gui-info-data.h:109
+msgid "TUNER"
+msgstr ""
+
+#: src/rig-gui-info-data.h:114 src/rig-gui-info-data.h:123
+#: src/rig-gui-info-data.h:134 src/rig-gui-info-data.h:148
+#: src/rig-gui-info-data.h:155 src/rig-gui-smeter.c:74
+msgid "None"
+msgstr "Aucun"
+
+#: src/rig-gui-info-data.h:115 src/rig-gui-info-data.h:124
+msgid "Legacy"
+msgstr ""
+
+#: src/rig-gui-info-data.h:116
+msgid "SER_DTR"
+msgstr ""
+
+#: src/rig-gui-info-data.h:117
+msgid "SER_RTS"
+msgstr ""
+
+#: src/rig-gui-info-data.h:118 src/rig-gui-info-data.h:128
+msgid "PARPORT"
+msgstr ""
+
+#: src/rig-gui-info-data.h:125
+msgid "SER_DSR"
+msgstr ""
+
+#: src/rig-gui-info-data.h:126
+msgid "SER_CTS"
+msgstr ""
+
+#: src/rig-gui-info-data.h:127
+msgid "SER_CAR"
+msgstr ""
+
+#: src/rig-gui-info-data.h:135
+msgid "Serial"
+msgstr ""
+
+#: src/rig-gui-info-data.h:136
+msgid "Network"
+msgstr ""
+
+#: src/rig-gui-info-data.h:137
+msgid "Device"
+msgstr ""
+
+#: src/rig-gui-info-data.h:138
+msgid "Packet"
+msgstr ""
+
+#: src/rig-gui-info-data.h:139
+msgid "DTMF"
+msgstr ""
+
+#: src/rig-gui-info-data.h:140
+msgid "IrDA"
+msgstr ""
+
+#: src/rig-gui-info-data.h:141
+msgid "RPC"
+msgstr ""
+
+#: src/rig-gui-info-data.h:142
+msgid "Parallel"
+msgstr ""
+
+#: src/rig-gui-info-data.h:149
+msgid "Odd"
+msgstr ""
+
+#: src/rig-gui-info-data.h:150
+msgid "Even"
+msgstr ""
+
+#: src/rig-gui-info-data.h:156
+msgid "XONXOFF"
+msgstr ""
+
+#: src/rig-gui-info-data.h:157
+msgid "Hardware"
+msgstr ""
+
+#: src/rig-gui-info-data.h:162
+#, fuzzy
+msgid "OFF"
+msgstr "Hors CAG"
+
+#: src/rig-gui-info-data.h:163
+msgid "FREQ"
+msgstr ""
+
+#: src/rig-gui-info-data.h:164
+msgid "RXMODE"
+msgstr ""
+
+#: src/rig-gui-info-data.h:166
+msgid "EMG"
+msgstr ""
+
+#: src/rig-gui-info-data.h:167
+msgid "JAP"
+msgstr ""
+
+#: src/rig-gui-info-data.h:177
+msgid "FM"
+msgstr ""
+
+#: src/rig-gui-info-data.h:178
+msgid "WFM"
+msgstr ""
+
+#: src/rig-gui-info-data.h:179
+#, fuzzy
+msgid "CWR"
+msgstr "CW"
+
+#: src/rig-gui-info-data.h:180
+#, fuzzy
+msgid "RTTYR"
+msgstr "RTTY"
+
+#: src/rig-gui-info-data.h:181
+#, fuzzy
+msgid "AMS"
+msgstr "AM"
+
+#: src/rig-gui-info-data.h:182
+msgid "PKTLSB"
+msgstr ""
+
+#: src/rig-gui-info-data.h:183
+msgid "PKTUSB"
+msgstr ""
+
+#: src/rig-gui-info-data.h:184
+msgid "PKTFM"
+msgstr ""
+
+#: src/rig-gui-info-data.h:185
+msgid "ECSSUSB"
+msgstr ""
+
+#: src/rig-gui-info-data.h:186
+msgid "ECSSLSB"
+msgstr ""
+
+#: src/rig-gui-info-data.h:193
+msgid "COPY A=B"
+msgstr ""
+
+#: src/rig-gui-info-data.h:194
+msgid "XCHG A/B"
+msgstr ""
+
+#: src/rig-gui-info-data.h:195
+msgid "VFO->MEM"
+msgstr ""
+
+#: src/rig-gui-info-data.h:196
+msgid "MEM->VFO"
+msgstr ""
+
+#: src/rig-gui-info-data.h:197
+msgid "MEMCLEAR"
+msgstr ""
+
+#: src/rig-gui-info-data.h:198
+msgid "UP"
+msgstr ""
+
+#: src/rig-gui-info-data.h:199
+msgid "DOWN"
+msgstr ""
+
+#: src/rig-gui-info-data.h:200
+msgid "BAND UP"
+msgstr ""
+
+#: src/rig-gui-info-data.h:201
+msgid "BAND DOWN"
+msgstr ""
+
+#: src/rig-gui-info-data.h:202
+msgid "LEFT"
+msgstr ""
+
+#: src/rig-gui-info-data.h:203
+msgid "RIGHT"
+msgstr ""
+
+#: src/rig-gui-info-data.h:204
+msgid "TUNE"
+msgstr ""
+
+#: src/rig-gui-info-data.h:205
+msgid "TOGGLE"
+msgstr ""
+
+#: src/rig-gui-keypad.c:289
+msgid "ENT"
+msgstr ""
+
+#: src/rig-gui-keypad.c:291
+msgid "Begin manual frequency entry mode"
+msgstr ""
+
+#: src/rig-gui-keypad.c:301
+msgid "CLR"
+msgstr ""
+
+#: src/rig-gui-keypad.c:303
+msgid "Clear manual frequency entry mode"
+msgstr ""
+
+#: src/rig-gui-lcd.c:1396
 msgid "kHz"
 msgstr ""
 
-#. set text: RIT
-#: ../src/rig-gui-lcd.c:1451
+#: src/rig-gui-lcd.c:1421
 msgid "RIT"
 msgstr ""
 
-#: ../src/rig-gui-lcd.c:1502
+#: src/rig-gui-lcd.c:1472
 msgid "VFO A"
 msgstr ""
 
-#: ../src/rig-gui-lcd.c:1506
+#: src/rig-gui-lcd.c:1476
 msgid "VFO B"
 msgstr ""
 
-#: ../src/rig-gui-lcd.c:1510
+#: src/rig-gui-lcd.c:1480
 msgid "VFO C"
 msgstr ""
 
-#: ../src/rig-gui-lcd.c:1514
+#: src/rig-gui-lcd.c:1484
 msgid "MAIN VFO"
 msgstr ""
 
-#: ../src/rig-gui-lcd.c:1518
+#: src/rig-gui-lcd.c:1488
 msgid "SUB VFO"
 msgstr ""
 
-#: ../src/rig-gui-lcd.c:1522
+#: src/rig-gui-lcd.c:1492
 msgid "MEM"
 msgstr ""
 
-#: ../src/rig-gui-lcd.c:1526
+#: src/rig-gui-lcd.c:1496
 msgid "VFO ?"
 msgstr ""
 
-#: ../src/rig-gui-levels.c:52
+#: src/rig-gui-levels.c:52
 msgid "Level Controls"
 msgstr "Contrôle Niveaux"
 
-#: ../src/rig-gui-levels.c:53
+#: src/rig-gui-levels.c:53
 msgid "Show/hide level controls"
 msgstr ""
 
-#: ../src/rig-gui-message-window.c:65
+#: src/rig-gui-message-window.c:65
 msgid "Time"
 msgstr ""
 
-#: ../src/rig-gui-message-window.c:66
+#: src/rig-gui-message-window.c:66
 msgid "Source"
 msgstr "Source"
 
-#: ../src/rig-gui-message-window.c:67
+#: src/rig-gui-message-window.c:67
 msgid "Level"
 msgstr "Niveau"
 
-#: ../src/rig-gui-message-window.c:68
+#: src/rig-gui-message-window.c:68
 msgid "Message"
 msgstr "Message"
 
-#: ../src/rig-gui-message-window.c:79
+#: src/rig-gui-message-window.c:79
 msgid "BUG"
 msgstr ""
 
-#: ../src/rig-gui-message-window.c:81
+#: src/rig-gui-message-window.c:81
 msgid "WARNING"
 msgstr ""
 
-#: ../src/rig-gui-message-window.c:82
+#: src/rig-gui-message-window.c:82
 msgid "DEBUG"
 msgstr ""
 
-#: ../src/rig-gui-message-window.c:83
+#: src/rig-gui-message-window.c:83
 msgid "TRACE"
 msgstr ""
 
-#. create dialog window; we use "fake" stock responses to catch user
-#. button clicks (save_as and pause)
-#.
-#: ../src/rig-gui-message-window.c:163
+#: src/rig-gui-message-window.c:163
 msgid "Grig Message Window"
 msgstr ""
 
-#. create file chooser dialog
-#: ../src/rig-gui-message-window.c:427
+#: src/rig-gui-message-window.c:425
 msgid "Open Debug File"
 msgstr ""
 
-#: ../src/rig-gui-message-window.c:496
+#: src/rig-gui-message-window.c:494
 msgid "SYS"
 msgstr ""
 
-#: ../src/rig-gui-message-window.c:506
+#: src/rig-gui-message-window.c:504
 msgid "Log file seems corrupt"
 msgstr ""
 
-#: ../src/rig-gui-message-window.c:529
+#: src/rig-gui-message-window.c:527
 #, c-format
 msgid "%s:%d: Error open debug log (%s)"
 msgstr ""
 
-#: ../src/rig-gui-message-window.c:701
+#: src/rig-gui-message-window.c:699
 msgid "Hamlib"
 msgstr ""
 
-#: ../src/rig-gui-message-window.c:713
+#: src/rig-gui-message-window.c:711
 msgid "Other"
 msgstr ""
 
-#: ../src/rig-gui-message-window.c:723
+#: src/rig-gui-message-window.c:721
 msgid "Bugs"
 msgstr ""
 
-#: ../src/rig-gui-message-window.c:729
+#: src/rig-gui-message-window.c:727
 msgid "Errors"
 msgstr ""
 
-#: ../src/rig-gui-message-window.c:735
+#: src/rig-gui-message-window.c:733
 msgid "Warning"
 msgstr ""
 
-#: ../src/rig-gui-message-window.c:741
+#: src/rig-gui-message-window.c:739
 msgid "Verbose"
 msgstr ""
 
-#: ../src/rig-gui-message-window.c:747
+#: src/rig-gui-message-window.c:745
 msgid "Trace"
 msgstr ""
 
-#: ../src/rig-gui-message-window.c:760
+#: src/rig-gui-message-window.c:758
 msgid "<b>Total</b>"
 msgstr "<b>Total</b>"
 
-#. frame around the table
-#: ../src/rig-gui-message-window.c:785
+#: src/rig-gui-message-window.c:783
 msgid " Summary "
 msgstr ""
 
-#: ../src/rig-gui-rx.c:97
+#: src/rig-gui-rx.c:97
 #, c-format
 msgid "%s: RX window already visible."
 msgstr ""
 
-#. create dialog window
-#: ../src/rig-gui-rx.c:108
+#: src/rig-gui-rx.c:108
 #, c-format
 msgid "%s (RX Levels)"
 msgstr "%s (Niveaux RX)"
 
-#: ../src/rig-gui-rx.c:172
+#: src/rig-gui-rx.c:172
 #, c-format
 msgid "%s: RX window is not visible."
 msgstr ""
 
-#: ../src/rig-gui-rx.c:284
+#: src/rig-gui-rx.c:284
 msgid "AF Gain"
 msgstr ""
 
-#: ../src/rig-gui-rx.c:304
+#: src/rig-gui-rx.c:304
 msgid "RF Gain"
 msgstr ""
 
-#: ../src/rig-gui-rx.c:331
+#: src/rig-gui-rx.c:331
 msgid "IF Shift"
 msgstr ""
 
-#: ../src/rig-gui-rx.c:351
+#: src/rig-gui-rx.c:351
 msgid "CW Pitch"
 msgstr ""
 
-#: ../src/rig-gui-rx.c:371
+#: src/rig-gui-rx.c:371
 msgid "PBT In"
 msgstr ""
 
-#: ../src/rig-gui-rx.c:391
+#: src/rig-gui-rx.c:391
 msgid "PBT Out"
 msgstr ""
 
-#: ../src/rig-gui-rx.c:412
-msgid "APF"
-msgstr ""
-
-#: ../src/rig-gui-rx.c:432
+#: src/rig-gui-rx.c:432
 msgid "N.R."
 msgstr ""
 
-#: ../src/rig-gui-rx.c:452
+#: src/rig-gui-rx.c:452
 msgid "NOTCH"
 msgstr ""
 
-#: ../src/rig-gui-rx.c:472
+#: src/rig-gui-rx.c:472
 msgid "Squelch"
 msgstr ""
 
-#: ../src/rig-gui-rx.c:492
+#: src/rig-gui-rx.c:492
 msgid "Balance"
 msgstr ""
 
-#: ../src/rig-gui-smeter.c:74
-msgid "None"
-msgstr "Aucun"
-
-#: ../src/rig-gui-smeter.c:76
-msgid "SWR"
-msgstr ""
-
-#: ../src/rig-gui-smeter.c:77 ../src/rig-gui-tx.c:347
-msgid "ALC"
-msgstr ""
-
-#: ../src/rig-gui-smeter.c:83
+#: src/rig-gui-smeter.c:83
 msgid "0..5"
 msgstr ""
 
-#: ../src/rig-gui-smeter.c:84
+#: src/rig-gui-smeter.c:84
 msgid "0..10"
 msgstr ""
 
-#: ../src/rig-gui-smeter.c:85
+#: src/rig-gui-smeter.c:85
 msgid "0..50"
 msgstr ""
 
-#: ../src/rig-gui-smeter.c:86
+#: src/rig-gui-smeter.c:86
 msgid "0..100"
 msgstr ""
 
-#: ../src/rig-gui-smeter.c:87
+#: src/rig-gui-smeter.c:87
 msgid "0..500"
 msgstr ""
 
-#: ../src/rig-gui-smeter.c:430
+#: src/rig-gui-smeter.c:430
 msgid "Select TX mode for the meter"
 msgstr "Sélectionne le mode de mesure en émission"
 
-#: ../src/rig-gui-smeter.c:479
+#: src/rig-gui-smeter.c:479
 msgid "Select TX meter scale"
 msgstr "Sélectionne l'échelle de mesure en émission"
 
-#: ../src/rig-gui-tx.c:98
+#: src/rig-gui-tx.c:98
 #, c-format
 msgid "%s: TX window already visible."
 msgstr ""
 
-#. create dialog window
-#: ../src/rig-gui-tx.c:109
+#: src/rig-gui-tx.c:109
 #, c-format
 msgid "%s (TX Levels)"
 msgstr "%s (Niveaux TX)"
 
-#: ../src/rig-gui-tx.c:176
+#: src/rig-gui-tx.c:176
 #, c-format
 msgid "%s: TX window is not visible."
 msgstr ""
 
-#: ../src/rig-gui-tx.c:286
+#: src/rig-gui-tx.c:286
 msgid "CW SPD"
 msgstr ""
 
-#: ../src/rig-gui-tx.c:306
+#: src/rig-gui-tx.c:306
 msgid "BKIN DEL"
 msgstr ""
 
-#: ../src/rig-gui-tx.c:326
+#: src/rig-gui-tx.c:326
 msgid "POWER"
 msgstr ""
 
-#: ../src/rig-gui-tx.c:368
+#: src/rig-gui-tx.c:368
 msgid "MIC GAIN"
 msgstr ""
 
-#: ../src/rig-gui-tx.c:388
-msgid "COMPR"
-msgstr ""
-
-#: ../src/rig-gui-tx.c:408
+#: src/rig-gui-tx.c:408
 msgid "VOX GAIN"
 msgstr ""
 
-#: ../src/rig-gui-tx.c:428
+#: src/rig-gui-tx.c:428
 msgid "VOX DEL"
 msgstr ""
 
-#: ../src/rig-gui-tx.c:448
+#: src/rig-gui-tx.c:448
 msgid "ANTI VOX"
 msgstr ""
 
-#: ../src/rig-gui-vfo.c:120
+#: src/rig-gui-vfo.c:120
 msgid "Main / Sub"
 msgstr ""
 
-#: ../src/rig-gui-vfo.c:121
+#: src/rig-gui-vfo.c:121
 msgid "Toggle active VFO"
 msgstr ""
 
-#: ../src/rig-gui-vfo.c:124
+#: src/rig-gui-vfo.c:124
 msgid "A / B"
 msgstr ""
 
-#: ../src/rig-gui-vfo.c:125
+#: src/rig-gui-vfo.c:125
 msgid "Toggle between available VFOs"
 msgstr ""
 
-#: ../src/rig-gui-vfo.c:237
+#: src/rig-gui-vfo.c:237
 msgid "Main = Sub"
 msgstr ""
 
-#: ../src/rig-gui-vfo.c:238
+#: src/rig-gui-vfo.c:238
 msgid "Set Main VFO = Sub VFO"
 msgstr ""
 
-#: ../src/rig-gui-vfo.c:241
+#: src/rig-gui-vfo.c:241
 msgid "A = B"
 msgstr ""
 
-#: ../src/rig-gui-vfo.c:242
+#: src/rig-gui-vfo.c:242
 msgid "Set VFO B = VFO A"
 msgstr ""
 
-#: ../src/rig-gui-vfo.c:307
+#: src/rig-gui-vfo.c:307
 msgid "Main«»Sub"
 msgstr ""
 
-#: ../src/rig-gui-vfo.c:308
+#: src/rig-gui-vfo.c:308
 msgid "Exchange Main and sub VFOs"
 msgstr ""
 
-#: ../src/rig-gui-vfo.c:311
+#: src/rig-gui-vfo.c:311
 msgid "A«»B"
 msgstr ""
 
-#: ../src/rig-gui-vfo.c:312
+#: src/rig-gui-vfo.c:312
 msgid "Exchange VFO A and B"
 msgstr ""
 
-#: ../src/rig-gui-vfo.c:374
+#: src/rig-gui-vfo.c:374
 msgid "Split"
 msgstr ""
 
-#: ../src/rig-gui-vfo.c:375
+#: src/rig-gui-vfo.c:375
 msgid "Toggle split mode operation"
 msgstr ""
 
-#: ../src/rig-gui-vfo.c:403
+#: src/rig-gui-vfo.c:403
 msgid "M / V"
 msgstr ""
 
-#: ../src/rig-gui-vfo.c:404
+#: src/rig-gui-vfo.c:404
 msgid "Toggle between memory and VFO"
 msgstr ""
 
-#. file chooser dialog
-#. *.rig filter used in the dialog
-#. filter used in the dialog for all files
-#. file name selected by user
-#. message dialog
-#. error status
-#. create file chooser dialog
-#: ../src/rig-state.c:130
+#: src/rig-selector.c:116
+msgid ""
+"Connect to the selected radio.Grig will attempt to establish connection to "
+"the selected radio using the specified settings. If the connection is "
+"successful, the main application window will be loaded."
+msgstr ""
+
+#: src/rig-selector.c:125
+msgid "Cancel radio selection. This will end grig."
+msgstr ""
+
+#: src/rig-selector.c:130
+msgid ""
+"Add a new radio to the list.A new configuration window will be shown "
+"allowing you to select a radio and specify the connection settings."
+msgstr ""
+
+#: src/rig-selector.c:139
+msgid "Delete the currently selected radio."
+msgstr ""
+
+#: src/rig-selector.c:145
+msgid "Edit the settings for the currently selected radio."
+msgstr ""
+
+#: src/rig-selector.c:170
+msgid "Select a Radio"
+msgstr ""
+
+#: src/rig-selector.c:230
+msgid "Company"
+msgstr ""
+
+#: src/rig-selector.c:236
+msgid "Model"
+msgstr ""
+
+#: src/rig-selector.c:242
+msgid "Port"
+msgstr ""
+
+#: src/rig-selector.c:248
+msgid "Speed"
+msgstr ""
+
+#: src/rig-selector.c:254
+msgid "CI-V"
+msgstr ""
+
+#: src/rig-selector.c:262
+msgid "DTR"
+msgstr ""
+
+#: src/rig-selector.c:270
+msgid "RTS"
+msgstr ""
+
+#: src/rig-selector.c:483
+#, c-format
+msgid "%s:%s: Failed to delete %s"
+msgstr ""
+
+#: src/rig-selector.c:488
+#, c-format
+msgid "%s:%s: Removed %s"
+msgstr ""
+
+#: src/rig-state.c:130
 msgid "Load Rig State"
 msgstr ""
 
-#: ../src/rig-state.c:139 ../src/rig-state.c:262
+#: src/rig-state.c:139 src/rig-state.c:262
 msgid "Rig state files (*.rig)"
 msgstr ""
 
-#: ../src/rig-state.c:144 ../src/rig-state.c:267
+#: src/rig-state.c:144 src/rig-state.c:267
 msgid "All files"
 msgstr ""
 
-#: ../src/rig-state.c:164
+#: src/rig-state.c:164
 #, c-format
 msgid ""
 "There was an error reading the settings from:\n"
@@ -2116,7 +2524,7 @@ msgid ""
 " Examine the log messages for further info."
 msgstr ""
 
-#: ../src/rig-state.c:182
+#: src/rig-state.c:182
 #, c-format
 msgid ""
 "The selected file:\n"
@@ -2124,33 +2532,24 @@ msgid ""
 " does not exist or is not a regular file."
 msgstr ""
 
-#. file chooser dialog
-#. *.rig filter used in the dialog
-#. filter used in the dialog for all files
-#. file name selected by user
-#. message dialog
-#. error status
-#. flag to indicate whether we are done or not
-#. configrmation dialog
-#. create file chooser dialog
-#: ../src/rig-state.c:253
+#: src/rig-state.c:253
 msgid "Save Rig State"
 msgstr ""
 
-#: ../src/rig-state.c:283
+#: src/rig-state.c:283
 #, c-format
 msgid ""
 "%s: User selected new file:\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-state.c:295
+#: src/rig-state.c:295
 msgid ""
 "Selected file already exists.\n"
 "Overwrite file?"
 msgstr ""
 
-#: ../src/rig-state.c:313 ../src/rig-state.c:347
+#: src/rig-state.c:313 src/rig-state.c:347
 #, c-format
 msgid ""
 "There was an error saving the settings to:\n"
@@ -2160,63 +2559,63 @@ msgid ""
 " Examine the log messages for further info."
 msgstr ""
 
-#: ../src/rig-state.c:406
+#: src/rig-state.c:406
 #, c-format
 msgid "%s: Error loading rig file (%s)"
 msgstr ""
 
-#: ../src/rig-state.c:419
+#: src/rig-state.c:419
 #, c-format
 msgid "%s: Error reading rig id (%s)"
 msgstr ""
 
-#: ../src/rig-state.c:430
+#: src/rig-state.c:430
 #, c-format
 msgid ""
 "%s: ID mismatch detected: state id is %d\n"
 "while current rig id is %d"
 msgstr ""
 
-#: ../src/rig-state.c:449
+#: src/rig-state.c:449
 #, c-format
 msgid "%s: Applying settings (model=%d)"
 msgstr ""
 
-#: ../src/rig-state.c:579
+#: src/rig-state.c:579
 #, c-format
 msgid "%s: RIG ID is invalid (%d)"
 msgstr ""
 
-#: ../src/rig-state.c:654
+#: src/rig-state.c:654
 #, c-format
 msgid "%s: Error building state data (%s)"
 msgstr ""
 
-#: ../src/rig-state.c:665
+#: src/rig-state.c:665
 #, c-format
 msgid ""
 "%s: Could not create data file (%s)\n"
 "%s"
 msgstr ""
 
-#: ../src/rig-state.c:682
+#: src/rig-state.c:682
 #, c-format
 msgid "%s: Error writing config data (%s)"
 msgstr ""
 
-#: ../src/rig-state.c:689
+#: src/rig-state.c:689
 #, c-format
 msgid "%s: Wrote only %d instead of %d chars"
 msgstr ""
 
-#: ../src/rig-state.c:695
+#: src/rig-state.c:695
 #, c-format
 msgid ""
 "%s: Rig state saved successfully to\n"
 "%s."
 msgstr ""
 
-#: ../src/rig-state.c:724
+#: src/rig-state.c:724
 #, c-format
 msgid ""
 "Selected rig state has been saved for model %d,\n"
@@ -2224,15 +2623,15 @@ msgid ""
 "Do you want to try to apply settings?"
 msgstr ""
 
-#: ../src/rig-state.c:771 ../src/rig-state.c:826 ../src/rig-state.c:869
-#: ../src/rig-state.c:909
+#: src/rig-state.c:771 src/rig-state.c:826 src/rig-state.c:869
+#: src/rig-state.c:909
 #, c-format
 msgid ""
 "%s:%d: Could nor read param %s::%s\n"
 "(%s)"
 msgstr ""
 
-#: ../src/rig-state.c:788
+#: src/rig-state.c:788
 #, c-format
 msgid ""
 "%s:%d:\n"

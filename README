@@ -14,6 +14,7 @@ encouraged to remove any pre 0.4 release of grig before installing this one.
 Assuming that you have obtained and unpacked a source distribution, you can
 install grig by typing the following (in the top level source directory):
 
+autoreconf -i
 ./configure
 make
 make install (as root)

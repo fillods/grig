@@ -6,7 +6,6 @@ AM_INIT_AUTOMAKE(grig, 0.7.99)
 
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 AM_MAINTAINER_MODE
-AC_PROG_INTLTOOL([0.21])
 
 
 dnl check for programs
@@ -26,14 +25,9 @@ PKG_CHECK_MODULES(PACKAGE, [$pkg_modules])
 AC_SUBST(PACKAGE_CFLAGS)
 AC_SUBST(PACKAGE_LIBS)
 
-dnl Add the languages which your application supports here.
-ALL_LINGUAS=fr
-GETTEXT_PACKAGE=grig
-AC_SUBST(GETTEXT_PACKAGE)
-AM_GLIB_GNU_GETTEXT
-AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,
-                   "$GETTEXT_PACKAGE",
-                   "definition of GETTEXT_PACKAGE")
+AM_GNU_GETTEXT([external])
+AM_GNU_GETTEXT_VERSION([0.18])
+AM_XGETTEXT_OPTION([--from-code=UTF-8]) 
 
 
 dnl Check hamlib
