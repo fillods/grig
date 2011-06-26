@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: fr\n"
 "Report-Msgid-Bugs-To: Nirgal Vourgère <nirgal-v@users.sourceforge.net>\n"
 "POT-Creation-Date: 2011-06-26 17:17+0200\n"
-"PO-Revision-Date: 2011-06-26 18:02+0100\n"
+"PO-Revision-Date: 2011-06-26 23:00+0100\n"
 "Last-Translator: Jean-Michel Vourgère <jmb_deb@nirgal.com>\n"
 "Language-Team: French <debian-l10n-french@lists.debian.org>\n"
 "Language: fr\n"
@@ -50,7 +50,7 @@ msgstr "Grig"
 
 #: src/grig-about.c:94
 msgid "Copyright (C) 2001-2007 Alexandru Csete OZ9AEC"
-msgstr "Copyright (C) 2001-2007 Alexandru Csete OZ9AEC"
+msgstr ""
 
 #: src/grig-about.c:98
 msgid "Grig Website"
@@ -62,12 +62,12 @@ msgstr ""
 
 #: src/grig-config.c:68
 msgid "Checking GRIG configuration."
-msgstr ""
+msgstr "Vérification de la configuration de GRIG"
 
 #: src/grig-config.c:106
 #, c-format
 msgid "..Configuration directory: %s"
-msgstr ""
+msgstr "..Répertoire de configuration: %s"
 
 #: src/grig-config.c:107
 #: src/rig-gui-message-window.c:80
@@ -80,7 +80,7 @@ msgstr "OK"
 
 #: src/grig-config.c:147
 msgid "..Radio config files:"
-msgstr ""
+msgstr "..Fichiers de configuration radio:"
 
 #: src/grig-config.c:155
 #, c-format
@@ -95,7 +95,7 @@ msgstr "....%s OK"
 #: src/grig-debug.c:60
 #: src/rig-gui-message-window.c:78
 msgid "NONE"
-msgstr ""
+msgstr "AUCUN"
 
 #: src/grig-debug.c:60
 msgid "HAMLIB"
@@ -109,12 +109,12 @@ msgstr "GRIG"
 #: src/grig-debug.c:89
 #, c-format
 msgid "%s: Debug handler initialised."
-msgstr ""
+msgstr "%s: Gestionnaire de débogage initialisé."
 
 #: src/grig-debug.c:106
 #, c-format
 msgid "%s: Shutting down debug handler."
-msgstr ""
+msgstr "%s: Fermeture du gestionnaire de débogage."
 
 #: src/grig-menubar.c:59
 msgid "_Radio"
@@ -266,7 +266,7 @@ msgstr "Affiche les avertissements"
 
 #: src/grig-menubar.c:95
 msgid "_Verbose"
-msgstr "_Verbeux"
+msgstr "Ba_vard"
 
 #: src/grig-menubar.c:95
 msgid "Verbose reporting"
@@ -430,7 +430,7 @@ msgstr "Exemple:"
 
 #: src/main.c:589
 msgid "Start grig using YAESU FT-990 connected to the first serial port, using 4800 baud and debug level set to warning:"
-msgstr ""
+msgstr "Démarrer grig en utilisant YAESU FT-990 connecté au premier port série, à 4800 baud et avec un niveau de débogage fixé à avertissement:"
 
 #: src/main.c:595
 msgid "or if you prefer the long options:"
@@ -442,31 +442,31 @@ msgstr "Il est généralement suffisant de spécifier l'ID du modèle et le PORT
 
 #: src/main.c:603
 msgid "If you start grig without any options it will use the Dummy backend and set the debug level to RIG_DEBUG_NONE. If you don't specify the transfer rate for the serial port, the default value will be used by the backend and even if you specify a value, it can be overridden by the backend."
-msgstr ""
+msgstr "Si vous démarrer grig sans aucune option il utilisera le backend Dummy et le niveau de débuage sera RIG_DEBUG_NONE. Si vous ne spécifiez pas la vitesse du port série, la valeur pas défaut sera utilisé par le backend et même si vous spécifiez une valeur, elle peut être ignorée par le backend."
 
 #: src/main.c:613
 msgid "Debug levels:"
-msgstr ""
+msgstr "Niveaux de débogage:"
 
 #: src/main.c:615
 msgid "   0    No debug, keep quiet.\n"
-msgstr ""
+msgstr "   0    Pas de débogage, mode silencieux.\n"
 
 #: src/main.c:616
 msgid "   1    Serious bug.\n"
-msgstr ""
+msgstr "   1    Bogue sérieux.\n"
 
 #: src/main.c:617
 msgid "   2    Error case (e.g. protocol, memory allocation).\n"
-msgstr ""
+msgstr "   2    Cas d'erreur (p.ex. protocole, allocation mémoire).\n"
 
 #: src/main.c:618
 msgid "   3    Warnings.\n"
-msgstr ""
+msgstr "   3    Avertissements.\n"
 
 #: src/main.c:619
 msgid "   4    Verbose information.\n"
-msgstr ""
+msgstr "   4    Bavard.\n"
 
 #: src/main.c:620
 msgid "   5    Trace.\n"
@@ -479,7 +479,7 @@ msgstr "grig %s\n"
 
 #: src/main.c:633
 msgid "Graphical User Interface for the Hamradio Control Libraries."
-msgstr ""
+msgstr "Interface Utilisateur Graphique pour les Bibliothèques de Contrôle de Radio Amateur."
 
 #: src/main.c:636
 msgid "Copyright (C)  2001-2007  Alexandru Csete."
@@ -515,7 +515,7 @@ msgstr "Fonction non implémentée"
 
 #: src/rig-daemon.c:402
 msgid "Communication timed out"
-msgstr ""
+msgstr "Délai d'attente de communication expiré"
 
 #: src/rig-daemon.c:403
 msgid "I/O error"
@@ -653,17 +653,17 @@ msgstr ""
 #: src/rig-daemon.c:871
 #, c-format
 msgid "%s started."
-msgstr ""
+msgstr "%s démarré."
 
 #: src/rig-daemon.c:969
 #, c-format
 msgid "%s stopped"
-msgstr ""
+msgstr "%s arrêté"
 
 #: src/rig-daemon.c:1015
 #, c-format
 msgid "%s called."
-msgstr ""
+msgstr "%s appelé."
 
 #: src/rig-daemon.c:1150
 #, c-format
@@ -1581,17 +1581,17 @@ msgstr ""
 
 #: src/rig-gui-info.c:346
 msgid "<b>LEVEL</b>"
-msgstr ""
+msgstr "<b>NIVEAU</b>"
 
 #: src/rig-gui-info.c:356
 #: src/rig-gui-info.c:987
 msgid "<b>READ</b>"
-msgstr ""
+msgstr "<b>LECTURE</b>"
 
 #: src/rig-gui-info.c:364
 #: src/rig-gui-info.c:995
 msgid "<b>WRITE</b>"
-msgstr ""
+msgstr "<b>ÉCRITURE</b>"
 
 #: src/rig-gui-info.c:392
 #: src/rig-gui-info.c:401
@@ -1623,7 +1623,7 @@ msgstr "Inconnu"
 
 #: src/rig-gui-info.c:471
 msgid "DCD Type:"
-msgstr ""
+msgstr "Type DCD:"
 
 #: src/rig-gui-info.c:500
 msgid "PTT Type:"
@@ -1652,11 +1652,11 @@ msgstr ""
 
 #: src/rig-gui-info.c:558
 msgid "Data bits:"
-msgstr "Bits de données:"
+msgstr "Bits données:"
 
 #: src/rig-gui-info.c:585
 msgid "Stop bits:"
-msgstr "Bits d'Arrêt:"
+msgstr "Bits d'arrêt:"
 
 #: src/rig-gui-info.c:612
 msgid "Parity:"
@@ -1664,7 +1664,7 @@ msgstr "Parité:"
 
 #: src/rig-gui-info.c:647
 msgid "Handshake:"
-msgstr ""
+msgstr "Contrôle de flux:"
 
 #: src/rig-gui-info.c:683
 msgid "Interface"
@@ -1672,7 +1672,7 @@ msgstr ""
 
 #: src/rig-gui-info.c:720
 msgid "<b>STEP</b>"
-msgstr ""
+msgstr "<b>PAS</b>"
 
 #: src/rig-gui-info.c:730
 msgid "<b>MODES</b>"
@@ -1894,9 +1894,8 @@ msgid "REV TRX"
 msgstr ""
 
 #: src/rig-gui-info-data.h:100
-#, fuzzy
 msgid "ABM"
-msgstr "AM"
+msgstr ""
 
 #: src/rig-gui-info-data.h:101
 msgid "BEAT CANC"
@@ -1971,11 +1970,11 @@ msgstr ""
 
 #: src/rig-gui-info-data.h:135
 msgid "Serial"
-msgstr ""
+msgstr "Série"
 
 #: src/rig-gui-info-data.h:136
 msgid "Network"
-msgstr ""
+msgstr "Réseau"
 
 #: src/rig-gui-info-data.h:137
 msgid "Device"
@@ -1983,7 +1982,7 @@ msgstr ""
 
 #: src/rig-gui-info-data.h:138
 msgid "Packet"
-msgstr ""
+msgstr "Paquet"
 
 #: src/rig-gui-info-data.h:139
 msgid "DTMF"
@@ -2023,7 +2022,7 @@ msgstr "Hors CAG"
 
 #: src/rig-gui-info-data.h:163
 msgid "FREQ"
-msgstr ""
+msgstr "FRÉQ"
 
 #: src/rig-gui-info-data.h:164
 msgid "RXMODE"
@@ -2046,19 +2045,16 @@ msgid "WFM"
 msgstr ""
 
 #: src/rig-gui-info-data.h:179
-#, fuzzy
 msgid "CWR"
-msgstr "CW"
+msgstr ""
 
 #: src/rig-gui-info-data.h:180
-#, fuzzy
 msgid "RTTYR"
-msgstr "RTTY"
+msgstr ""
 
 #: src/rig-gui-info-data.h:181
-#, fuzzy
 msgid "AMS"
-msgstr "AM"
+msgstr ""
 
 #: src/rig-gui-info-data.h:182
 msgid "PKTLSB"
@@ -2138,7 +2134,7 @@ msgstr ""
 
 #: src/rig-gui-keypad.c:291
 msgid "Begin manual frequency entry mode"
-msgstr ""
+msgstr "Active le mode de saisie manuelle de la fréquence"
 
 #: src/rig-gui-keypad.c:301
 msgid "CLR"
@@ -2146,7 +2142,7 @@ msgstr ""
 
 #: src/rig-gui-keypad.c:303
 msgid "Clear manual frequency entry mode"
-msgstr ""
+msgstr "Annule le mode de saisie manuelle de la fréquence"
 
 #: src/rig-gui-lcd.c:1396
 msgid "kHz"
@@ -2190,11 +2186,11 @@ msgstr "Contrôle Niveaux"
 
 #: src/rig-gui-levels.c:53
 msgid "Show/hide level controls"
-msgstr ""
+msgstr "Affiche/cache les contrôles de niveaux"
 
 #: src/rig-gui-message-window.c:65
 msgid "Time"
-msgstr ""
+msgstr "Heure"
 
 #: src/rig-gui-message-window.c:66
 msgid "Source"
@@ -2389,7 +2385,7 @@ msgstr ""
 
 #: src/rig-gui-tx.c:326
 msgid "POWER"
-msgstr ""
+msgstr "MARCHE"
 
 #: src/rig-gui-tx.c:368
 msgid "MIC GAIN"
