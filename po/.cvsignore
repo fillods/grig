@@ -3,7 +3,6 @@ boldquot.sed
 cat-id-tbl.c
 en@boldquot.header
 en@quot.header
-grig.pot
 insert-header.sin
 Makefile
 Makefile.in
