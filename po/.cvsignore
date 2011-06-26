@@ -1,4 +1,4 @@
-*.gmo
+*.mo
 boldquot.sed
 cat-id-tbl.c
 en@boldquot.header
