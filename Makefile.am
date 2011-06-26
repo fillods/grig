@@ -2,6 +2,7 @@ SUBDIRS = src doc pixmaps po
 
 install-data-local:
 	@$(NORMAL_INSTALL)
+	$(MKDIR_P) $(DESTDIR)$(pkgdatadir)
 	$(INSTALL_DATA) AUTHORS $(DESTDIR)$(pkgdatadir)
 	$(INSTALL_DATA) ChangeLog $(DESTDIR)$(pkgdatadir)
 	$(INSTALL_DATA) NEWS $(DESTDIR)$(pkgdatadir)
