@@ -111,7 +111,7 @@ static struct option long_options[] =
 /** \brief Radio info to be used by list-rigs. */
 typedef struct {
 	gint    id;       /*!< Model ID. */
-	gchar  *mfg;      /*!< Manufacurer name (eg. KENWOOD). */
+	gchar  *mfg;      /*!< Manufacturer name (eg. KENWOOD). */
 	gchar  *model;    /*!< Radio model (eg. TS-440). */
 	gchar  *version;  /*!< Driver version (eg. 0.3.2) */
         gint    status;   /*!< Driver status (0..5 use rig_strstatus). */
@@ -684,8 +684,8 @@ grig_list_rigs ()
 	g_array_sort (array, grig_list_compare);
 
 	g_print ("\n");
-	g_print ("   ID  Manufacurer      Model                  "\
-		 "Ver.   Status\n");
+	g_print (_("   ID  Manufacturer     Model                  "\
+		 "Ver.   Status\n"));
 	g_print ("-----------------------------------------------"\
 		 "----------------\n");
 
