@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: fr\n"
 "Report-Msgid-Bugs-To: Nirgal Vourgère <nirgal-v@users.sourceforge.net>\n"
 "POT-Creation-Date: 2011-06-26 17:17+0200\n"
-"PO-Revision-Date: 2011-06-26 23:00+0100\n"
+"PO-Revision-Date: 2011-06-26 23:24+0100\n"
 "Last-Translator: Jean-Michel Vourgère <jmb_deb@nirgal.com>\n"
 "Language-Team: French <debian-l10n-french@lists.debian.org>\n"
 "Language: fr\n"
@@ -1361,11 +1361,11 @@ msgstr ""
 #: src/rig-gui-buttons.c:148
 #: src/rig-gui-smeter.c:75
 msgid "Power"
-msgstr ""
+msgstr "Marche"
 
 #: src/rig-gui-buttons.c:149
 msgid "Power status"
-msgstr ""
+msgstr "Indicateur de mise en marche"
 
 #: src/rig-gui-buttons.c:193
 msgid "PTT"
@@ -1373,7 +1373,7 @@ msgstr "PTT"
 
 #: src/rig-gui-buttons.c:194
 msgid "Push to talk"
-msgstr ""
+msgstr "Presser pour parler"
 
 #: src/rig-gui-buttons.c:238
 msgid "Lock"
@@ -1393,7 +1393,7 @@ msgstr "Niveau atténuateur"
 
 #: src/rig-gui-buttons.c:344
 msgid "PREAMP OFF"
-msgstr ""
+msgstr "PRÉAMP OFF"
 
 #: src/rig-gui-buttons.c:367
 msgid "Preamp level"
@@ -1520,7 +1520,7 @@ msgstr "[Utilisateur]"
 
 #: src/rig-gui-ctrl2.c:384
 msgid "Passband Width"
-msgstr ""
+msgstr "Largeur du filtre passe-bande"
 
 #: src/rig-gui-ctrl2.c:443
 #, c-format
@@ -1529,7 +1529,7 @@ msgstr ""
 
 #: src/rig-gui-ctrl2.c:460
 msgid "Antenna Port"
-msgstr ""
+msgstr "Port Antenne"
 
 #: src/rig-gui-func.c:82
 #, c-format
@@ -1586,12 +1586,12 @@ msgstr "<b>NIVEAU</b>"
 #: src/rig-gui-info.c:356
 #: src/rig-gui-info.c:987
 msgid "<b>READ</b>"
-msgstr "<b>LECTURE</b>"
+msgstr "<b>LIRE</b>"
 
 #: src/rig-gui-info.c:364
 #: src/rig-gui-info.c:995
 msgid "<b>WRITE</b>"
-msgstr "<b>ÉCRITURE</b>"
+msgstr "<b>ÉCRIRE</b>"
 
 #: src/rig-gui-info.c:392
 #: src/rig-gui-info.c:401
@@ -1656,7 +1656,7 @@ msgstr "Bits données:"
 
 #: src/rig-gui-info.c:585
 msgid "Stop bits:"
-msgstr "Bits d'arrêt:"
+msgstr "Bits arrêt:"
 
 #: src/rig-gui-info.c:612
 msgid "Parity:"
@@ -1664,7 +1664,7 @@ msgstr "Parité:"
 
 #: src/rig-gui-info.c:647
 msgid "Handshake:"
-msgstr "Contrôle de flux:"
+msgstr "Ctrl de flux:"
 
 #: src/rig-gui-info.c:683
 msgid "Interface"
@@ -2385,7 +2385,7 @@ msgstr ""
 
 #: src/rig-gui-tx.c:326
 msgid "POWER"
-msgstr "MARCHE"
+msgstr ""
 
 #: src/rig-gui-tx.c:368
 msgid "MIC GAIN"
@@ -2489,7 +2489,7 @@ msgstr ""
 
 #: src/rig-selector.c:170
 msgid "Select a Radio"
-msgstr "Sélectionner un radio"
+msgstr "Sélectionnez une radio"
 
 #: src/rig-selector.c:230
 msgid "Company"
