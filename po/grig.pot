@@ -1,13 +1,12 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR Alexandru Csete <csete@users.sourceforge.net> 
-# This file is distributed under the same license as the PACKAGE package.
+# Grig:  Gtk+ user interface for the Hamradio Control Libraries.
+# Copyright (C) 2009 Alexandru Csete <csete@users.sourceforge.net> 
+# This file is distributed under the same license as the grig package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: grig 0.7.99\n"
-"Report-Msgid-Bugs-To: Nirgal Vourgère <nirgal-v@users.sourceforge.net> \n"
+"Project-Id-Version: grig 0.8.0\n"
+"Report-Msgid-Bugs-To: groundstation-developer@lists.sourcforge.net\n"
 "POT-Creation-Date: 2011-06-26 17:17+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"

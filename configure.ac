@@ -2,7 +2,7 @@ AC_INIT(src/main.c)
 
 AM_CONFIG_HEADER(config.h)
 
-AM_INIT_AUTOMAKE(grig, 0.7.99)
+AM_INIT_AUTOMAKE(grig, 0.8.0)
 
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 AM_MAINTAINER_MODE
@@ -25,9 +25,17 @@ PKG_CHECK_MODULES(PACKAGE, [$pkg_modules])
 AC_SUBST(PACKAGE_CFLAGS)
 AC_SUBST(PACKAGE_LIBS)
 
+ALL_LINGUAS=""
+dnl The gettext domain of the library
+GETTEXT_PACKAGE=${PACKAGE}
 AM_GNU_GETTEXT([external])
+AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE",[The gettext domain])
+AC_SUBST(GETTEXT_PACKAGE)
 AM_GNU_GETTEXT_VERSION([0.18])
 AM_XGETTEXT_OPTION([--from-code=UTF-8]) 
+
+# Check intltool
+IT_PROG_INTLTOOL([0.33], [no-xml])
 
 
 dnl Check hamlib

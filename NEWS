@@ -1,9 +1,13 @@
-GRIG 0.8.0 (TBD):
+GRIG 0.8.0:
 
 - Frequency entry via keypad (thanks to Alessandro Zummo).
 - Arrow LEFT/RIGHT will change the frequency with the smallest step. This can
   be used for tuning using external devices like the Powermate.
 * Support for VFO->MEM and MEM->VFO function.
+- Support on/off rig functions.
+- Added an extra gigahertz digit in lcd display
+- Added antenna control
+- French l10n
 - Fixed crash that occurs when mouse is clicked between MHz and kHz digits.
   Reported as Ubuntu bug 517816.
 - Requires Gtk+ 2.12 and Hamlib 1.2.8
