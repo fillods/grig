@@ -24,7 +24,7 @@ GUI_LIBS = $(GTKLIBS) $(GLIBLIB)
 LIBS = -lm
 
 # flags/defines
-CFLAGS = -DVERSION=\"0.7.2\" -DHAVE_GETOPT_H -I. -I$(grigdir) -I$(CROSSDIR)/include
+CFLAGS = -DVERSION=\"0.8.0\" -DHAVE_GETOPT_H -I. -I$(grigdir) -I$(CROSSDIR)/include
 GTK_CFLAGS := $(shell PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) pkg-config --cflags gtk+-win32-2.0)
 #GTK_CFLAGS := `pkg-config --cflags gtk+-win32-2.0`
 
