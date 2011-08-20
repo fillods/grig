@@ -52,7 +52,7 @@ get_data_dir   ()
         dir = g_strconcat (PACKAGE_DATA_DIR, G_DIR_SEPARATOR_S, "data", NULL);
 #else
 #  ifdef G_OS_WIN32
-        gchar *buff = g_win32_get_package_installation_directory (NULL, NULL);
+        gchar *buff = g_win32_get_package_installation_directory_of_module (NULL);
         dir = g_strconcat (buff, G_DIR_SEPARATOR_S,
                            "share", G_DIR_SEPARATOR_S,
                            "grig", G_DIR_SEPARATOR_S,
@@ -102,7 +102,7 @@ get_pixmaps_dir   ()
         dir = g_strdup (PACKAGE_PIXMAPS_DIR);
 #else
 #  ifdef G_OS_WIN32
-        gchar *buff = g_win32_get_package_installation_directory (NULL, NULL);
+        gchar *buff = g_win32_get_package_installation_directory_of_module (NULL);
         dir = g_strconcat (buff, G_DIR_SEPARATOR_S,
                            "share", G_DIR_SEPARATOR_S,
                            "pixmaps", G_DIR_SEPARATOR_S,
