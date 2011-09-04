@@ -52,14 +52,15 @@ dnl  AC_DEFINE(WANT_HAMLIB, 1)
 dnl various developer/devloper options
 dnl diable HW interaction; usefull to access RIG caps without
 dnl having rig; default=no
-AC_ARG_ENABLE(hardware, [  --disable-hardware      disable hardware IO],disable_hadware=yes,disable_hadware=no)
+AC_ARG_ENABLE(hardware, [  --disable-hardware      disable hardware IO],
+              [if test "$enableval" = no ; then disable_hadware=yes; else disable_hadware=no; fi],disable_hadware=no)
 if test "$disable_hadware" = yes ; then
 	AC_DEFINE(DISABLE_HW, 1, [Define if hardware is disabled.])
 fi
 
 dnl compiler flags to enable generating coverage report
 dnl using gcov
-AC_ARG_ENABLE(coverage, [  --enable-coverage       enable coverge reports],enable_coerage=yes,enable_coverage=no)
+AC_ARG_ENABLE(coverage, [  --enable-coverage       enable coverge reports],enable_coverage="$enableval",enable_coverage=no)
 if test "$enable_coverage" = yes ; then
         CFLAGS="$CFLAGS -fprofile-arcs -ftest-coverage";
 	AC_DEFINE(DISABLE_HW, 1, [Define if hardware is disabled.])
