@@ -472,6 +472,9 @@ rig_daemon_start       (int          rigid,
 	gchar **confvec;   
 	gchar **confent;
 	GError *err = NULL;  /* used when starting daemon thread */
+#if GLIB_CHECK_VERSION(2,32,0)
+  GThread* thread = NULL;
+#endif
 
 
 	grig_debug_local (RIG_DEBUG_TRACE,
@@ -636,8 +639,14 @@ rig_daemon_start       (int          rigid,
 
 	}
 	else {
-
+#if !GLIB_CHECK_VERSION(2,32,0)
 		g_thread_create (rig_daemon_cycle, NULL, FALSE, &err);
+#else
+    thread = g_thread_try_new ("daemon thread", rig_daemon_cycle, NULL, &err);
+    if (thread != NULL) {
+      g_thread_unref(thread);
+    }
+#endif
 
 		/* check whether any error occurred when starting the daemon
 		   thread; if yes, close rig and return with error code

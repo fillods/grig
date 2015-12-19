@@ -178,13 +178,14 @@ main (int argc, char *argv[])
 	g_free (fname);
 
 
+#if !GLIB_CHECK_VERSION(2,32,0)
 	/* initialize threads; according to glib docs, this call will terminate
 	   the program if threads are not supported... then why doesn''t it work
 	   on FreeBSD?
 	*/
 	if (!g_thread_supported ())
 		g_thread_init (NULL);
-
+#endif
 
 
 	/* decode command line arguments; this part of the code only sets the
