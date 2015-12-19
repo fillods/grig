@@ -1,18 +1,31 @@
-AC_INIT(src/main.c)
+## Process this file with autoconf to create configure. -*- autoconf -*-
+
+AC_PREREQ([2.67])
+
+AC_INIT([grig],
+        [0.8.1~cvs],
+        [groundstation-developer@lists.sourceforge.net],
+        [grig],
+        [http://groundstation.sourceforge.net/grig])
+
+AM_INIT_AUTOMAKE([-Wall subdir-objects])
 
 AM_CONFIG_HEADER(config.h)
 
-AM_INIT_AUTOMAKE(grig, 0.8.1~cvs)
-
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
+
 AM_MAINTAINER_MODE
 
+AC_CONFIG_MACRO_DIR([m4])
 
 dnl check for programs
 AC_PROG_CC
 AC_ISC_POSIX
 AC_HEADER_STDC
 AM_PROG_LIBTOOL
+
+LT_PREREQ([2.2.6b])
+LT_INIT([win32-dll])
 
 AC_CHECK_HEADERS([sys/time.h getopt.h])
 
@@ -37,6 +50,7 @@ AM_XGETTEXT_OPTION([--from-code=UTF-8])
 # Check intltool
 IT_PROG_INTLTOOL([0.33], [no-xml])
 
+AC_CHECK_LIB([m], [sincos])
 
 dnl Check hamlib
 hamlib_modules="hamlib >= 1.2.8"
