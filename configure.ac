@@ -48,7 +48,7 @@ AM_GNU_GETTEXT_VERSION([0.18])
 AM_XGETTEXT_OPTION([--from-code=UTF-8]) 
 
 # Check intltool
-IT_PROG_INTLTOOL([0.33], [no-xml])
+#IT_PROG_INTLTOOL([0.33], [no-xml])
 
 AC_CHECK_LIB([m], [sincos])
 
