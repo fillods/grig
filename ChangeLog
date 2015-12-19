@@ -3,8 +3,12 @@
 	* src/Makefile.am:
 	Keep-up with newer versions of autotools.
 
-	* src/rig-daemon.c src/main.c:
+	* src/rig-daemon.c, src/main.c:
 	Don't call deprecated glib functions and use the new gthread API.
+
+	* src/main.c, src/rig-selector.c, src/rig-gui-vfo.c:
+	* src/rig-gui-message-window.c:
+	Cleanup compile warnings.
 
 2011-08-20; Stephane Fillod <fillods@users.sf.net>
 	* Makefile.am:

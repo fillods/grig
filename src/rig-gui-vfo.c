@@ -108,7 +108,6 @@ static GtkWidget *
 rig_gui_vfo_create_toggle ()
 {
     GtkWidget   *button;
-    gint         sigid;
     gint         vfos;
     
     /* Create button widget.
@@ -136,7 +135,7 @@ rig_gui_vfo_create_toggle ()
 
 
     /* connect "toggle" signal */
-    sigid = g_signal_connect (G_OBJECT (button), "pressed",
+    g_signal_connect (G_OBJECT (button), "pressed",
                   G_CALLBACK (rig_gui_vfo_toggle_cb),
                   NULL);
 
@@ -225,7 +224,6 @@ static GtkWidget *
 rig_gui_vfo_create_eq_button ()
 {
     GtkWidget   *button;
-    gint         sigid;
     gint         vfos;
     
     /* Create button widget.
@@ -251,7 +249,7 @@ rig_gui_vfo_create_eq_button ()
 
 
     /* connect "toggle" signal */
-    sigid = g_signal_connect (G_OBJECT (button), "pressed",
+    g_signal_connect (G_OBJECT (button), "pressed",
                   G_CALLBACK (rig_gui_vfo_eq_cb),
                   NULL);
 
@@ -295,7 +293,6 @@ static GtkWidget *
 rig_gui_vfo_create_xchg_button ()
 {
     GtkWidget   *button;
-    gint         sigid;
     gint         vfos;
     
     /* Create button widget.
@@ -323,7 +320,7 @@ rig_gui_vfo_create_xchg_button ()
 
 
     /* connect "toggle" signal */
-    sigid = g_signal_connect (G_OBJECT (button), "pressed",
+    g_signal_connect (G_OBJECT (button), "pressed",
                   G_CALLBACK (rig_gui_vfo_xchg_cb),
                   NULL);
 
@@ -368,7 +365,6 @@ static GtkWidget *
 rig_gui_vfo_create_split_button ()
 {
     GtkWidget   *button;
-    gint         sigid;
 
     
     button = gtk_toggle_button_new_with_label (_("Split"));
@@ -387,7 +383,7 @@ rig_gui_vfo_create_split_button ()
 
 
     /* connect "toggle" signal */
-    sigid = g_signal_connect (G_OBJECT (button), "toggled",
+    g_signal_connect (G_OBJECT (button), "toggled",
                   G_CALLBACK (rig_gui_vfo_split_cb),
                   NULL);
 

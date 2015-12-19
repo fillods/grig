@@ -513,14 +513,13 @@ static void selection_changed (GtkTreeSelection *sel, gpointer data)
 {
     GtkWidget    *window = GTK_WIDGET(data);
     GtkWidget    *conbut,*editbut,*delbut;
-    GtkTreeView  *treeview;
     GtkTreeModel *model;
     GtkTreeIter   iter;
     guint         id;
     gboolean      havesel = FALSE;
     
     /* get tree view & co */
-    treeview = gtk_tree_selection_get_tree_view (sel);
+    gtk_tree_selection_get_tree_view (sel);
     havesel = gtk_tree_selection_get_selected (sel, &model, &iter);
     gtk_tree_model_get (model, &iter, 3, &id, -1);
     

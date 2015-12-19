@@ -111,7 +111,6 @@ static GtkWidget *window;
 GtkTreeModel      *model;
 
 
-static gint message_window_delete   (GtkWidget *, GdkEvent *, gpointer);
 static void message_window_destroy  (GtkWidget *, gpointer);
 static void message_window_response (GtkWidget *, gint, gpointer);
 
@@ -346,22 +345,6 @@ add_debug_message (const gchar *datetime,
 
 
 
-/*** FIXME: does not seem to be necessary */
-static gint
-message_window_delete      (GtkWidget *widget,
-			    GdkEvent  *event,
-			    gpointer   data)
-{
-
-	gtk_widget_hide_all (widget);
-	visible = FALSE;
-
-	/* return TRUE to indicate that message window
-	   should not be destroyed */
-	return TRUE;
-}
-
-
 /* callback function called when the dialog window is destroyed */
 static void
 message_window_destroy    (GtkWidget *widget,
@@ -416,7 +399,6 @@ load_debug_file ()
 {
 
 	gchar *filename;
-	gint error; /* error code returned by by read_debug_file */
 
 
 	GtkWidget *dialog;
@@ -437,7 +419,7 @@ load_debug_file ()
 
 		/* sanity check of filename will be performed 
 		   in read_debug_file */
-		error = read_debug_file (filename);
+		read_debug_file (filename);
 
 		g_free (filename);
 	}

@@ -666,7 +666,6 @@ static void
 grig_list_rigs ()
 {
 	GArray *array;
-	gint status;
 	gint i;
 	grig_rig_info_t *info;
 
@@ -679,7 +678,7 @@ grig_list_rigs ()
 	rig_load_all_backends();
 
 	/* fill list using rig_list_foreach */
-	status = rig_list_foreach (grig_list_add, (void *) array);
+	rig_list_foreach (grig_list_add, (void *) array);
 
 	/* sort the array */
 	g_array_sort (array, grig_list_compare);
