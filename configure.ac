@@ -3,7 +3,7 @@
 AC_PREREQ([2.67])
 
 AC_INIT([grig],
-        [0.8.1],
+        [0.8.2~cvs],
         [groundstation-developer@lists.sourceforge.net],
         [grig],
         [http://groundstation.sourceforge.net/grig])
