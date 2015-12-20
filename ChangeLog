@@ -10,6 +10,12 @@
 	* src/rig-gui-message-window.c:
 	Cleanup compile warnings.
 
+	* po/fr.po:
+	Update from launchpad.net
+
+	* configure.ac, NEWS:
+	Update for 0.8.1
+
 2011-08-20; Stephane Fillod <fillods@users.sf.net>
 	* Makefile.am:
 	Fixes for make distcheck

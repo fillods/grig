@@ -1,5 +1,6 @@
-GRIG 0.8.1 (WIP):
-
+GRIG 0.8.1:
+- Maintenance update
+- French l10n
 
 GRIG 0.8.0:
 
@@ -13,7 +14,7 @@ GRIG 0.8.0:
 - French l10n
 - Fixed crash that occurs when mouse is clicked between MHz and kHz digits.
   Reported as Ubuntu bug 517816.
-- Requires Gtk+ 2.12 and Hamlib 1.2.8
+- Requires Gtk+ 2.12 and Hamlib 1.2.8+
 
 
 GRIG 0.7.2:
