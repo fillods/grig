@@ -50,7 +50,7 @@ const gchar *authors[] = {
     "",
     "Contributors:",
     "Alessandro Zummo (keypad)",
-    "Stephane Fillod (extra function)",
+    "Stephane Fillod (extra function, maintainer)",
     NULL
 };
 

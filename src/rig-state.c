@@ -483,7 +483,7 @@ rig_state_load (const gchar *file)
 
 			errorflag |= read_and_check_int (cfgdata,
 							 FREQ_GRP, "VFO",
-							 &(state->vfo),
+							 (int *)&(state->vfo),
 							 &(newval->vfo));
 			errorflag |= read_and_check_bool (cfgdata,
 							  FREQ_GRP, "SPLIT",

@@ -3,7 +3,7 @@
 AC_PREREQ([2.67])
 
 AC_INIT([grig],
-        [0.8.2~cvs],
+        [0.9.0~git],
         [groundstation-developer@lists.sourceforge.net],
         [grig],
         [http://groundstation.sourceforge.net/grig])
@@ -53,13 +53,13 @@ AM_XGETTEXT_OPTION([--from-code=UTF-8])
 AC_CHECK_LIB([m], [sincos])
 
 dnl Check hamlib
-hamlib_modules="hamlib >= 1.2.8"
+hamlib_modules="hamlib >= 4.0"
 PKG_CHECK_MODULES(HAMLIB, [$hamlib_modules], [
   CFLAGS="$CFLAGS $HAMLIB_CFLAGS";
   LIBS="$LIBS $HAMLIB_LIBS";
 dnl  AC_DEFINE(WANT_HAMLIB, 1)
 ], [
-  AC_MSG_ERROR([Hamradio control libraries 1.2.8 or later not found...])
+  AC_MSG_ERROR([Hamradio control libraries 4.0 or later not found...])
 ])
 
 

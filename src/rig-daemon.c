@@ -537,7 +537,7 @@ rig_daemon_start       (int          rigid,
 	}
 
 	/* configure and open rig device */
-	strncpy (myrig->state.rigport.pathname, rigport, FILPATHLEN);
+	strncpy (myrig->state.rigport.pathname, rigport, HAMLIB_FILPATHLEN);
 	g_free (rigport);
 
 	/* set speed if any special whishes */
@@ -1674,12 +1674,12 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 						   is the current frequency within this range?
 						*/
 						if (((mode & myrig->state.rx_range_list[i].modes) == mode) &&
-						    (get->freq1 >= myrig->state.rx_range_list[i].start)    &&
-						    (get->freq1 <= myrig->state.rx_range_list[i].end)) {
-					
+						    (get->freq1 >= myrig->state.rx_range_list[i].startf)   &&
+						    (get->freq1 <= myrig->state.rx_range_list[i].endf)) {
+
 							found_mode = 1;
-							get->fmin = myrig->state.rx_range_list[i].start;
-							get->fmax = myrig->state.rx_range_list[i].end;
+							get->fmin = myrig->state.rx_range_list[i].startf;
+							get->fmax = myrig->state.rx_range_list[i].endf;
 				
 							grig_debug_local (RIG_DEBUG_VERBOSE,
 									  _("%s: Found frequency range for mode %d"),
@@ -2971,7 +2971,7 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 			val.i = set->voxdel;
 
 			/* try to execute command */
-			retcode = rig_set_level (myrig, RIG_VFO_CURR, RIG_LEVEL_VOX, val);
+			retcode = rig_set_level (myrig, RIG_VFO_CURR, RIG_LEVEL_VOXDELAY, val);
 
 			/* raise anomaly if execution did not succeed */
 			if (retcode != RIG_OK) {
@@ -2996,7 +2996,7 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 			value_t val;
 
 			/* try to execute command */
-			retcode = rig_get_level (myrig, RIG_VFO_CURR, RIG_LEVEL_VOX, &val);
+			retcode = rig_get_level (myrig, RIG_VFO_CURR, RIG_LEVEL_VOXDELAY, &val);
 
 			/* raise anomaly if execution did not succeed */
 			if (retcode != RIG_OK) {
