@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fr\n"
 "Report-Msgid-Bugs-To: groundstation-developer@lists.sourcforge.net\n"
-"POT-Creation-Date: 2015-12-19 22:46+0100\n"
+"POT-Creation-Date: 2021-03-12 19:07+0100\n"
 "PO-Revision-Date: 2015-03-29 11:47+0000\n"
 "Last-Translator: Jean-Marc <Unknown>\n"
 "Language-Team: French <debian-l10n-french@lists.debian.org>\n"
@@ -2144,7 +2144,7 @@ msgstr "Impaire"
 
 #: src/rig-gui-info-data.h:150
 msgid "Even"
-msgstr "Paire"
+msgstr "Pair"
 
 #: src/rig-gui-info-data.h:156
 msgid "XONXOFF"
