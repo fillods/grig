@@ -50,6 +50,11 @@
 
 #include <hamlib/rig.h>
 
+#define RIG_LEVEL_VOX	RIG_LEVEL_VOXDELAY
+#define FILPATHLEN	HAMLIB_FILPATHLEN
+#define MAXDBLSTSIZ HAMLIB_MAXDBLSTSIZ
+#define TSLSTSIZ HAMLIB_TSLSTSIZ
+
 /** \brief Grig representation of passband widths.
  *
  * Grig has to keep it's own passband values due to the fact
