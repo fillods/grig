@@ -1,6 +1,6 @@
 SUBDIRS = src doc pixmaps po
 
-pkgdata_DATA = AUTHORS ChangeLog NEWS README COPYING
+pkgdata_DATA = AUTHORS ChangeLog NEWS README.md COPYING
 
 EXTRA_DIST = \
 	win32/config.mk       \
