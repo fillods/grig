@@ -10,3 +10,4 @@ EXTRA_DIST = \
 
 # Install any third party macros into our tree for distribution
 ACLOCAL_AMFLAGS = -I m4 --install
+AUTOMAKE_OPTIONS = foreign
