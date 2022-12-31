@@ -2282,8 +2282,9 @@ rig_daemon_exec_cmd         (rig_cmd_t cmd,
 
 	case RIG_CMD_GET_SPLIT:
 		if (has_get->split) {
+            vfo_t tx_vfo;
 
-			retcode = rig_get_split (myrig, RIG_VFO_RX, &get->split);
+			retcode = rig_get_split_vfo (myrig, RIG_VFO_RX, &get->split, &tx_vfo);
 
 			/* raise anomaly if execution did not succeed */
 			if (retcode != RIG_OK) {
