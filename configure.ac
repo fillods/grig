@@ -1,16 +1,12 @@
 ## Process this file with autoconf to create configure. -*- autoconf -*-
 
-AC_PREREQ([2.67])
+AC_PREREQ([2.71])
 
-AC_INIT([grig],
-        [0.9.0~git],
-        [groundstation-developer@lists.sourceforge.net],
-        [grig],
-        [http://groundstation.sourceforge.net/grig])
+AC_INIT([grig],[0.9.0~git],[groundstation-developer@lists.sourceforge.net],[grig],[http://groundstation.sourceforge.net/grig])
 
 AM_INIT_AUTOMAKE([-Wall subdir-objects])
 
-AM_CONFIG_HEADER(config.h)
+AC_CONFIG_HEADERS(config.h)
 
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 
@@ -20,9 +16,11 @@ AC_CONFIG_MACRO_DIR([m4])
 
 dnl check for programs
 AC_PROG_CC
-AC_ISC_POSIX
-AC_HEADER_STDC
-AM_PROG_LIBTOOL
+AC_SEARCH_LIBS([strerror],[cposix])
+AC_CHECK_INCLUDES_DEFAULT
+AC_PROG_EGREP
+
+LT_INIT
 
 LT_PREREQ([2.2.6b])
 LT_INIT([win32-dll])
@@ -44,7 +42,7 @@ GETTEXT_PACKAGE=${PACKAGE}
 AM_GNU_GETTEXT([external])
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE",[The gettext domain])
 AC_SUBST(GETTEXT_PACKAGE)
-AM_GNU_GETTEXT_VERSION([0.18])
+AM_GNU_GETTEXT_VERSION([0.20])
 AM_XGETTEXT_OPTION([--from-code=UTF-8]) 
 
 # Check intltool
@@ -94,7 +92,7 @@ AC_DEFINE_UNQUOTED([HAMLIB_VERSION],[`pkg-config --modversion hamlib`],["Hamlib 
 AC_SUBST(CFLAGS)
 AC_SUBST(LDFLAGS)
 
-AC_OUTPUT([
+AC_CONFIG_FILES([
 Makefile
 doc/Makefile
 doc/man/grig.1
@@ -104,6 +102,7 @@ src/Makefile
 pixmaps/Makefile
 po/Makefile.in
 ])
+AC_OUTPUT
 
 echo
 echo SUMMARY:
