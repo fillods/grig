@@ -28,7 +28,7 @@ set transfer rate (serial port only)
 set CI\-V address (decimal, ICOM only)
 .TP 
 \fB\-C\fR, \fB\-\-set\-conf\fR=\fIpar=val[,par2=val2]\fR
-set additiional configuration parameters
+set additional configuration parameters
 .TP 
 \fB\-d\fR, \fB\-\-debug\fR=\fILEVEL\fR
 set hamlib debug level (0..5)
@@ -58,11 +58,11 @@ show version information and exit
 Start grig using YAESU FT\-990 connected to the first serial port,
 using 4800 baud and debug level set to warning:
 .PP 
-     grig \-m 116 \-r /dev/ttyS0 \-s 4800 \-d 3
+     grig \-m 1016 \-r /dev/ttyS0 \-s 4800 \-d 3
 .PP 
 or if you prefer the long options:
 .PP 
-     grig \-\-model=116 \-\-rig\-file=/dev/ttyS0 \-\-speed=4800 \-\-debug=3
+     grig \-\-model=1016 \-\-rig\-file=/dev/ttyS0 \-\-speed=4800 \-\-debug=3
 .PP 
 It is usually enough to specify the model ID and the DEVICE.
 .PP 
@@ -95,7 +95,7 @@ In bash shell you would write something like:
      grig [options] 2> grig.log
 .PP
 You can then use the Message Window in the View menu to view these messages. The
-debug messages printed by grig a formatted in a structured way with each line
+debug messages printed by grig is formatted in a structured way with each line
 containing both time, source and level of the message. Each field is separated
 with ;; so you can also import the log file into a spread sheet for further analysis.
 
@@ -119,7 +119,7 @@ in these situations, one can try to experiment with the \-D or \-\-delay command
 argument, which will put the specified delay in between each executed command. The
 default value is 10 milliseconds and the smallest possible value is 1 millisecond
 (if one specifies 0 millisecond on the command line, the default value will be
- used).
+used).
 If you find a value which is better for your radio than the default value, please
 let us know about it.
 .TP
