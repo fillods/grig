@@ -196,7 +196,7 @@ rig_gui_message_window_init  ()
  * This function cleans up the message window by freeing the allocated
  * memory. It should be called when the main program exits.
  *
- * Note: It is not strictly neccessary to call this function, since it
+ * Note: It is not strictly necessary to call this function, since it
  *       is also invoked by the 'destroy' callback of the window.
  *
  * FIXME: In the above case this function is not necessary at all.
@@ -494,7 +494,7 @@ read_debug_file (const gchar *filename)
 
 			errorcode = 0;
 
-			/* Close IO chanel; don't care about status.
+			/* Close IO channel; don't care about status.
 			   Shutdown will flush the stream and close the channel
 			   as soon as the reference count is dropped. Order matters!
 			*/
@@ -503,7 +503,7 @@ read_debug_file (const gchar *filename)
 
 		}
 		else {
-			/* an error occured */
+			/* an error occurred */
 
 			grig_debug_local (RIG_DEBUG_ERR,
 					  _("%s:%d: Error open debug log (%s)"),

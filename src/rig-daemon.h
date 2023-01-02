@@ -42,7 +42,7 @@
 
 
 #define C_RIG_DAEMON_STOP_TIMEOUT 10000  /*!< Timeout to let the daemon process stop [msec] */
-#define C_RIG_DAEMON_STOP_SLEEP_TIME 100 /*!< Time to sleep between succesive attempts to cheack the clear flag. [msec] */
+#define C_RIG_DAEMON_STOP_SLEEP_TIME 100 /*!< Time to sleep between successive attempts to cheack the clear flag. [msec] */
 
 
 /** \brief List of available commands.

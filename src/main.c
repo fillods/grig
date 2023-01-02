@@ -70,7 +70,7 @@ GtkWidget    *grigapp;
     not in this baseline anyway.
  */
 static gint     rignum    = 0;       /*!< Flag indicating which radio to use.*/
-static gchar   *rigfile   = NULL;    /*!< The port where the rig is atached. */
+static gchar   *rigfile   = NULL;    /*!< The port where the rig is attached. */
 static gchar   *civaddr   = NULL;    /*!< CI-V address for ICOM rig. */
 static gchar   *rigconf   = NULL;    /*!< Configuration parameter. */
 static gint     rigspeed  = 0;       /*!< Optional serial speed. */
@@ -133,7 +133,7 @@ static void        grig_sig_handler    (int sig);
 /** \bief Main program execution entry.
  *  \param argc The number o command line arguments.
  *  \param argv List of command line arguments.
- *  \return Execution status (non-zero mean error ocurred).
+ *  \return Execution status (non-zero mean error occurred).
  *
  * Some description.
  *
@@ -413,7 +413,7 @@ main (int argc, char *argv[])
 
 
 /** \brief Create and initialize main application window.
- *  \param rignum The index of the radio wich is controled by the app
+ *  \param rignum The index of the radio which is controlled by the app
  *  \return A new GtkWindow widget.
  *
  * This function creates and initializes a new GtkWindow which can be used
@@ -498,7 +498,7 @@ static void grig_sig_handler (int sig)
  * This function handles the delete event received by the main application
  * window (eg. when the window is closed by the WM). This function simply
  * returns FALSE indicating that the main application window should be
- * destroyed by emiting the destroy signal.
+ * destroyed by emitting the destroy signal.
  *
  */
 static gint
@@ -648,7 +648,7 @@ grig_show_version   ()
 
 /** \brief List rigs.
  *
- * This function lists the radios suported by hamlib. It shows the
+ * This function lists the radios supported by hamlib. It shows the
  * manufacturer, model, driver version and driver status in a list
  * sorted by model number.
  *
@@ -716,7 +716,7 @@ grig_list_rigs ()
 
 
 /** \brief Add new entry to list of radios.
- *  \param caps Structure with the capablities of thecurrent radio.
+ *  \param caps Structure with the capabilities of thecurrent radio.
  *  \param array Pointer to the GArray into which the new entry should be 
  *               stored.
  *  \return Always 1 to keep rig_list_foreach running.

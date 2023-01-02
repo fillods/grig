@@ -145,7 +145,7 @@ rig_gui_create ()
 			    FALSE, FALSE, 0);
     gtk_widget_show (hbox);
 
-	/* ceate main vertical box */
+	/* create main vertical box */
 	vbox = gtk_vbox_new (FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (vbox), grig_menubar_create (),
 			    FALSE, FALSE, 0);

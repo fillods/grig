@@ -89,7 +89,7 @@ rig_selector_execute ()
     GtkWidget   *window;   /* the main rig-selector window */
     gchar       *icon;     /* window icon file name */
     GtkWidget   *vbox;     /* the main vertical box in the window */
-    GtkWidget   *butbox1;  /* The button box with New, edit, and delete butons */
+    GtkWidget   *butbox1;  /* The button box with New, edit, and delete buttons */
     GtkWidget   *butbox2;  /* the button box in the bottom of the window */
     GtkWidget   *conbut;   /* Connect button */
     GtkWidget   *cancbut;  /* Cancel button */
@@ -344,7 +344,7 @@ static GtkTreeModel *create_model ()
                     
                 }
                 
-                /* clean up memmory */
+                /* clean up memory */
                 //g_free (buff);
                 
                 if (conf.name)
@@ -379,7 +379,7 @@ static GtkTreeModel *create_model ()
  * This function handles the delete event received by the rig selector
  * window (eg. when the window is closed by the WM). This function simply
  * returns FALSE indicating that the main application window should be
- * destroyed by emiting the destroy signal.
+ * destroyed by emitting the destroy signal.
  *
  */
 static gint

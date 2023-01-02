@@ -33,7 +33,7 @@
  *  \ingroup lcd
  *  \brief LCD display.
  *
- * The main pupose of the LCD display widget is to show the current frequency
+ * The main purpose of the LCD display widget is to show the current frequency
  * and to provide easy access to set the current working frequency. The display
  * has 6 large digits left of the decmal and three small digits right of the
  * decimal. It is therefore capable to display the frequency with 1 Hz of 
@@ -146,7 +146,7 @@ static void           rig_gui_lcd_update_vfo       (void);
  *  \return The LCD display widget.
  *
  * This function creates and initializes the LCD display widget which is
- * used to diplay the frequency.
+ * used to display the frequency.
  */
 GtkWidget *
 rig_gui_lcd_create ()
@@ -945,7 +945,7 @@ rig_gui_lcd_calc_dim    ()
  * will be 1 kHz
  *
  * \note The function is optimized in the sense that before drawing of each digit
- * it is checked whether the new digit is different from the one already beeing
+ * it is checked whether the new digit is different from the one already being
  * displayed.
  *
  * \bug 'default' case should send a critical error message.
@@ -977,7 +977,7 @@ rig_gui_lcd_set_freq_digits  (freq_t freq)
 	str = g_strdup_printf ("%10.0f", freq);
 
 	/* for each digit check whether the new digit is different from the one
-	   already beeing displayed; if yes, draw the new digit, otherwise do
+	   already being displayed; if yes, draw the new digit, otherwise do
 	   nothing.
 	*/
 
@@ -1160,7 +1160,7 @@ rig_gui_lcd_clear_manual_entry  (void)
  * string with 3 digits with 0.01 kHz resolution.
  *
  * \note The function is optimized in the sense that before drawing of each digit
- * it is checked whether the new digit is different from the one already beeing
+ * it is checked whether the new digit is different from the one already being
  * displayed.
  *
  * \bug 'default' case should send a critical error message.
@@ -1221,7 +1221,7 @@ rig_gui_lcd_set_rit_digits   (shortfreq_t freq)
 	}
  
 	/* for each digit check whether the new digit is different from the one
-	   already beeing displayed; if yes, draw the new digit, otherwise do
+	   already being displayed; if yes, draw the new digit, otherwise do
 	   nothing.
 	*/
 	for (i=1; i<4; i++) {

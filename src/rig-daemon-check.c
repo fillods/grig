@@ -184,7 +184,7 @@ rig_daemon_check_vfo     (RIG               *myrig,
  * This function tests whether the rig is capable to get/set the frequency. 
  * The test is done by checking the get_freq and set_freq pointers in the
  * rig_caps structure. Furthermore, if the rig is capable of getting the
- * frequency, the curent frequency is read.
+ * frequency, the current frequency is read.
  */
 void
 rig_daemon_check_freq     (RIG               *myrig,
@@ -203,7 +203,7 @@ rig_daemon_check_freq     (RIG               *myrig,
 	
 
 	if (has_get->freq1) {
-		/* try to obtain current frequncy */
+		/* try to obtain current frequency */
 		retcode = rig_get_freq (myrig, RIG_VFO_CURR, &freq);
 		if (retcode == RIG_OK) {
 			get->freq1 = freq;

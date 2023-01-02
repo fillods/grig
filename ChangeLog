@@ -172,14 +172,14 @@
 	* src/rig-gui-lcd.[ch]:
 	Changed rig_gui_lcd_set_freq_digits and rig_gui_lcd_set_rit_digits
 	to be public in order to allow direct setting of frequency display
-	when managing events other than the ones occuring on the LCD area.
+	when managing events other than the ones occurring on the LCD area.
 	
 	
 
 2007-11-15;	Alexandru Csete <oz9aec@gmail.com>
 
 	* NEWS, TODO:
-	Separate NEWS and future improvments.
+	Separate NEWS and future improvements.
 
 	* src/Makefile.am:
 	Allow build with Gtk+ 2.12 (GtkTooltips deprecated).
@@ -334,7 +334,7 @@
 
 	* src/rig-daemon.c:
 	Sleep between commands only if the last command has been executed.
-	Added hamlib error message when a command failes to execute.
+	Added hamlib error message when a command fails to execute.
 
 	* src/grig-debug:
 	Use local debug level in order to be able to filter grig debug messages
@@ -461,7 +461,7 @@
 	Modified to use grig debug handler instead of the one from Hamlib.
 
 	* src/rig-daemon.c, src/rig-daemon-check.c:
-	Modfied to use grig debug handler and use i18n for strings.
+	Modified to use grig debug handler and use i18n for strings.
 
 	* src/rig-gui-message-window.c:
 	Implemented reading debug messages from log files. Still to do is
@@ -560,7 +560,7 @@
 
 	* src/grig-menubar.c:
 	Added RIG_FUNC and software memory menu entries.
-	Use stock pixmaps where apropriate.
+	Use stock pixmaps where appropriate.
 
 	* src/rig-gui.c:
 	Change lcd box spacing for better layout.
@@ -865,7 +865,7 @@
 	Added command line option for command delay.
 
 	* doc/man/grig.1.in:
-	Added section about comamnd delays and buggy power off
+	Added section about command delays and buggy power off
 	state.
 
 	* Makefile.am:
@@ -1092,7 +1092,7 @@
 
 	* src/grig-gtk-workarounds.c, src/griggtk-workarounds.h:
 	Created files. Intended to contain various workaround tricks for Gtk+
-	bugs and limitations. Currently it contains funtions to allow tooltips
+	bugs and limitations. Currently it contains functions to allow tooltips
 	with the GtkComboBox widget.
 
 	* src/rig-guit-ctrl2.c, src/rig-gui-buttons.c:
@@ -1248,10 +1248,10 @@
 
 	* src/rig-daemon.c:
 	Fixed bug which caused the pass band to be set to 1Hz each time the
-	mode was changed. Replaced XIT comamnds with VFO comamnds.
+	mode was changed. Replaced XIT commands with VFO commands.
 
 	* src/rig-daemon-check.c:
-	Set smeter value to -54dB if comamnd is not available. Added code to
+	Set smeter value to -54dB if command is not available. Added code to
 	storeavailableVFOs in rig-data.
 
 	* src/rig-data-c, src/rig-data.h:
@@ -1327,7 +1327,7 @@
 2004-10-29;	Alexandru Csete - SK568 <csete@uers.sourceforge.net>
 
 	* src/main.c:
-	Removed some useless comments from command line option handlig code and
+	Removed some useless comments from command line option handling code and
 	compressed code a little.
 
 	* NOTE:
@@ -1339,7 +1339,7 @@
 
 	* configure.in:
 	Added --disable-hardware option to disable any hamlib operations except
-	rig_init and rig_cleanup (usefull to test rig caps and such).
+	rig_init and rig_cleanup (useful to test rig caps and such).
 
 	* src/rig-daemon-check.c:
 	Added '\n' to the end of error messages.
@@ -1349,7 +1349,7 @@
 
 	* src/rig-gui-lcd.c:
 	Fixed a bug which caused incorrect RIT jumps especially when the RIT
-	sign chnges (eg. -0.40 + 1.00 gave 0.60 instead of 0.40). Added utility
+	sign changes (eg. -0.40 + 1.00 gave 0.60 instead of 0.40). Added utility
 	function to explicitly convert RIT/XIT values to byte array.
 
 	* configure.in:
@@ -1420,14 +1420,14 @@
 
 	* src/grig-menubar.c, src/grig-menubar.h:
 	Remove rotator and GConf related code. Created menubar using GtkAction
-	achitecture.
+	architecture.
 
 	* src/rig-gui.c:
 	Include menubar in the GUI.
 	
 	* src/main.c:
 	Rearranged some code in the creation of the main window so that the
-	window is ceated before the creation of the menubar.
+	window is created before the creation of the menubar.
 	
 
 2004-10-18;	Alexandru Csete <oz9aec@gmail.com>
@@ -1470,7 +1470,7 @@
 	separator. Modified code to take new pixmaps with '-' into account.
 	Also found and fixed a memory leak in rig_gui_lcd_set_rit_digits.
 	Added function to draw miscellaneous text on the display.
-	Updated design docs accrdingly.
+	Updated design docs accordingly.
 	
 	* pixmaps/digits_normal.png, pixmaps/digits_small.png:
 	Added '-'sign.
@@ -1487,7 +1487,7 @@
 
 	* src/rig-gui-lcd.c:
 	Finished tuning code for both frequency and RIT/XIT. Only RIT is
-	suported at the moment. Also added RIT/XIT mode selection field to
+	supported at the moment. Also added RIT/XIT mode selection field to
 	the main ata structure.
 
 	* src/rig-daemon-check.c:
@@ -1497,7 +1497,7 @@
 2004-10-08;	Alexandru Csete <oz9aec@gmail.com>
 
 	* src/rig-gui-lcd.c:
-	Added more event handlig code to catch mouse events on the LCD
+	Added more event handling code to catch mouse events on the LCD
 	display. Expose event call has been merged into this code.
 	
 
@@ -1505,7 +1505,7 @@
 
 	* src/rig-gui-lcd.c:
 	Added code to display small digits and removed first dot between
-	MHz and kHz (too confusing). Aded RIT/XIT display. Added bug text
+	MHz and kHz (too confusing). Added RIT/XIT display. Added bug text
 	that it does not work with frequencies above 1 GHz.
 
 	* src/rig-data.c, src/rig-data.h:
@@ -1617,7 +1617,7 @@
 	* src/main.c:
 	Removed GNOME dependencies.
 
-	* autogen.sh, Makefile.am, cofigure.in:
+	* autogen.sh, Makefile.am, configure.in:
 	Updated for Gtk+ only.
 	
 	* src/Makefile.am:
@@ -1643,7 +1643,7 @@
 2004-09-26;	Alexandru Csete - SK1563 <oz9aec@gmail.com>
 
 	* src/rig-data.c:
-	rig_data_set functions will temporarely set the 'get' data to 
+	rig_data_set functions will temporarily set the 'get' data to 
 	the 'set' value to avoid gui flip-back when daemon is to slow to
 	update the 'get' variable.
 

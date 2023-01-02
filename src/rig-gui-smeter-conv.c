@@ -103,7 +103,7 @@
  *
  * This function convertsthe signal strength in dB, as received from hamlib,
  * to the needle angle. The valid range in -54..30, with -54dB corresponding to
- * S0 and 30dB coresponding to S9+30. Values outside range will be truncated to
+ * S0 and 30dB corresponding to S9+30. Values outside range will be truncated to
  * the corresponding limit.
  * \verbatim
          S    dB   deg
@@ -254,7 +254,7 @@ convert_valf_to_angle    (gfloat valf)
  *  \param coor  Coordinate structurewhere the result is stored.
  *
  *  This function converts the needle angle and calculates the two (x,y)
- *  cordinates necessary to draw the needle on the canvas. In order to do
+ *  coordinates necessary to draw the needle on the canvas. In order to do
  *  this the size of the canvas and information about the pixmap is needed.
  *  These are given byconstants in this file and must be adjustedin case
  *  of a new pixmap.

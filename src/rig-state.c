@@ -392,7 +392,7 @@ rig_state_load (const gchar *file)
 	gint               vali;
 	gboolean           valb;
 	gboolean           errorflag = 0;
-	gboolean           loadstate = 1;  /* flag to indicate whether to laod state */
+	gboolean           loadstate = 1;  /* flag to indicate whether to load state */
 
 
 
@@ -745,7 +745,7 @@ ask_cfm (gint state_id, gint rig_id)
  *  \param key The name of the configuiration key.
  *  \param param Pointer to the parameter where the value should be stored.
  *  \param newflag Pointer to the new flag of the parameter.
- *  \return TRUE if an error has occured during read, FALSE otherwise.
+ *  \return TRUE if an error has occurred during read, FALSE otherwise.
  *
  *  \note Float type values are usually levels and constrained to [0.0;1.0]
  *        freq_t is double :P
@@ -804,7 +804,7 @@ read_and_check_level (GKeyFile    *cfgdata,
  *  \param key The name of the configuiration key.
  *  \param param Pointer to the parameter where the value should be stored.
  *  \param newflag Pointer to the new flag of the parameter.
- *  \return TRUE if an error has occured during read, FALSE otherwise.
+ *  \return TRUE if an error has occurred during read, FALSE otherwise.
  */
 static gboolean
 read_and_check_double (GKeyFile    *cfgdata,
@@ -849,7 +849,7 @@ read_and_check_double (GKeyFile    *cfgdata,
  *  \param key The name of the configuiration key.
  *  \param param Pointer to the parameter where the value should be stored.
  *  \param newflag Pointer to the new flag of the parameter.
- *  \return TRUE if an error has occured during read, FALSE otherwise.
+ *  \return TRUE if an error has occurred during read, FALSE otherwise.
  */
 static gboolean read_and_check_int (GKeyFile    *cfgdata,
 				    const gchar *group,
@@ -889,7 +889,7 @@ static gboolean read_and_check_int (GKeyFile    *cfgdata,
  *  \param key The name of the configuiration key.
  *  \param param Pointer to the parameter where the value should be stored.
  *  \param newflag Pointer to the new flag of the parameter.
- *  \return TRUE if an error has occured during read, FALSE otherwise.
+ *  \return TRUE if an error has occurred during read, FALSE otherwise.
  */
 static gboolean read_and_check_bool (GKeyFile    *cfgdata,
 				     const gchar *group,
