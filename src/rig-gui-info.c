@@ -141,7 +141,7 @@ rig_gui_info_run ()
 /** \brief Create header.
  *  \return The header widget which can be packed into themain container.
  *
- * This funcion creates the header of the radio info dialog. The header
+ * This function creates the header of the radio info dialog. The header
  * consists of the brand, model and driver info. The text is arranged in a
  * table with 3 rows and 2 columns. The brand and model is placed in the
  * upper row, the driver version is in the middle row and the driver status
@@ -320,7 +320,7 @@ rig_gui_info_create_offset_frame ()
  * This function creates the widget used to display the set and get
  * level availabilities. The various levels are listed in a vertical
  * table and for each of them a label indicates
- * whether the level is available or not (actualy one label for read and
+ * whether the level is available or not (actually one label for read and
  * one for write).
  *
  *             READ    WRITE
@@ -951,7 +951,7 @@ rig_gui_info_create_frontend_frame ()
  * This function creates the widget used to display the set and get
  * special function availabilities. The various functions are listed in a vertical
  * table and for each of them a label indicates
- * whether the function is available or not (actualy one label for read and
+ * whether the function is available or not (actually one label for read and
  * one for write).
  *
  *             READ    WRITE

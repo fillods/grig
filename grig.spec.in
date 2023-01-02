@@ -11,7 +11,7 @@ Name: %{name}
 Version: %{version}
 Release: %{release}
 Copyright: GPL
-Group: Application/Comunication
+Group: Application/Communication
 Prefix: /usr
 BuildRoot: /var/tmp/%{name}-%{version}
 Summary: Graphical user interface for the Ham Radio Control Libraries

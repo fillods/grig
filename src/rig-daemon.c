@@ -39,7 +39,7 @@
  *
  * After initialization of the radio it starts a cyclic thread which will
  * execute some pre-defined commands. Because some manufacturers discourage
- * agressive polling while in TX mode, the daemon will only acquire very
+ * aggressive polling while in TX mode, the daemon will only acquire very
  * few things while in this mode.
  *
  * More about cycles and periods...
@@ -497,7 +497,7 @@ rig_daemon_start       (int          rigid,
 		return 1;
 	}
 
-	/* use dummy backend if no ID pecified */
+	/* use dummy backend if no ID specified */
 	if (!rigid) {
 		rigid = 1;
 	}
@@ -523,7 +523,7 @@ rig_daemon_start       (int          rigid,
 			  _("%s: Initializing rig (id=%d)"),
 			  __FUNCTION__, rigid);
 
-	/* initilize rig */
+	/* initialize rig */
 	myrig = rig_init (rigid);
 
 	if (myrig == NULL) {
@@ -608,7 +608,7 @@ rig_daemon_start       (int          rigid,
 #endif
 
 	grig_debug_local (RIG_DEBUG_TRACE,
-			  _("%s: Init successfull, executing post-init"),
+			  _("%s: Init successful, executing post-init"),
 			  __FUNCTION__);
 
 	/* get capabilities and settings  */
@@ -1115,7 +1115,7 @@ rig_daemon_cycle_cb  (gpointer data)
  * This function is responsible for the execution of the specified rig command.
  * First, it checks whether the command is supported by the current radio, if yes,
  * it executes the corresponding hamlib API call. If the command execution is not
- * successfull, an anomaly report is sent to the rig error manager which will take
+ * successful, an anomaly report is sent to the rig error manager which will take
  * care of any further actions like disabling repeatedly failing commands.
  *
  * \note The 'get' commands use local buffers for the acquired value and do not

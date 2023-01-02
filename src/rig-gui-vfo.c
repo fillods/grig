@@ -271,7 +271,7 @@ rig_gui_vfo_eq_cb (GtkWidget *widget, gpointer data)
                  rig_data_has_get_vfo ()) {
 
         grig_debug_local (RIG_DEBUG_BUG,
-                  "%s: VFO COPY without RIG_OP_COPY not imlemented\n",
+                  "%s: VFO COPY without RIG_OP_COPY not implemented\n",
                   __FUNCTION__);
 
     }
@@ -342,7 +342,7 @@ rig_gui_vfo_xchg_cb (GtkWidget *widget, gpointer data)
                  rig_data_has_get_vfo ()) {
 
         grig_debug_local (RIG_DEBUG_BUG,
-                  "%s: VFO XCHG without RIG_OP_XCHG not imlemented\n",
+                  "%s: VFO XCHG without RIG_OP_XCHG not implemented\n",
                   __FUNCTION__);
 
     }

@@ -128,7 +128,7 @@ There have been reports on that the new, thread\-based daemon process is never
 started on FreeBSD, while the old, timeout\-based daemon worked fine. It is therefore
 possible to choose the two ways to run the daemon process. The default is the new
 thread based daemon, but if you use FreeBSD and nothing seems to work after start\-up
-you can select the timout\-based daemon with the \-n or \-\-nothread command line option.
+you can select the timeout\-based daemon with the \-n or \-\-nothread command line option.
 .TP
 Connection Settings
 Once you have started grig you can not change the radio settings (model, device,
@@ -159,7 +159,7 @@ using the \-P or \-\-enable\-pwr command line switch.
 PTT Control
 Similar to the power state, the PTT has caused strange behaviour on some radios.
 Consequently, it has been disabled by default but can be enabled using the \-p or
-\-\-enable\-ptt command line aguments.
+\-\-enable\-ptt command line arguments.
 
 .SH "AUTHOR"
 Written by Alexandru Csete, OZ9AEC.

@@ -130,7 +130,7 @@ GRIG 0.4.0:
 - Removed level sliders, will be re-added in the next version.
 
 
-GRIG 0.3.0 (never relesed, available from CVS):
+GRIG 0.3.0 (never released, available from CVS):
 
 - Rotator support with the possibility for AZ, EL or AZ/EL
   rotators.

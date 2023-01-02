@@ -536,7 +536,7 @@ rig_data_get_freq    (int num)
 	case 1: return get.freq1;
 		break;
 
-		/* secondary frequenct */
+		/* secondary frequency */
 	case 2: return get.freq2;
 		break;
 
@@ -548,7 +548,7 @@ rig_data_get_freq    (int num)
 }
 
 
-/** \brief Get lower freqency limit.
+/** \brief Get lower frequency limit.
  *  \return The current lower frequency limit.
  *
  * This function returns the lower frequency limit which applies to
@@ -562,7 +562,7 @@ rig_data_get_fmin     ()
 
 
 
-/** \brief Get upper freqency limit.
+/** \brief Get upper frequency limit.
  *  \return The current upper frequency limit.
  *
  * This function returns the upper frequency limit which applies to
@@ -1242,7 +1242,7 @@ rig_data_get_split ()
  *  \return A pointer to the shared data.
  *
  * This function is used to obtain the address of the 'get' global data.
- * This is primarly used by the radio daemon for fast access to the data
+ * This is primarily used by the radio daemon for fast access to the data
  * structure.
  */
 grig_settings_t  *
@@ -1257,7 +1257,7 @@ rig_data_get_get_addr ()
  *  \return A pointer to the shared data.
  *
  * This function is used to obtain the address of the 'set' global data.
- * This is primarly used by the radio daemon for fast access to the data
+ * This is primarily used by the radio daemon for fast access to the data
  * structure.
  */
 grig_settings_t  *
@@ -1272,7 +1272,7 @@ rig_data_get_set_addr ()
  *  \return A pointer to the shared data.
  *
  * This function is used to obtain the address of the 'new' global data.
- * This is primarly used by the radio daemon for fast access to the data
+ * This is primarily used by the radio daemon for fast access to the data
  * structure.
  */
 grig_cmd_avail_t *
@@ -1287,7 +1287,7 @@ rig_data_get_new_addr ()
  *  \return A pointer to the shared data.
  *
  * This function is used to obtain the address of the 'has_set' global data.
- * This is primarly used by the radio daemon for fast access to the data
+ * This is primarily used by the radio daemon for fast access to the data
  * structure.
  */
 grig_cmd_avail_t *
@@ -1302,7 +1302,7 @@ rig_data_get_has_set_addr ()
  *  \return A pointer to the shared data.
  *
  * This function is used to obtain the address of the 'has_get' global data.
- * This is primarly used by the radio daemon for fast access to the data
+ * This is primarily used by the radio daemon for fast access to the data
  * structure.
  */
 grig_cmd_avail_t *
@@ -1329,7 +1329,7 @@ rig_data_get_all_antennas    ()
 }
 
 
-/** \brief Store tha maximum RF power level */
+/** \brief Store the maximum RF power level */
 void
 rig_data_set_max_rfpwr (float maxpow)
 {

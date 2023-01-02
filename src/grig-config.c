@@ -81,7 +81,7 @@ gint grig_config_check ()
 
 
 /** \brief Check configuration directory.
- *  \return 0 if successful, -1 if an error ocurred.
+ *  \return 0 if successful, -1 if an error occurred.
  *
  * This function checks for the existence of the .grig directory in the
  * user's home folder and creates it if the directory doesn't already exist.
@@ -122,7 +122,7 @@ check_cfg_file ()
 
 
 /** \brief Check version of .rig files and update if necessary
- *  \return 0 if all checks/updates were successful, -1 if an error ocurred
+ *  \return 0 if all checks/updates were successful, -1 if an error occurred
  *
  * This function checks all .rig files in the configuration directory. If the
  * config version is lower than GRIG_RIG_CFG_VER, it tries to update to the
@@ -185,7 +185,7 @@ check_rig_files ()
 
 
 /** \brief Check version of .rot files and update if necessary
- *  \return 0 if all checks/updates were successful, -1 if an error ocurred
+ *  \return 0 if all checks/updates were successful, -1 if an error occurred
  *
  * This function checks all .rot files in the configuration directory. If the
  * config version is lower than GRIG_ROT_CFG_VER, it tries to update to the
@@ -207,7 +207,7 @@ check_rot_files ()
 
 
 /** \brief Check version of .mem files and update if necessary
- *  \return 0 if all checks/updates were successful, -1 if an error ocurred
+ *  \return 0 if all checks/updates were successful, -1 if an error occurred
  *
  * This function checks all .mem files in the configuration directory. If the
  * config version is lower than GRIG_MEM_CFG_VER, it tries to update to the

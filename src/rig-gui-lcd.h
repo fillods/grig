@@ -51,7 +51,7 @@
 /** \brief Green component of the default background (189 in 8 bit). */
 #define LCD_BG_DEFAULT_GREEN  48544
 
-/** \brief Blue componentof te default background (226 in 8 bit). */
+/** \brief Blue component of the default background (226 in 8 bit). */
 #define LCD_BG_DEFAULT_BLUE   57996
 
 

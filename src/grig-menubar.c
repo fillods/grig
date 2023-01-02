@@ -88,7 +88,7 @@ static GtkActionEntry entries[] = {
 
 /** \brief Radio items for selectinghamlib debug level. */
 static GtkRadioActionEntry radio_entries[] = {
-  { "None",    NULL, N_("_No Debug"), NULL, N_("Don't show any debug mesages"),                0 },
+  { "None",    NULL, N_("_No Debug"), NULL, N_("Don't show any debug messages"),                0 },
   { "Bug",     NULL, N_("_Bug"),      NULL, N_("Show error messages caused by possible bugs"), 1 },
   { "Error",   NULL, N_("_Error"),    NULL, N_("Show run-time error messages"),                2 },
   { "Warn",    NULL, N_("_Warning"),  NULL, N_("Show warnings"),                               3 },

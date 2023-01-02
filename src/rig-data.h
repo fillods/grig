@@ -36,10 +36,10 @@
  *   \ingroup shdata
  *   \brief   Data type definitions for shared rig data.
  *
- * This file containes the data type definitions for the shared rig data
+ * This file contains the data type definitions for the shared rig data
  * object.
  *
- * \bug packege is incomplete!
+ * \bug package is incomplete!
  *
  * \bug tx meter levels are not ok... need response from hamlib
  */
@@ -126,7 +126,7 @@ typedef struct {
 	/* more or less constant values */
 	freq_t          fmin;      /*!< Lower frequency limit for current mode. */
 	freq_t          fmax;      /*!< Upper frequency limit for current mode. */
-	shortfreq_t     fstep;     /*!< Smallest freqency step for current mode. */
+	shortfreq_t     fstep;     /*!< Smallest frequency step for current mode. */
 	shortfreq_t     ritmax;    /*!< Absolute max RIT. */
 	shortfreq_t     ritstep;   /*!< Smallest RIT step. */
 	shortfreq_t     xitmax;    /*!< Absolute max XIT. */
@@ -230,7 +230,7 @@ int  rig_data_get_all_modes    (void);
 int  rig_data_get_all_antennas (void);
 
 
-/* FIXME: group functions accoring to functionality */
+/* FIXME: group functions according to functionality */
 
 /* set functions */
 void rig_data_set_pstat   (powerstat_t);

@@ -84,7 +84,7 @@ typedef enum {
 
 /** \brief TX mode setting.
  *
- * These valuesare used to select the meter isplay mode when the rig is
+ * These values are used to select the meter display mode when the rig is
  * in TX mode.
  */
 typedef enum {

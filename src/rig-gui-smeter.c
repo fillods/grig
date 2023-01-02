@@ -216,7 +216,7 @@ rig_gui_smeter_create_canvas ()
     smeter.pixbuf = gdk_pixbuf_new_from_file (fname, NULL);
     g_free (fname);
 
-    /* get initial cordinates */
+    /* get initial coordinates */
     convert_angle_to_rect (smeter.value, &coor);
                            
 }
@@ -441,7 +441,7 @@ rig_gui_mode_selector_create  ()
 /** \brief Create scale selector widget.
  *  \return The scale selector widget.
  *
- * This function is used to create the combo box whih can be used to select the
+ * This function is used to create the combo box which can be used to select the
  * scale/range of the s-meter in TX mode.
  */
 static GtkWidget *
@@ -590,7 +590,7 @@ rig_gui_smeter_expose_cb   (GtkWidget      *widget,
 
 /** \brief Check whether a specific TX mode is available.
  *  \param The TX mode; should be one of smeter_tx_mode_t.
- *  \return A boolean indicationg whether the TX mode is available or not.
+ *  \return A boolean indicating whether the TX mode is available or not.
  *
  */
 static gboolean

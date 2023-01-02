@@ -37,7 +37,7 @@
  * This object manages the anomalies and errors that occur during communication
  * with the radio. The rig-daemon process raises a specific anomaly every time
  * the execution of a command does not succeed. The anomaly manager will then record the
- * anomaly and, if the same anomaly has occured repeatedly within a certain time period,
+ * anomaly and, if the same anomaly has occurred repeatedly within a certain time period,
  * disable the erroneous command. Therefore, this object needs access to the rig-data API.
  * Furthermore, in order to know about the various rig commands, this object needs
  * access to the rig-daemon data types as well.
@@ -111,10 +111,10 @@ static const anomaly_period_t ANOMALY_COUNT_PERIOD = {
 };
 
 
-/** \brief The anomaly occurence table.
+/** \brief The anomaly occurrence table.
  *
  * This table holds the accumulated number of anomalies
- * that have occured within a certain time period.
+ * that have occurred within a certain time period.
  */
 static anomaly_count_t ANOMALY_COUNT = {
 	0,      /*  RIG_CMD_NONE          */
@@ -142,7 +142,7 @@ static anomaly_count_t ANOMALY_COUNT = {
 
 /** \brief First occurrence of an anomaly.
  *
- * This table holds the time of the first occurence of a given anomaly.
+ * This table holds the time of the first occurrence of a given anomaly.
  */
 static anomaly_time_t FIRST_ANOMALY = {
 	0,      /*  RIG_CMD_NONE          */
@@ -185,7 +185,7 @@ void
 rig_anomaly_raise (rig_cmd_t cmd)
 {
 
-	/* check whether it is the first occurence */
+	/* check whether it is the first occurrence */
 	if ((ANOMALY_COUNT[cmd] == 0) || (FIRST_ANOMALY[cmd] == 0)) {
 
 		/* first occurrence */

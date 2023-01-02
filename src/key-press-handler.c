@@ -92,7 +92,7 @@ snooper (GtkWidget *grab_widget, GdkEventKey *event, gpointer func_data)
         stop_processing = TRUE;
         break;
 
-        /* Arrow Left: Descrease frequency with lowest step */
+        /* Arrow Left: Decrease frequency with lowest step */
     case GDK_Left:
 
         if (event->type == GDK_KEY_PRESS) {
