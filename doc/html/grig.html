@@ -1,10 +1,10 @@
-Content-type: text/html
+Content-type: text/html; charset=UTF-8
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML><HEAD><TITLE>Man page of GRIG</TITLE>
 </HEAD><BODY>
 <H1>GRIG</H1>
-Section: User Commands (1)<BR>Updated: Version 0.7.2<BR><A HREF="#index">Index</A>
+Section: User Commands (1)<BR>Updated: Version 0.9.0~git<BR><A HREF="#index">Index</A>
 <A HREF="/cgi-bin/man/man2html">Return to Main Contents</A><HR>
 
 <P>
@@ -40,7 +40,7 @@ set transfer rate (serial port only)
 <DT><B>-c</B>, <B>--civ-addr</B>=<I>ID</I><DD>
 set CI-V address (decimal, ICOM only)
 <DT><B>-C</B>, <B>--set-conf</B>=<I>par=val[,par2=val2]</I><DD>
-set additiional configuration parameters
+set additional configuration parameters
 <DT><B>-d</B>, <B>--debug</B>=<I>LEVEL</I><DD>
 set hamlib debug level (0..5)
 <DT><B>-D</B>, <B>--delay</B>=<I>VALUE</I><DD>
@@ -65,13 +65,13 @@ Start grig using YAESU FT-990 connected to the first serial port,
 using 4800 baud and debug level set to warning:
 <P>
 
-<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;grig&nbsp;-m&nbsp;116&nbsp;-r&nbsp;/dev/ttyS0&nbsp;-s&nbsp;4800&nbsp;-d&nbsp;3
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;grig&nbsp;-m&nbsp;1016&nbsp;-r&nbsp;/dev/ttyS0&nbsp;-s&nbsp;4800&nbsp;-d&nbsp;3
 <P>
 
 or if you prefer the long options:
 <P>
 
-<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;grig&nbsp;--model=116&nbsp;--rig-file=/dev/ttyS0&nbsp;--speed=4800&nbsp;--debug=3
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;grig&nbsp;--model=1016&nbsp;--rig-file=/dev/ttyS0&nbsp;--speed=4800&nbsp;--debug=3
 <P>
 
 It is usually enough to specify the model ID and the DEVICE.
@@ -117,7 +117,7 @@ In bash shell you would write something like:
 <P>
 
 You can then use the Message Window in the View menu to view these messages. The
-debug messages printed by grig a formatted in a structured way with each line
+debug messages printed by grig is formatted in a structured way with each line
 containing both time, source and level of the message. Each field is separated
 with ;; so you can also import the log file into a spread sheet for further analysis.
 <P>
@@ -126,7 +126,7 @@ with ;; so you can also import the log file into a spread sheet for further anal
 
 <P>
 
-Grig 0.7.2 supports the most commonly used CAT command implemented by hamlib. These
+Grig 0.9.0~git supports the most commonly used CAT command implemented by hamlib. These
 include frequency, mode, filter and various level settings. Please note that not all
 features have been thoroughly tested since I don't have access to any modern high-end
 radios. Therefore, comments regarding success or failure in using grig will be highly
@@ -146,7 +146,7 @@ in these situations, one can try to experiment with the -D or --delay command li
 argument, which will put the specified delay in between each executed command. The
 default value is 10 milliseconds and the smallest possible value is 1 millisecond
 (if one specifies 0 millisecond on the command line, the default value will be
-<BR>&nbsp;used).
+used).
 If you find a value which is better for your radio than the default value, please
 let us know about it.
 <DT>Daemon Never Starts on FreeBSD<DD>
@@ -154,7 +154,7 @@ There have been reports on that the new, thread-based daemon process is never
 started on FreeBSD, while the old, timeout-based daemon worked fine. It is therefore
 possible to choose the two ways to run the daemon process. The default is the new
 thread based daemon, but if you use FreeBSD and nothing seems to work after start-up
-you can select the timout-based daemon with the -n or --nothread command line option.
+you can select the timeout-based daemon with the -n or --nothread command line option.
 <DT>Connection Settings<DD>
 Once you have started grig you can not change the radio settings (model, device,
 speed). You will have to restart the program if you want to change any of these
@@ -233,6 +233,6 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 This document was created by
 <A HREF="/cgi-bin/man/man2html">man2html</A>,
 using the manual pages.<BR>
-Time: 17:52:09 GMT, January 07, 2007
+Time: 23:22:50 GMT, January 02, 2023
 </BODY>
 </HTML>

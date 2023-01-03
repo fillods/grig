@@ -591,11 +591,11 @@ grig_show_help      ()
 		   "serial port, using 4800 baud and debug level set to "\
 		   "warning:"));
 	g_print ("\n\n");
-	g_print ("     grig -m 116 -r /dev/ttyS0 -s 4800 -d 3");
+	g_print ("     grig -m 1016 -r /dev/ttyS0 -s 4800 -d 3");
 	g_print ("\n\n");
 	g_print (_("or if you prefer the long options:"));
 	g_print ("\n\n");
-	g_print ("     grig --model=116 --rig-file=/dev/ttyS0 "\
+	g_print ("     grig --model=1016 --rig-file=/dev/ttyS0 "\
 		 "--speed=4800 --debug=3");
 	g_print ("\n\n");
 	g_print (_("It is usually enough to specify the model "\
