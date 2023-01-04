@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches: [ "**" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-22.04
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Update system
+      run: sudo apt update; sudo apt upgrade -y
+
+    - name: Install dependencies
+      run: sudo apt install libhamlib-dev autopoint libgtk2.0-dev -y
+
+    - name: autoreconf
+      run: autoreconf -i
+
+    - name: Configure
+      run: ./configure --prefix /tmp/grig
+
+    - name: Make
+      run: make
+
+    - name: Install
+      run: make install; tree /tmp/grig
