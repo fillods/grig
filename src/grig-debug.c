@@ -234,43 +234,26 @@ grig_debug_get_log_file ()
 
 
 
-/***** FIXME: portability issues because of time? */
-/***** FIXME: size management sucks */
 static void
 manage_debug_message (debug_msg_src_t source,
-		      enum rig_debug_level_e debug_level,
-		      const gchar *message)
+              enum rig_debug_level_e debug_level,
+              const gchar *message)
 {
-	gchar msg_time[50];
-	guint size;
-	//struct timeval tval;
-	//struct timezone tzone;
-	time_t t;
-	//gint x;
-	GTimeVal tval;
+    /* get the time */
+    GDateTime *tval = g_date_time_new_now_local ();
+    gchar *msg_time = g_date_time_format (tval, "%Y/%m/%d %H:%M:%S");
 
-	/* get the time */
-	//x = gettimeofday (&tval, &tzone);
-	g_get_current_time (&tval);
-	t = (time_t ) tval.tv_sec;
-	size = strftime (msg_time, 48, "%Y/%m/%d %H:%M:%S", localtime (&t));
-	if (size < 49) {
-		msg_time[size] = '\0';
-	}
-	else {
-		msg_time[49] = '\0';
-	}
+    g_fprintf (stderr,
+           "%s%s%s%s%d%s%s\n",
+           msg_time,
+           GRIG_DEBUG_SEPARATOR,
+           SRC_TO_STR[source],
+           GRIG_DEBUG_SEPARATOR,
+           debug_level,
+           GRIG_DEBUG_SEPARATOR,
+           message);
 
-	g_fprintf (stderr,
-		   "%s%s%s%s%d%s%s\n",
-		   msg_time,
-		   GRIG_DEBUG_SEPARATOR,
-		   SRC_TO_STR[source],
-		   GRIG_DEBUG_SEPARATOR,
-		   debug_level,
-		   GRIG_DEBUG_SEPARATOR,
-		   message);
-
+    g_free(msg_time);
 }
 
 
