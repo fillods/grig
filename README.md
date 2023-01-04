@@ -25,7 +25,7 @@ You likely miss some of the required libraries if you get any error messages dur
 
 * `gtk+-2.0`      at least version 2.12.0
 * `gthread-2.0`   at least version 2.14.0
-* `hamlib`        at least version 4.0
+* `hamlib`        at least version 4.2
 
 Please note that you also need the so-called development packages which
 contain the necessary header files.
