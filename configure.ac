@@ -2,7 +2,7 @@
 
 AC_PREREQ([2.71])
 
-AC_INIT([grig],[0.9.0],[groundstation-developer@lists.sourceforge.net],[grig],[http://groundstation.sourceforge.net/grig])
+AC_INIT([grig],[0.9.1~git],[groundstation-developer@lists.sourceforge.net],[grig],[http://groundstation.sourceforge.net/grig])
 
 AM_INIT_AUTOMAKE([-Wall subdir-objects])
 
