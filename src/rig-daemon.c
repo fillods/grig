@@ -537,7 +537,7 @@ rig_daemon_start       (int          rigid,
 	}
 
 	/* configure and open rig device */
-	strncpy (myrig->state.rigport.pathname, rigport, HAMLIB_FILPATHLEN);
+	strncpy (myrig->state.rigport.pathname, rigport, HAMLIB_FILPATHLEN-1);
 	g_free (rigport);
 
 	/* set speed if any special whishes */

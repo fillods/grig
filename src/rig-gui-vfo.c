@@ -207,12 +207,12 @@ rig_gui_vfo_memory_cb(GtkWidget *widget, gpointer data)
 
             if (rig_data_get_vfo() != RIG_VFO_MEM) {
             g_object_set_data(G_OBJECT(widget),
-                "vfo", (gpointer) rig_data_get_vfo());
+                "vfo", (gpointer)(uintptr_t) rig_data_get_vfo());
 
              rig_data_set_vfo(RIG_VFO_MEM);
 
         } else {
-             rig_data_set_vfo((vfo_t) g_object_get_data(G_OBJECT(widget),
+             rig_data_set_vfo((vfo_t)(uintptr_t) g_object_get_data(G_OBJECT(widget),
                         "vfo"));
         }
     }
