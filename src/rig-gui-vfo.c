@@ -237,7 +237,7 @@ rig_gui_vfo_create_eq_button ()
     }
     else {
         button = gtk_button_new_with_label (_("A = B"));
-        gtk_widget_set_tooltip_text (button, _("Set VFO B = VFO A"));
+        gtk_widget_set_tooltip_text (button, _("Set VFO A = VFO B"));
     }
         /* Disable control if the rig has no capability of
            either setting a specific VFO or to toggle

@@ -685,7 +685,7 @@ grig_list_rigs ()
 
 	g_print ("\n");
 	g_print (_("   ID  Manufacturer     Model                  "\
-		 "Ver.   Status\n"));
+		 "Version    Status\n"));
 	g_print ("-----------------------------------------------"\
 		 "----------------\n");
 
