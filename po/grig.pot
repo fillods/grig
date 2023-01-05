@@ -492,7 +492,7 @@ msgid ""
 msgstr ""
 
 #: src/main.c:687
-msgid "   ID  Manufacturer     Model                  Ver.   Status\n"
+msgid "   ID  Manufacturer     Model                  Version    Status\n"
 msgstr ""
 
 #: src/rig-daemon.c:397
