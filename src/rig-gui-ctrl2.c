@@ -196,20 +196,20 @@ rig_gui_ctrl2_create ()
 static GtkWidget *
 rig_gui_ctrl2_create_agc_selector    ()
 {
-    GtkWidget         *combo;
-    gint               sigid;
+    GtkWidget *combo;
+    gint       sigid;
 
 
     /* create and initialize widget */
-    combo = gtk_combo_box_new_text ();
+    combo = gtk_combo_box_text_new ();
 
     /* FIXME: Hamlib does also have 'user' */
-    gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("AGC OFF"));
-    gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("Super Fast"));
-    gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("Fast"));
-    gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("Medium"));
-    gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("Slow"));
-    gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("Auto"));
+    gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo), _("AGC OFF"));
+    gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo), _("Super Fast"));
+    gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo), _("Fast"));
+    gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo), _("Medium"));
+    gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo), _("Slow"));
+    gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo), _("Auto"));
 
     gtk_widget_set_tooltip_text (combo, _("Automatic Gain Control Level"));
 
@@ -291,7 +291,7 @@ rig_gui_ctrl2_create_mode_selector   ()
     gint         i,mode;
 
     /* create and initialize widget */
-    combo = gtk_combo_box_new_text ();
+    combo = gtk_combo_box_text_new ();
 
     /* loop over all modes */
     for (i = 0; i < 16; i++) {
@@ -303,8 +303,8 @@ rig_gui_ctrl2_create_mode_selector   ()
         */
         if (rig_data_get_all_modes () & mode) {
 
-            gtk_combo_box_append_text (GTK_COMBO_BOX (combo),
-                            _(midx2str[i]));
+            gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo),
+                                            _(midx2str[i]));
 
             midx2cidx[i] = index;
             cidx2mode[index] = mode;
@@ -353,13 +353,13 @@ rig_gui_ctrl2_create_filter_selector ()
 
 
     /* create and initialize widget */
-    combo = gtk_combo_box_new_text ();
+    combo = gtk_combo_box_text_new ();
 
     /* Add items */
-    gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("Wide"));
-    gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("Normal"));
-    gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("Narrow"));
-    gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _("[User]"));
+    gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo), _("Wide"));
+    gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo), _("Normal"));
+    gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo), _("Narrow"));
+    gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo), _("[User]"));
 
     /* set current passband width */
     switch (rig_data_get_pbwidth ()) {
@@ -427,8 +427,8 @@ rig_gui_ctrl2_create_antenna_selector   ()
 	gint         i,antenna;
 	gchar        antstr[16];
 
-	/* create and initialize widget */
-	combo = gtk_combo_box_new_text ();
+    /* create and initialize widget */
+    combo = gtk_combo_box_text_new ();
 
 	/* loop over all antennas */
 	for (i = 0; i < 8; i++) {
@@ -442,8 +442,8 @@ rig_gui_ctrl2_create_antenna_selector   ()
 
 			snprintf(antstr, sizeof(antstr)-1, _("ANT %d"), i+1);
 
-			gtk_combo_box_append_text (GTK_COMBO_BOX (combo),
-						   antstr);
+            gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo),
+                                            antstr);
 
 			midx2cidx[i] = index;
 			cidx2mode[index] = antenna;
@@ -452,9 +452,9 @@ rig_gui_ctrl2_create_antenna_selector   ()
 	}
 	
 
-	/* set current antenna */
-	gtk_combo_box_set_active (GTK_COMBO_BOX (combo),
-				  midx2cidx[rig_utils_mode_to_index (rig_data_get_antenna ())]);
+    /* set current antenna */
+    gtk_combo_box_set_active (GTK_COMBO_BOX (combo),
+                  midx2cidx[rig_utils_mode_to_index (rig_data_get_antenna ())]);
 
 	/* add tooltips when widget is realized */
     gtk_widget_set_tooltip_text (combo, _("Antenna Port"));

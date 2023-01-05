@@ -406,14 +406,15 @@ rig_gui_mode_selector_create  ()
     guint i;
     guint modes = 0;
 
-    combo = gtk_combo_box_new_text ();
+    combo = gtk_combo_box_text_new ();
 
     /* Add entries to combo box; but only if rig supports it
        Also fill index_to_mode conversion table.
     */
     for (i = SMETER_TX_MODE_NONE; i < SMETER_TX_MODE_LAST; i++) {
         if (rig_gui_smeter_has_tx_mode (i)) {
-            gtk_combo_box_append_text (GTK_COMBO_BOX (combo), _(TX_MODE_S[i]));
+            gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo),
+                                            _(TX_MODE_S[i]));
             index_to_mode[modes] = i;
             modes++;
         }
@@ -450,11 +451,12 @@ rig_gui_scale_selector_create ()
     GtkWidget *combo;
     guint i;
 
-    combo = gtk_combo_box_new_text ();
+    combo = gtk_combo_box_text_new ();
 
     /* Add entries to combo box */
     for (i = SMETER_SCALE_5; i < SMETER_SCALE_LAST; i++) {
-        gtk_combo_box_append_text (GTK_COMBO_BOX (combo), TX_SCALE_S[i]);
+        gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo),
+                                        TX_SCALE_S[i]);
     }
 
     /* connect changed signal */
