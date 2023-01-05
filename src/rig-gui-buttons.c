@@ -76,7 +76,7 @@ static void rig_gui_buttons_att_cb      (GtkWidget *, gpointer);
 static void rig_gui_buttons_preamp_cb   (GtkWidget *, gpointer);
 
 static gint rig_gui_buttons_timeout_exec  (gpointer);
-static gint rig_gui_buttons_timeout_stop  (gpointer);
+static gint rig_gui_buttons_timeout_stop  (GtkWidget *, GdkEvent *, gpointer);
 static void rig_gui_buttons_update        (GtkWidget *, gpointer);
 
 
@@ -120,8 +120,9 @@ rig_gui_buttons_create ()
                     vbox);
 
     /* register timer_stop function at exit */
-    gtk_quit_add (gtk_main_level (), rig_gui_buttons_timeout_stop,
-                GUINT_TO_POINTER (timerid));
+    g_signal_connect(G_OBJECT(vbox), "destroy",
+                     G_CALLBACK (rig_gui_buttons_timeout_stop),
+                     GUINT_TO_POINTER(timerid));
 
     gtk_widget_show_all (vbox);
 
@@ -525,11 +526,15 @@ rig_gui_buttons_timeout_exec  (gpointer vbox)
  * program is quit. It should be called automatically by Gtk+ when
  * the gtk_main_loop is exited.
  */
-static gint 
-rig_gui_buttons_timeout_stop  (gpointer timer)
+static gint
+rig_gui_buttons_timeout_stop (GtkWidget *widget,
+                              GdkEvent  *event,
+                              gpointer   data)
 {
 
-    g_source_remove (GPOINTER_TO_UINT (timer));
+    GSource *source = g_main_context_find_source_by_id (NULL, GPOINTER_TO_UINT (data));
+    if (source)
+        g_source_destroy (source);
 
     return TRUE;
 }

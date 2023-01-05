@@ -101,7 +101,7 @@ static GtkWidget *rig_gui_mode_selector_create  (void);
 static GtkWidget *rig_gui_scale_selector_create (void);
 
 static gint rig_gui_smeter_timeout_exec  (gpointer);
-static gint rig_gui_smeter_timeout_stop  (gpointer);
+static gboolean rig_gui_smeter_timeout_stop (GtkWidget *, GdkEvent *, gpointer);
 
 static void rig_gui_smeter_mode_cb     (GtkWidget *, gpointer);
 static void rig_gui_smeter_scale_cb    (GtkWidget *, gpointer);
@@ -158,9 +158,10 @@ rig_gui_smeter_create ()
                      rig_gui_smeter_timeout_exec,
                      NULL);
 
-        /* register timer_stop function at exit */
-        gtk_quit_add (gtk_main_level (), rig_gui_smeter_timeout_stop,
-                  GUINT_TO_POINTER (timerid));
+        /* stop timer when widget is deleted */
+        g_signal_connect(G_OBJECT(vbox), "destroy",
+                         G_CALLBACK (rig_gui_smeter_timeout_stop),
+                         GUINT_TO_POINTER(timerid));
     }
 
     gtk_widget_show_all (vbox);
@@ -374,7 +375,6 @@ rig_gui_smeter_timeout_exec  (gpointer data)
 }
 
 
-
 /** \brief Stop timeout function.
  *  \param timer The ID of the timer to stop.
  *  \return Always TRUE.
@@ -383,11 +383,15 @@ rig_gui_smeter_timeout_exec  (gpointer data)
  * program is quit. It should be called automatically by Gtk+ when
  * the gtk_main_loop is exited.
  */
-static gint 
-rig_gui_smeter_timeout_stop  (gpointer timer)
+static gboolean
+rig_gui_smeter_timeout_stop (GtkWidget *widget,
+                             GdkEvent  *event,
+                             gpointer   data)
 {
 
-    g_source_remove (GPOINTER_TO_UINT (timer));
+    GSource *source = g_main_context_find_source_by_id (NULL, GPOINTER_TO_UINT (data));
+    if (source)
+        g_source_destroy (source);
 
     return TRUE;
 }
