@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: grig 0.9.0\n"
 "Report-Msgid-Bugs-To: groundstation-developer@lists.sourcforge.net\n"
-"POT-Creation-Date: 2023-01-01 12:19+0100\n"
+"POT-Creation-Date: 2023-01-05 20:01+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -231,7 +231,7 @@ msgid "_No Debug"
 msgstr ""
 
 #: src/grig-menubar.c:91
-msgid "Don't show any debug mesages"
+msgid "Don't show any debug messages"
 msgstr ""
 
 #: src/grig-menubar.c:92
@@ -604,7 +604,7 @@ msgstr ""
 
 #: src/rig-daemon.c:611
 #, c-format
-msgid "%s: Init successfull, executing post-init"
+msgid "%s: Init successful, executing post-init"
 msgstr ""
 
 #: src/rig-daemon.c:618
