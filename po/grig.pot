@@ -199,7 +199,7 @@ msgid "_SW Memory"
 msgstr ""
 
 #: src/grig-menubar.c:80
-msgid "Software Memory Mamager"
+msgid "Software Memory Manager"
 msgstr ""
 
 #: src/grig-menubar.c:81

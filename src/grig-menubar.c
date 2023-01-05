@@ -77,7 +77,7 @@ static GtkActionEntry entries[] = {
 	{ "MsgWin", GTK_STOCK_JUSTIFY_LEFT, N_("Message _Window"), NULL, N_("Show window with debug messages"), G_CALLBACK (rig_gui_message_window_show) },
 
 	/* ToolsMenu */
-	{ "Mem", NULL, N_("_SW Memory"), NULL, N_("Software Memory Mamager"), NULL },
+	{ "Mem", NULL, N_("_SW Memory"), NULL, N_("Software Memory Manager"), NULL },
 	{ "BandMap", GTK_STOCK_INDEX, N_("_Band Map"), NULL, N_("Show the band map"), NULL },
 	{ "Spectrum", GTK_STOCK_JUMP_TO, N_("S_pectrum Scope"), NULL, N_("Show the spectrum scope"), NULL },
 
