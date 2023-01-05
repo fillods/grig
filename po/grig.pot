@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: grig 0.9.0\n"
 "Report-Msgid-Bugs-To: groundstation-developer@lists.sourcforge.net\n"
-"POT-Creation-Date: 2023-01-05 20:01+0100\n"
+"POT-Creation-Date: 2023-01-05 20:11+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2387,7 +2387,7 @@ msgid "A = B"
 msgstr ""
 
 #: src/rig-gui-vfo.c:240
-msgid "Set VFO B = VFO A"
+msgid "Set VFO A = VFO B"
 msgstr ""
 
 #: src/rig-gui-vfo.c:304
