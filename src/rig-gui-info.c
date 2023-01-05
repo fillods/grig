@@ -454,7 +454,7 @@ rig_gui_info_create_if_frame      ()
 	    (myrig->caps->port_type <= RIG_PORT_PARALLEL)) {
 		
 		gtk_label_set_text (GTK_LABEL (label),
-				    RIG_PORT_STR[myrig->caps->port_type]);
+				    _(RIG_PORT_STR[myrig->caps->port_type]));
 	}
 	else {
 		gtk_label_set_text (GTK_LABEL (label), _("Unknown"));
@@ -483,7 +483,7 @@ rig_gui_info_create_if_frame      ()
 	    (myrig->caps->dcd_type <= RIG_DCD_PARALLEL)) {
 		
 		gtk_label_set_text (GTK_LABEL (label),
-				    DCD_TYPE_STR[myrig->caps->dcd_type]);
+				    _(DCD_TYPE_STR[myrig->caps->dcd_type]));
 	}
 	else {
 		gtk_label_set_text (GTK_LABEL (label), _("Unknown"));
@@ -512,7 +512,7 @@ rig_gui_info_create_if_frame      ()
 	    (myrig->caps->ptt_type <= RIG_PTT_PARALLEL)) {
 		
 		gtk_label_set_text (GTK_LABEL (label),
-				    PTT_TYPE_STR[myrig->caps->dcd_type]);
+				    _(PTT_TYPE_STR[myrig->caps->dcd_type]));
 	}
 	else {
 		gtk_label_set_text (GTK_LABEL (label), _("Unknown"));
@@ -626,7 +626,7 @@ rig_gui_info_create_if_frame      ()
 		    (myrig->caps->serial_parity <= RIG_PARITY_EVEN)) {
 		
 			gtk_label_set_text (GTK_LABEL (label),
-					    RIG_PARITY_STR[myrig->caps->serial_parity]);
+					    _(RIG_PARITY_STR[myrig->caps->serial_parity]));
 		}
 		else {
 			gtk_label_set_text (GTK_LABEL (label), _("Unknown"));
