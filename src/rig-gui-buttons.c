@@ -278,10 +278,10 @@ rig_gui_buttons_create_att_selector    ()
     gchar     *text;
     gint       sigid;
 
-    att = gtk_combo_box_new_text ();
-                
+    att = gtk_combo_box_text_new ();
+
     /* add ATT OFF ie. 0 dB */
-    gtk_combo_box_append_text (GTK_COMBO_BOX (att), _("ATT OFF"));
+    gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (att), _("ATT OFF"));
 
     /* note: HAMLIB_MAXDBLSTSIZ is defined in hamlib; it is the max size of the
         ATT and preamp arrays.
@@ -289,7 +289,7 @@ rig_gui_buttons_create_att_selector    ()
     while ((i < HAMLIB_MAXDBLSTSIZ) && rig_data_get_att_data (i)) {
 
         text = g_strdup_printf ("-%d dB", rig_data_get_att_data (i));
-        gtk_combo_box_append_text (GTK_COMBO_BOX (att), text);
+        gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (att), text);
         g_free (text);
         i++;
     }
@@ -338,10 +338,10 @@ rig_gui_buttons_create_preamp_selector    ()
     gchar     *text;
     gint       sigid;
 
-    preamp = gtk_combo_box_new_text ();
-                
+    preamp = gtk_combo_box_text_new ();
+
     /* add ATT OFF ie. 0 dB */
-    gtk_combo_box_append_text (GTK_COMBO_BOX (preamp), _("PREAMP OFF"));
+    gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (preamp), _("PREAMP OFF"));
 
     /* note: HAMLIB_MAXDBLSTSIZ is defined in hamlib; it is the max size of the
         ATT and preamp arrays.
@@ -349,7 +349,7 @@ rig_gui_buttons_create_preamp_selector    ()
     while ((i < HAMLIB_MAXDBLSTSIZ) && rig_data_get_preamp_data (i)) {
 
         text = g_strdup_printf ("%d dB", rig_data_get_preamp_data (i));
-        gtk_combo_box_append_text (GTK_COMBO_BOX (preamp), text);
+        gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (preamp), text);
         g_free (text);
         i++;
     }
