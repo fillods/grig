@@ -67,6 +67,9 @@
 
 #define RIG_GUI_LCD_DEF_TVAL 400
 
+/** \brief define default font for LCD static text */
+#define RIG_GUI_LCD_FONT "Sans 10"
+
 /** \brief Coordinate structure for digits. */
 typedef struct {
 	guint x;     /*!< X coordinate. */
@@ -87,11 +90,9 @@ typedef struct {
  */
 typedef struct {
 	GtkWidget        *canvas;          /*!< The main canvas. */
-	GdkGC            *gc1;             /*!< Graphics context (normal). */
-	GdkGC            *gc2;             /*!< Graphics context (inverted). */
 	guint             width;           /*!< Canvas width. */
 	guint             height;          /*!< Canvas height. */
-	lcd_coor_t        digits[13];      /*!< Starting points for all digits. */
+	lcd_coor_t        digits[14];      /*!< Starting points for all digits. */
 	lcd_coor_t        dots[2];       /*!< Starting points for dots. */
 	guint             dlw;             /*!< Width of large digits. */
 	guint             dlh;             /*!< Height of large digits. */
@@ -109,11 +110,9 @@ typedef struct {
 	gdouble           freq1;           /*!< Main frequency value. */
 	gdouble           freq2;           /*!< Secondary frequency value. */
 	gdouble           freqm;           /*!< Manually entered frequency value. */
-	gchar             freqs1[10];      /*!< Frequency array. */
 	gint              rit;             /*!< Current RIT value. */
-	gchar             rits[4];         /*!< -9999 Hz but last digit not shown */
 	gint              xit;             /*!< Current XIT value. */
-	gchar             xits[4];         /*!< -9999 Hz but last digit not shown */
+    gboolean          dirty;           /*!< Wheter or not the LCD requires update */
 } lcd_t;
 
 
