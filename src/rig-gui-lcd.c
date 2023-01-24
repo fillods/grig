@@ -133,10 +133,10 @@ static gboolean       rig_gui_lcd_handle_event     (GtkWidget *, GdkEvent *, gpo
 static event_object_t rig_gui_lcd_get_event_object (GdkEvent *event);
 static void           rig_gui_lcd_calc_dim         (void);
 static void           rig_gui_lcd_draw_text        (void);
-static void	      rig_gui_lcd_draw_digit	   (gint position, char digit);
+static void           rig_gui_lcd_draw_digit       (gint position, char digit);
 
 static gint           rig_gui_lcd_timeout_exec     (gpointer);
-static gint           rig_gui_lcd_timeout_stop     (gpointer);
+static gint           rig_gui_lcd_timeout_stop     (GtkWidget *, GdkEvent *, gpointer);
 
 static void           ritval_to_bytearr            (gchar *, shortfreq_t);
 
@@ -213,8 +213,9 @@ rig_gui_lcd_create ()
                                  NULL);
 
 		/* register timer_stop function at exit */
-		gtk_quit_add (gtk_main_level (), rig_gui_lcd_timeout_stop,
-                      GUINT_TO_POINTER (timerid));
+        g_signal_connect(G_OBJECT(lcd.canvas), "destroy",
+                         G_CALLBACK (rig_gui_lcd_timeout_stop),
+                         GUINT_TO_POINTER(timerid));
 #ifndef DISABLE_HW
 	}
 #endif
@@ -1361,11 +1362,15 @@ rig_gui_lcd_timeout_exec  (gpointer data)
  *
  * \bug DDD is wrong; copied from smeter.
  */
-static gint 
-rig_gui_lcd_timeout_stop  (gpointer timer)
+static gint
+rig_gui_lcd_timeout_stop (GtkWidget *widget,
+                          GdkEvent  *event,
+                          gpointer   data)
 {
 
-	g_source_remove (GPOINTER_TO_UINT (timer));
+	GSource *source = g_main_context_find_source_by_id (NULL, GPOINTER_TO_UINT (data));
+    if (source)
+        g_source_destroy (source);
 
 	return TRUE;
 }
