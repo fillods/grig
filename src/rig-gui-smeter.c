@@ -65,10 +65,6 @@ static smeter_t smeter;
 /** \brief Needle coordinates - can be made local */
 static coordinate_t coor;
 
-/** \brief Off-screen drawable */
-static GdkPixmap *buffer;
-
-
 /** \brief TX mode strings used for optionmenu */
 static const gchar *TX_MODE_S[] = {
     N_("None"),
@@ -106,7 +102,8 @@ static gboolean rig_gui_smeter_timeout_stop (GtkWidget *, GdkEvent *, gpointer);
 static void rig_gui_smeter_mode_cb     (GtkWidget *, gpointer);
 static void rig_gui_smeter_scale_cb    (GtkWidget *, gpointer);
 
-static gboolean rig_gui_smeter_expose_cb   (GtkWidget *, GdkEventExpose *, gpointer);
+static gboolean rig_gui_smeter_expose_cb (GtkWidget *, GdkEventExpose *, gpointer);
+static void rig_gui_smeter_draw_cr       (cairo_t *);
 
 static gboolean rig_gui_smeter_has_tx_mode (guint);
 
@@ -198,28 +195,24 @@ rig_gui_smeter_get_tx_mode ()
 static void
 rig_gui_smeter_create_canvas ()
 {
-    gchar             *fname;
-
-    /* create canvas */
-    smeter.canvas = gtk_drawing_area_new ();
-    gtk_widget_set_size_request (smeter.canvas, 160, 80);
-
-    /* connect expose handler which will take care of adding
-       contents.
-    */
-    g_signal_connect (G_OBJECT (smeter.canvas), "expose_event",  
-              G_CALLBACK (rig_gui_smeter_expose_cb), NULL);    
-
     /* create background pixmap and add it to canvas */
-    //fname = g_strconcat (PACKAGE_PIXMAPS_DIR, G_DIR_SEPARATOR_S,
-    //             "smeter.png", NULL);
-    fname = pixmap_file_name ("smeter.png");
+    gchar *fname = pixmap_file_name ("smeter.png");
     smeter.pixbuf = gdk_pixbuf_new_from_file (fname, NULL);
     g_free (fname);
 
     /* get initial coordinates */
     convert_angle_to_rect (smeter.value, &coor);
-                           
+
+    /* create canvas */
+    smeter.canvas = gtk_drawing_area_new ();
+    gtk_widget_set_size_request (smeter.canvas,
+                                 RIG_GUI_SMETER_WIDTH,
+                                 RIG_GUI_SMETER_HEIGHT);
+
+    /* connect expose handler which will take care of adding contents. */
+    g_signal_connect (G_OBJECT (smeter.canvas), "expose_event",
+                      G_CALLBACK (rig_gui_smeter_expose_cb), NULL);
+
 }
 
 
@@ -347,26 +340,11 @@ rig_gui_smeter_timeout_exec  (gpointer data)
 
         /* update widget */
         convert_angle_to_rect (smeter.value, &coor);
- 
+
         /* checkwhether s-meter is visible */
         if (smeter.exposed) {
-
-            /* raw background pixmap */
-            gdk_draw_pixbuf (GDK_DRAWABLE (buffer), NULL, smeter.pixbuf,
-                     0, 0, 0, 0, -1, -1, GDK_RGB_DITHER_NONE, 0, 0);
-
-            /* draw needle */
-            gdk_draw_line (GDK_DRAWABLE (buffer), smeter.gc,
-                       coor.x1, coor.y1, coor.x2, coor.y2);
-
-            /* draw border around the meter */
-            gdk_draw_rectangle (GDK_DRAWABLE (buffer), smeter.gc,
-                        FALSE, 0, 0, 160, 80);
-
-            /* copy offscreen buffer to visible widget */
-            gdk_draw_drawable (GDK_DRAWABLE (smeter.canvas->window), smeter.gc,
-                       GDK_DRAWABLE (buffer),
-                       0, 0, 0, 0, -1, -1);
+            gdk_window_invalidate_rect (gtk_widget_get_window (smeter.canvas),
+                                        NULL, FALSE);
         }
     }
 
@@ -536,62 +514,62 @@ rig_gui_smeter_scale_cb   (GtkWidget *widget, gpointer data)
 }
 
 
+/** \brief Draw the s-meter to a cairo drawing context
+ *  \param cr The cairo drawing context
+ */
+static void
+rig_gui_smeter_draw_cr(cairo_t *cr)
+{
+    GdkColor color = {
+        .red   = 0x3b,
+        .green = 0x34,
+        .blue  = 0x28
+    };
+
+    /* draw background pixmap */
+    gdk_cairo_set_source_pixbuf (cr, smeter.pixbuf, 0, 0);
+    cairo_paint (cr);
+
+    /* draw needle */
+    gdk_cairo_set_source_color (cr, &color);
+    cairo_set_line_width (cr, 1.5);
+    cairo_move_to (cr, coor.x1, coor.y1);
+    cairo_line_to (cr, coor.x2, coor.y2);
+    cairo_stroke (cr);
+
+    /* draw border around the meter */
+    gdk_cairo_set_source_color (cr, &color);
+    cairo_set_line_width (cr, 1);
+    cairo_rectangle (cr, 0, 0,
+                     RIG_GUI_SMETER_WIDTH,
+                     RIG_GUI_SMETER_HEIGHT);
+    cairo_stroke (cr);
+
+    /* indicate that widget is ready to be used */
+    smeter.exposed = TRUE;
+}
+
 
 /** \brief Handle expose events for the drawing area.
  *  \param widget The drawing area widget.
  *  \param event  The event.
  *  \param data   User data; always NULL.
- * 
+ *
  * This function is called when the rawing area widget is finalized
  * and exposed. Itis used to finish the initialization of those
  * parameters, which need attributes rom visible widgets.
- */ 
+ */
 static gboolean
-rig_gui_smeter_expose_cb   (GtkWidget      *widget,
-                GdkEventExpose *event,
-                gpointer        data)
+rig_gui_smeter_expose_cb (GtkWidget      *widget,
+                          GdkEventExpose *event,
+                          gpointer        data)
 {
-    GdkColor color;
-
-    /* draw background pixmap */
-    gdk_draw_pixbuf (GDK_DRAWABLE (widget->window), NULL, smeter.pixbuf,
-             0, 0, 0, 0, -1, -1, GDK_RGB_DITHER_NONE, 0, 0);
-
-    /* 0x3b3428 scaled to 3x16 bits */
-    color.red = 257*0x5B;
-    color.green = 257*0x54;
-    color.blue = 257*0x48;
-
-    /* finalize the graphics context */
-    smeter.gc = gdk_gc_new (GDK_DRAWABLE (widget->window));
-    gdk_gc_set_rgb_fg_color (smeter.gc, &color);
-    gdk_gc_set_rgb_bg_color (smeter.gc, &color);
-    gdk_gc_set_line_attributes (smeter.gc, 2,
-                    GDK_LINE_SOLID,
-                    GDK_CAP_ROUND,
-                    GDK_JOIN_ROUND);
-                    
-    /* draw needle */
-    gdk_draw_line (GDK_DRAWABLE (widget->window), smeter.gc,
-               coor.x1, coor.y1, coor.x2, coor.y2);
-
-    /* draw border around the meter */
-    gdk_draw_rectangle (GDK_DRAWABLE (widget->window), smeter.gc,
-                FALSE, 0, 0, 160, 80);
-
-    /* initialize offscreen buffer */
-    buffer = gdk_pixmap_new (GDK_DRAWABLE (smeter.canvas->window),
-                 160, 80, -1);
-
-    /* indicate that widget is ready to 
-       be used
-    */
-    smeter.exposed = TRUE;
-
-
+    GdkWindow *window = gtk_widget_get_window (widget);
+    cairo_t *cr = gdk_cairo_create (window);
+    rig_gui_smeter_draw_cr (cr);
+    cairo_destroy (cr);
     return TRUE;
 }
-
 
 
 /** \brief Check whether a specific TX mode is available.

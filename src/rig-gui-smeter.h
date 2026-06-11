@@ -11,24 +11,22 @@
     More details can be found at the project home page:
 
             http://groundstation.sourceforge.net/
- 
+
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
     (at your option) any later version.
-  
+
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-  
+
     You should have received a copy of the GNU General Public License
     along with this program; if not, visit http://www.fsf.org/
- 
- 
- 
- 
+
 */
+
 /** \file rig-gui-smeter.h
  *  \ingroup smeter
  *  \brief Signal strength meter widget (interface).
@@ -62,6 +60,11 @@
 /** \brief Maximum falloff speed in deg/sec */
 #define RIG_GUI_SMETER_MAX_FALLOFF 500.0
 
+/** \brief Width of the meter widget */
+#define RIG_GUI_SMETER_WIDTH 160
+
+/** \brief Height of the meter widget */
+#define RIG_GUI_SMETER_HEIGHT 80
 
 /** \brief Scale setting for s-meter.
  *
@@ -106,7 +109,6 @@ typedef enum {
 typedef struct {
 	GtkWidget              *canvas;      /*!< The drawing area widget. */
 	GdkPixbuf              *pixbuf;      /*!< The background pixmap.   */
-	GdkGC                  *gc;          /*!< Graphics context for drawing. */
 	gboolean                exposed;     /*!< Flag to indicate whether canvas is ready. */
 	gfloat                  value;       /*!< Current value (angle).   */
 	gfloat                  lastvalue;   /*!< Previous value (angle).  */
@@ -122,5 +124,3 @@ smeter_tx_mode_t  rig_gui_smeter_get_tx_mode (void);
 
 
 #endif
-
-
