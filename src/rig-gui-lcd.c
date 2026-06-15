@@ -1240,8 +1240,8 @@ rig_gui_lcd_timeout_stop (GtkWidget *widget,
 {
 
 	GSource *source = g_main_context_find_source_by_id (NULL, GPOINTER_TO_UINT (data));
-    if (source)
-        g_source_destroy (source);
+	if (source)
+		g_source_destroy (source);
 
 	return TRUE;
 }
