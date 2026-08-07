@@ -8,6 +8,10 @@ regardless of which radio they use.
 
 ![Grig screenshot](doc/images/screenshot.png)
 
+## Packaging status
+
+[![Packaging status](https://repology.org/badge/vertical-allrepos/grig.svg)](https://repology.org/project/grig/versions)
+
 ## Installing Grig from Source
 
 Assuming that you have obtained and unpacked source distribution, you can
