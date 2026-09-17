@@ -32,11 +32,12 @@ make
 sudo make install
 ```
 
-If you cloned from Git, run `autogen.sh` instead of `configure` — it regenerates the autotools
-build files first. Any argument you would pass to `configure` can be passed to `autogen.sh` too:
+If you cloned from Git, run `autoreconf -i` first to regenerate the autotools build files, then
+`configure` as above:
 
 ```bash
-./autogen.sh
+autoreconf -i
+./configure
 make
 ```
 
