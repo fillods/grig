@@ -27,7 +27,7 @@ sudo make install
 You likely miss some of the required libraries if you get any error messages during
  `configure`. These are:
 
-* `gtk+-2.0`      at least version 2.12.0
+* `gtk+-2.0`      at least version 2.24.0
 * `gthread-2.0`   at least version 2.14.0
 * `hamlib`        at least version 4.2
 
@@ -53,6 +53,15 @@ the mailing list or user forums. You can find them on the Groundstation project
 page at SourceForge:
 
 [http://sourceforge.net/projects/groundstation](http://sourceforge.net/projects/groundstation)
+
+Any issue using **grig** should be reported on the Grig project page at GitHub:
+
+[https://github.com/fillods/grig/](https://github.com/fillods/grig/)
+
+Any issue regarding **Hamlib** and rig support should be reported
+on the Hamlib project page at GitHub:
+
+[https://github.com/Hamlib/Hamlib](https://github.com/Hamlib/Hamlib)
 
 ## License
 

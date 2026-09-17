@@ -23,6 +23,7 @@ config.log
 config.status
 config.sub
 config.cache
+config.rpath
 cov-int/
 depcomp
 aclocal.m4
@@ -50,3 +51,9 @@ tags
 po/*.gmo
 po/*.sin
 po/*.sed
+po/Makefile.in.in
+po/Makevars.template
+po/Rules-quot
+po/en@boldquot.header
+po/en@quot.header
+po/stamp-po

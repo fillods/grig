@@ -43,7 +43,7 @@ make
 
 **Dependencies** (development packages, not just the runtime libraries):
 
-* `gtk+-2.0` — at least version 2.12.0
+* `gtk+-2.0` — at least version 2.24.0
 * `gthread-2.0` — at least version 2.14.0
 * `hamlib` — at least version 4.2
 
@@ -103,3 +103,12 @@ If you hit a problem using Grig rather than contributing to it, the mailing list
 are linked from the Groundstation project page at SourceForge:
 
 [http://sourceforge.net/projects/groundstation](http://sourceforge.net/projects/groundstation)
+
+Any issue using **grig** should be reported on the Grig project page at GitHub:
+
+[https://github.com/fillods/grig/](https://github.com/fillods/grig/)
+
+Any issue regarding **Hamlib** and rig support should be reported
+on the Hamlib project page at GitHub:
+
+[https://github.com/Hamlib/Hamlib](https://github.com/Hamlib/Hamlib)

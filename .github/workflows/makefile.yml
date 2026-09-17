@@ -9,7 +9,7 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
 
     steps:
     - uses: actions/checkout@v3
@@ -31,3 +31,6 @@ jobs:
 
     - name: Install
       run: make install; tree /tmp/grig
+
+    - name: Check
+      run: make -j2 distcheck
