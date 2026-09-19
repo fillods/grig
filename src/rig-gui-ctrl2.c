@@ -153,7 +153,11 @@ rig_gui_ctrl2_create ()
     guint timerid;
 
     /* create vertical box and add widgets */
+#if GTK_CHECK_VERSION(3,0,0)
+    vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
+#else
     vbox = gtk_vbox_new (FALSE, 0);
+#endif
 
     /* add controls */
     gtk_box_pack_start   (GTK_BOX (vbox),
