@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fr\n"
 "Report-Msgid-Bugs-To: groundstation-developer@lists.sourcforge.net\n"
-"POT-Creation-Date: 2021-03-12 19:07+0100\n"
+"POT-Creation-Date: 2026-09-20 10:44+0200\n"
 "PO-Revision-Date: 2015-03-29 11:47+0000\n"
 "Last-Translator: Jean-Marc <Unknown>\n"
 "Language-Team: French <debian-l10n-french@lists.debian.org>\n"
@@ -207,7 +207,9 @@ msgid "_SW Memory"
 msgstr "Mémoire _SW"
 
 #: src/grig-menubar.c:80
-msgid "Software Memory Mamager"
+#, fuzzy
+#| msgid "Software Memory Mamager"
+msgid "Software Memory Manager"
 msgstr "Gestionnaire de mémoire logicielle"
 
 #: src/grig-menubar.c:81
@@ -239,7 +241,9 @@ msgid "_No Debug"
 msgstr "_Aucun débogage"
 
 #: src/grig-menubar.c:91
-msgid "Don't show any debug mesages"
+#, fuzzy
+#| msgid "Don't show any debug mesages"
+msgid "Don't show any debug messages"
 msgstr "Ne pas afficher les messages de débogage"
 
 #: src/grig-menubar.c:92
@@ -531,7 +535,7 @@ msgid ""
 msgstr ""
 
 #: src/main.c:687
-msgid "   ID  Manufacturer     Model                  Ver.   Status\n"
+msgid "   ID  Manufacturer     Model                  Version    Status\n"
 msgstr ""
 
 #: src/rig-daemon.c:397
@@ -642,8 +646,9 @@ msgid "%s: Failed to open rig port %s: %s (permissions?)"
 msgstr "%s : échec de l'ouverture du port du rig %s : %s (permissions ?)"
 
 #: src/rig-daemon.c:611
-#, c-format
-msgid "%s: Init successfull, executing post-init"
+#, fuzzy, c-format
+#| msgid "%s: Init successfull, executing post-init"
+msgid "%s: Init successful, executing post-init"
 msgstr "%s : succès de l'initialisation, exécution post-init"
 
 #: src/rig-daemon.c:618
@@ -1032,7 +1037,7 @@ msgstr ""
 "%s: Échec de l'exécution de RIG_CMD_SET_SPLIT:\n"
 "%s"
 
-#: src/rig-daemon.c:2291
+#: src/rig-daemon.c:2292
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_GET_SPLIT:\n"
@@ -1041,7 +1046,7 @@ msgstr ""
 "%s: Échec de l'exécution de RIG_CMD_GET_SPLIT:\n"
 "%s"
 
-#: src/rig-daemon.c:2316
+#: src/rig-daemon.c:2317
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_SET_AF:\n"
@@ -1050,7 +1055,7 @@ msgstr ""
 "%s: Échec de l'exécution de RIG_CMD_SET_AF:\n"
 "%s"
 
-#: src/rig-daemon.c:2341
+#: src/rig-daemon.c:2342
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_GET_AF:\n"
@@ -1059,7 +1064,7 @@ msgstr ""
 "%s: Échec de l'exécution de RIG_CMD_GET_AF:\n"
 "%s"
 
-#: src/rig-daemon.c:2367
+#: src/rig-daemon.c:2368
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_SET_RF:\n"
@@ -1068,7 +1073,7 @@ msgstr ""
 "%s: Échec de l'exécution de RIG_CMD_SET_RF:\n"
 "%s"
 
-#: src/rig-daemon.c:2392
+#: src/rig-daemon.c:2393
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_GET_RF:\n"
@@ -1077,7 +1082,7 @@ msgstr ""
 "%s: Échec de l'exécution de RIG_CMD_GET_RF:\n"
 "%s"
 
-#: src/rig-daemon.c:2418
+#: src/rig-daemon.c:2419
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_SET_SQL:\n"
@@ -1086,7 +1091,7 @@ msgstr ""
 "%s: Échec de l'exécution de RIG_CMD_SET_SQL:\n"
 "%s"
 
-#: src/rig-daemon.c:2443
+#: src/rig-daemon.c:2444
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_GET_SQL:\n"
@@ -1095,7 +1100,7 @@ msgstr ""
 "%s: Échec de l'exécution de RIG_CMD_GET_SQL:\n"
 "%s"
 
-#: src/rig-daemon.c:2469
+#: src/rig-daemon.c:2470
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_SET_IFS:\n"
@@ -1104,7 +1109,7 @@ msgstr ""
 "%s: Échec de l'exécution de RIG_CMD_SET_IFS:\n"
 "%s"
 
-#: src/rig-daemon.c:2494
+#: src/rig-daemon.c:2495
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_GET_IFS:\n"
@@ -1113,7 +1118,7 @@ msgstr ""
 "%s: Échec de l'exécution de RIG_CMD_GET_IFS:\n"
 "%s"
 
-#: src/rig-daemon.c:2520
+#: src/rig-daemon.c:2521
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_SET_APF:\n"
@@ -1122,7 +1127,7 @@ msgstr ""
 "%s: Échec de l'exécution de RIG_CMD_SET_APF:\n"
 "%s"
 
-#: src/rig-daemon.c:2545
+#: src/rig-daemon.c:2546
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_GET_APF:\n"
@@ -1131,7 +1136,7 @@ msgstr ""
 "%s: Échec de l'exécution de RIG_CMD_GET_APF:\n"
 "%s"
 
-#: src/rig-daemon.c:2571
+#: src/rig-daemon.c:2572
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_SET_NR:\n"
@@ -1140,7 +1145,7 @@ msgstr ""
 "%s: Échec de l'exécution de RIG_CMD_SET_NR:\n"
 "%s"
 
-#: src/rig-daemon.c:2596
+#: src/rig-daemon.c:2597
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_GET_NR:\n"
@@ -1149,7 +1154,7 @@ msgstr ""
 "%s: Échec de l'exécution de RIG_CMD_GET_NR:\n"
 "%s"
 
-#: src/rig-daemon.c:2622
+#: src/rig-daemon.c:2623
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_SET_NOTCH:\n"
@@ -1158,7 +1163,7 @@ msgstr ""
 "%s: Échec de l'exécution de RIG_CMD_SET_NOTCH:\n"
 "%s"
 
-#: src/rig-daemon.c:2647
+#: src/rig-daemon.c:2648
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_GET_NOTCH:\n"
@@ -1167,7 +1172,7 @@ msgstr ""
 "%s: Échec de l'exécution de RIG_CMD_GET_NOTCH:\n"
 "%s"
 
-#: src/rig-daemon.c:2673
+#: src/rig-daemon.c:2674
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_SET_PBT_IN:\n"
@@ -1176,7 +1181,7 @@ msgstr ""
 "%s: Échec de l'exécution de RIG_CMD_SET_PBT_IN:\n"
 "%s"
 
-#: src/rig-daemon.c:2698
+#: src/rig-daemon.c:2699
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_GET_PBT_IN:\n"
@@ -1185,7 +1190,7 @@ msgstr ""
 "%s: Échec de l'exécution de RIG_CMD_GET_PBT_IN:\n"
 "%s"
 
-#: src/rig-daemon.c:2724
+#: src/rig-daemon.c:2725
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_SET_PBT_OUT:\n"
@@ -1194,7 +1199,7 @@ msgstr ""
 "%s: Échec de l'exécution de RIG_CMD_SET_PBT_OUT:\n"
 "%s"
 
-#: src/rig-daemon.c:2749
+#: src/rig-daemon.c:2750
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_GET_PBT_OUT:\n"
@@ -1203,7 +1208,7 @@ msgstr ""
 "%s: Échec de l'exécution de RIG_CMD_GET_PBT_OUT:\n"
 "%s"
 
-#: src/rig-daemon.c:2775
+#: src/rig-daemon.c:2776
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_SET_CW_PITCH:\n"
@@ -1212,7 +1217,7 @@ msgstr ""
 "%s: Échec de l'exécution de RIG_CMD_SET_CW_PITCH:\n"
 "%s"
 
-#: src/rig-daemon.c:2800
+#: src/rig-daemon.c:2801
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_GET_CW_PITCH:\n"
@@ -1221,7 +1226,7 @@ msgstr ""
 "%s: Échec de l'exécution de RIG_CMD_GET_CW_PITCH:\n"
 "%s"
 
-#: src/rig-daemon.c:2826
+#: src/rig-daemon.c:2827
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_SET_KEYSPD:\n"
@@ -1230,7 +1235,7 @@ msgstr ""
 "%s: Échec de l'exécution de RIG_CMD_SET_KEYSPD:\n"
 "%s"
 
-#: src/rig-daemon.c:2851
+#: src/rig-daemon.c:2852
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_GET_KEYSPD:\n"
@@ -1239,7 +1244,7 @@ msgstr ""
 "%s: Échec de l'exécution de RIG_CMD_GET_KEYSPD:\n"
 "%s"
 
-#: src/rig-daemon.c:2877
+#: src/rig-daemon.c:2878
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_SET_BKINDEL:\n"
@@ -1248,7 +1253,7 @@ msgstr ""
 "%s: Échec de l'exécution de RIG_CMD_SET_BKINDEL:\n"
 "%s"
 
-#: src/rig-daemon.c:2902
+#: src/rig-daemon.c:2903
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_GET_BKINDEL:\n"
@@ -1257,7 +1262,7 @@ msgstr ""
 "%s: Échec de l'exécution de RIG_CMD_GET_BKINDEL:\n"
 "%s"
 
-#: src/rig-daemon.c:2928
+#: src/rig-daemon.c:2929
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_SET_BALANCE:\n"
@@ -1266,7 +1271,7 @@ msgstr ""
 "%s: Échec de l'exécution de RIG_CMD_SET_BALANCE:\n"
 "%s"
 
-#: src/rig-daemon.c:2953
+#: src/rig-daemon.c:2954
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_GET_BALANCE:\n"
@@ -1275,7 +1280,7 @@ msgstr ""
 "%s: Échec de l'exécution de RIG_CMD_GET_BALANCE:\n"
 "%s"
 
-#: src/rig-daemon.c:2979
+#: src/rig-daemon.c:2980
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_SET_VOXDEL:\n"
@@ -1284,7 +1289,7 @@ msgstr ""
 "%s: Échec de l'exécution de RIG_CMD_SET_VOXDEL:\n"
 "%s"
 
-#: src/rig-daemon.c:3004
+#: src/rig-daemon.c:3005
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_GET_VOXDEL:\n"
@@ -1293,7 +1298,7 @@ msgstr ""
 "%s: Échec de l'exécution de RIG_CMD_GET_VOXDEL:\n"
 "%s"
 
-#: src/rig-daemon.c:3030
+#: src/rig-daemon.c:3031
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_SET_VOXGAIN:\n"
@@ -1302,7 +1307,7 @@ msgstr ""
 "%s: Échec de l'exécution de RIG_CMD_SET_VOXGAIN:\n"
 "%s"
 
-#: src/rig-daemon.c:3055
+#: src/rig-daemon.c:3056
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_GET_VOXGAIN:\n"
@@ -1311,7 +1316,7 @@ msgstr ""
 "%s: Échec de l'exécution de RIG_CMD_GET_VOXGAIN:\n"
 "%s"
 
-#: src/rig-daemon.c:3081
+#: src/rig-daemon.c:3082
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_SET_ANTIVOX:\n"
@@ -1320,7 +1325,7 @@ msgstr ""
 "%s: Échec de l'exécution de RIG_CMD_SET_ANTIVOX:\n"
 "%s"
 
-#: src/rig-daemon.c:3106
+#: src/rig-daemon.c:3107
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_GET_ANTIVOX:\n"
@@ -1329,7 +1334,7 @@ msgstr ""
 "%s: Échec de l'exécution de RIG_CMD_GET_ANTIVOX:\n"
 "%s"
 
-#: src/rig-daemon.c:3132
+#: src/rig-daemon.c:3133
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_SET_MICGAIN:\n"
@@ -1338,7 +1343,7 @@ msgstr ""
 "%s: Échec de l'exécution de RIG_CMD_SET_MICGAIN:\n"
 "%s"
 
-#: src/rig-daemon.c:3157
+#: src/rig-daemon.c:3158
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_GET_MICGAIN:\n"
@@ -1347,7 +1352,7 @@ msgstr ""
 "%s: Échec de l'exécution de RIG_CMD_GET_MICGAIN:\n"
 "%s"
 
-#: src/rig-daemon.c:3184
+#: src/rig-daemon.c:3185
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_GET_COMP:\n"
@@ -1356,7 +1361,7 @@ msgstr ""
 "%s: Échec de l'exécution de RIG_CMD_GET_COMP:\n"
 "%s"
 
-#: src/rig-daemon.c:3210
+#: src/rig-daemon.c:3211
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_SET_FUNC(%s):\n"
@@ -1365,7 +1370,7 @@ msgstr ""
 "%s: Échec de l'exécution de RIG_CMD_SET_FUNC(%s):\n"
 "%s"
 
-#: src/rig-daemon.c:3240
+#: src/rig-daemon.c:3241
 #, c-format
 msgid ""
 "%s: Failed to execute RIG_CMD_GET_FUNC(%s):\n"
@@ -1374,12 +1379,12 @@ msgstr ""
 "%s: Échec de l'exécution de RIG_CMD_GET_FUNC(%s):\n"
 "%s"
 
-#: src/rig-daemon.c:3259
+#: src/rig-daemon.c:3260
 #, c-format
 msgid "%s: Unknown command %d (grig bug)"
 msgstr "%s: Commande inconnue %d (bogue grig)"
 
-#: src/rig-daemon.c:3352
+#: src/rig-daemon.c:3353
 #, c-format
 msgid "%s: %d"
 msgstr "%s : %d"
@@ -1534,48 +1539,48 @@ msgstr ""
 msgid "%s: Could not get %s status"
 msgstr ""
 
-#: src/rig-data.c:352 src/rig-data.c:544
+#: src/rig-data.c:352 src/rig-data.c:550
 #, c-format
 msgid "%s: Invalid target: %d\n"
 msgstr ""
 
-#: src/rig-gui-buttons.c:148 src/rig-gui-smeter.c:75
+#: src/rig-gui-buttons.c:149 src/rig-gui-smeter.c:71
 msgid "Power"
 msgstr ""
 
-#: src/rig-gui-buttons.c:149
+#: src/rig-gui-buttons.c:150
 msgid "Power status"
 msgstr "Indicateur de mise en marche"
 
-#: src/rig-gui-buttons.c:193
+#: src/rig-gui-buttons.c:194
 msgid "PTT"
 msgstr "PPP"
 
-#: src/rig-gui-buttons.c:194
+#: src/rig-gui-buttons.c:195
 msgid "Push to talk"
 msgstr "Presser pour parler"
 
-#: src/rig-gui-buttons.c:238
+#: src/rig-gui-buttons.c:239
 msgid "Lock"
 msgstr "Verrouiller"
 
-#: src/rig-gui-buttons.c:239
+#: src/rig-gui-buttons.c:240
 msgid "Lock tuning dial"
 msgstr ""
 
-#: src/rig-gui-buttons.c:284
+#: src/rig-gui-buttons.c:285
 msgid "ATT OFF"
 msgstr ""
 
-#: src/rig-gui-buttons.c:307
+#: src/rig-gui-buttons.c:308
 msgid "Attenuator level"
 msgstr "Niveau atténuateur"
 
-#: src/rig-gui-buttons.c:344
+#: src/rig-gui-buttons.c:345
 msgid "PREAMP OFF"
 msgstr "PRÉAMP OFF"
 
-#: src/rig-gui-buttons.c:367
+#: src/rig-gui-buttons.c:368
 msgid "Preamp level"
 msgstr "Niveau préampli"
 
@@ -1644,64 +1649,64 @@ msgstr "ECLSB"
 msgid "FAX"
 msgstr "FAX"
 
-#: src/rig-gui-ctrl2.c:207
+#: src/rig-gui-ctrl2.c:208
 msgid "AGC OFF"
 msgstr "Hors CAG"
 
-#: src/rig-gui-ctrl2.c:208
+#: src/rig-gui-ctrl2.c:209
 msgid "Super Fast"
 msgstr "Super Rapide"
 
-#: src/rig-gui-ctrl2.c:209
+#: src/rig-gui-ctrl2.c:210
 msgid "Fast"
 msgstr "Rapide"
 
-#: src/rig-gui-ctrl2.c:210
+#: src/rig-gui-ctrl2.c:211
 msgid "Medium"
 msgstr "Moyen"
 
-#: src/rig-gui-ctrl2.c:211
+#: src/rig-gui-ctrl2.c:212
 msgid "Slow"
 msgstr "Lent"
 
-#: src/rig-gui-ctrl2.c:212
+#: src/rig-gui-ctrl2.c:213
 msgid "Auto"
 msgstr ""
 
-#: src/rig-gui-ctrl2.c:214
+#: src/rig-gui-ctrl2.c:215
 msgid "Automatic Gain Control Level"
 msgstr "Niveau de Contrôle Automatique de Gain"
 
-#: src/rig-gui-ctrl2.c:320
+#: src/rig-gui-ctrl2.c:321
 msgid "Communication mode"
 msgstr "Mode de communication"
 
-#: src/rig-gui-ctrl2.c:359
+#: src/rig-gui-ctrl2.c:360
 msgid "Wide"
 msgstr "Large"
 
-#: src/rig-gui-ctrl2.c:360
+#: src/rig-gui-ctrl2.c:361
 msgid "Normal"
 msgstr "Normal"
 
-#: src/rig-gui-ctrl2.c:361
+#: src/rig-gui-ctrl2.c:362
 msgid "Narrow"
 msgstr "Étroit"
 
-#: src/rig-gui-ctrl2.c:362
+#: src/rig-gui-ctrl2.c:363
 msgid "[User]"
 msgstr "[Utilisateur]"
 
-#: src/rig-gui-ctrl2.c:384
+#: src/rig-gui-ctrl2.c:385
 msgid "Passband Width"
 msgstr "Largeur du filtre passe-bande"
 
-#: src/rig-gui-ctrl2.c:443
+#: src/rig-gui-ctrl2.c:444
 #, c-format
 msgid "ANT %d"
 msgstr ""
 
-#: src/rig-gui-ctrl2.c:460
+#: src/rig-gui-ctrl2.c:461
 msgid "Antenna Port"
 msgstr "Port Antenne"
 
@@ -1956,11 +1961,11 @@ msgstr "RAWSTR"
 msgid "SQLSTAT"
 msgstr "SQLSTAT"
 
-#: src/rig-gui-info-data.h:72 src/rig-gui-smeter.c:76
+#: src/rig-gui-info-data.h:72 src/rig-gui-smeter.c:72
 msgid "SWR"
 msgstr "SWR"
 
-#: src/rig-gui-info-data.h:73 src/rig-gui-smeter.c:77 src/rig-gui-tx.c:347
+#: src/rig-gui-info-data.h:73 src/rig-gui-smeter.c:73 src/rig-gui-tx.c:347
 msgid "ALC"
 msgstr "ALC"
 
@@ -2074,7 +2079,7 @@ msgstr "TUNER"
 
 #: src/rig-gui-info-data.h:114 src/rig-gui-info-data.h:123
 #: src/rig-gui-info-data.h:134 src/rig-gui-info-data.h:148
-#: src/rig-gui-info-data.h:155 src/rig-gui-smeter.c:74
+#: src/rig-gui-info-data.h:155 src/rig-gui-smeter.c:70
 msgid "None"
 msgstr "Aucun"
 
@@ -2282,39 +2287,39 @@ msgstr ""
 msgid "Clear manual frequency entry mode"
 msgstr "Annule le mode de saisie manuelle de la fréquence"
 
-#: src/rig-gui-lcd.c:1396
+#: src/rig-gui-lcd.c:1401
 msgid "kHz"
 msgstr "kHz"
 
-#: src/rig-gui-lcd.c:1421
+#: src/rig-gui-lcd.c:1426
 msgid "RIT"
 msgstr "RIT"
 
-#: src/rig-gui-lcd.c:1472
+#: src/rig-gui-lcd.c:1477
 msgid "VFO A"
 msgstr "VFO A"
 
-#: src/rig-gui-lcd.c:1476
+#: src/rig-gui-lcd.c:1481
 msgid "VFO B"
 msgstr "VFO B"
 
-#: src/rig-gui-lcd.c:1480
+#: src/rig-gui-lcd.c:1485
 msgid "VFO C"
 msgstr "VFO C"
 
-#: src/rig-gui-lcd.c:1484
+#: src/rig-gui-lcd.c:1489
 msgid "MAIN VFO"
 msgstr ""
 
-#: src/rig-gui-lcd.c:1488
+#: src/rig-gui-lcd.c:1493
 msgid "SUB VFO"
 msgstr ""
 
-#: src/rig-gui-lcd.c:1492
+#: src/rig-gui-lcd.c:1497
 msgid "MEM"
 msgstr "MEM"
 
-#: src/rig-gui-lcd.c:1496
+#: src/rig-gui-lcd.c:1501
 msgid "VFO ?"
 msgstr ""
 
@@ -2470,31 +2475,31 @@ msgstr "Squelch"
 msgid "Balance"
 msgstr "Balance"
 
-#: src/rig-gui-smeter.c:83
+#: src/rig-gui-smeter.c:79
 msgid "0..5"
 msgstr "0..5"
 
-#: src/rig-gui-smeter.c:84
+#: src/rig-gui-smeter.c:80
 msgid "0..10"
 msgstr "0..10"
 
-#: src/rig-gui-smeter.c:85
+#: src/rig-gui-smeter.c:81
 msgid "0..50"
 msgstr "0..50"
 
-#: src/rig-gui-smeter.c:86
+#: src/rig-gui-smeter.c:82
 msgid "0..100"
 msgstr "0..100"
 
-#: src/rig-gui-smeter.c:87
+#: src/rig-gui-smeter.c:83
 msgid "0..500"
 msgstr "0..500"
 
-#: src/rig-gui-smeter.c:430
+#: src/rig-gui-smeter.c:413
 msgid "Select TX mode for the meter"
 msgstr "Sélectionne le mode de mesure en émission"
 
-#: src/rig-gui-smeter.c:479
+#: src/rig-gui-smeter.c:463
 msgid "Select TX meter scale"
 msgstr "Sélectionne l'échelle de mesure en émission"
 
@@ -2570,7 +2575,7 @@ msgid "A = B"
 msgstr "A = B"
 
 #: src/rig-gui-vfo.c:240
-msgid "Set VFO B = VFO A"
+msgid "Set VFO A = VFO B"
 msgstr ""
 
 #: src/rig-gui-vfo.c:304

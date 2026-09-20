@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: grig 0.8.0\n"
 "Report-Msgid-Bugs-To: groundstation-developer@lists.sourcforge.net\n"
-"POT-Creation-Date: 2023-01-05 20:11+0100\n"
+"POT-Creation-Date: 2026-09-20 10:44+0200\n"
 "PO-Revision-Date: 2023-01-05 20:16+0100\n"
 "Last-Translator: Daniele Forsi <dforsi@gmail.com>\n"
 "Language-Team: Translation Project <tp@lists.linux.it>\n"
@@ -1399,48 +1399,48 @@ msgstr ""
 msgid "%s: Could not get %s status"
 msgstr ""
 
-#: src/rig-data.c:352 src/rig-data.c:544
+#: src/rig-data.c:352 src/rig-data.c:550
 #, c-format
 msgid "%s: Invalid target: %d\n"
 msgstr ""
 
-#: src/rig-gui-buttons.c:148 src/rig-gui-smeter.c:75
+#: src/rig-gui-buttons.c:149 src/rig-gui-smeter.c:71
 msgid "Power"
 msgstr ""
 
-#: src/rig-gui-buttons.c:149
+#: src/rig-gui-buttons.c:150
 msgid "Power status"
 msgstr "Stato dell'alimentazione"
 
-#: src/rig-gui-buttons.c:193
+#: src/rig-gui-buttons.c:194
 msgid "PTT"
 msgstr "PTT"
 
-#: src/rig-gui-buttons.c:194
+#: src/rig-gui-buttons.c:195
 msgid "Push to talk"
 msgstr "Push to talk"
 
-#: src/rig-gui-buttons.c:238
+#: src/rig-gui-buttons.c:239
 msgid "Lock"
 msgstr "Lock"
 
-#: src/rig-gui-buttons.c:239
+#: src/rig-gui-buttons.c:240
 msgid "Lock tuning dial"
 msgstr "Blocca la manopola di sintonia"
 
-#: src/rig-gui-buttons.c:284
+#: src/rig-gui-buttons.c:285
 msgid "ATT OFF"
 msgstr "ATT OFF"
 
-#: src/rig-gui-buttons.c:307
+#: src/rig-gui-buttons.c:308
 msgid "Attenuator level"
 msgstr "Livello dell'attenuatore"
 
-#: src/rig-gui-buttons.c:344
+#: src/rig-gui-buttons.c:345
 msgid "PREAMP OFF"
 msgstr "PREAMP OFF"
 
-#: src/rig-gui-buttons.c:367
+#: src/rig-gui-buttons.c:368
 msgid "Preamp level"
 msgstr "Livello del preamplificatore"
 
@@ -1509,64 +1509,64 @@ msgstr "ECLSB"
 msgid "FAX"
 msgstr "FAX"
 
-#: src/rig-gui-ctrl2.c:207
+#: src/rig-gui-ctrl2.c:208
 msgid "AGC OFF"
 msgstr "AGC OFF"
 
-#: src/rig-gui-ctrl2.c:208
+#: src/rig-gui-ctrl2.c:209
 msgid "Super Fast"
 msgstr "Super veloce"
 
-#: src/rig-gui-ctrl2.c:209
+#: src/rig-gui-ctrl2.c:210
 msgid "Fast"
 msgstr "Veloce"
 
-#: src/rig-gui-ctrl2.c:210
+#: src/rig-gui-ctrl2.c:211
 msgid "Medium"
 msgstr "Medio"
 
-#: src/rig-gui-ctrl2.c:211
+#: src/rig-gui-ctrl2.c:212
 msgid "Slow"
 msgstr "Lento"
 
-#: src/rig-gui-ctrl2.c:212
+#: src/rig-gui-ctrl2.c:213
 msgid "Auto"
 msgstr "Automatico"
 
-#: src/rig-gui-ctrl2.c:214
+#: src/rig-gui-ctrl2.c:215
 msgid "Automatic Gain Control Level"
 msgstr "Livello del controllo automatico del guadagno"
 
-#: src/rig-gui-ctrl2.c:320
+#: src/rig-gui-ctrl2.c:321
 msgid "Communication mode"
 msgstr "Modalità di comunicazione"
 
-#: src/rig-gui-ctrl2.c:359
+#: src/rig-gui-ctrl2.c:360
 msgid "Wide"
 msgstr "Larga"
 
-#: src/rig-gui-ctrl2.c:360
+#: src/rig-gui-ctrl2.c:361
 msgid "Normal"
 msgstr "Normale"
 
-#: src/rig-gui-ctrl2.c:361
+#: src/rig-gui-ctrl2.c:362
 msgid "Narrow"
 msgstr "Stretta"
 
-#: src/rig-gui-ctrl2.c:362
+#: src/rig-gui-ctrl2.c:363
 msgid "[User]"
 msgstr "[Utente]"
 
-#: src/rig-gui-ctrl2.c:384
+#: src/rig-gui-ctrl2.c:385
 msgid "Passband Width"
 msgstr "Larghezza di banda"
 
-#: src/rig-gui-ctrl2.c:443
+#: src/rig-gui-ctrl2.c:444
 #, c-format
 msgid "ANT %d"
 msgstr "ANT %d"
 
-#: src/rig-gui-ctrl2.c:460
+#: src/rig-gui-ctrl2.c:461
 msgid "Antenna Port"
 msgstr "Connettore d'antenna"
 
@@ -1821,11 +1821,11 @@ msgstr "RAWSTR"
 msgid "SQLSTAT"
 msgstr "SQLSTAT"
 
-#: src/rig-gui-info-data.h:72 src/rig-gui-smeter.c:76
+#: src/rig-gui-info-data.h:72 src/rig-gui-smeter.c:72
 msgid "SWR"
 msgstr "SWR"
 
-#: src/rig-gui-info-data.h:73 src/rig-gui-smeter.c:77 src/rig-gui-tx.c:347
+#: src/rig-gui-info-data.h:73 src/rig-gui-smeter.c:73 src/rig-gui-tx.c:347
 msgid "ALC"
 msgstr "ALC"
 
@@ -1939,7 +1939,7 @@ msgstr "TUNER"
 
 #: src/rig-gui-info-data.h:114 src/rig-gui-info-data.h:123
 #: src/rig-gui-info-data.h:134 src/rig-gui-info-data.h:148
-#: src/rig-gui-info-data.h:155 src/rig-gui-smeter.c:74
+#: src/rig-gui-info-data.h:155 src/rig-gui-smeter.c:70
 msgid "None"
 msgstr "Nessuna"
 
@@ -2147,39 +2147,39 @@ msgstr "CLR"
 msgid "Clear manual frequency entry mode"
 msgstr "Termina la modalità di inserimento manuale della frequenza"
 
-#: src/rig-gui-lcd.c:1396
+#: src/rig-gui-lcd.c:1401
 msgid "kHz"
 msgstr "kHz"
 
-#: src/rig-gui-lcd.c:1421
+#: src/rig-gui-lcd.c:1426
 msgid "RIT"
 msgstr "RIT"
 
-#: src/rig-gui-lcd.c:1472
+#: src/rig-gui-lcd.c:1477
 msgid "VFO A"
 msgstr "VFO A"
 
-#: src/rig-gui-lcd.c:1476
+#: src/rig-gui-lcd.c:1481
 msgid "VFO B"
 msgstr "VFO B"
 
-#: src/rig-gui-lcd.c:1480
+#: src/rig-gui-lcd.c:1485
 msgid "VFO C"
 msgstr "VFO C"
 
-#: src/rig-gui-lcd.c:1484
+#: src/rig-gui-lcd.c:1489
 msgid "MAIN VFO"
 msgstr "MAIN VFO"
 
-#: src/rig-gui-lcd.c:1488
+#: src/rig-gui-lcd.c:1493
 msgid "SUB VFO"
 msgstr "SUB VFO"
 
-#: src/rig-gui-lcd.c:1492
+#: src/rig-gui-lcd.c:1497
 msgid "MEM"
 msgstr "MEM"
 
-#: src/rig-gui-lcd.c:1496
+#: src/rig-gui-lcd.c:1501
 msgid "VFO ?"
 msgstr "VFO ?"
 
@@ -2335,31 +2335,31 @@ msgstr "Squelch"
 msgid "Balance"
 msgstr "Bilanciamento"
 
-#: src/rig-gui-smeter.c:83
+#: src/rig-gui-smeter.c:79
 msgid "0..5"
 msgstr "0..5"
 
-#: src/rig-gui-smeter.c:84
+#: src/rig-gui-smeter.c:80
 msgid "0..10"
 msgstr "0..10"
 
-#: src/rig-gui-smeter.c:85
+#: src/rig-gui-smeter.c:81
 msgid "0..50"
 msgstr "0..50"
 
-#: src/rig-gui-smeter.c:86
+#: src/rig-gui-smeter.c:82
 msgid "0..100"
 msgstr "0..100"
 
-#: src/rig-gui-smeter.c:87
+#: src/rig-gui-smeter.c:83
 msgid "0..500"
 msgstr "0..500"
 
-#: src/rig-gui-smeter.c:430
+#: src/rig-gui-smeter.c:413
 msgid "Select TX mode for the meter"
 msgstr "Sceglie la modalità dello strumento in TX"
 
-#: src/rig-gui-smeter.c:479
+#: src/rig-gui-smeter.c:463
 msgid "Select TX meter scale"
 msgstr "Sceglie la scala dello strumento in TX"
 
