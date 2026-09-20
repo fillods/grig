@@ -86,7 +86,12 @@ rig_gui_func_create ()
 	}
 	
 	/* create hbox and add toggle buttons */
+#if GTK_CHECK_VERSION(3,0,0)
+	hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 5);
+	gtk_box_set_homogeneous (GTK_BOX (hbox), TRUE);
+#else
 	hbox = gtk_hbox_new (TRUE, 5);
+#endif
 	create_controls (GTK_BOX (hbox));
 	
 	/* create dialog window */
@@ -110,7 +115,10 @@ rig_gui_func_create ()
 			  G_CALLBACK (func_window_destroy), NULL);
 
 
-	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), hbox);
+	/* GtkDialog's vbox field is private in GTK3; gtk_dialog_get_content_area()
+	   has been available since GTK 2.14, well below this project's 2.24.0
+	   floor, so no GTK_CHECK_VERSION branch is needed here. */
+	gtk_container_add (GTK_CONTAINER (gtk_dialog_get_content_area (GTK_DIALOG (dialog))), hbox);
 
 	visible = TRUE;
 
